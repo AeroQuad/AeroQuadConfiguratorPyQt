@@ -1,0 +1,19 @@
+<Configurator>
+	<Settings>
+		<DefaultComPort>COM5</DefaultComPort>
+		<BootUpDelay>5.0</BootUpDelay>
+		<CommTimeOut>1.0</CommTimeOut>
+	</Settings>	
+	<Subpanels>
+		<Subpanel>
+			<Name>Serial Monitor</Name>
+			<Path>subCommMonitor.subCommMonitor</Path>
+			<Class>Ui_commMonitor</Class>
+		</Subpanel>
+		<Subpanel>
+			<Name>Template</Name>
+			<Path>template.template</Path>
+			<Class>Ui_splashScreen</Class>
+		</Subpanel>
+	</Subpanels>
+</Configurator>
