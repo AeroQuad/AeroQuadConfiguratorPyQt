@@ -15,8 +15,12 @@ class AQSerial(object):
         self.comm = None
         self.availablePorts = None
 
-    def connect(self, port, baud):
-        self.comm = serial.Serial(port, baud, timeout=1) 
+    def connect(self, port, baud, delay, commTimeout):
+        self.comm = serial.Serial(port, baud, timeout=commTimeout)
+        self.comm.setDTR(False)
+        time.sleep(0.100)
+        self.comm.setDTR(True)
+        time.sleep(delay)
         
     def disconnect(self):
         self.comm.close()
@@ -36,7 +40,7 @@ class AQSerial(object):
         for i in range(256):
             try:
                 s = serial.Serial(i)
-                self.availablePorts.append((i, s.portstr))
+                self.availablePorts.append(s.portstr)
                 s.close()
             except serial.SerialException:
                 pass

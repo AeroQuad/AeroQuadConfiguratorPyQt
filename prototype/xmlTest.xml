@@ -5,13 +5,11 @@
 		<CommTimeOut>1.0</CommTimeOut>
 	</Settings>	
 	<Subpanels>
-		<Subpanel>
-			<Name>Serial Monitor</Name>
+		<Subpanel Name="Serial Monitor">
 			<Path>subCommMonitor.subCommMonitor</Path>
 			<Class>Ui_commMonitor</Class>
 		</Subpanel>
-		<Subpanel>
-			<Name>Template</Name>
+		<Subpanel Name="Template">
 			<Path>template.template</Path>
 			<Class>Ui_splashScreen</Class>
 		</Subpanel>

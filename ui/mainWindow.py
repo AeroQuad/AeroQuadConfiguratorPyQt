@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWindow.ui'
 #
-# Created: Thu Nov  8 20:07:00 2012
+# Created: Wed Nov 14 10:43:04 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,7 +19,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(800, 400)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("resources/AeroQuadMacIcon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/AQ/AeroQuadMacIcon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -68,6 +68,8 @@ class Ui_MainWindow(object):
         self.menuSettings.setObjectName(_fromUtf8("menuSettings"))
         self.menuCalibrations = QtGui.QMenu(self.menuFile)
         self.menuCalibrations.setObjectName(_fromUtf8("menuCalibrations"))
+        self.menuPreferences = QtGui.QMenu(self.menuFile)
+        self.menuPreferences.setObjectName(_fromUtf8("menuPreferences"))
         self.menuView = QtGui.QMenu(self.menubar)
         self.menuView.setObjectName(_fromUtf8("menuView"))
         self.menuHelp = QtGui.QMenu(self.menubar)
@@ -85,12 +87,19 @@ class Ui_MainWindow(object):
         self.actionOpenCalibrations.setObjectName(_fromUtf8("actionOpenCalibrations"))
         self.actionSaveCalibrations = QtGui.QAction(MainWindow)
         self.actionSaveCalibrations.setObjectName(_fromUtf8("actionSaveCalibrations"))
+        self.actionBootUpDelay = QtGui.QAction(MainWindow)
+        self.actionBootUpDelay.setObjectName(_fromUtf8("actionBootUpDelay"))
+        self.actionCommTimeout = QtGui.QAction(MainWindow)
+        self.actionCommTimeout.setObjectName(_fromUtf8("actionCommTimeout"))
         self.menuSettings.addAction(self.actionOpenSettings)
         self.menuSettings.addAction(self.actionSaveSettings)
         self.menuCalibrations.addAction(self.actionOpenCalibrations)
         self.menuCalibrations.addAction(self.actionSaveCalibrations)
+        self.menuPreferences.addAction(self.actionBootUpDelay)
+        self.menuPreferences.addAction(self.actionCommTimeout)
         self.menuFile.addAction(self.menuSettings.menuAction())
         self.menuFile.addAction(self.menuCalibrations.menuAction())
+        self.menuFile.addAction(self.menuPreferences.menuAction())
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
         self.menuHelp.addAction(self.actionAbout)
@@ -109,6 +118,7 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuSettings.setTitle(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
         self.menuCalibrations.setTitle(QtGui.QApplication.translate("MainWindow", "Calibrations", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuPreferences.setTitle(QtGui.QApplication.translate("MainWindow", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "View", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
@@ -117,5 +127,7 @@ class Ui_MainWindow(object):
         self.actionSaveSettings.setText(QtGui.QApplication.translate("MainWindow", "Save...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionOpenCalibrations.setText(QtGui.QApplication.translate("MainWindow", "Open...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSaveCalibrations.setText(QtGui.QApplication.translate("MainWindow", "Save....", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionBootUpDelay.setText(QtGui.QApplication.translate("MainWindow", "Boot Up Delay...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionCommTimeout.setText(QtGui.QApplication.translate("MainWindow", "Comm Timeout...", None, QtGui.QApplication.UnicodeUTF8))
 
-#import AQresources_rc
+import AQresources_rc

@@ -8,5 +8,6 @@
 <path>/AeroQuadConfiguratorPyQt/resources</path>
 <path>/AeroQuadConfiguratorPyQt/subpanel</path>
 <path>/AeroQuadConfiguratorPyQt/ui</path>
+<path>/AeroQuadConfiguratorPyQt/utilties</path>
 </pydev_pathproperty>
 </pydev_project>
