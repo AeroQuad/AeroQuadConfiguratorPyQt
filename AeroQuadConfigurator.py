@@ -5,11 +5,9 @@ Created on Nov 6, 2012
 '''
 import sys
 from PyQt4 import QtGui #QtCore,
-
 from mainWindow import Ui_MainWindow
-#from preferences import Ui_preferenceDialog
-
 from communication.serialCom import AQSerial
+
 import xml.etree.ElementTree as ET
 xml = ET.parse('AeroQuadConfigurator.xml')
 
@@ -21,8 +19,6 @@ class AQMain(QtGui.QMainWindow):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        #self.preferences = Ui_preferenceDialog
-        #self.preferences.setupUi(self)
         # TODO: figure out way to configure for different comm types (TCP, MAVLINK, etc) 
         self.comm = AQSerial()
         
@@ -46,7 +42,6 @@ class AQMain(QtGui.QMainWindow):
         self.ui.buttonDisconnect.clicked.connect(self.disconnect)
         self.ui.actionExit.triggered.connect(QtGui.qApp.quit)
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
-        # TODO: Look at how to pass data into QDialog box s
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
                 
