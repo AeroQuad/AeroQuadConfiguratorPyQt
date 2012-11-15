@@ -4,7 +4,7 @@ Created on Nov 6, 2012
 @author: Ted Carancho
 '''
 import sys
-from PyQt4 import QtGui #QtCore,
+from PyQt4 import QtCore, QtGui
 from mainWindow import Ui_MainWindow
 from communication.serialCom import AQSerial
 
@@ -13,6 +13,11 @@ xml = ET.parse('AeroQuadConfigurator.xml')
 
 from splashScreen import Ui_splashScreen
 from subpanel.subCommMonitor.subCommMonitor import Ui_commMonitor
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
 
 class AQMain(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -31,12 +36,32 @@ class AQMain(QtGui.QMainWindow):
         self.availablePorts = []
         self.updateComPortSelection()
         self.updateBaudRates()
-        
-        # TODO: Dynamically load subpanel widgets
+        # Update conmm port combo box to use last used comm port
+        defaultComPort = xml.find("./Settings/DefaultComPort").text
+        commIndex = self.ui.comPort.findText(defaultComPort)
+        if commIndex == -1:
+            commIndex = 0
+        self.ui.comPort.setCurrentIndex(commIndex)
+        # Load splash screen
         self.subPanel = Ui_splashScreen()
         self.subPanel.setupUi(self.subPanel)
         self.ui.subPanel.addWidget(self.subPanel)
-                
+        # Dynamically add board types to menu bar
+        boardNames = xml.findall("./Boards/Type")
+        self.boardTypes = []
+        self.boardMenu = []
+        for board in boardNames:
+            self.boardTypes.append(board.text)
+        self.mapper = QtCore.QSignalMapper(self)
+        for boardType in self.boardTypes:
+            self.ui.board = self.ui.menuBoard.addAction(boardType)
+            self.boardMenu.append(self.ui.board) # Need to store this separately because Python only binds stuff at runtime
+            self.mapper.setMapping(self.ui.board, boardType)
+            self.ui.board.triggered.connect(self.mapper.map)
+            self.ui.board.setCheckable(True)
+        self.selectedBoardType = xml.find("./Boards/Selected").text
+        self.checkmarkBoardType(self.selectedBoardType)
+            
         # Connect GUI slots and signals
         self.ui.buttonConnect.clicked.connect(self.connect)
         self.ui.buttonDisconnect.clicked.connect(self.disconnect)
@@ -44,13 +69,17 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
-                
+        self.mapper.mapped[str].connect(self.selectBoardType)
+              
     '''
-    Methods which are used for slots
-    '''
+    Functions that are used for slots
+    '''        
     def connect(self):
+        '''
+        Initiates communication with AeroQuad
+        '''
         # Setup GUI
-        self.ui.status.setText("Connecting to the AeroQuad...")
+        self.ui.status.setText("Connecting to the " + self.selectedBoardType + "...")
         self.ui.buttonDisconnect.setEnabled(True)
         self.ui.buttonConnect.setEnabled(False)
         self.ui.comPort.setEnabled(False)
@@ -66,10 +95,10 @@ class AQMain(QtGui.QMainWindow):
         version = self.comm.read()
         if version != "":
             self.storeComPortSelection()
-            self.ui.status.setText("Connected to the AeroQuad using Flight Software v" + version)
+            self.ui.status.setText("Connected to the " + self.selectedBoardType + " using Flight Software v" + version)
         else:
             self.disconnect()
-            self.ui.status.setText("Not connected to AeroQuad")
+            self.ui.status.setText("Not connected to the " + self.selectedBoardType)
         # TODO: Need to dynamically load subpanel
         if self.ui.subPanel.currentIndex() == 0:
             self.subPanel1 = Ui_commMonitor()
@@ -78,12 +107,15 @@ class AQMain(QtGui.QMainWindow):
             self.ui.subPanel.setCurrentIndex(1)
         
     def disconnect(self):
+        '''
+        Disconnect from AeroQuad
+        '''
         # Setup GUI
         self.ui.buttonDisconnect.setEnabled(False)
         self.ui.buttonConnect.setEnabled(True)
         self.ui.comPort.setEnabled(True)
         self.ui.baudRate.setEnabled(True)
-        self.ui.status.setText("Disconnected from AeroQuad")
+        self.ui.status.setText("Disconnected from the " + self.selectedBoardType)
         
         # TODO: Need to dynamically unload subpanel
         if self.ui.subPanel.currentIndex() == 1:
@@ -91,9 +123,13 @@ class AQMain(QtGui.QMainWindow):
         self.comm.disconnect()
 
     def updateDetectedPorts(self):
+        '''
+        Cycles through 256 ports and checks if there is a response from them.
+        '''
         selection = self.ui.comPort.currentText()
         if selection == "Refresh":
             self.updateComPortSelection
+            self.ui.comPort.setCurrentIndex(0)
             self.ui.status.setText("Updated list of available COM ports")
         elif selection == "Autoconnect":
             self.ui.comPort.setCurrentIndex(0)
@@ -123,12 +159,26 @@ class AQMain(QtGui.QMainWindow):
             xml.find("./Settings/CommTimeOut").text = str(data)
             xml.write("AeroQuadConfigurator.xml")
            
+    def selectBoardType(self, boardType):
+        '''
+        Places checkmark beside selected board type
+        Menu item instances stored in list because Python only updates during runtime
+        '''
+        types = len(self.boardTypes)
+        for name in range(types):
+            self.boardMenu[name].setChecked(False)
+        selected = self.boardTypes.index(boardType)
+        self.boardMenu[selected].setChecked(True)
+        xml.find("./Boards/Selected").text = boardType
+        xml.write("AeroQuadConfigurator.xml")
+        self.selectedBoardType = boardType
+        
     def exit(self):
         self.comm.disconnect()
         sys.exit(app.exec_())
  
     '''
-    Methods for main window housekeeping
+    Functions for main window housekeeping
     '''         
     def updateComPortSelection(self):
         '''
@@ -139,12 +189,7 @@ class AQMain(QtGui.QMainWindow):
             self.ui.comPort.addItem(n)
         self.ui.comPort.addItem("-------")
         self.ui.comPort.addItem("Autoconnect")
-        self.ui.comPort.addItem("Refresh", 1000)
-        defaultComPort = xml.find("./Settings/DefaultComPort").text
-        commIndex = self.ui.comPort.findText(defaultComPort)
-        if commIndex == -1:
-            commIndex = 0
-        self.ui.comPort.setCurrentIndex(commIndex)
+        self.ui.comPort.addItem("Refresh")
         
     def storeComPortSelection(self):
         '''
@@ -165,6 +210,10 @@ class AQMain(QtGui.QMainWindow):
         for i in baudRate:
             self.ui.baudRate.addItem(i)
         self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))
+        
+    def checkmarkBoardType(self, boardType):
+        selected = self.boardTypes.index(boardType)
+        self.boardMenu[selected].setChecked(True)
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

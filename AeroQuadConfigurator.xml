@@ -13,6 +13,7 @@
 		<Type>AeroQuad v2.1</Type>
 		<Type>AeroQuad v1.9</Type>
 		<Type>AeroQuad Mini v1.05</Type>
+		<Selected>AeroQuad32</Selected>
 	</Boards>
 	
 	<Board Type="AeroQuad32">
