@@ -34,4 +34,4 @@ class Ui_splashScreen(QtGui.QWidget):
     def retranslateUi(self, splashScreen):
         splashScreen.setWindowTitle(QtGui.QApplication.translate("splashScreen", "Form", None, QtGui.QApplication.UnicodeUTF8))
 
-#import AQresources_rc
+import AQresources_rc

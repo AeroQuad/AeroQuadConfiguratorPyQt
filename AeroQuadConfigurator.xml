@@ -13,7 +13,7 @@
 		<Type>AeroQuad v2.1</Type>
 		<Type>AeroQuad v1.9</Type>
 		<Type>AeroQuad Mini v1.05</Type>
-		<Selected>AeroQuad32</Selected>
+		<Selected>AeroQuad v2.1</Selected>
 	</Boards>
 	
 	<Board Type="AeroQuad32">
@@ -24,7 +24,7 @@
 			</Subpanel>
 			<Subpanel Name="Template">
 				<Path>template.template</Path>
-				<Class>Ui_splashScreen</Class>
+				<Class>Ui_template</Class>
 			</Subpanel>
 		</Subpanels>
 	</Board>
@@ -34,11 +34,34 @@
 				<Path>subCommMonitor.subCommMonitor</Path>
 				<Class>Ui_commMonitor</Class>
 			</Subpanel>
-			<Subpanel Name="Template">
+			<Subpanel Name="Template v2.1">
 				<Path>template.template</Path>
-				<Class>Ui_splashScreen</Class>
+				<Class>Ui_template</Class>
 			</Subpanel>
 		</Subpanels>
 	</Board>
-	
+	<Board Type="AeroQuad v1.9">
+		<Subpanels>
+			<Subpanel Name="Serial Monitor">
+				<Path>subCommMonitor.subCommMonitor</Path>
+				<Class>Ui_commMonitor</Class>
+			</Subpanel>
+			<Subpanel Name="Template v1.9">
+				<Path>template.template</Path>
+				<Class>Ui_template</Class>
+			</Subpanel>
+		</Subpanels>
+	</Board>
+	<Board Type="AeroQuad Mini v1.05">
+		<Subpanels>
+			<Subpanel Name="Serial Monitor">
+				<Path>subCommMonitor.subCommMonitor</Path>
+				<Class>Ui_commMonitor</Class>
+			</Subpanel>
+			<Subpanel Name="Template v1.05">
+				<Path>template.template</Path>
+				<Class>Ui_template</Class>
+			</Subpanel>
+		</Subpanels>
+	</Board>
 </Configurator>

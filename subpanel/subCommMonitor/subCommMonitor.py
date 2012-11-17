@@ -10,7 +10,8 @@
 import time
 from PyQt4 import QtCore, QtGui
 from threading import Thread
-
+#from communication.serialCom import AQSerial
+#from package(path) import class(module)
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -43,10 +44,6 @@ class Ui_commMonitor(QtGui.QWidget):
         self.sendButton.clicked.connect(self.sendCommand)
         self.clearButton.clicked.connect(self.clearComm)
         
-        # Start thread to read incoming messages
-        self.exitReadData = False
-        thread = Thread(target=self.readData, args=[self.serialComm])
-        thread.start()
         
     def retranslateUi(self, commMonitor):
         commMonitor.setWindowTitle(QtGui.QApplication.translate("commMonitor", "Form", None, QtGui.QApplication.UnicodeUTF8))
@@ -79,10 +76,7 @@ class Ui_commMonitor(QtGui.QWidget):
             else:
                 time.sleep(0.250)
                 self.commLog.ensureCursorVisible()
-                
-    def stopReadData(self):
-        self.exitReadData = True
-            
+
     def clearComm(self):
         self.lineEdit.clear()
         self.commLog.clear()
@@ -93,5 +87,14 @@ class Ui_commMonitor(QtGui.QWidget):
         milliseconds = '%03d' % int((now - int(now)) * 1000)
         return time.strftime('%H:%M:%S.', localtime) + milliseconds
 
+    def start(self):
+        # Start thread to read incoming messages
+        self.exitReadData = False
+        thread = Thread(target=self.readData, args=[self.serialComm])
+        thread.start()
+        print("Serial read stopped")
+        
+    def stop(self):
+        self.exitReadData = True
         
 #import AQresources_rc
