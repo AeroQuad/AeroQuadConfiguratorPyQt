@@ -55,6 +55,7 @@ class AQMain(QtGui.QMainWindow):
         # Dynamically configure board type menu and subPanel menu from XML configuration file
         self.selectedBoardType = self.configureBoardTypeMenu()
         self.configureSubPanelMenu(self.selectedBoardType)
+        self.activeSubPanel = None
 
         # Connect GUI slots and signals
         self.ui.buttonConnect.clicked.connect(self.connect)
@@ -63,7 +64,8 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
-          
+
+
     '''Communication Methods'''        
     def connect(self):
         '''Initiates communication with the AeroQuad'''
@@ -85,18 +87,21 @@ class AQMain(QtGui.QMainWindow):
         if version != "":
             self.storeComPortSelection()
             self.ui.status.setText("Connected to the " + self.selectedBoardType + " using Flight Software v" + version)
+            self.restartSubPanel()
         else:
             self.disconnect()
             self.ui.status.setText("Not connected to the " + self.selectedBoardType)
         
     def disconnect(self):
         '''Disconnect from the AeroQuad'''
-        # Setup GUI
+        self.comm.disconnect()
+        # Update GUI
         self.ui.buttonDisconnect.setEnabled(False)
         self.ui.buttonConnect.setEnabled(True)
         self.ui.comPort.setEnabled(True)
         self.ui.baudRate.setEnabled(True)
         self.ui.status.setText("Disconnected from the " + self.selectedBoardType)
+        self.restartSubPanel()
 
     def updateDetectedPorts(self):
         '''Cycles through 256 ports and checks if there is a response from them.'''
@@ -156,6 +161,7 @@ class AQMain(QtGui.QMainWindow):
         for i in baudRate:
             self.ui.baudRate.addItem(i)
         self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))     
+ 
     
     '''Board Selection Methods'''            
     def configureBoardTypeMenu(self):
@@ -198,7 +204,8 @@ class AQMain(QtGui.QMainWindow):
         '''Place checkmark next to selected board type'''
         selected = self.boardTypes.index(boardType)
         self.boardMenu[selected].setChecked(True)
-        
+
+
     ''' SubPanel Methods '''
     def configureSubPanelMenu(self, boardType):
         '''Dynamically add subpanels to View menu based on selected board type'''
@@ -206,6 +213,7 @@ class AQMain(QtGui.QMainWindow):
         subPanels = xml.findall(boardSubPanelName)
         subPanelCount = 1
         self.subPanelList = []
+        self.subPanelClasses = []
         for subPanel in subPanels:
             self.subPanelList.append(subPanel.get("Name"))
             pathName = xml.find(boardSubPanelName + "/[@Name='" + subPanel.get("Name") +"']/Path").text
@@ -216,9 +224,10 @@ class AQMain(QtGui.QMainWindow):
             for package in packageList[1:]:
                 module = getattr(module, package)
             module = getattr(module, className)
-            self.tempSubPanel = module()
-            self.tempSubPanel.setupUi(self.tempSubPanel, self.comm)
-            self.ui.subPanel.addWidget(self.tempSubPanel)
+            tempSubPanel = module()
+            tempSubPanel.setupUi(tempSubPanel, self.comm)
+            self.ui.subPanel.addWidget(tempSubPanel)
+            self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1
             
         self.subPanelMapper = QtCore.QSignalMapper(self)
@@ -235,18 +244,27 @@ class AQMain(QtGui.QMainWindow):
         '''Places check mark beside selected subpanel name
         Menu item instances stored in dedicated list because Python only updates during runtime making everything point to the last item in the list
         '''
+        if self.activeSubPanel != None:
+            self.activeSubPanel.stop()
         types = len(self.subPanelList)
-        for name in range(types):
-            self.subPanelMenu[name].setChecked(False)
+        for index in range(types):
+            self.subPanelMenu[index].setChecked(False)
         selected = self.subPanelList.index(subPanelName)
         self.subPanelMenu[selected].setChecked(True)
+        self.ui.subPanel.setCurrentIndex(selected+1) # index 0 is splash screen
+        self.activeSubPanel = self.subPanelClasses[selected]
+        self.activeSubPanel.start()
         
     def clearSubPanelMenu(self):
         ''' Clear subPanel menu and disconnect subPanel related signals'''
         self.ui.menuView.clear()
         self.subPanelMapper.mapped[str].disconnect(self.selectSubPanel)
         
-
+    def restartSubPanel(self):
+        if self.activeSubPanel != None: # Restart any running subpanels
+            self.activeSubPanel.stop()
+            self.activeSubPanel.start()
+            
     ''' Housekeeping Functions'''
     def exit(self):
         self.comm.disconnect()

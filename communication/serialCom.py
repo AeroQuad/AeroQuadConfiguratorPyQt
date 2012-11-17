@@ -14,6 +14,7 @@ class AQSerial(object):
     def __init__(self):
         self.comm = None
         self.availablePorts = None
+        self.connected = False
 
     def connect(self, port, baud, delay, commTimeout):
         self.comm = serial.Serial(port, baud, timeout=commTimeout)
@@ -21,9 +22,11 @@ class AQSerial(object):
         time.sleep(0.100)
         self.comm.setDTR(True)
         time.sleep(delay)
+        self.connected = True
         
     def disconnect(self):
         self.comm.close()
+        self.connected = False
         
     def write(self, data):
         self.comm.write(bytes(data.encode('utf-8')))
@@ -45,3 +48,6 @@ class AQSerial(object):
             except serial.SerialException:
                 pass
         return self.availablePorts
+
+    def isConnected(self):
+        return self.connected

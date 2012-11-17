@@ -40,6 +40,8 @@ class Ui_commMonitor(QtGui.QWidget):
         self.retranslateUi(commMonitor)
         QtCore.QMetaObject.connectSlotsByName(commMonitor)
         
+        self.connected = False
+                
         # Connect GUI slots and signals
         self.sendButton.clicked.connect(self.sendCommand)
         self.clearButton.clicked.connect(self.clearComm)
@@ -57,9 +59,8 @@ class Ui_commMonitor(QtGui.QWidget):
         self.commLog.append(self.timeStamp() + " -> " + command)
         self.lineEdit.clear()
         time.sleep(0.150)
-        #self.readData()
             
-    def readData(self, serialComm):
+    def readContinuousData(self, serialComm):
         self.comm = serialComm
         while 1:
             if self.exitReadData == True:
@@ -89,12 +90,19 @@ class Ui_commMonitor(QtGui.QWidget):
 
     def start(self):
         # Start thread to read incoming messages
-        self.exitReadData = False
-        thread = Thread(target=self.readData, args=[self.serialComm])
-        thread.start()
-        print("Serial read stopped")
+        self.isConnected()
+        if self.connected == True:
+            self.exitReadData = False
+            thread = Thread(target=self.readContinuousData, args=[self.serialComm])
+            thread.start()
         
     def stop(self):
         self.exitReadData = True
+        
+    def isConnected(self):
+        state = self.serialComm.isConnected()
+        self.sendButton.setEnabled(state)
+        self.clearButton.setEnabled(state)
+        self.connected = state
         
 #import AQresources_rc
