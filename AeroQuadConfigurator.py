@@ -5,7 +5,6 @@ Created on Nov 6, 2012
 @author: Ted Carancho
 '''
 import sys
-import importlib
 
 from PyQt4 import QtCore, QtGui
 from mainWindow import Ui_MainWindow
@@ -94,6 +93,7 @@ class AQMain(QtGui.QMainWindow):
         
     def disconnect(self):
         '''Disconnect from the AeroQuad'''
+        self.comm.write("X")
         self.comm.disconnect()
         # Update GUI
         self.ui.buttonDisconnect.setEnabled(False)
@@ -205,7 +205,7 @@ class AQMain(QtGui.QMainWindow):
         selected = self.boardTypes.index(boardType)
         self.boardMenu[selected].setChecked(True)
 
-
+  
     ''' SubPanel Methods '''
     def configureSubPanelMenu(self, boardType):
         '''Dynamically add subpanels to View menu based on selected board type'''

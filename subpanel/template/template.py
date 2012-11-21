@@ -7,18 +7,25 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-import time
+# Read through the comments below to know how to update your GUI
+# made in QT Designer as a subpanel in the Configurator
+
 from PyQt4 import QtCore, QtGui
-from threading import Thread
+
+# Add this to your subpanel
+from subpanel.subPanelTemplate import subpanel
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class Ui_template(QtGui.QWidget):
+class Ui_template(QtGui.QWidget, subpanel):
+    # Modify setupUi to add commTransport as an argument
     def setupUi(self, splashScreen, commTransport):
+        # Add the line below to save a variable for communication to the AeroQuad
         self.serialComm = commTransport
+        
         splashScreen.setObjectName(_fromUtf8("splashScreen"))
         splashScreen.resize(818, 418)
         self.gridLayout = QtGui.QGridLayout(splashScreen)
@@ -26,7 +33,7 @@ class Ui_template(QtGui.QWidget):
         self.splash = QtGui.QLabel(splashScreen)
         self.splash.setMaximumSize(QtCore.QSize(800, 400))
         self.splash.setText(_fromUtf8(""))
-        self.splash.setPixmap(QtGui.QPixmap(_fromUtf8("resources/AeroQuad_1024x500.png")))
+        self.splash.setPixmap(QtGui.QPixmap(_fromUtf8(":/AQ/AeroQuad_1024x500.png")))
         self.splash.setScaledContents(True)
         self.splash.setObjectName(_fromUtf8("splash"))
         self.gridLayout.addWidget(self.splash, 0, 0, 1, 1)
@@ -36,34 +43,8 @@ class Ui_template(QtGui.QWidget):
 
     def retranslateUi(self, splashScreen):
         splashScreen.setWindowTitle(QtGui.QApplication.translate("splashScreen", "Form", None, QtGui.QApplication.UnicodeUTF8))
-    
-    def start(self):
-        # Start thread to read incoming messages
-        self.exitReadData = False
-        #thread = Thread(target=self.readData, args=[self.serialComm])
-        #thread.start()
-        print("subpanel started")
-        
-    def stop(self):
-        self.exitReadData = True
-        print("subpanel stopped")
-        
-    def readData(self, serialComm):
-        self.comm = serialComm
-        while 1:
-            if self.exitReadData == True:
-                break
-            # TODO: Need to figure out how to clear out text when too large
-            #if self.commLog.toPlainText().__len__() > 1024:
-            #    time.sleep(0.250)
-            #    self.commLog.clear()
-            response = self.comm.read()
-            if response != "":
-                self.commLog.append(self.timeStamp() + " <- " + response)
-                self.commLog.ensureCursorVisible()
-                time.sleep(0.050)
-            else:
-                time.sleep(0.250)
-                self.commLog.ensureCursorVisible()
-                
+
+# Add any function calls you wish to redefine/customize in the subpanel class
+# Or you can add any new function calls you need to make the subpanel operate
+
 import AQresources_rc

@@ -9,15 +9,14 @@
 
 import time
 from PyQt4 import QtCore, QtGui
-from threading import Thread
-#from communication.serialCom import AQSerial
-#from package(path) import class(module)
+from subpanel.subPanelTemplate import subpanel
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class Ui_commMonitor(QtGui.QWidget):
+class Ui_commMonitor(QtGui.QWidget, subpanel):
     def setupUi(self, commMonitor, commTransport):
         self.serialComm = commTransport
         commMonitor.setObjectName(_fromUtf8("commMonitor"))
@@ -39,13 +38,10 @@ class Ui_commMonitor(QtGui.QWidget):
         self.gridLayout.addWidget(self.commLog, 0, 0, 1, 3)
         self.retranslateUi(commMonitor)
         QtCore.QMetaObject.connectSlotsByName(commMonitor)
-        
-        self.connected = False
                 
         # Connect GUI slots and signals
         self.sendButton.clicked.connect(self.sendCommand)
         self.clearButton.clicked.connect(self.clearComm)
-        
         
     def retranslateUi(self, commMonitor):
         commMonitor.setWindowTitle(QtGui.QApplication.translate("commMonitor", "Form", None, QtGui.QApplication.UnicodeUTF8))
@@ -59,7 +55,7 @@ class Ui_commMonitor(QtGui.QWidget):
         self.commLog.append(self.timeStamp() + " -> " + command)
         self.lineEdit.clear()
         time.sleep(0.150)
-            
+        
     def readContinuousData(self, serialComm):
         self.comm = serialComm
         while 1:
@@ -77,32 +73,14 @@ class Ui_commMonitor(QtGui.QWidget):
             else:
                 time.sleep(0.250)
                 self.commLog.ensureCursorVisible()
-
-    def clearComm(self):
-        self.lineEdit.clear()
-        self.commLog.clear()
-        
-    def timeStamp(self):
-        now = time.time()
-        localtime = time.localtime(now)
-        milliseconds = '%03d' % int((now - int(now)) * 1000)
-        return time.strftime('%H:%M:%S.', localtime) + milliseconds
-
-    def start(self):
-        # Start thread to read incoming messages
-        self.isConnected()
-        if self.connected == True:
-            self.exitReadData = False
-            thread = Thread(target=self.readContinuousData, args=[self.serialComm])
-            thread.start()
-        
-    def stop(self):
-        self.exitReadData = True
-        
+       
     def isConnected(self):
         state = self.serialComm.isConnected()
         self.sendButton.setEnabled(state)
         self.clearButton.setEnabled(state)
         self.connected = state
         
-#import AQresources_rc
+    def clearComm(self):
+        self.lineEdit.clear()
+        self.commLog.clear()
+

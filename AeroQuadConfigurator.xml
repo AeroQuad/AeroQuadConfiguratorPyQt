@@ -13,7 +13,7 @@
 		<Type>AeroQuad v2.1</Type>
 		<Type>AeroQuad v1.9</Type>
 		<Type>AeroQuad Mini v1.05</Type>
-		<Selected>AeroQuad v2.1</Selected>
+		<Selected>AeroQuad32</Selected>
 	</Boards>
 	
 	<Board Type="AeroQuad32">
@@ -21,6 +21,10 @@
 			<Subpanel Name="Serial Monitor">
 				<Path>subCommMonitor.subCommMonitor</Path>
 				<Class>Ui_commMonitor</Class>
+			</Subpanel>
+			<Subpanel Name="Plot">
+				<Path>dataPlot.dataPlot</Path>
+				<Class>Ui_plotWindow</Class>
 			</Subpanel>
 			<Subpanel Name="Template">
 				<Path>template.template</Path>
