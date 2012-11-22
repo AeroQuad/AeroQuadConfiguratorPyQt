@@ -139,7 +139,7 @@ class AQMain(QtGui.QMainWindow):
     def updateComPortSelection(self):
         '''Look for available comm ports and updates combo box'''
         self.ui.comPort.clear()
-        for n in AQSerial.detectPorts(self):
+        for n in self.comm.detectPorts():
             self.ui.comPort.addItem(n)
         self.ui.comPort.addItem("-------")
         self.ui.comPort.addItem("Autoconnect")
@@ -147,8 +147,8 @@ class AQMain(QtGui.QMainWindow):
         
     def storeComPortSelection(self):
         '''Stores comm port selection to xml file for later recall'''
-        xml.find("./Settings/DefaultBaudRate").text = self.ui.baudRate.currentText()
-        xml.find("./Settings/DefaultComPort").text = self.ui.comPort.currentText()
+        xml.find("./Settings/DefaultBaudRate").text = str(self.ui.baudRate.currentText())
+        xml.find("./Settings/DefaultComPort").text = str(self.ui.comPort.currentText())
         xml.write("AeroQuadConfigurator.xml")
                
     def updateBaudRates(self):
@@ -193,7 +193,7 @@ class AQMain(QtGui.QMainWindow):
         self.checkmarkBoardType(boardType)
         selected = self.boardTypes.index(boardType)
         self.boardMenu[selected].setChecked(True)
-        xml.find("./Boards/Selected").text = boardType
+        xml.find("./Boards/Selected").text = str(boardType)
         xml.write("AeroQuadConfigurator.xml")
         self.selectedBoardType = boardType
         self.clearSubPanelMenu()
@@ -209,7 +209,7 @@ class AQMain(QtGui.QMainWindow):
     ''' SubPanel Methods '''
     def configureSubPanelMenu(self, boardType):
         '''Dynamically add subpanels to View menu based on selected board type'''
-        boardSubPanelName = "./Board/[@Type='" + boardType + "']/Subpanels/Subpanel"
+        boardSubPanelName = "./Board/[@Type='" + str(boardType) + "']/Subpanels/Subpanel"
         subPanels = xml.findall(boardSubPanelName)
         subPanelCount = 1
         self.subPanelList = []

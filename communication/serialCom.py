@@ -13,7 +13,7 @@ class AQSerial(object):
     
     def __init__(self):
         self.comm = None
-        self.availablePorts = None
+        self.availablePorts = []
         self.connected = False
 
     def connect(self, port, baud, delay, commTimeout):
