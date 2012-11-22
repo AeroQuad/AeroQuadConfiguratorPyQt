@@ -22,7 +22,7 @@
 				<Path>subCommMonitor.subCommMonitor</Path>
 				<Class>Ui_commMonitor</Class>
 			</Subpanel>
-			<Subpanel Name="Plot">
+			<Subpanel Name="Sensor Data">
 				<Path>dataPlot.dataPlot</Path>
 				<Class>Ui_plotWindow</Class>
 			</Subpanel>
