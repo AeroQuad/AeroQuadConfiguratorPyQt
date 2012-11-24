@@ -13,7 +13,6 @@
 		<Type>AeroQuad v2.1</Type>
 		<Type>AeroQuad v1.9</Type>
 		<Type>AeroQuad Mini v1.05</Type>
-		<Selected>>
 		<Selected>AeroQuad32</Selected>
 	</Boards>
 	
@@ -24,7 +23,7 @@
 				<Class>Ui_commMonitor</Class>
 			</Subpanel>
 			<Subpanel Name="Sensor Data">
-				<Path>dataPlot.dataPlot</Path>
+				<Path>dataPlot.dataPlotWindow</Path>
 				<Class>Ui_plotWindow</Class>
 			</Subpanel>
 			<Subpanel Name="Template">

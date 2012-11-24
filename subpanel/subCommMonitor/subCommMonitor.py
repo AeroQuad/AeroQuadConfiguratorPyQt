@@ -50,7 +50,7 @@ class Ui_commMonitor(QtGui.QWidget, subpanel):
         self.sendButton.setAutoDefault(True)
 
     def sendCommand(self):
-        command = self.lineEdit.text()
+        command = str(self.lineEdit.text())
         self.serialComm.write(command)
         self.commLog.append(self.timeStamp() + " -> " + command)
         self.lineEdit.clear()

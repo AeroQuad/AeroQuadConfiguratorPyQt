@@ -19,7 +19,6 @@ win.resize(800,600)
 dataPlot = win.addPlot(title="Sensor Data")
 dataPlot.hideAxis('bottom')
 dataPlot.showGrid(y=True)
-#dataPlot.setMenuEnabled()
 
 plotSize = 256
 plotCount = 6

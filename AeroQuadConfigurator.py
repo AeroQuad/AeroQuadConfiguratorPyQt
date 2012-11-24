@@ -80,7 +80,7 @@ class AQMain(QtGui.QMainWindow):
         # Setup serial port
         bootupDelay = float(xml.find("./Settings/BootUpDelay").text)
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
-        self.comm.connect(self.ui.comPort.currentText(), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
+        self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
         self.comm.write("!")
         version = self.comm.read()
         if version != "":
