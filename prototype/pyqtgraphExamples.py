@@ -4,9 +4,9 @@ Created on Nov 21, 2012
 @author: Ted Carancho
 '''
 
-#import pyqtgraph.examples
-#pyqtgraph.examples.run()
-
+import pyqtgraph.examples
+pyqtgraph.examples.run()
+'''
 from pyqtgraph.Qt import QtGui, QtCore
 from collections import deque
 import numpy as np
@@ -48,3 +48,4 @@ timer.timeout.connect(update)
 timer.start(50)
 
 app.exec_()
+'''

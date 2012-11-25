@@ -23,8 +23,8 @@
 				<Class>Ui_commMonitor</Class>
 			</Subpanel>
 			<Subpanel Name="Sensor Data">
-				<Path>dataPlot.dataPlotWindow</Path>
-				<Class>Ui_plotWindow</Class>
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
 			</Subpanel>
 			<Subpanel Name="Template">
 				<Path>template.template</Path>

@@ -15,13 +15,13 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="dataPlotWindow" name="graphicsView"/>
+    <widget class="PlotWidget" name="graphicsView"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>dataPlotWindow</class>
+   <class>PlotWidget</class>
    <extends>QGraphicsView</extends>
    <header>pyqtgraph</header>
   </customwidget>

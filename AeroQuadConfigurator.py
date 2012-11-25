@@ -14,7 +14,6 @@ import xml.etree.ElementTree as ET
 xml = ET.parse('AeroQuadConfigurator.xml')
 
 from splashScreen import Ui_splashScreen
-#from subCommMonitor.subCommMonitor import Ui_commMonitor
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -225,7 +224,8 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()
-            tempSubPanel.setupUi(tempSubPanel, self.comm)
+            #tempSubPanel.setupUi(tempSubPanel, self.comm)
+            tempSubPanel.initialize(self.comm)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1
