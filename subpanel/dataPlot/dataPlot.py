@@ -13,15 +13,23 @@ import pyqtgraph as pg
 class dataPlot(QtGui.QWidget, subpanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
+        subpanel.__init__(self)
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)
         self.ui.graphicsView.hideAxis('bottom')
         self.ui.graphicsView.showGrid(y=True)
         self.ui.graphicsView.getAxis('top').setHeight(10)
         self.ui.graphicsView.getAxis('bottom').setHeight(10)
-                
-        plotSize = 128
-        self.plotCount = 6
+        
+    def start(self, xml, xmlSubPanel):
+        '''This method starts a timer used for any long running loops in a subpanel'''
+        self.xml = xml
+        self.xmlSubPanel = xmlSubPanel
+    
+        self.plotIndex = int(self.xml.find(self.xmlSubPanel + "/Index").text)            
+        plotSize = int(self.xml.find(self.xmlSubPanel + "/PlotSize").text)
+        plotNames = self.xml.findall(self.xmlSubPanel + "/PlotName")
+        self.plotCount = len(plotNames)
 
         self.output = []
         for i in range(self.plotCount):
@@ -29,41 +37,29 @@ class dataPlot(QtGui.QWidget, subpanel):
             
         self.axis = deque(range(plotSize))
         self.value = plotSize
-        
-        legend = pg.LegendItem((100,100), (60,10))
+        legend = pg.LegendItem((100, 10 + 30 * self.plotCount), (60,10))
         legend.setParentItem(self.ui.graphicsView.graphicsItem())
-        channel = 0
         for i in range(self.plotCount):
             plotRef = self.ui.graphicsView.plot(x=[0.0], y=[0.0], pen=(i,self.plotCount))
-            channel += 1
-            plotName = "Channel " + str(channel)
+            plotName = plotNames[i].text
             legend.addItem(plotRef, plotName)
-
-    def initialize(self, commTransport):
-        self.serialComm = commTransport
-        
-    def start(self):
-        '''This method starts a new thread dedicated to reading serial communication'''
-        self.isConnected()
-        if self.connected == True:
-            self.exitReadData = False
-            self.serialComm.write("i")
+            
+        if self.comm.isConnected() == True:
+            telemetry = self.xml.find(self.xmlSubPanel + "/Telemetry").text
+            if telemetry != "":
+                self.comm.write(telemetry)
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
             self.timer.start(50)
-            
+
     def readContinuousData(self):
-        if self.exitReadData == False:            
-            rawData = self.serialComm.read()
-            data = rawData.split(",")
-            self.ui.graphicsView.clear()
-            for i in range(self.plotCount):
-                self.output[i].popleft()
-                self.output[i].append(float(data[i]))
-                self.ui.graphicsView.plot(y=list(self.output[i]), pen=(i,self.plotCount))
-                
-    def stop(self):
-        '''This method enables a flag which closes the continuous serial read thread'''
-        self.exitReadData = True
-        self.timer.stop()
-        self.timer.timeout.disconnect(self.readContinuousData)
+        '''This method continually reads telemetry from the AeroQuad'''
+        if self.comm.isConnected() == True: 
+            if self.comm.dataAvailable():           
+                rawData = self.comm.read()
+                data = rawData.split(",")
+                self.ui.graphicsView.clear()
+                for i in range(self.plotCount):
+                    self.output[i].popleft()
+                    self.output[i].append(float(data[i + self.plotIndex]))
+                    self.ui.graphicsView.plot(y=list(self.output[i]), pen=(i,self.plotCount))

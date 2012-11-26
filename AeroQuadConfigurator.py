@@ -54,6 +54,7 @@ class AQMain(QtGui.QMainWindow):
         self.selectedBoardType = self.configureBoardTypeMenu()
         self.configureSubPanelMenu(self.selectedBoardType)
         self.activeSubPanel = None
+        self.activeSubPanelName = ""
 
         # Connect GUI slots and signals
         self.ui.buttonConnect.clicked.connect(self.connect)
@@ -64,7 +65,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
 
 
-    '''Communication Methods'''        
+    ####### Communication Methods #######       
     def connect(self):
         '''Initiates communication with the AeroQuad'''
         # Setup GUI
@@ -73,6 +74,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.buttonConnect.setEnabled(False)
         self.ui.comPort.setEnabled(False)
         self.ui.baudRate.setEnabled(False)
+        self.ui.menuBoard.setEnabled(False)
         # Update the GUI
         app.processEvents()
         
@@ -101,6 +103,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.baudRate.setEnabled(True)
         self.ui.status.setText("Disconnected from the " + self.selectedBoardType)
         self.restartSubPanel()
+        self.ui.menuBoard.setEnabled(True)
 
     def updateDetectedPorts(self):
         '''Cycles through 256 ports and checks if there is a response from them.'''
@@ -162,7 +165,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))     
  
     
-    '''Board Selection Methods'''            
+    ####### Board Selection Methods #######          
     def configureBoardTypeMenu(self):
         '''Dynamically add board types to menu bar'''
         boardNames = xml.findall("./Boards/Type")
@@ -205,7 +208,7 @@ class AQMain(QtGui.QMainWindow):
         self.boardMenu[selected].setChecked(True)
 
   
-    ''' SubPanel Methods '''
+    ####### SubPanel Methods #######
     def configureSubPanelMenu(self, boardType):
         '''Dynamically add subpanels to View menu based on selected board type'''
         boardSubPanelName = "./Board/[@Type='" + str(boardType) + "']/Subpanels/Subpanel"
@@ -224,7 +227,6 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()
-            #tempSubPanel.setupUi(tempSubPanel, self.comm)
             tempSubPanel.initialize(self.comm)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
@@ -253,8 +255,12 @@ class AQMain(QtGui.QMainWindow):
         self.subPanelMenu[selected].setChecked(True)
         self.ui.subPanel.setCurrentIndex(selected+1) # index 0 is splash screen
         self.activeSubPanel = self.subPanelClasses[selected]
-        self.activeSubPanel.start()
-        
+        boardType = xml.find("./Boards/Selected").text
+        boardSubPanelName = "./Board/[@Type='" + str(boardType) + "']/Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
+        self.activeSubPanelName = boardSubPanelName
+        self.activeSubPanel.start(xml, boardSubPanelName)
+        self.ui.status.setText(subPanelName)
+
     def clearSubPanelMenu(self):
         ''' Clear subPanel menu and disconnect subPanel related signals'''
         self.ui.menuView.clear()
@@ -263,7 +269,7 @@ class AQMain(QtGui.QMainWindow):
     def restartSubPanel(self):
         if self.activeSubPanel != None: # Restart any running subpanels
             self.activeSubPanel.stop()
-            self.activeSubPanel.start()
+            self.activeSubPanel.start(xml, self.activeSubPanelName)
             
     ''' Housekeeping Functions'''
     def exit(self):

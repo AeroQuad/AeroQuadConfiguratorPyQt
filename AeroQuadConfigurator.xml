@@ -19,52 +19,132 @@
 	<Board Type="AeroQuad32">
 		<Subpanels>
 			<Subpanel Name="Serial Monitor">
-				<Path>subCommMonitor.subCommMonitor</Path>
-				<Class>Ui_commMonitor</Class>
+				<Path>commMonitor.commMonitor</Path>
+				<Class>commMonitor</Class>
 			</Subpanel>
-			<Subpanel Name="Sensor Data">
+			<Subpanel Name="Gyroscope Data">
 				<Path>dataPlot.dataPlot</Path> 
 				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>0</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
 			</Subpanel>
-			<Subpanel Name="Template">
-				<Path>template.template</Path>
-				<Class>Ui_template</Class>
+			<Subpanel Name="Accelerometer Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>3</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
+			</Subpanel>
+			<Subpanel Name="Magnetometer Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>6</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
 			</Subpanel>
 		</Subpanels>
 	</Board>
 	<Board Type="AeroQuad v2.1">
 		<Subpanels>
 			<Subpanel Name="Serial Monitor">
-				<Path>subCommMonitor.subCommMonitor</Path>
-				<Class>Ui_commMonitor</Class>
+				<Path>commMonitor.commMonitor</Path>
+				<Class>commMonitor</Class>
 			</Subpanel>
-			<Subpanel Name="Template v2.1">
-				<Path>template.template</Path>
-				<Class>Ui_template</Class>
+			<Subpanel Name="Gyroscope Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>0</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
+			</Subpanel>
+			<Subpanel Name="Accelerometer Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>3</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
+			</Subpanel>
+			<Subpanel Name="Magnetometer Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>6</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
 			</Subpanel>
 		</Subpanels>
 	</Board>
 	<Board Type="AeroQuad v1.9">
 		<Subpanels>
 			<Subpanel Name="Serial Monitor">
-				<Path>subCommMonitor.subCommMonitor</Path>
-				<Class>Ui_commMonitor</Class>
+				<Path>commMonitor.commMonitor</Path>
+				<Class>commMonitor</Class>
 			</Subpanel>
-			<Subpanel Name="Template v1.9">
-				<Path>template.template</Path>
-				<Class>Ui_template</Class>
+			<Subpanel Name="Gyroscope Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>0</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
+			</Subpanel>
+			<Subpanel Name="Accelerometer Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>3</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
 			</Subpanel>
 		</Subpanels>
 	</Board>
 	<Board Type="AeroQuad Mini v1.05">
 		<Subpanels>
 			<Subpanel Name="Serial Monitor">
-				<Path>subCommMonitor.subCommMonitor</Path>
-				<Class>Ui_commMonitor</Class>
+				<Path>commMonitor.commMonitor</Path>
+				<Class>commMonitor</Class>
 			</Subpanel>
-			<Subpanel Name="Template v1.05">
-				<Path>template.template</Path>
-				<Class>Ui_template</Class>
+			<Subpanel Name="Gyroscope Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>0</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
+			</Subpanel>
+			<Subpanel Name="Accelerometer Data">
+				<Path>dataPlot.dataPlot</Path> 
+				<Class>dataPlot</Class> 
+				<Telemetry>i</Telemetry>
+				<Index>3</Index>
+				<PlotSize>128</PlotSize>
+				<PlotName>X Axis</PlotName>
+				<PlotName>Y Axis</PlotName>
+				<PlotName>Z Axis</PlotName>
 			</Subpanel>
 		</Subpanels>
 	</Board>

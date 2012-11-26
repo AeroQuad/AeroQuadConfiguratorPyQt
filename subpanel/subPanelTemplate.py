@@ -4,7 +4,7 @@ Created on Nov 19, 2012
 @author: Ted Carancho
 '''
 import time
-from threading import Thread
+from PyQt4 import QtCore
 
 class subpanel(object):
     '''This is a class that contains the methods required to add new subpanels to the Configurator
@@ -14,38 +14,52 @@ class subpanel(object):
 
     def __init__(self):
         self.connected = False
+        self.timer = None
+        self.xml = None
+        self.xmlSubPanel = None
                
     def initialize(self, commTransport):
         '''This initializes your class with required external arguments'''
-        self.serialComm = commTransport
+        self.comm = commTransport
                 
     def sendCommand(self, command):
         '''Send a serial command'''
-        #command = self.lineEdit.text()
-        self.serialComm.write(command)
+        self.comm.write(command)
         time.sleep(0.150)
         
     def readData(self):
         '''This method reads a single response from the AeroQuad'''
         response = self.comm.read()
         return response
-            
-    def readContinuousData(self, serialComm):
-        '''This method gets called in a thread to continuously detected incoming serial messages'''
-        self.comm = serialComm
-        while 1:
-            if self.exitReadData == True:
-                break
-            response = self.comm.read()
-            if response != "":
-                # Replace this with subpanel's own communication needs when a response is detected
-                #self.commLog.append(self.timeStamp() + " <- " + response)
-                #self.commLog.ensureCursorVisible()
-                time.sleep(0.050)
-            else:
-                time.sleep(0.250)
-                # Replace this with subpanel's own communication needs when a response is not detected
-                #self.commLog.ensureCursorVisible()
+    
+    def start(self, xml, xmlSubPanel):
+        '''This method starts a timer used for any long running loops in a subpanel'''
+        self.xml = xml
+        self.xmlSubPanel = xmlSubPanel
+        if self.comm.isConnected() == True:
+            telemetry = self.xml.find(xmlSubPanel + "/Telemetry")
+            if telemetry != "":
+                self.serialComm.write(telemetry)
+            self.timer = QtCore.QTimer()
+            self.timer.timeout.connect(self.readContinuousData)
+            self.timer.start(50)
+
+    def readContinuousData(self):
+        '''This method continually reads telemetry from the AeroQuad'''
+        if self.comm.isConnected() == True: 
+            if self.comm.dataAvailable():           
+                rawData = self.comm.read()
+                data = rawData.split(",")
+                for i in data:
+                    pass
+                    print(i) # Replace this with desired functionality
+
+    def stop(self):
+        '''This method enables a flag which closes the continuous serial read thread'''
+        if self.comm.isConnected() == True:
+            if self.timer != None:
+                self.timer.timeout.disconnect(self.readContinuousData)
+                self.timer.stop()
         
     def timeStamp(self):
         '''Records a timestamp for serial communication'''
@@ -53,20 +67,3 @@ class subpanel(object):
         localtime = time.localtime(now)
         milliseconds = '%03d' % int((now - int(now)) * 1000)
         return time.strftime('%H:%M:%S.', localtime) + milliseconds
-
-    def start(self):
-        '''This method starts a new thread dedicated to reading serial communication'''
-        self.isConnected()
-        if self.connected == True:
-            self.exitReadData = False
-            thread = Thread(target=self.readContinuousData, args=[self.serialComm])
-            thread.start()
-        
-    def stop(self):
-        '''This method enables a flag which closes the continuous serial read thread'''
-        self.exitReadData = True
-        
-    def isConnected(self):
-        '''Reads flag to know if we are connected to an AeroQuad'''
-        state = self.serialComm.isConnected()
-        self.connected = state
