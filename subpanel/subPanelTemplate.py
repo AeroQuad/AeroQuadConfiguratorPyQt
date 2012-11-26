@@ -51,7 +51,6 @@ class subpanel(object):
                 rawData = self.comm.read()
                 data = rawData.split(",")
                 for i in data:
-                    pass
                     print(i) # Replace this with desired functionality
 
     def stop(self):
@@ -62,7 +61,7 @@ class subpanel(object):
                 self.timer.stop()
         
     def timeStamp(self):
-        '''Records a timestamp for serial communication'''
+        '''Records a timestamp for AeroQuad communication'''
         now = time.time()
         localtime = time.localtime(now)
         milliseconds = '%03d' % int((now - int(now)) * 1000)
