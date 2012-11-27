@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dataPlotWindow.ui'
 #
-# Created: Sat Nov 24 22:17:42 2012
+# Created: Tue Nov 27 14:21:15 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,6 +21,8 @@ class Ui_plotWindow(object):
         self.gridLayout = QtGui.QGridLayout(plotWindow)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.graphicsView = PlotWidget(plotWindow)
+        self.graphicsView.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.graphicsView.setFrameShadow(QtGui.QFrame.Plain)
         self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
         self.gridLayout.addWidget(self.graphicsView, 0, 0, 1, 1)
 

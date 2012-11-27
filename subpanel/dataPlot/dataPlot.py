@@ -14,6 +14,11 @@ class dataPlot(QtGui.QWidget, subpanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         subpanel.__init__(self)
+
+        pg.setConfigOption('background', (255,255,255))
+        pg.setConfigOption('foreground', (128,128,128))
+        
+        
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)
         self.ui.graphicsView.hideAxis('bottom')
@@ -21,8 +26,8 @@ class dataPlot(QtGui.QWidget, subpanel):
         self.ui.graphicsView.getAxis('top').setHeight(10)
         self.ui.graphicsView.getAxis('bottom').setHeight(10)
         self.ui.graphicsView.getAxis('left').setWidth(150)
-        self.ui.graphicsView.enableAutoRange(False)
-        
+        #self.ui.graphicsView.enableAutoRange(False)
+
         
     def start(self, xmlSubPanel):
         '''This method starts a timer used for any long running loops in a subpanel'''
@@ -41,6 +46,9 @@ class dataPlot(QtGui.QWidget, subpanel):
         self.value = plotSize
         legend = pg.LegendItem((100, 10 + 30 * self.plotCount), (10,10))
         legend.setParentItem(self.ui.graphicsView.graphicsItem())
+        pg.setConfigOption('background', (255,255,255))
+        pg.setConfigOption('foreground', (128,128,128))
+        
         for i in range(self.plotCount):
             plotRef = self.ui.graphicsView.plot(x=[0.0], y=[0.0], pen=(i,self.plotCount))
             plotName = plotNames[i].text
@@ -62,6 +70,9 @@ class dataPlot(QtGui.QWidget, subpanel):
                 data = rawData.split(",")
                 self.ui.graphicsView.clear()
                 for i in range(self.plotCount):
-                    self.output[i].pop()
-                    self.output[i].appendleft(float(data[i + self.plotIndex]))
-                    self.ui.graphicsView.plot(y=list(self.output[i]), pen=(i,self.plotCount))
+                    try:
+                        self.output[i].appendleft(float(data[i + self.plotIndex]))
+                        self.output[i].pop()
+                    except:
+                        pass # Do not update output data if invalid number detected from comm read
+                    self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(i,self.plotCount, width=2)) #pen=(i,self.plotCount))
