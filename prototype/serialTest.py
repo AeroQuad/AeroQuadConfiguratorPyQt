@@ -1,4 +1,6 @@
 import serial
+from serial.tools.list_ports import comports
+
 '''
 def scan():
    # scan for available ports. return a list of tuples (num, name)
@@ -25,3 +27,6 @@ s = ser.readline()
 ser.close()
 
 print(s)
+
+for port, desc, hwid in sorted(comports()):
+    print('--- %-20s %s\n' % (port, desc))

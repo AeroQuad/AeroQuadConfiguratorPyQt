@@ -22,25 +22,18 @@
 				<Path>commMonitor.commMonitor</Path>
 				<Class>commMonitor</Class>
 			</Subpanel>
-			<Subpanel Name="Gyroscope Data">
+			<Subpanel Name="Acc/Gyro Data">
 				<Path>dataPlot.dataPlot</Path> 
 				<Class>dataPlot</Class> 
 				<Telemetry>i</Telemetry>
 				<Index>0</Index>
 				<PlotSize>128</PlotSize>
-				<PlotName>X Axis</PlotName>
-				<PlotName>Y Axis</PlotName>
-				<PlotName>Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Accelerometer Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>3</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>X Axis</PlotName>
-				<PlotName>Y Axis</PlotName>
-				<PlotName>Z Axis</PlotName>
+				<PlotName>Gyro X Axis</PlotName>
+				<PlotName>Gyro Y Axis</PlotName>
+				<PlotName>Gyro Z Axis</PlotName>
+				<PlotName>Acc X Axis</PlotName>
+				<PlotName>Acc Y Axis</PlotName>
+				<PlotName>Acc Z Axis</PlotName>
 			</Subpanel>
 			<Subpanel Name="Magnetometer Data">
 				<Path>dataPlot.dataPlot</Path> 
@@ -48,9 +41,9 @@
 				<Telemetry>i</Telemetry>
 				<Index>6</Index>
 				<PlotSize>128</PlotSize>
-				<PlotName>X Axis</PlotName>
-				<PlotName>Y Axis</PlotName>
-				<PlotName>Z Axis</PlotName>
+				<PlotName>Mag X Axis</PlotName>
+				<PlotName>Mag Y Axis</PlotName>
+				<PlotName>Mag Z Axis</PlotName>
 			</Subpanel>
 		</Subpanels>
 	</Board>

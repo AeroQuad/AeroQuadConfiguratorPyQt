@@ -109,7 +109,7 @@ class AQMain(QtGui.QMainWindow):
         '''Cycles through 256 ports and checks if there is a response from them.'''
         selection = self.ui.comPort.currentText()
         if selection == "Refresh":
-            self.updateComPortSelection
+            self.updateComPortSelection()
             self.ui.comPort.setCurrentIndex(0)
             self.ui.status.setText("Updated list of available COM ports")
         elif selection == "Autoconnect":
@@ -117,6 +117,9 @@ class AQMain(QtGui.QMainWindow):
             self.ui.status.setText("This feature still under construction")
         elif selection == "-------":
             self.ui.comPort.setCurrentIndex(0)
+            
+    def autoConnect(self):
+        pass
     
     def updateBootUpDelay(self):
         '''Creates dialog box to ask user for desired boot up delay.
@@ -145,7 +148,7 @@ class AQMain(QtGui.QMainWindow):
             self.ui.comPort.addItem(n)
         self.ui.comPort.addItem("-------")
         self.ui.comPort.addItem("Autoconnect")
-        self.ui.comPort.addItem("Refresh")
+        #self.ui.comPort.addItem("Refresh")
         
     def storeComPortSelection(self):
         '''Stores comm port selection to xml file for later recall'''
@@ -168,20 +171,20 @@ class AQMain(QtGui.QMainWindow):
     ####### Board Selection Methods #######          
     def configureBoardTypeMenu(self):
         '''Dynamically add board types to menu bar'''
-        boardNames = xml.findall("./Boards/Type")
-        self.boardTypes = []
-        self.boardMenu = []
+        boardNames = xml.findall("./Boards/Type") # Get all board types listed in XML file
+        self.boardTypes = [] # stores board types
+        self.boardMenu = [] # stores name of board used for menus
         for board in boardNames:
             self.boardTypes.append(board.text)
-        self.boardTypeMapper = QtCore.QSignalMapper(self)
+        self.boardTypeMapper = QtCore.QSignalMapper(self) # Create a map to store arguments for correct slot
         for boardType in self.boardTypes:
-            self.ui.board = self.ui.menuBoard.addAction(boardType)
+            self.ui.board = self.ui.menuBoard.addAction(boardType) # Add board name to menu
             self.boardMenu.append(self.ui.board) # Need to store this separately because Python only binds stuff at runtime
-            self.boardTypeMapper.setMapping(self.ui.board, boardType)
-            self.ui.board.triggered.connect(self.boardTypeMapper.map)
+            self.boardTypeMapper.setMapping(self.ui.board, boardType) # Store board name argument for correct menu item in map
+            self.ui.board.triggered.connect(self.boardTypeMapper.map) # Connect slot to correct map item
             self.ui.board.setCheckable(True)
-        self.boardTypeMapper.mapped[str].connect(self.selectBoardType)
-        selectedBoardType = xml.find("./Boards/Selected").text
+        self.boardTypeMapper.mapped[str].connect(self.selectBoardType) # Connect map to selectBoardType() method
+        selectedBoardType = xml.find("./Boards/Selected").text # Read last selected board from XML
         self.checkmarkBoardType(selectedBoardType)
         return selectedBoardType
 
@@ -210,12 +213,13 @@ class AQMain(QtGui.QMainWindow):
   
     ####### SubPanel Methods #######
     def configureSubPanelMenu(self, boardType):
-        '''Dynamically add subpanels to View menu based on selected board type'''
+        '''Dynamically add subpanels to View menu based on selected board type
+        This also adds the subpanel to a stacked widget and stores object instances so that they can run when selected'''
         boardSubPanelName = "./Board/[@Type='" + str(boardType) + "']/Subpanels/Subpanel"
-        subPanels = xml.findall(boardSubPanelName)
+        subPanels = xml.findall(boardSubPanelName) # Get all subpanel names for the selected board type from XML
         subPanelCount = 1
-        self.subPanelList = []
-        self.subPanelClasses = []
+        self.subPanelList = [] # Stores subpanel names
+        self.subPanelClasses = [] # Stores subpanel object instances
         for subPanel in subPanels:
             self.subPanelList.append(subPanel.get("Name"))
             pathName = xml.find(boardSubPanelName + "/[@Name='" + subPanel.get("Name") +"']/Path").text
@@ -223,11 +227,11 @@ class AQMain(QtGui.QMainWindow):
             packageList = pathName.split('.')
             packageString = packageList[0] + '.' + packageList[1]
             module = __import__(packageString)
-            for package in packageList[1:]:
+            for package in packageList[1:]: # In case the module is buried into a deep package folder, loop until module is reached
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()
-            tempSubPanel.initialize(self.comm)
+            tempSubPanel.initialize(self.comm, xml)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1
@@ -258,8 +262,9 @@ class AQMain(QtGui.QMainWindow):
         boardType = xml.find("./Boards/Selected").text
         boardSubPanelName = "./Board/[@Type='" + str(boardType) + "']/Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
         self.activeSubPanelName = boardSubPanelName
-        self.activeSubPanel.start(xml, boardSubPanelName)
+        self.activeSubPanel.start(boardSubPanelName)
         self.ui.status.setText(subPanelName)
+        app.processEvents()
 
     def clearSubPanelMenu(self):
         ''' Clear subPanel menu and disconnect subPanel related signals'''
@@ -269,7 +274,7 @@ class AQMain(QtGui.QMainWindow):
     def restartSubPanel(self):
         if self.activeSubPanel != None: # Restart any running subpanels
             self.activeSubPanel.stop()
-            self.activeSubPanel.start(xml, self.activeSubPanelName)
+            self.activeSubPanel.start(self.activeSubPanelName)
             
     ''' Housekeeping Functions'''
     def exit(self):

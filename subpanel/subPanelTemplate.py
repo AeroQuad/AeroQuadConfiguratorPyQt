@@ -9,7 +9,7 @@ from PyQt4 import QtCore
 class subpanel(object):
     '''This is a class that contains the methods required to add new subpanels to the Configurator
     You can override any of these functions by making new ones in the subpanel they will be used.
-    Look at subCommMonitor.py for an example of how to add this subclass to your subpanel.
+    Look at commMonitor.py for an example of how to add this subclass to your subpanel.
     '''
 
     def __init__(self):
@@ -18,9 +18,10 @@ class subpanel(object):
         self.xml = None
         self.xmlSubPanel = None
                
-    def initialize(self, commTransport):
+    def initialize(self, commTransport,  xml):
         '''This initializes your class with required external arguments'''
         self.comm = commTransport
+        self.xml = xml
                 
     def sendCommand(self, command):
         '''Send a serial command'''
@@ -32,9 +33,8 @@ class subpanel(object):
         response = self.comm.read()
         return response
     
-    def start(self, xml, xmlSubPanel):
+    def start(self, xmlSubPanel):
         '''This method starts a timer used for any long running loops in a subpanel'''
-        self.xml = xml
         self.xmlSubPanel = xmlSubPanel
         if self.comm.isConnected() == True:
             telemetry = self.xml.find(xmlSubPanel + "/Telemetry")
@@ -42,7 +42,7 @@ class subpanel(object):
                 self.serialComm.write(telemetry)
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(50)
+            self.timer.start(10)
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''

@@ -17,13 +17,15 @@ class dataPlot(QtGui.QWidget, subpanel):
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)
         self.ui.graphicsView.hideAxis('bottom')
-        self.ui.graphicsView.showGrid(y=True)
+        #self.ui.graphicsView.showGrid(y=True)
         self.ui.graphicsView.getAxis('top').setHeight(10)
         self.ui.graphicsView.getAxis('bottom').setHeight(10)
+        self.ui.graphicsView.getAxis('left').setWidth(150)
+        self.ui.graphicsView.enableAutoRange(False)
         
-    def start(self, xml, xmlSubPanel):
+        
+    def start(self, xmlSubPanel):
         '''This method starts a timer used for any long running loops in a subpanel'''
-        self.xml = xml
         self.xmlSubPanel = xmlSubPanel
     
         self.plotIndex = int(self.xml.find(self.xmlSubPanel + "/Index").text)            
@@ -37,7 +39,7 @@ class dataPlot(QtGui.QWidget, subpanel):
             
         self.axis = deque(range(plotSize))
         self.value = plotSize
-        legend = pg.LegendItem((100, 10 + 30 * self.plotCount), (60,10))
+        legend = pg.LegendItem((100, 10 + 30 * self.plotCount), (10,10))
         legend.setParentItem(self.ui.graphicsView.graphicsItem())
         for i in range(self.plotCount):
             plotRef = self.ui.graphicsView.plot(x=[0.0], y=[0.0], pen=(i,self.plotCount))
@@ -50,7 +52,7 @@ class dataPlot(QtGui.QWidget, subpanel):
                 self.comm.write(telemetry)
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(50)
+            self.timer.start(10)
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''
@@ -60,6 +62,6 @@ class dataPlot(QtGui.QWidget, subpanel):
                 data = rawData.split(",")
                 self.ui.graphicsView.clear()
                 for i in range(self.plotCount):
-                    self.output[i].popleft()
-                    self.output[i].append(float(data[i + self.plotIndex]))
+                    self.output[i].pop()
+                    self.output[i].appendleft(float(data[i + self.plotIndex]))
                     self.ui.graphicsView.plot(y=list(self.output[i]), pen=(i,self.plotCount))
