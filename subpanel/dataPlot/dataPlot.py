@@ -18,16 +18,27 @@ class dataPlot(QtGui.QWidget, subpanel):
         pg.setConfigOption('background', (255,255,255))
         pg.setConfigOption('foreground', (128,128,128))
         
-        
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)
         self.ui.graphicsView.hideAxis('bottom')
         #self.ui.graphicsView.showGrid(y=True)
         self.ui.graphicsView.getAxis('top').setHeight(10)
         self.ui.graphicsView.getAxis('bottom').setHeight(10)
-        self.ui.graphicsView.getAxis('left').setWidth(150)
+        self.ui.graphicsView.getAxis('left').setWidth(50)
         #self.ui.graphicsView.enableAutoRange(False)
-
+        self.plotCount = 0
+        self.legend = None
+        
+        self.colors = [QtGui.QColor('blue'),
+                       QtGui.QColor('red'),
+                       QtGui.QColor('lime'),
+                       QtGui.QColor('cornflowerblue'),
+                       QtGui.QColor('greenyellow'),
+                       QtGui.QColor('violet'),
+                       QtGui.QColor('orange'),
+                       QtGui.QColor('deepskyblue'),
+                       QtGui.QColor('firebrick'),
+                       QtGui.QColor('aqua')]
         
     def start(self, xmlSubPanel):
         '''This method starts a timer used for any long running loops in a subpanel'''
@@ -44,15 +55,18 @@ class dataPlot(QtGui.QWidget, subpanel):
             
         self.axis = deque(range(plotSize))
         self.value = plotSize
-        legend = pg.LegendItem((100, 10 + 30 * self.plotCount), (10,10))
-        legend.setParentItem(self.ui.graphicsView.graphicsItem())
-        pg.setConfigOption('background', (255,255,255))
-        pg.setConfigOption('foreground', (128,128,128))
         
+        self.ui.treeWidget.clear()
         for i in range(self.plotCount):
-            plotRef = self.ui.graphicsView.plot(x=[0.0], y=[0.0], pen=(i,self.plotCount))
             plotName = plotNames[i].text
-            legend.addItem(plotRef, plotName)
+            newLine = QtGui.QTreeWidgetItem(self.ui.treeWidget)
+            newLine.setCheckState(0, 2)
+            newLine.setBackgroundColor(0, self.colors[i])
+            newLine.setText(1, plotName + "   ")
+            newLine.setText(2, "0.000")
+        self.ui.treeWidget.resizeColumnToContents(0)
+        self.ui.treeWidget.resizeColumnToContents(1)
+
             
         if self.comm.isConnected() == True:
             telemetry = self.xml.find(self.xmlSubPanel + "/Telemetry").text
@@ -75,4 +89,16 @@ class dataPlot(QtGui.QWidget, subpanel):
                         self.output[i].pop()
                     except:
                         pass # Do not update output data if invalid number detected from comm read
-                    self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(i,self.plotCount, width=2)) #pen=(i,self.plotCount))
+                    self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(self.colors[i], width=2))
+                    
+    #def resizeEvent(self, evt):
+    #    temp = self.ui.graphicsView.children()
+    #    temp[0].PlotItem.clear()
+    #    windowSize = evt.size()
+    #    self.legend = pg.LegendItem((100, 10 + 30 * self.plotCount), (windowSize.width()-120, 10))
+    #    self.legend.setParentItem(self.ui.graphicsView.graphicsItem())
+    #    
+    #    for i in range(self.plotCount):
+    #        plotRef = self.ui.graphicsView.plot(x=[0.0], y=[0.0], pen=(i,self.plotCount))
+    #        plotName = "test" #plotNames[i].text
+    #        self.legend.addItem(plotRef, plotName)
