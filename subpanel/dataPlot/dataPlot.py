@@ -66,6 +66,7 @@ class dataPlot(QtGui.QWidget, subpanel):
             newLine.setText(2, "0.000")
         self.ui.treeWidget.resizeColumnToContents(0)
         self.ui.treeWidget.resizeColumnToContents(1)
+        self.legend = self.ui.treeWidget.invisibleRootItem()
 
             
         if self.comm.isConnected() == True:
@@ -74,7 +75,7 @@ class dataPlot(QtGui.QWidget, subpanel):
                 self.comm.write(telemetry)
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(10)
+            self.timer.start(5)
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''
@@ -84,12 +85,16 @@ class dataPlot(QtGui.QWidget, subpanel):
                 data = rawData.split(",")
                 self.ui.graphicsView.clear()
                 for i in range(self.plotCount):
-                    try:
-                        self.output[i].appendleft(float(data[i + self.plotIndex]))
-                        self.output[i].pop()
-                    except:
-                        pass # Do not update output data if invalid number detected from comm read
-                    self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(self.colors[i], width=2))
+                    legendRow = self.legend.child(i)
+                    if legendRow.checkState(0) == 2:
+                        try:
+                            dataValue = data[i + self.plotIndex]
+                            self.output[i].appendleft(float(dataValue))
+                            self.output[i].pop()
+                        except:
+                            pass # Do not update output data if invalid number detected from comm read
+                        self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(self.colors[i], width=2))
+                        legendRow.setText(2, dataValue)
                     
     #def resizeEvent(self, evt):
     #    temp = self.ui.graphicsView.children()
