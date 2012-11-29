@@ -42,4 +42,4 @@ class Ui_commMonitor(object):
         self.sendButton.setText(QtGui.QApplication.translate("commMonitor", "Send Command", None, QtGui.QApplication.UnicodeUTF8))
         self.clearButton.setText(QtGui.QApplication.translate("commMonitor", "Clear", None, QtGui.QApplication.UnicodeUTF8))
 
-import AQresources_rc
+import resources.AQresources_rc

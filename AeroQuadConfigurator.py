@@ -7,13 +7,13 @@ Created on Nov 6, 2012
 import sys
 
 from PyQt4 import QtCore, QtGui
-from mainWindow import Ui_MainWindow
+from ui.mainWindow import Ui_MainWindow
 from communication.serialCom import AQSerial
 
 import xml.etree.ElementTree as ET
 xml = ET.parse('AeroQuadConfigurator.xml')
 
-from splashScreen import Ui_splashScreen
+from ui.splashScreen import Ui_splashScreen
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -225,7 +225,8 @@ class AQMain(QtGui.QMainWindow):
             pathName = xml.find(boardSubPanelName + "/[@Name='" + subPanel.get("Name") +"']/Path").text
             className = xml.find(boardSubPanelName + "/[@Name='" + subPanel.get("Name") +"']/Class").text
             packageList = pathName.split('.')
-            packageString = packageList[0] + '.' + packageList[1]
+            packageList.insert(0, 'subpanel')
+            packageString = packageList[0] + '.' + packageList[1] + '.' + packageList[2]
             module = __import__(packageString)
             for package in packageList[1:]: # In case the module is buried into a deep package folder, loop until module is reached
                 module = getattr(module, package)

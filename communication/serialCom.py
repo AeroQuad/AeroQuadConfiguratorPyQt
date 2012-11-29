@@ -5,6 +5,7 @@ Created on Nov 7, 2012
 '''
 import serial
 import time
+from serial.tools import list_ports
 
 class AQSerial(object):
     '''
@@ -39,14 +40,7 @@ class AQSerial(object):
         return self.comm.inWaiting()
         
     def detectPorts(self):
-        # scan for available ports. return a list of tuples (num, name)
-        for i in range(256):
-            try:
-                s = serial.Serial(i)
-                self.availablePorts.append(s.portstr)
-                s.close()
-            except serial.SerialException:
-                pass
+        self.availablePorts = [port[0] for port in list_ports.comports()]
         return self.availablePorts
 
     def isConnected(self):
