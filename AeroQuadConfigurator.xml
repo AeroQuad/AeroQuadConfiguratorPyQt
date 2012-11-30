@@ -18,6 +18,53 @@
 	
 	<Board Type="AeroQuad32">
 		<Subpanels>
+			<Subpanel Name="Update Parameters">
+				<Path>updateParameters.updateParameters</Path>
+				<Class>updateParameters</Class>
+				<ParameterType Name="Acrobatic (Rate) Mode">
+					<Requirement>Gyroscope: Detected</Requirement>
+					<Command>A</Command>
+					<Telemetry>a</Telemetry>
+					<Parameter Name="Roll Proportional" Description="">3.0</Parameter>
+					<Parameter Name="Roll Integral" Description="">0.0</Parameter>
+					<Parameter Name="Roll Derivative" Description="">-100.0</Parameter>
+					<Parameter Name="Pitch Proportional" Description="">3.0</Parameter>
+					<Parameter Name="Pitch Integral" Description="">0.0</Parameter>
+					<Parameter Name="Pitch Derivative" Description="">-100.0</Parameter>
+					<Parameter Name="Rotation Speed" Description="Controls the rotation speed during a flip">5</Parameter>
+				</ParameterType>
+				<ParameterType Name="Stable (Attitude) Mode">
+					<Requirement>Gyroscope: Detected</Requirement>
+					<Requirement>Accelerometer: Detected</Requirement>
+					<Command>B</Command>
+					<Telemetry>b</Telemetry>
+					<Parameter Name="Roll Accel Proportional" Description="">4.0</Parameter>
+					<Parameter Name="Roll Accel Integral" Description="">0.0</Parameter>
+					<Parameter Name="Roll Accel Derivative" Description="">-100.0</Parameter>
+					<Parameter Name="Pitch Accel Proportional" Description="">4.0</Parameter>
+					<Parameter Name="Pitch Accel Integral" Description="">0.0</Parameter>
+					<Parameter Name="Pitch Accel Derivative" Description="">-100</Parameter>
+					<Parameter Name="Roll Gyro Proportional" Description="">3.0</Parameter>
+					<Parameter Name="Roll Gyro Integral" Description="">0.0</Parameter>
+					<Parameter Name="Roll Gyro Derivative" Description="">-200</Parameter>
+					<Parameter Name="Pitch Gyro Proportional" Description="">3.0</Parameter>
+					<Parameter Name="Pitch Gyro Integral" Description="">0.0</Parameter>
+					<Parameter Name="Pitch Gyro Derivative" Description="">-200</Parameter>
+					<Parameter Name="Windup Guard" Description="">1000</Parameter>
+				</ParameterType>
+				<ParameterType Name="Yaw Configuration">
+					<Requirement>Gyroscope: Detected</Requirement>
+					<Command>C</Command>
+					<Telemetry>c</Telemetry>
+					<Parameter Name="Yaw Proportional" Description="">5.0</Parameter>
+					<Parameter Name="Yaw Integral" Description="">0.0</Parameter>
+					<Parameter Name="Yaw Derivative" Description="">0.0</Parameter>
+					<Parameter Name="Heading Hold Proportional" Description="">2.0</Parameter>
+					<Parameter Name="Heading Hold Integral" Description="">0.0</Parameter>
+					<Parameter Name="Heading Hold Derivative" Description="">0.0</Parameter>
+					<Parameter Name="Heading Hold Configuration" Description="1 = Enabled, 0 = Disabled">1</Parameter>
+				</ParameterType>
+			</Subpanel>
 			<Subpanel Name="Serial Monitor">
 				<Path>commMonitor.commMonitor</Path>
 				<Class>commMonitor</Class>

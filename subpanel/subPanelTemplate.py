@@ -38,8 +38,8 @@ class subpanel(object):
         self.xmlSubPanel = xmlSubPanel
         if self.comm.isConnected() == True:
             telemetry = self.xml.find(xmlSubPanel + "/Telemetry")
-            if telemetry != "":
-                self.serialComm.write(telemetry)
+            if telemetry != None:
+                self.comm.write(telemetry)
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
             self.timer.start(10)
