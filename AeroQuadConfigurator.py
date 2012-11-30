@@ -153,7 +153,7 @@ class AQMain(QtGui.QMainWindow):
         '''Stores comm port selection to xml file for later recall'''
         xml.find("./Settings/DefaultBaudRate").text = str(self.ui.baudRate.currentText())
         xml.find("./Settings/DefaultComPort").text = str(self.ui.comPort.currentText())
-        xml.write("AerodConfigurator.xml")
+        xml.write("AeroQuadConfigurator.xml")
                
     def updateBaudRates(self):
         '''Reads baud rates from xml and displays in combo box.

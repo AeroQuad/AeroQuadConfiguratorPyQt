@@ -29,13 +29,13 @@
 					<Command>A</Command>
 					<Telemetry>a</Telemetry>
 					<UpdateEEPROM>W</UpdateEEPROM>
-					<Parameter Name="Roll Proportional" Description="">3.0</Parameter>
-					<Parameter Name="Roll Integral" Description="">0.0</Parameter>
-					<Parameter Name="Roll Derivative" Description="">-100.0</Parameter>
-					<Parameter Name="Pitch Proportional" Description="">3.0</Parameter>
-					<Parameter Name="Pitch Integral" Description="">0.0</Parameter>
-					<Parameter Name="Pitch Derivative" Description="">-100.0</Parameter>
-					<Parameter Name="Rotation Speed" Description="">5</Parameter>
+					<Parameter Description="" Name="Roll Proportional">3.0</Parameter>
+					<Parameter Description="" Name="Roll Integral">0.0</Parameter>
+					<Parameter Description="" Name="Roll Derivative">-100.0</Parameter>
+					<Parameter Description="" Name="Pitch Proportional">3.0</Parameter>
+					<Parameter Description="" Name="Pitch Integral">0.0</Parameter>
+					<Parameter Description="" Name="Pitch Derivative">-100.0</Parameter>
+					<Parameter Description="" Name="Rotation Speed">5</Parameter>
 				</ParameterType>
 				<ParameterType Name="Stable (Attitude) Mode">
 					<Requirement>Gyroscope: Detected</Requirement>
@@ -43,19 +43,19 @@
 					<Command>B</Command>
 					<Telemetry>b</Telemetry>
 					<UpdateEEPROM>W</UpdateEEPROM>
-					<Parameter Name="Roll Accel Proportional" Description="">4.0</Parameter>
-					<Parameter Name="Roll Accel Integral" Description="">0.0</Parameter>
-					<Parameter Name="Roll Accel Derivative" Description="">-100.0</Parameter>
-					<Parameter Name="Pitch Accel Proportional" Description="">4.0</Parameter>
-					<Parameter Name="Pitch Accel Integral" Description="">0.0</Parameter>
-					<Parameter Name="Pitch Accel Derivative" Description="">-100</Parameter>
-					<Parameter Name="Roll Gyro Proportional" Description="">3.0</Parameter>
-					<Parameter Name="Roll Gyro Integral" Description="">0.0</Parameter>
-					<Parameter Name="Roll Gyro Derivative" Description="">-200</Parameter>
-					<Parameter Name="Pitch Gyro Proportional" Description="">3.0</Parameter>
-					<Parameter Name="Pitch Gyro Integral" Description="">0.0</Parameter>
-					<Parameter Name="Pitch Gyro Derivative" Description="">-200</Parameter>
-					<Parameter Name="Windup Guard" Description="">1000</Parameter>
+					<Parameter Description="" Name="Roll Accel Proportional">4.0</Parameter>
+					<Parameter Description="" Name="Roll Accel Integral">0.0</Parameter>
+					<Parameter Description="" Name="Roll Accel Derivative">-100.0</Parameter>
+					<Parameter Description="" Name="Pitch Accel Proportional">4.0</Parameter>
+					<Parameter Description="" Name="Pitch Accel Integral">0.0</Parameter>
+					<Parameter Description="" Name="Pitch Accel Derivative">-100</Parameter>
+					<Parameter Description="" Name="Roll Gyro Proportional">3.0</Parameter>
+					<Parameter Description="" Name="Roll Gyro Integral">0.0</Parameter>
+					<Parameter Description="" Name="Roll Gyro Derivative">-200</Parameter>
+					<Parameter Description="" Name="Pitch Gyro Proportional">3.0</Parameter>
+					<Parameter Description="" Name="Pitch Gyro Integral">0.0</Parameter>
+					<Parameter Description="" Name="Pitch Gyro Derivative">-200</Parameter>
+					<Parameter Description="" Name="Windup Guard">1000</Parameter>
 				</ParameterType>
 				<ParameterType Name="Yaw Configuration">
 					<Requirement>Gyroscope: Detected</Requirement>

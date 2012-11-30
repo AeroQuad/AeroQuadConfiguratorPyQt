@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'updateParametersWindow.ui'
 #
-# Created: Thu Nov 29 10:38:59 2012
+# Created: Fri Nov 30 01:37:28 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,9 +48,9 @@ class Ui_parameterUpdate(object):
         self.buttonSave = QtGui.QPushButton(parameterUpdate)
         self.buttonSave.setObjectName(_fromUtf8("buttonSave"))
         self.gridLayout.addWidget(self.buttonSave, 2, 4, 1, 1)
-        self.pushButton = QtGui.QPushButton(parameterUpdate)
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.gridLayout.addWidget(self.pushButton, 2, 3, 1, 1)
+        self.buttonLoad = QtGui.QPushButton(parameterUpdate)
+        self.buttonLoad.setObjectName(_fromUtf8("buttonLoad"))
+        self.gridLayout.addWidget(self.buttonLoad, 2, 3, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem1, 2, 2, 1, 1)
 
@@ -67,5 +67,5 @@ class Ui_parameterUpdate(object):
         item = self.parameterTable.horizontalHeaderItem(2)
         item.setText(QtGui.QApplication.translate("parameterUpdate", "Description", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonSave.setText(QtGui.QApplication.translate("parameterUpdate", "Save", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton.setText(QtGui.QApplication.translate("parameterUpdate", "Load", None, QtGui.QApplication.UnicodeUTF8))
+        self.buttonLoad.setText(QtGui.QApplication.translate("parameterUpdate", "Load", None, QtGui.QApplication.UnicodeUTF8))
 
