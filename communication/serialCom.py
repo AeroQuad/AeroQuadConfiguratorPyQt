@@ -3,6 +3,7 @@ Created on Nov 7, 2012
 
 @author: Ted Carancho
 '''
+import os
 import serial
 import time
 from serial.tools import list_ports
@@ -40,7 +41,17 @@ class AQSerial(object):
         return self.comm.inWaiting()
         
     def detectPorts(self):
-        self.availablePorts = [port[0] for port in list_ports.comports()]
+        if os.name == 'nt':
+            for i in range(256):
+                try:
+                    s = serial.Serial(i)
+                    self.availablePorts.append(s.portstr)
+                    s.close()
+                except serial.SerialException:
+                    pass
+        else:
+            self.availablePorts = [port[0] for port in list_ports.comports()]
+        
         return self.availablePorts
 
     def isConnected(self):
