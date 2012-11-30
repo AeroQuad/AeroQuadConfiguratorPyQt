@@ -115,8 +115,6 @@ class AQMain(QtGui.QMainWindow):
         elif selection == "Autoconnect":
             self.ui.comPort.setCurrentIndex(0)
             self.ui.status.setText("This feature still under construction")
-        elif selection == "-------":
-            self.ui.comPort.setCurrentIndex(0)
             
     def autoConnect(self):
         pass
@@ -146,9 +144,9 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.clear()
         for n in self.comm.detectPorts():
             self.ui.comPort.addItem(n)
-        self.ui.comPort.addItem("-------")
+        self.ui.comPort.insertSeparator(self.ui.comPort.count())
         self.ui.comPort.addItem("Autoconnect")
-        #self.ui.comPort.addItem("Refresh")
+        self.ui.comPort.addItem("Refresh")
         
     def storeComPortSelection(self):
         '''Stores comm port selection to xml file for later recall'''
