@@ -11,6 +11,6 @@
 <path>/AeroQuadConfiguratorPyQt/utilties</path>
 </pydev_pathproperty>
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
-<path>C:\Python33\Lib\site-packages\pyqtgraph</path>
+<path>C:\Python27\Lib\site-packages\pyqtgraph</path>
 </pydev_pathproperty>
 </pydev_project>

@@ -42,6 +42,7 @@ class AQSerial(object):
         
     def detectPorts(self):
         if os.name == 'nt':
+            self.availablePorts = []
             for i in range(256):
                 try:
                     s = serial.Serial(i)

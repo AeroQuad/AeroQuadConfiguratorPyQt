@@ -147,6 +147,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.insertSeparator(self.ui.comPort.count())
         self.ui.comPort.addItem("Autoconnect")
         self.ui.comPort.addItem("Refresh")
+
         
     def storeComPortSelection(self):
         '''Stores comm port selection to xml file for later recall'''
