@@ -6,6 +6,9 @@
 		<CommTimeOut>1.0</CommTimeOut>
 		<DefaultBaudRate>115200</DefaultBaudRate>
 		<AvailableBaudRates>1200,9600,38400,57600,111111,115200</AvailableBaudRates>
+		<SoftwareVersion>!</SoftwareVersion>
+		<StopTelemetry>X</StopTelemetry>
+		<BoardConfiguration>#</BoardConfiguration>
 	</Settings>
 	
 	<Boards>
@@ -25,19 +28,21 @@
 					<Requirement>Gyroscope: Detected</Requirement>
 					<Command>A</Command>
 					<Telemetry>a</Telemetry>
+					<UpdateEEPROM>W</UpdateEEPROM>
 					<Parameter Name="Roll Proportional" Description="">3.0</Parameter>
 					<Parameter Name="Roll Integral" Description="">0.0</Parameter>
 					<Parameter Name="Roll Derivative" Description="">-100.0</Parameter>
 					<Parameter Name="Pitch Proportional" Description="">3.0</Parameter>
 					<Parameter Name="Pitch Integral" Description="">0.0</Parameter>
 					<Parameter Name="Pitch Derivative" Description="">-100.0</Parameter>
-					<Parameter Name="Rotation Speed" Description="Controls the rotation speed during a flip">5</Parameter>
+					<Parameter Name="Rotation Speed" Description="">5</Parameter>
 				</ParameterType>
 				<ParameterType Name="Stable (Attitude) Mode">
 					<Requirement>Gyroscope: Detected</Requirement>
 					<Requirement>Accelerometer: Detected</Requirement>
 					<Command>B</Command>
 					<Telemetry>b</Telemetry>
+					<UpdateEEPROM>W</UpdateEEPROM>
 					<Parameter Name="Roll Accel Proportional" Description="">4.0</Parameter>
 					<Parameter Name="Roll Accel Integral" Description="">0.0</Parameter>
 					<Parameter Name="Roll Accel Derivative" Description="">-100.0</Parameter>
@@ -56,13 +61,14 @@
 					<Requirement>Gyroscope: Detected</Requirement>
 					<Command>C</Command>
 					<Telemetry>c</Telemetry>
-					<Parameter Name="Yaw Proportional" Description="">5.0</Parameter>
-					<Parameter Name="Yaw Integral" Description="">0.0</Parameter>
-					<Parameter Name="Yaw Derivative" Description="">0.0</Parameter>
-					<Parameter Name="Heading Hold Proportional" Description="">2.0</Parameter>
-					<Parameter Name="Heading Hold Integral" Description="">0.0</Parameter>
-					<Parameter Name="Heading Hold Derivative" Description="">0.0</Parameter>
-					<Parameter Name="Heading Hold Configuration" Description="1 = Enabled, 0 = Disabled">1</Parameter>
+					<UpdateEEPROM>W</UpdateEEPROM>
+					<Parameter Description="" Name="Yaw Proportional">5.0</Parameter>
+					<Parameter Description="" Name="Yaw Integral">0.0</Parameter>
+					<Parameter Description="" Name="Yaw Derivative">0.0</Parameter>
+					<Parameter Description="" Name="Heading Hold Proportional">2.0</Parameter>
+					<Parameter Description="" Name="Heading Hold Integral">0.0</Parameter>
+					<Parameter Description="" Name="Heading Hold Derivative">0.0</Parameter>
+					<Parameter Description="1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
 				</ParameterType>
 			</Subpanel>
 			<Subpanel Name="Serial Monitor">

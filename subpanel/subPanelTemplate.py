@@ -17,11 +17,14 @@ class subpanel(object):
         self.timer = None
         self.xml = None
         self.xmlSubPanel = None
+        self.comm = None
+        self.mainUi = None
                
-    def initialize(self, commTransport,  xml):
+    def initialize(self, commTransport,  xml, mainWindow):
         '''This initializes your class with required external arguments'''
         self.comm = commTransport
         self.xml = xml
+        self.mainUi = mainWindow
                 
     def sendCommand(self, command):
         '''Send a serial command'''
@@ -66,3 +69,6 @@ class subpanel(object):
         localtime = time.localtime(now)
         milliseconds = '%03d' % int((now - int(now)) * 1000)
         return time.strftime('%H:%M:%S.', localtime) + milliseconds
+
+    def status(self, message):
+        self.mainUi.status.setText(message)

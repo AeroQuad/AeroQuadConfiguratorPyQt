@@ -82,7 +82,7 @@ class AQMain(QtGui.QMainWindow):
         bootupDelay = float(xml.find("./Settings/BootUpDelay").text)
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
         self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
-        self.comm.write("!")
+        self.comm.write(xml.find("./Settings/SoftwareVersion").text)
         version = self.comm.read()
         if version != "":
             self.storeComPortSelection()
@@ -94,7 +94,7 @@ class AQMain(QtGui.QMainWindow):
         
     def disconnect(self):
         '''Disconnect from the AeroQuad'''
-        self.comm.write("X")
+        self.comm.write(xml.find("./Settings/StopTelemetry").text)
         self.comm.disconnect()
         # Update GUI
         self.ui.buttonDisconnect.setEnabled(False)
@@ -231,7 +231,7 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()
-            tempSubPanel.initialize(self.comm, xml)
+            tempSubPanel.initialize(self.comm, xml, self.ui)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1
