@@ -152,14 +152,8 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
-   <widget class="QMenu" name="menuBoard">
-    <property name="title">
-     <string>Board</string>
-    </property>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
-   <addaction name="menuBoard"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionExit">

@@ -29,9 +29,11 @@ class updateParameters(QtGui.QWidget, subpanel):
         self.subPanelName = xmlSubPanel
         parameterTypes = self.xml.findall(self.subPanelName + "/ParameterType")
         self.ui.listParameterType.clear()
+        # Load parameter types
         for parameterType in parameterTypes:
             typeName = parameterType.get("Name")
-            self.ui.listParameterType.addItem(typeName)
+            if self.checkRequirementsMatch(self.subPanelName + "/ParameterType/[@Name='" + typeName + "']/Requirement"):
+                self.ui.listParameterType.addItem(typeName)
         self.ui.listParameterType.setCurrentRow(0)
         self.ui.listParameterType.setFocus()
         self.updateSelection()
@@ -53,7 +55,7 @@ class updateParameters(QtGui.QWidget, subpanel):
             telemetry = self.xml.find(self.getXmlLocation("Telemetry")).text
             self.comm.write(telemetry)
             time.sleep(0.100)
-            response = self.comm.read()
+            response = self.comm.waitForRead()
             telemetryData = response.split(",")
         
         # Fill in each row of parameter table
@@ -91,7 +93,7 @@ class updateParameters(QtGui.QWidget, subpanel):
         telemetry = self.xml.find(self.getXmlLocation("Telemetry")).text
         self.comm.write(telemetry)
         time.sleep(0.100)
-        response = self.comm.read()
+        response = self.comm.waitForRead()
         if response[-1] == ",":
             response = response[:-1]
         telemetryData = response.split(",")

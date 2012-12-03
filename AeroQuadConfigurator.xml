@@ -19,227 +19,113 @@
 		<Selected>AeroQuad32</Selected>
 	</Boards>
 	
-	<Board Type="AeroQuad32">
-		<Subpanels>
-			<Subpanel Name="Update Parameters">
-				<Path>updateParameters.updateParameters</Path>
-				<Class>updateParameters</Class>
-				<ParameterType Name="Acrobatic (Rate) Mode">
-					<Requirement>Gyroscope: Detected</Requirement>
-					<Command>A</Command>
-					<Telemetry>a</Telemetry>
-					<UpdateEEPROM>W</UpdateEEPROM>
-					<Parameter Description="" Name="Roll Proportional">3.0</Parameter>
-					<Parameter Description="" Name="Roll Integral">0.0</Parameter>
-					<Parameter Description="" Name="Roll Derivative">-100.0</Parameter>
-					<Parameter Description="" Name="Pitch Proportional">3.0</Parameter>
-					<Parameter Description="" Name="Pitch Integral">0.0</Parameter>
-					<Parameter Description="" Name="Pitch Derivative">-100.0</Parameter>
-					<Parameter Description="" Name="Rotation Speed">5</Parameter>
-				</ParameterType>
-				<ParameterType Name="Stable (Attitude) Mode">
-					<Requirement>Gyroscope: Detected</Requirement>
-					<Requirement>Accelerometer: Detected</Requirement>
-					<Command>B</Command>
-					<Telemetry>b</Telemetry>
-					<UpdateEEPROM>W</UpdateEEPROM>
-					<Parameter Description="" Name="Roll Accel Proportional">4.0</Parameter>
-					<Parameter Description="" Name="Roll Accel Integral">0.0</Parameter>
-					<Parameter Description="" Name="Roll Accel Derivative">-100.0</Parameter>
-					<Parameter Description="" Name="Pitch Accel Proportional">4.0</Parameter>
-					<Parameter Description="" Name="Pitch Accel Integral">0.0</Parameter>
-					<Parameter Description="" Name="Pitch Accel Derivative">-100</Parameter>
-					<Parameter Description="" Name="Roll Gyro Proportional">3.0</Parameter>
-					<Parameter Description="" Name="Roll Gyro Integral">0.0</Parameter>
-					<Parameter Description="" Name="Roll Gyro Derivative">-200</Parameter>
-					<Parameter Description="" Name="Pitch Gyro Proportional">3.0</Parameter>
-					<Parameter Description="" Name="Pitch Gyro Integral">0.0</Parameter>
-					<Parameter Description="" Name="Pitch Gyro Derivative">-200</Parameter>
-					<Parameter Description="" Name="Windup Guard">1000</Parameter>
-				</ParameterType>
-				<ParameterType Name="Yaw Configuration">
-					<Requirement>Gyroscope: Detected</Requirement>
-					<Command>C</Command>
-					<Telemetry>c</Telemetry>
-					<UpdateEEPROM>W</UpdateEEPROM>
-					<Parameter Description="" Name="Yaw Proportional">5.0</Parameter>
-					<Parameter Description="" Name="Yaw Integral">0.0</Parameter>
-					<Parameter Description="" Name="Yaw Derivative">0.0</Parameter>
-					<Parameter Description="" Name="Heading Hold Proportional">2.0</Parameter>
-					<Parameter Description="" Name="Heading Hold Integral">0.0</Parameter>
-					<Parameter Description="" Name="Heading Hold Derivative">0.0</Parameter>
-					<Parameter Description="1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
-				</ParameterType>
-			</Subpanel>
-			<Subpanel Name="Serial Monitor">
-				<Path>commMonitor.commMonitor</Path>
-				<Class>commMonitor</Class>
-			</Subpanel>
-			<Subpanel Name="Sensor Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>0</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Gyro X Axis</PlotName>
-				<PlotName>Gyro Y Axis</PlotName>
-				<PlotName>Gyro Z Axis</PlotName>
-				<PlotName>Accel X Axis</PlotName>
-				<PlotName>Accel Y Axis</PlotName>
-				<PlotName>Accel Z Axis</PlotName>
-				<PlotName>Mag X Axis</PlotName>
-				<PlotName>Mag Y Axis</PlotName>
-				<PlotName>Mag Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Gyroscope Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>0</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Gyro X Axis</PlotName>
-				<PlotName>Gyro Y Axis</PlotName>
-				<PlotName>Gyro Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Accelerometer Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>3</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Accel X Axis</PlotName>
-				<PlotName>Accel Y Axis</PlotName>
-				<PlotName>Accel Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Magnetometer Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>6</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Mag X Axis</PlotName>
-				<PlotName>Mag Y Axis</PlotName>
-				<PlotName>Mag Z Axis</PlotName>
-			</Subpanel>
-		</Subpanels>
-	</Board>
-	<Board Type="AeroQuad v2.1">
-		<Subpanels>
-			<Subpanel Name="Serial Monitor">
-				<Path>commMonitor.commMonitor</Path>
-				<Class>commMonitor</Class>
-			</Subpanel>
-			<Subpanel Name="Sensor Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>0</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Gyro X Axis</PlotName>
-				<PlotName>Gyro Y Axis</PlotName>
-				<PlotName>Gyro Z Axis</PlotName>
-				<PlotName>Accel X Axis</PlotName>
-				<PlotName>Accel Y Axis</PlotName>
-				<PlotName>Accel Z Axis</PlotName>
-				<PlotName>Mag X Axis</PlotName>
-				<PlotName>Mag Y Axis</PlotName>
-				<PlotName>Mag Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Gyroscope Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>0</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Gyro X Axis</PlotName>
-				<PlotName>Gyro Y Axis</PlotName>
-				<PlotName>Gyro Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Accelerometer Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>3</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Accel X Axis</PlotName>
-				<PlotName>Accel Y Axis</PlotName>
-				<PlotName>Accel Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Magnetometer Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>6</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Mag X Axis</PlotName>
-				<PlotName>Mag Y Axis</PlotName>
-				<PlotName>Mag Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Altitude Data">
-				<Path>dataPlot.dataPlot</Path>
-				<Class>dataPlot</Class>
-				<Telemetry>z</Telemetry>
-				<Index>0</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Barometer</PlotName>
-				<PlotName>Ranger</PlotName>
-			</Subpanel>
-		</Subpanels>
-	</Board>
-	<Board Type="AeroQuad v1.9">
-		<Subpanels>
-			<Subpanel Name="Serial Monitor">
-				<Path>commMonitor.commMonitor</Path>
-				<Class>commMonitor</Class>
-			</Subpanel>
-			<Subpanel Name="Gyroscope Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>0</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Gyro X Axis</PlotName>
-				<PlotName>Gyro Y Axis</PlotName>
-				<PlotName>Gyro Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Accelerometer Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>3</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Accel X Axis</PlotName>
-				<PlotName>Accel Y Axis</PlotName>
-				<PlotName>Accel Z Axis</PlotName>
-			</Subpanel>
-		</Subpanels>
-	</Board>
-	<Board Type="AeroQuad Mini v1.05">
-		<Subpanels>
-			<Subpanel Name="Serial Monitor">
-				<Path>commMonitor.commMonitor</Path>
-				<Class>commMonitor</Class>
-			</Subpanel>
-			<Subpanel Name="Gyroscope Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>0</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Gyro X Axis</PlotName>
-				<PlotName>Gyro Y Axis</PlotName>
-				<PlotName>Gyro Z Axis</PlotName>
-			</Subpanel>
-			<Subpanel Name="Accelerometer Data">
-				<Path>dataPlot.dataPlot</Path> 
-				<Class>dataPlot</Class> 
-				<Telemetry>i</Telemetry>
-				<Index>3</Index>
-				<PlotSize>128</PlotSize>
-				<PlotName>Accel X Axis</PlotName>
-				<PlotName>Accel Y Axis</PlotName>
-				<PlotName>Accel Z Axis</PlotName>
-			</Subpanel>
-		</Subpanels>
-	</Board>
+	<Subpanels>
+		<Subpanel Name="Update Parameters">
+			<Path>updateParameters.updateParameters</Path>
+			<Class>updateParameters</Class>
+			<ParameterType Name="Acrobatic (Rate) Mode">
+				<Requirement>All</Requirement>
+				<Command>A</Command>
+				<Telemetry>a</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="" Name="Roll Proportional">3.0</Parameter>
+				<Parameter Description="" Name="Roll Integral">0.0</Parameter>
+				<Parameter Description="" Name="Roll Derivative">-100.0</Parameter>
+				<Parameter Description="" Name="Pitch Proportional">3.0</Parameter>
+				<Parameter Description="" Name="Pitch Integral">0.0</Parameter>
+				<Parameter Description="" Name="Pitch Derivative">-100.0</Parameter>
+				<Parameter Description="" Name="Rotation Speed">5</Parameter>
+			</ParameterType>
+			<ParameterType Name="Stable (Attitude) Mode">
+				<Requirement>All</Requirement>
+				<Command>B</Command>
+				<Telemetry>b</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="" Name="Roll Accel Proportional">4.0</Parameter>
+				<Parameter Description="" Name="Roll Accel Integral">0.0</Parameter>
+				<Parameter Description="" Name="Roll Accel Derivative">-100.0</Parameter>
+				<Parameter Description="" Name="Pitch Accel Proportional">4.0</Parameter>
+				<Parameter Description="" Name="Pitch Accel Integral">0.0</Parameter>
+				<Parameter Description="" Name="Pitch Accel Derivative">-100</Parameter>
+				<Parameter Description="" Name="Roll Gyro Proportional">3.0</Parameter>
+				<Parameter Description="" Name="Roll Gyro Integral">0.0</Parameter>
+				<Parameter Description="" Name="Roll Gyro Derivative">-200</Parameter>
+				<Parameter Description="" Name="Pitch Gyro Proportional">3.0</Parameter>
+				<Parameter Description="" Name="Pitch Gyro Integral">0.0</Parameter>
+				<Parameter Description="" Name="Pitch Gyro Derivative">-200</Parameter>
+				<Parameter Description="" Name="Windup Guard">1000</Parameter>
+			</ParameterType>
+			<ParameterType Name="Yaw Configuration">
+				<Requirement>All</Requirement>
+				<Command>C</Command>
+				<Telemetry>c</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="" Name="Yaw Proportional">5.0</Parameter>
+				<Parameter Description="" Name="Yaw Integral">0.0</Parameter>
+				<Parameter Description="" Name="Yaw Derivative">0.0</Parameter>
+				<Parameter Description="" Name="Heading Hold Proportional">2.0</Parameter>
+				<Parameter Description="" Name="Heading Hold Integral">0.0</Parameter>
+				<Parameter Description="" Name="Heading Hold Derivative">0.0</Parameter>
+				<Parameter Description="1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
+			</ParameterType>
+		</Subpanel>
+		<Subpanel Name="Serial Monitor">
+			<Requirement>All</Requirement>
+			<Path>commMonitor.commMonitor</Path>
+			<Class>commMonitor</Class>
+		</Subpanel>
+		<Subpanel Name="Sensor Data">
+			<Requirement>Gyroscope: Detected</Requirement>
+			<Requirement>Accelerometer: Detected</Requirement>
+			<Requirement>Magnetometer: Detected</Requirement>
+			<Path>dataPlot.dataPlot</Path> 
+			<Class>dataPlot</Class> 
+			<Telemetry>i</Telemetry>
+			<Index>0</Index>
+			<PlotSize>128</PlotSize>
+			<PlotName>Gyro X Axis</PlotName>
+			<PlotName>Gyro Y Axis</PlotName>
+			<PlotName>Gyro Z Axis</PlotName>
+			<PlotName>Accel X Axis</PlotName>
+			<PlotName>Accel Y Axis</PlotName>
+			<PlotName>Accel Z Axis</PlotName>
+			<PlotName>Mag X Axis</PlotName>
+			<PlotName>Mag Y Axis</PlotName>
+			<PlotName>Mag Z Axis</PlotName>
+		</Subpanel>
+		<Subpanel Name="Gyroscope Data">
+			<Requirement>Gyroscope: Detected</Requirement>
+			<Path>dataPlot.dataPlot</Path> 
+			<Class>dataPlot</Class> 
+			<Telemetry>i</Telemetry>
+			<Index>0</Index>
+			<PlotSize>128</PlotSize>
+			<PlotName>Gyro X Axis</PlotName>
+			<PlotName>Gyro Y Axis</PlotName>
+			<PlotName>Gyro Z Axis</PlotName>
+		</Subpanel>
+		<Subpanel Name="Accelerometer Data">
+			<Requirement>Accelerometer: Detected</Requirement>
+			<Path>dataPlot.dataPlot</Path> 
+			<Class>dataPlot</Class> 
+			<Telemetry>i</Telemetry>
+			<Index>3</Index>
+			<PlotSize>128</PlotSize>
+			<PlotName>Accel X Axis</PlotName>
+			<PlotName>Accel Y Axis</PlotName>
+			<PlotName>Accel Z Axis</PlotName>
+		</Subpanel>
+		<Subpanel Name="Magnetometer Data">
+			<Requirement>Magnetometer: Detected</Requirement>
+			<Path>dataPlot.dataPlot</Path> 
+			<Class>dataPlot</Class> 
+			<Telemetry>i</Telemetry>
+			<Index>6</Index>
+			<PlotSize>128</PlotSize>
+			<PlotName>Mag X Axis</PlotName>
+			<PlotName>Mag Y Axis</PlotName>
+			<PlotName>Mag Z Axis</PlotName>
+		</Subpanel>
+	</Subpanels>
+	
 </Configurator>

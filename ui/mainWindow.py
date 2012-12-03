@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWindow.ui'
 #
-# Created: Wed Nov 14 17:07:49 2012
+# Created: Sat Dec 01 18:48:22 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -74,8 +74,6 @@ class Ui_MainWindow(object):
         self.menuView.setObjectName(_fromUtf8("menuView"))
         self.menuHelp = QtGui.QMenu(self.menubar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
-        self.menuBoard = QtGui.QMenu(self.menubar)
-        self.menuBoard.setObjectName(_fromUtf8("menuBoard"))
         MainWindow.setMenuBar(self.menubar)
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
@@ -107,7 +105,6 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
-        self.menubar.addAction(self.menuBoard.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -124,7 +121,6 @@ class Ui_MainWindow(object):
         self.menuPreferences.setTitle(QtGui.QApplication.translate("MainWindow", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "View", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuBoard.setTitle(QtGui.QApplication.translate("MainWindow", "Board", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.actionOpenSettings.setText(QtGui.QApplication.translate("MainWindow", "Open...", None, QtGui.QApplication.UnicodeUTF8))
@@ -133,6 +129,5 @@ class Ui_MainWindow(object):
         self.actionSaveCalibrations.setText(QtGui.QApplication.translate("MainWindow", "Save....", None, QtGui.QApplication.UnicodeUTF8))
         self.actionBootUpDelay.setText(QtGui.QApplication.translate("MainWindow", "Boot Up Delay...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionCommTimeout.setText(QtGui.QApplication.translate("MainWindow", "Comm Timeout...", None, QtGui.QApplication.UnicodeUTF8))
-
 
 import AQresources_rc

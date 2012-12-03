@@ -5,15 +5,14 @@ Created on Nov 6, 2012
 @author: Ted Carancho
 '''
 import sys
+import time
 
 from PyQt4 import QtCore, QtGui
 from ui.mainWindow import Ui_MainWindow
 from communication.serialCom import AQSerial
-
+from ui.splashScreen import Ui_splashScreen
 import xml.etree.ElementTree as ET
 xml = ET.parse('AeroQuadConfigurator.xml')
-
-from ui.splashScreen import Ui_splashScreen
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -37,6 +36,7 @@ class AQMain(QtGui.QMainWindow):
         self.availablePorts = []
         self.updateComPortSelection()
         self.updateBaudRates()
+        self.boardConfiguration = []
         
         # Update comm port combo box to use last used comm port
         defaultComPort = xml.find("./Settings/DefaultComPort").text
@@ -51,8 +51,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.subPanel.addWidget(self.subPanel)
         
         # Dynamically configure board type menu and subPanel menu from XML configuration file
-        self.selectedBoardType = self.configureBoardTypeMenu()
-        self.configureSubPanelMenu(self.selectedBoardType)
+        self.configureSubPanelMenu()
         self.activeSubPanel = None
         self.activeSubPanelName = ""
 
@@ -69,12 +68,11 @@ class AQMain(QtGui.QMainWindow):
     def connect(self):
         '''Initiates communication with the AeroQuad'''
         # Setup GUI
-        self.ui.status.setText("Connecting to the " + self.selectedBoardType + "...")
+        self.ui.status.setText("Connecting...")
         self.ui.buttonDisconnect.setEnabled(True)
         self.ui.buttonConnect.setEnabled(False)
         self.ui.comPort.setEnabled(False)
         self.ui.baudRate.setEnabled(False)
-        self.ui.menuBoard.setEnabled(False)
         # Update the GUI
         app.processEvents()
         
@@ -82,11 +80,24 @@ class AQMain(QtGui.QMainWindow):
         bootupDelay = float(xml.find("./Settings/BootUpDelay").text)
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
         self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
-        self.comm.write(xml.find("./Settings/SoftwareVersion").text)
-        version = self.comm.read()
+        versionRequest = xml.find("./Settings/SoftwareVersion").text
+        self.comm.write(versionRequest)
+        version = self.comm.waitForRead()
+
         if version != "":
             self.storeComPortSelection()
-            self.ui.status.setText("Connected to the " + self.selectedBoardType + " using Flight Software v" + version)
+            self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
+            # Read board configuration
+            config = xml.find("./Settings/BoardConfiguration").text
+            self.comm.write(config)
+            size = int(self.comm.waitForRead())
+            for index in range(size):
+                response = self.comm.waitForRead()
+                self.boardConfiguration.append(response)
+            # Hide menu items that don't match board configuration
+            for index in range(len(self.subPanelMenu)):
+                hide = self.checkRequirementsMatch(self.subPanelList[index])
+                self.subPanelMenu[index].setVisible(hide)
             self.restartSubPanel()
         else:
             self.disconnect()
@@ -101,9 +112,8 @@ class AQMain(QtGui.QMainWindow):
         self.ui.buttonConnect.setEnabled(True)
         self.ui.comPort.setEnabled(True)
         self.ui.baudRate.setEnabled(True)
-        self.ui.status.setText("Disconnected from the " + self.selectedBoardType)
+        self.ui.status.setText("Disconnected from the AeroQuad")
         self.restartSubPanel()
-        self.ui.menuBoard.setEnabled(True)
 
     def updateDetectedPorts(self):
         '''Cycles through 256 ports and checks if there is a response from them.'''
@@ -147,7 +157,6 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.insertSeparator(self.ui.comPort.count())
         self.ui.comPort.addItem("Autoconnect")
         self.ui.comPort.addItem("Refresh")
-
         
     def storeComPortSelection(self):
         '''Stores comm port selection to xml file for later recall'''
@@ -165,64 +174,20 @@ class AQMain(QtGui.QMainWindow):
         for i in baudRate:
             self.ui.baudRate.addItem(i)
         self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))     
- 
-    
-    ####### Board Selection Methods #######          
-    def configureBoardTypeMenu(self):
-        '''Dynamically add board types to menu bar'''
-        boardNames = xml.findall("./Boards/Type") # Get all board types listed in XML file
-        self.boardTypes = [] # stores board types
-        self.boardMenu = [] # stores name of board used for menus
-        for board in boardNames:
-            self.boardTypes.append(board.text)
-        self.boardTypeMapper = QtCore.QSignalMapper(self) # Create a map to store arguments for correct slot
-        for boardType in self.boardTypes:
-            self.ui.board = self.ui.menuBoard.addAction(boardType) # Add board name to menu
-            self.boardMenu.append(self.ui.board) # Need to store this separately because Python only binds stuff at runtime
-            self.boardTypeMapper.setMapping(self.ui.board, boardType) # Store board name argument for correct menu item in map
-            self.ui.board.triggered.connect(self.boardTypeMapper.map) # Connect slot to correct map item
-            self.ui.board.setCheckable(True)
-        self.boardTypeMapper.mapped[str].connect(self.selectBoardType) # Connect map to selectBoardType() method
-        selectedBoardType = xml.find("./Boards/Selected").text # Read last selected board from XML
-        self.checkmarkBoardType(selectedBoardType)
-        return selectedBoardType
 
-    def selectBoardType(self, boardType):
-        '''Places check mark beside selected board type
-        Menu item instances stored in dedicated list because Python only updates during runtime making everything point to the last item in the list
-        '''
-        types = len(self.boardTypes)
-        for name in range(types):
-            self.boardMenu[name].setChecked(False)
-        self.checkmarkBoardType(boardType)
-        selected = self.boardTypes.index(boardType)
-        self.boardMenu[selected].setChecked(True)
-        xml.find("./Boards/Selected").text = str(boardType)
-        xml.write("AeroQuadConfigurator.xml")
-        self.selectedBoardType = boardType
-        self.clearSubPanelMenu()
-        self.configureSubPanelMenu(boardType)
-        self.ui.subPanel.setCurrentIndex(0)
 
-    def checkmarkBoardType(self, boardType):
-        '''Place checkmark next to selected board type'''
-        selected = self.boardTypes.index(boardType)
-        self.boardMenu[selected].setChecked(True)
-
-  
     ####### SubPanel Methods #######
-    def configureSubPanelMenu(self, boardType):
-        '''Dynamically add subpanels to View menu based on selected board type
+    def configureSubPanelMenu(self):
+        '''Dynamically add subpanels to View menu based on XML file configuration
         This also adds the subpanel to a stacked widget and stores object instances so that they can run when selected'''
-        boardSubPanelName = "./Board/[@Type='" + str(boardType) + "']/Subpanels/Subpanel"
-        subPanels = xml.findall(boardSubPanelName) # Get all subpanel names for the selected board type from XML
+        subPanels = xml.findall("./Subpanels/Subpanel")
         subPanelCount = 1
         self.subPanelList = [] # Stores subpanel names
         self.subPanelClasses = [] # Stores subpanel object instances
         for subPanel in subPanels:
             self.subPanelList.append(subPanel.get("Name"))
-            pathName = xml.find(boardSubPanelName + "/[@Name='" + subPanel.get("Name") +"']/Path").text
-            className = xml.find(boardSubPanelName + "/[@Name='" + subPanel.get("Name") +"']/Class").text
+            pathName = xml.find("./Subpanels/Subpanel/[@Name='" + subPanel.get("Name") +"']/Path").text
+            className = xml.find("./Subpanels/Subpanel/[@Name='" + subPanel.get("Name") +"']/Class").text
             packageList = pathName.split('.')
             packageList.insert(0, 'subpanel')
             packageString = packageList[0] + '.' + packageList[1] + '.' + packageList[2]
@@ -231,11 +196,10 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()
-            tempSubPanel.initialize(self.comm, xml, self.ui)
+            tempSubPanel.initialize(self.comm, xml, self.ui, self.boardConfiguration)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1
-            
         self.subPanelMapper = QtCore.QSignalMapper(self)
         self.subPanelMenu = []
         for subPanelName in self.subPanelList:
@@ -259,10 +223,9 @@ class AQMain(QtGui.QMainWindow):
         self.subPanelMenu[selected].setChecked(True)
         self.ui.subPanel.setCurrentIndex(selected+1) # index 0 is splash screen
         self.activeSubPanel = self.subPanelClasses[selected]
-        boardType = xml.find("./Boards/Selected").text
-        boardSubPanelName = "./Board/[@Type='" + str(boardType) + "']/Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
-        self.activeSubPanelName = boardSubPanelName
-        self.activeSubPanel.start(boardSubPanelName)
+        selectedSubPanelName = "./Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
+        self.activeSubPanelName = selectedSubPanelName
+        self.activeSubPanel.start(selectedSubPanelName)
         self.ui.status.setText(subPanelName)
         app.processEvents()
 
@@ -276,6 +239,22 @@ class AQMain(QtGui.QMainWindow):
             self.activeSubPanel.stop()
             self.activeSubPanel.start(self.activeSubPanelName)
             
+    def checkRequirementsMatch(self, subPanelName):
+        # Read requirements for the specified subpanel form the XML config file
+        xmlRequirement = "./Subpanels/Subpanel/[@Name='" + subPanelName +"']/Requirement"
+        subPanelRequirements = xml.findall(xmlRequirement)
+        panelRequirements = [] # Holds the requirements as a list of strings
+        for requirement in subPanelRequirements:
+            panelRequirements.append(requirement.text)
+        check = True
+        # Go through each subpanel requirement and check against board configuration
+        for testRequirement in panelRequirements:
+            if (testRequirement == "All"):
+                check = True
+                break;
+            check = check and (testRequirement in self.boardConfiguration)
+        return check
+
     ''' Housekeeping Functions'''
     def exit(self):
         self.comm.disconnect()

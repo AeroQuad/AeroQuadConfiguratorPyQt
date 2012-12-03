@@ -17,14 +17,22 @@ class AQSerial(object):
         self.comm = None
         self.availablePorts = []
         self.connected = False
+        self.timeout = 0.0
 
     def connect(self, port, baud, delay, commTimeout):
         self.comm = serial.Serial(port, baud, timeout=commTimeout)
+        self.timeout = commTimeout
         self.comm.setDTR(False)
         time.sleep(0.100)
         self.comm.setDTR(True)
         time.sleep(delay)
         self.connected = True
+        #self.flushResponse()
+        
+    def flushResponse(self):
+        while self.dataAvailable():
+            time.sleep(100)
+            self.read()
         
     def disconnect(self):
         self.comm.close()
@@ -34,6 +42,16 @@ class AQSerial(object):
         self.comm.write(bytes(data.encode('utf-8')))
         
     def read(self):
+        response = self.comm.readline().decode('utf-8')
+        return response.rstrip('\r\n')
+    
+    def waitForRead(self):
+        timeout = 0.0
+        while not self.dataAvailable():
+            time.sleep(0.100)
+            timeout += 0.100
+            if (timeout >= self.timeout):
+                break
         response = self.comm.readline().decode('utf-8')
         return response.rstrip('\r\n')
     

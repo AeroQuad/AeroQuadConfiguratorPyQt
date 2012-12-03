@@ -19,12 +19,14 @@ class subpanel(object):
         self.xmlSubPanel = None
         self.comm = None
         self.mainUi = None
+        self.boardConfiguration = []
                
-    def initialize(self, commTransport,  xml, mainWindow):
+    def initialize(self, commTransport,  xml, mainWindow, boardConfiguration):
         '''This initializes your class with required external arguments'''
         self.comm = commTransport
         self.xml = xml
         self.mainUi = mainWindow
+        self.boardConfiguration = boardConfiguration
                 
     def sendCommand(self, command):
         '''Send a serial command'''
@@ -72,3 +74,18 @@ class subpanel(object):
 
     def status(self, message):
         self.mainUi.status.setText(message)
+        
+    def checkRequirementsMatch(self, xmlRequirementPath):
+        # Read requirements for the specified subpanel form the XML config file
+        subPanelRequirements = self.xml.findall(xmlRequirementPath)
+        panelRequirements = [] # Holds the requirements as a list of strings
+        for requirement in subPanelRequirements:
+            panelRequirements.append(requirement.text)
+        check = True
+        # Go through each subpanel requirement and check against board configuration
+        for testRequirement in panelRequirements:
+            if (testRequirement == "All"):
+                check = True
+                break;
+            check = check and (testRequirement in self.boardConfiguration)
+        return check
