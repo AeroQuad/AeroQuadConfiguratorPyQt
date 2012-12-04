@@ -11,14 +11,6 @@
 		<BoardConfiguration>#</BoardConfiguration>
 	</Settings>
 	
-	<Boards>
-		<Type>AeroQuad32</Type>
-		<Type>AeroQuad v2.1</Type>
-		<Type>AeroQuad v1.9</Type>
-		<Type>AeroQuad Mini v1.05</Type>
-		<Selected>AeroQuad32</Selected>
-	</Boards>
-	
 	<Subpanels>
 		<Subpanel Name="Update Parameters">
 			<Path>updateParameters.updateParameters</Path>

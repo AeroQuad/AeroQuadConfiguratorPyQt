@@ -101,7 +101,8 @@ class AQMain(QtGui.QMainWindow):
             self.restartSubPanel()
         else:
             self.disconnect()
-            self.ui.status.setText("Not connected to the " + self.selectedBoardType)
+            self.ui.status.setText("Not connected to the AeroQuad")
+            QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
         
     def disconnect(self):
         '''Disconnect from the AeroQuad'''
