@@ -38,24 +38,6 @@ class commMonitor(QtGui.QWidget, subpanel):
         self.ui.commLog.append(self.timeStamp() + " -> " + command)
         self.ui.lineEdit.clear()
         time.sleep(0.150)
-        
-    #def readContinuousData(self, serialComm):
-    #    self.comm = serialComm
-    #    while 1:
-    #        if self.exitReadData == True:
-    #            break
-            # TODO: Need to figure out how to clear out text when too large
-            #if self.commLog.toPlainText().__len__() > 1024:
-            #    time.sleep(0.250)
-            #    self.commLog.clear()
-    #        response = self.comm.read()
-    #        if response != "":
-    #            self.commLog.append(self.timeStamp() + " <- " + response)
-    #            self.commLog.ensureCursorVisible()
-    #            time.sleep(0.050)
-    #        else:
-    #            time.sleep(0.250)
-    #            self.commLog.ensureCursorVisible()
     
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''

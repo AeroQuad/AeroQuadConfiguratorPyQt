@@ -78,14 +78,17 @@ class updateParameters(QtGui.QWidget, subpanel):
             self.ui.parameterTable.setItem(currentRow, 0, name)
             self.ui.parameterTable.setCellWidget(currentRow, 1, data)
             self.ui.parameterTable.setItem(currentRow, 2, description)
+            
         self.ui.parameterTable.resizeColumnToContents(0)
         self.ui.parameterTable.resizeColumnToContents(1)
         
     def updateParameters(self):
         parameterData = []
         for row in range(self.ui.parameterTable.rowCount()):
-            parameterData.append(str(self.ui.parameterTable.cellWidget(row, 1).text()))
-            
+            #parameterData.append(str(self.ui.parameterTable.cellWidget(row, 1).text()))
+            data = str(self.ui.parameterTable.cellWidget(row, 1).text())
+            data = data.replace(',','.')
+            parameterData.append(data)
         command = self.xml.find(self.getXmlLocation("Command")).text
         commandMessage = command + ";".join(parameterData) + ";"
         self.comm.write(commandMessage)

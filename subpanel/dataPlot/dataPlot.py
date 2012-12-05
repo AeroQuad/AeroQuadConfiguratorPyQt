@@ -95,15 +95,4 @@ class dataPlot(QtGui.QWidget, subpanel):
                             pass # Do not update output data if invalid number detected from comm read
                         self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(self.colors[i], width=2))
                         legendRow.setText(2, dataValue)
-                    
-    #def resizeEvent(self, evt):
-    #    temp = self.ui.graphicsView.children()
-    #    temp[0].PlotItem.clear()
-    #    windowSize = evt.size()
-    #    self.legend = pg.LegendItem((100, 10 + 30 * self.plotCount), (windowSize.width()-120, 10))
-    #    self.legend.setParentItem(self.ui.graphicsView.graphicsItem())
-    #    
-    #    for i in range(self.plotCount):
-    #        plotRef = self.ui.graphicsView.plot(x=[0.0], y=[0.0], pen=(i,self.plotCount))
-    #        plotName = "test" #plotNames[i].text
-    #        self.legend.addItem(plotRef, plotName)
+
