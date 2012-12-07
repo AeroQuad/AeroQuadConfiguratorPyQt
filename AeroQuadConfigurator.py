@@ -98,6 +98,8 @@ class AQMain(QtGui.QMainWindow):
             for index in range(len(self.subPanelMenu)):
                 hide = self.checkRequirementsMatch(self.subPanelList[index])
                 self.subPanelMenu[index].setVisible(hide)
+            # Load configuration screen
+            self.selectSubPanel("Vehicle Configuration")
             self.restartSubPanel()
         else:
             self.disconnect()
@@ -114,6 +116,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.setEnabled(True)
         self.ui.baudRate.setEnabled(True)
         self.ui.status.setText("Disconnected from the AeroQuad")
+        self.boardConfiguration = []
         self.restartSubPanel()
 
     def updateDetectedPorts(self):
