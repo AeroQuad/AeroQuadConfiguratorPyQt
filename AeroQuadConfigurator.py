@@ -264,7 +264,7 @@ class AQMain(QtGui.QMainWindow):
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    app.setStyle("plastique")
+    #app.setStyle("plastique")
     
     splash_pix = QtGui.QPixmap('./resources/AQ.png')
     splash = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
