@@ -274,5 +274,7 @@ if __name__ == "__main__":
     
     MainWindow = AQMain()
     MainWindow.show()
+    if sys.platform == 'darwin':
+        MainWindow.raise_()
     splash.finish(MainWindow)
     sys.exit(app.exec_())
