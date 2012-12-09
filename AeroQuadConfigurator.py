@@ -14,6 +14,13 @@ from ui.splashScreen import Ui_splashScreen
 import xml.etree.ElementTree as ET
 xml = ET.parse('AeroQuadConfigurator.xml')
 
+# Subpanel Reference Experiment
+from subpanel.commMonitor.commMonitor import commMonitor
+from subpanel.vehicleConfiguration.vehicleConfiguration import vehicleConfiguration
+from subpanel.vehicleStatus.vehicleStatus import vehicleStatus
+from subpanel.updateParameters.updateParameters import updateParameters
+from dataPlot.dataPlot import dataPlot
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:

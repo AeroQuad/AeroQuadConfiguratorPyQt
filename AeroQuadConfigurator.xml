@@ -22,7 +22,6 @@
 			<Path>vehicleConfiguration.vehicleConfiguration</Path>
 			<Class>vehicleConfiguration</Class>
 			<VehicleGraphics>
-				
 				<Vehicle Name="Quad +">./resources/Quad+.png</Vehicle>
 				<Vehicle Name="Quad X">./resources/QuadX.png</Vehicle>
 				<Vehicle Name="Quad Y4">./resources/QuadX.png</Vehicle>
@@ -34,6 +33,11 @@
 				<Vehicle Name="Octo X">./resources/OctoX.png</Vehicle>
 				<Vehicle Name="Octo X+">./resources/Octo+.png</Vehicle>
 			</VehicleGraphics>
+		</Subpanel>
+		<Subpanel Name="Vehicle Status">
+			<Requirement>All</Requirement>
+			<Path>vehicleStatus.vehicleStatus</Path>
+			<Class>vehicleStatus</Class>
 		</Subpanel>
 		<Subpanel Name="Update Parameters">
 			<Path>updateParameters.updateParameters</Path>
