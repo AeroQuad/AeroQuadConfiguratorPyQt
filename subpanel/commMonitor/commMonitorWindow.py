@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'commMonitorWindow.ui'
 #
-# Created: Sun Nov 25 11:03:54 2012
+# Created: Mon Dec 10 04:44:54 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,4 +42,3 @@ class Ui_commMonitor(object):
         self.sendButton.setText(QtGui.QApplication.translate("commMonitor", "Send Command", None, QtGui.QApplication.UnicodeUTF8))
         self.clearButton.setText(QtGui.QApplication.translate("commMonitor", "Clear", None, QtGui.QApplication.UnicodeUTF8))
 
-import resources.AQresources_rc

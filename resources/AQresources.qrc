@@ -1,9 +1,0 @@
-<RCC>
-  <qresource prefix="AQ">
-    <file>AeroQuad Icon.icns</file>
-    <file>AeroQuad_310x140.png</file>
-    <file>AeroQuad_1024x500.png</file>
-    <file>AeroQuadIcon.icns</file>
-    <file>AeroQuadMacIcon.ico</file>
-  </qresource>
-</RCC>

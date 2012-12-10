@@ -40,8 +40,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../resources/AQresources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
