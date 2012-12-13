@@ -42,7 +42,7 @@ class subpanel(object):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel = xmlSubPanel
         if self.comm.isConnected() == True:
-            telemetry = self.xml.find(xmlSubPanel + "/Telemetry")
+            telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
             if telemetry != None:
                 self.comm.write(telemetry)
             self.timer = QtCore.QTimer()

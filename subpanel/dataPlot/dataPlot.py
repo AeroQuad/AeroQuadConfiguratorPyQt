@@ -15,17 +15,18 @@ class dataPlot(QtGui.QWidget, subpanel):
         QtGui.QWidget.__init__(self)
         subpanel.__init__(self)
 
-        pg.setConfigOption('background', (255,255,255))
+        #pg.setConfigOption('background', (255,255,255))
         pg.setConfigOption('foreground', (128,128,128))
         
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)
         self.ui.graphicsView.hideAxis('bottom')
-        #self.ui.graphicsView.showGrid(y=True)
         self.ui.graphicsView.getAxis('top').setHeight(10)
         self.ui.graphicsView.getAxis('bottom').setHeight(10)
         self.ui.graphicsView.getAxis('left').setWidth(50)
-        #self.ui.graphicsView.enableAutoRange(False)
+        self.ui.graphicsView.setBackground((255,255,255))
+        #brush = QtGui.QBrush()
+        #self.ui.graphicsView.setForegroundBrush(brush.color(QtGui.QColor('grey')))
         self.plotCount = 0
         self.legend = None
         

@@ -38,6 +38,7 @@
 			<Requirement>All</Requirement>
 			<Path>vehicleStatus.vehicleStatus</Path>
 			<Class>vehicleStatus</Class>
+			<Telemetry>s</Telemetry>
 		</Subpanel>
 		<Subpanel Name="Update Parameters">
 			<Path>updateParameters.updateParameters</Path>
