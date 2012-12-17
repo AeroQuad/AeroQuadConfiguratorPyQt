@@ -18,56 +18,66 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
         
-        self.ui.horizontalScrollBar.setValue(0)
-        self.ui.horizontalScrollBar.setMinimum(-180)
-        self.ui.horizontalScrollBar.setMaximum(180)
-        self.ui.horizontalScrollBar.valueChanged.connect(self.updatePitchRollTest)
-        
-        self.ui.verticalScrollBar.setValue(0)
-        self.ui.verticalScrollBar.setMinimum(-90)
-        self.ui.verticalScrollBar.setMaximum(90)
-        self.ui.verticalScrollBar.valueChanged.connect(self.updatePitchRollTest)
-        
-        self.ui.horizontalScrollBarCompass.setValue(0)
-        self.ui.horizontalScrollBarCompass.setMinimum(-180)
-        self.ui.horizontalScrollBarCompass.setMaximum(180)
-        self.ui.horizontalScrollBarCompass.valueChanged.connect(self.updateHeadingTest)
-    
+        # Setup artificial horizon    
         horizon = QtGui.QPixmap("./resources/artificialHorizonBackGround.svg")
         self.horizonItem = QtGui.QGraphicsPixmapItem(horizon)
         
         horizonDial = QtGui.QPixmap("./resources/artificialHorizonDial.svg")
-        self.horizonDialItem = QtGui.QGraphicsPixmapItem(horizonDial)
-        p = QtCore.QPointF(100.0, 390.0)
-        self.horizonDialItem.setPos(p)
-                
+        horizonDialItem = QtGui.QGraphicsPixmapItem(horizonDial)
+        horizonDialItem.setPos(QtCore.QPointF(100.0, 390.0))
+             
+        horizonCompassBackground = QtGui.QPixmap("./resources/artificialHorizonCompassBackGround.svg")
+        horizonCompassBackGroundItem = QtGui.QGraphicsPixmapItem(horizonCompassBackground)
+        horizonCompassBackGroundItem.setPos(QtCore.QPointF(100.0, 390.0))
+                       
         horizonCompass = QtGui.QPixmap("./resources/artificialHorizonCompass.svg")
         self.horizonCompassItem = QtGui.QGraphicsPixmapItem(horizonCompass)
-        p = QtCore.QPointF(100.0, 390.0)
-        self.horizonCompassItem.setPos(p) 
-              
-        horizonCompassBackground = QtGui.QPixmap("./resources/artificialHorizonCompassBackGround.svg")
-        self.horizonCompassBackGroundItem = QtGui.QGraphicsPixmapItem(horizonCompassBackground)
-        p = QtCore.QPointF(100.0, 390.0)
-        self.horizonCompassBackGroundItem.setPos(p)
+        self.horizonCompassItem.setPos(QtCore.QPointF(100.0, 390.0)) 
         
-        self.scene = QtGui.QGraphicsScene()
-        self.scene.addItem(self.horizonItem)
-        self.scene.addItem(self.horizonDialItem)
-        self.scene.addItem(self.horizonCompassBackGroundItem)
-        self.scene.addItem(self.horizonCompassItem)
-
-        #self.ui.artificialHorizon.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.ui.artificialHorizon.setScene(self.scene)
+        horizonScene = QtGui.QGraphicsScene()
+        horizonScene.addItem(self.horizonItem)
+        horizonScene.addItem(horizonDialItem)
+        horizonScene.addItem(horizonCompassBackGroundItem)
+        horizonScene.addItem(self.horizonCompassItem)
+        self.ui.artificialHorizon.setScene(horizonScene)
         
-    def updatePitchRollTest(self):
-        rollAngle = self.ui.horizontalScrollBar.value()
-        pitchAngle = -self.ui.verticalScrollBar.value()
-        self.updatePitchRoll(rollAngle, pitchAngle)
+        # Setup left transmitter stick
+        leftStickScene = QtGui.QGraphicsScene()
+        leftStickBackground = QtGui.QPixmap("./resources/TxDial.png")
+        leftStickItem = QtGui.QGraphicsPixmapItem(leftStickBackground)
+        leftStickScene.addItem(leftStickItem)
+        self.leftStick = QtGui.QGraphicsEllipseItem(QtCore.QRectF(75, 75, 30, 30))
+        self.leftStick.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern), 2))
+        self.leftStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
+        leftStickScene.addItem(self.leftStick)
+        self.ui.leftTransmitter.setScene(leftStickScene)
         
-    def updateHeadingTest(self):
-        heading = self.ui.horizontalScrollBarCompass.value()
-        self.updateHeading(heading)
+        # Setup right transmitter stick
+        rightStickScene = QtGui.QGraphicsScene()
+        rightStickBackground = QtGui.QPixmap("./resources/TxDial.png")
+        rightStickItem = QtGui.QGraphicsPixmapItem(rightStickBackground)
+        rightStickScene.addItem(rightStickItem)
+        self.rightStick = QtGui.QGraphicsEllipseItem(QtCore.QRectF(75, 75, 30, 30))
+        self.rightStick.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern), 2))
+        self.rightStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
+        rightStickScene.addItem(self.rightStick)
+        self.ui.rightTransmitter.setScene(rightStickScene)
+        
+        # Setup histogram to display rest of transmitter channels
+        self.ui.transmitterOutput.hideAxis('left')
+        self.ui.transmitterOutput.hideAxis('bottom')
+        self.ui.transmitterOutput.hideButtons()
+        
+        configCount = len(self.boardConfiguration)
+        for config in self.boardConfiguration:
+            if "Receiver Channels" in config:
+                receiverConfig = config.split(": ")
+                self.receiverChannls = int(receiverConfig[1])
+                break
+        if "Barometer: Detected" in self.boardConfiguration:
+            self.altitude = True
+        if "Battery Monitor: Enabled" in self.boardConfiguration:
+            self.batteryMonitor = True
 
     def updatePitchRoll(self, rollAngle, pitchAngle):
         pitchPosition = self.scale(-pitchAngle, (-135.0, 135.0), (540.0, -540.0))
@@ -75,6 +85,16 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.horizonItem.setPos(0, pitchPosition)
         self.horizonItem.setTransformOriginPoint(250.0, rollCenter)
         self.horizonItem.setRotation(-rollAngle)
+        
+    def updateLeftStick(self, throttle, yaw):
+        throttlePosition = self.scale(throttle, (1000.0, 2000.0), (58.0, -57.0))
+        yawPosition = self.scale(yaw, (1000.0, 2000.0), (-57.0, 55.0))
+        self.leftStick.setPos(yawPosition, throttlePosition)
+        
+    def updateRightStick(self, roll, pitch):
+        rollPosition = self.scale(roll, (1000.0, 2000.0), (-57.0, 55.0))
+        pitchPosition = self.scale(pitch, (1000.0, 2000.0), (58.0, -57.0))
+        self.rightStick.setPos(rollPosition, pitchPosition)
         
     def updateHeading(self, heading):
         self.horizonCompassItem.setTransformOriginPoint(150.0, 150.0)
@@ -90,10 +110,22 @@ class vehicleStatus(QtGui.QWidget, subpanel):
             if self.comm.dataAvailable():           
                 rawData = self.comm.read()
                 data = rawData.split(",")
+                motorArmed = int(data[0])
                 roll = math.degrees(float(data[1]))
                 pitch = math.degrees(float(data[2]))
                 heading = math.degrees(float(data[3]))
-                #print(roll, pitch, heading)
-                #print(data[1], data[2], data[3])
                 self.updatePitchRoll(roll, pitch)
                 self.updateHeading(heading)
+                altitude = float(data[4])
+                altitudeHold = int(data[5])
+                # Do some checking based on number of transmitter channels
+                receiverData = []
+                for receiverIndex in range(8):
+                    receiverData.append(int(data[receiverIndex+6]))
+                self.updateLeftStick(receiverData[3], receiverData[2])
+                self.updateRightStick(receiverData[0], receiverData[1])
+                motorPower = []
+                for motorIndex in range(8):
+                    motorPower.append(int(data[motorIndex+14]))
+                batteryPower = float(data[22])
+                flightMode = int(data[23])

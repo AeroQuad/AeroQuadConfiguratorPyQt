@@ -12,11 +12,6 @@
 	</Settings>
 	
 	<Subpanels>
-		<Subpanel Name="Serial Monitor">
-			<Requirement>All</Requirement>
-			<Path>commMonitor.commMonitor</Path>
-			<Class>commMonitor</Class>
-		</Subpanel>
 		<Subpanel Name="Vehicle Configuration">
 			<Requirement>All</Requirement>
 			<Path>vehicleConfiguration.vehicleConfiguration</Path>
@@ -88,6 +83,11 @@
 				<Parameter Description="" Name="Heading Hold Derivative">0.0</Parameter>
 				<Parameter Description="1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
 			</ParameterType>
+		</Subpanel>
+		<Subpanel Name="Serial Monitor">
+			<Requirement>All</Requirement>
+			<Path>commMonitor.commMonitor</Path>
+			<Class>commMonitor</Class>
 		</Subpanel>
 		<Subpanel Name="Sensor Data">
 			<Requirement>Gyroscope: Detected</Requirement>

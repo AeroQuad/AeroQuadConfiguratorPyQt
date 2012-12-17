@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>818</width>
-    <height>418</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(12, 57, 106, 255), stop:1 rgba(25, 134, 193, 255))</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -22,11 +25,14 @@
        <height>400</height>
       </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(12, 57, 106, 255), stop:1 rgba(25, 134, 193, 255))</string>
+     </property>
      <property name="text">
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources/AQresources.qrc">:/AQ/AeroQuad_1024x500.png</pixmap>
+      <pixmap resource="AQresources.qrc">:/AQ/AeroQuad_1024x500.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -36,7 +42,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resources/AQresources.qrc"/>
+  <include location="AQresources.qrc"/>
  </resources>
  <connections/>
 </ui>

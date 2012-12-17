@@ -62,6 +62,8 @@ class subpanel(object):
         '''This method enables a flag which closes the continuous serial read thread'''
         if self.comm.isConnected() == True:
             if self.timer != None:
+                self.comm.write(self.xml.find("./Settings/StopTelemetry").text)
+                self.comm.flushResponse()
                 self.timer.timeout.disconnect(self.readContinuousData)
                 self.timer.stop()
         

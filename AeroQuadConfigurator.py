@@ -5,7 +5,7 @@ Created on Nov 6, 2012
 @author: Ted Carancho
 '''
 import sys
-#import time
+import time
 
 from PyQt4 import QtCore, QtGui
 from ui.mainWindow import Ui_MainWindow
@@ -47,9 +47,9 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.setCurrentIndex(commIndex)
         
         # Load splash screen
-        self.subPanel = Ui_splashScreen()
-        self.subPanel.setupUi(self.subPanel)
-        self.ui.subPanel.addWidget(self.subPanel)
+        splash = Ui_splashScreen()
+        splash.setupUi(splash)
+        self.ui.subPanel.addWidget(splash)
         
         # Dynamically configure board type menu and subPanel menu from XML configuration file
         self.configureSubPanelMenu()
@@ -63,7 +63,6 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
-
 
     ####### Communication Methods #######       
     def connect(self):
@@ -294,6 +293,11 @@ class AQMain(QtGui.QMainWindow):
         self.comm.disconnect()
         sys.exit(app.exec_())
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QtGui.QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
@@ -307,5 +311,6 @@ if __name__ == "__main__":
     
     MainWindow = AQMain()
     MainWindow.show()
+    MainWindow.center()
     splash.finish(MainWindow)
     sys.exit(app.exec_())
