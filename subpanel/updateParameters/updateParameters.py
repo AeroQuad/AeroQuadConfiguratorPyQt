@@ -36,6 +36,9 @@ class updateParameters(QtGui.QWidget, subpanel):
                 self.ui.listParameterType.addItem(typeName)
         self.ui.listParameterType.setCurrentRow(0)
         self.ui.listParameterType.setFocus()
+        descriptionHeader = QtGui.QTableWidgetItem("   Description")
+        descriptionHeader.setTextAlignment(QtCore.Qt.AlignVCenter|QtCore.Qt.AlignLeft)
+        self.ui.parameterTable.setHorizontalHeaderItem(2, descriptionHeader)
         self.updateSelection()
         self.ui.buttonLoad.setEnabled(self.comm.isConnected())
         self.ui.buttonSave.setEnabled(self.comm.isConnected())
@@ -81,6 +84,7 @@ class updateParameters(QtGui.QWidget, subpanel):
             
         self.ui.parameterTable.resizeColumnToContents(0)
         self.ui.parameterTable.resizeColumnToContents(1)
+        self.ui.parameterTable.resizeColumnToContents(2)
         
     def updateParameters(self):
         parameterData = []

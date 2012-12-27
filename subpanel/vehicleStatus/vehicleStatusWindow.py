@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'vehicleStatusWindow.ui'
 #
-# Created: Sun Dec 16 22:34:02 2012
+# Created: Tue Dec 18 00:18:05 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,7 +35,7 @@ class Ui_vehicleStatus(object):
         self.motorView = QtGui.QGraphicsView(vehicleStatus)
         self.motorView.setStyleSheet(_fromUtf8("background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(12, 57, 106, 255), stop:1 rgba(25, 134, 193, 255))"))
         self.motorView.setObjectName(_fromUtf8("motorView"))
-        self.gridLayout.addWidget(self.motorView, 0, 2, 3, 1)
+        self.gridLayout.addWidget(self.motorView, 0, 3, 3, 1)
         self.leftTransmitter = QtGui.QGraphicsView(vehicleStatus)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -60,9 +60,16 @@ class Ui_vehicleStatus(object):
         self.rightTransmitter.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.rightTransmitter.setObjectName(_fromUtf8("rightTransmitter"))
         self.gridLayout.addWidget(self.rightTransmitter, 1, 1, 1, 1)
-        self.transmitterOutput = PlotWidget(vehicleStatus)
+        self.transmitterOutput = QtGui.QGraphicsView(vehicleStatus)
+        self.transmitterOutput.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:reflect, x1:0.548, y1:0.0170455, x2:0.548, y2:1, stop:0 rgba(30, 30, 30, 255), stop:1 rgba(66, 66, 66, 255))"))
+        self.transmitterOutput.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.transmitterOutput.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.transmitterOutput.setObjectName(_fromUtf8("transmitterOutput"))
         self.gridLayout.addWidget(self.transmitterOutput, 2, 0, 1, 2)
+        self.verticalScrollBar = QtGui.QScrollBar(vehicleStatus)
+        self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
+        self.verticalScrollBar.setObjectName(_fromUtf8("verticalScrollBar"))
+        self.gridLayout.addWidget(self.verticalScrollBar, 2, 2, 1, 1)
 
         self.retranslateUi(vehicleStatus)
         QtCore.QMetaObject.connectSlotsByName(vehicleStatus)
@@ -70,4 +77,3 @@ class Ui_vehicleStatus(object):
     def retranslateUi(self, vehicleStatus):
         vehicleStatus.setWindowTitle(QtGui.QApplication.translate("vehicleStatus", "AeroQuad Configurator", None, QtGui.QApplication.UnicodeUTF8))
 
-from pyqtgraph import PlotWidget

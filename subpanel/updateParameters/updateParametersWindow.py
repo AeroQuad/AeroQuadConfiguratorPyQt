@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'updateParametersWindow.ui'
 #
-# Created: Sat Dec 15 02:44:47 2012
+# Created: Thu Dec 27 01:32:47 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,8 +33,10 @@ class Ui_parameterUpdate(object):
         self.gridLayout.addItem(spacerItem, 2, 0, 1, 2)
         self.parameterTable = QtGui.QTableWidget(parameterUpdate)
         self.parameterTable.setStyleSheet(_fromUtf8(""))
+        self.parameterTable.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.parameterTable.setAlternatingRowColors(True)
         self.parameterTable.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
+        self.parameterTable.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
         self.parameterTable.setObjectName(_fromUtf8("parameterTable"))
         self.parameterTable.setColumnCount(3)
         self.parameterTable.setRowCount(0)
@@ -44,7 +46,6 @@ class Ui_parameterUpdate(object):
         self.parameterTable.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
         self.parameterTable.setHorizontalHeaderItem(2, item)
-        self.parameterTable.horizontalHeader().setStretchLastSection(True)
         self.gridLayout.addWidget(self.parameterTable, 0, 1, 1, 5)
         self.buttonSave = QtGui.QPushButton(parameterUpdate)
         self.buttonSave.setObjectName(_fromUtf8("buttonSave"))

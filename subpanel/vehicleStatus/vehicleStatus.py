@@ -18,6 +18,14 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
         
+        self.ui.verticalScrollBar.setMinimum(1000)
+        self.ui.verticalScrollBar.setMaximum(2000)
+        self.ui.verticalScrollBar.setValue(1000)
+        self.ui.verticalScrollBar.setInvertedAppearance(True)
+        self.ui.verticalScrollBar.setInvertedControls(True)
+        self.ui.verticalScrollBar.valueChanged.connect(self.updateBarGauge)
+
+        
         # Setup artificial horizon    
         horizon = QtGui.QPixmap("./resources/artificialHorizonBackGround.svg")
         self.horizonItem = QtGui.QGraphicsPixmapItem(horizon)
@@ -63,10 +71,16 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
         
-        # Setup histogram to display rest of transmitter channels
-        self.ui.transmitterOutput.hideAxis('left')
-        self.ui.transmitterOutput.hideAxis('bottom')
-        self.ui.transmitterOutput.hideButtons()
+        # Setup plots to display rest of transmitter channels
+        transmitterScene = QtGui.QGraphicsScene()
+        self.channelCount = 4
+        self.xmitChannel = []
+        for channel in range(self.channelCount):
+            barGauge = QtGui.QGraphicsRectItem() #QtGui.QGraphicsRectItem(channel * self.barPosition, -100, 25.0, 100.0) # Image is 200x25 pixels
+            barGauge.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
+            self.xmitChannel.append(barGauge)
+            transmitterScene.addItem(self.xmitChannel[channel])
+        self.ui.transmitterOutput.setScene(transmitterScene)
         
         configCount = len(self.boardConfiguration)
         for config in self.boardConfiguration:
@@ -78,6 +92,18 @@ class vehicleStatus(QtGui.QWidget, subpanel):
             self.altitude = True
         if "Battery Monitor: Enabled" in self.boardConfiguration:
             self.batteryMonitor = True
+            
+    def updateBarGauge(self, value):
+        output = self.scale(value, (1000.0, 2000.0), (0.0, self.windowHeight))
+        print(value, output)
+        for channel in range(self.channelCount):
+            self.xmitChannel[channel].setRect(channel * self.barPosition, -output, 25.0, output)
+            
+    def resizeEvent(self, event):
+        #size = event.size()
+        self.windowHeight = self.ui.transmitterOutput.height()
+        self.windowWidth = self.ui.transmitterOutput.width()
+        self.barPosition = self.windowWidth / self.channelCount
 
     def updatePitchRoll(self, rollAngle, pitchAngle):
         pitchPosition = self.scale(-pitchAngle, (-135.0, 135.0), (540.0, -540.0))

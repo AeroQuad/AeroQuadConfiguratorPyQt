@@ -38,50 +38,136 @@
 		<Subpanel Name="Update Parameters">
 			<Path>updateParameters.updateParameters</Path>
 			<Class>updateParameters</Class>
-			<ParameterType Name="Acrobatic (Rate) Mode">
+			<ParameterType Name="Rate Mode">
 				<Requirement>All</Requirement>
 				<Command>A</Command>
 				<Telemetry>a</Telemetry>
 				<UpdateEEPROM>W</UpdateEEPROM>
-				<Parameter Description="" Name="Roll Proportional">3.0</Parameter>
-				<Parameter Description="" Name="Roll Integral">0.0</Parameter>
-				<Parameter Description="" Name="Roll Derivative">-100.0</Parameter>
-				<Parameter Description="" Name="Pitch Proportional">3.0</Parameter>
-				<Parameter Description="" Name="Pitch Integral">0.0</Parameter>
-				<Parameter Description="" Name="Pitch Derivative">-100.0</Parameter>
-				<Parameter Description="" Name="Rotation Speed">5</Parameter>
+				<Parameter Description="Determines how fast your copter reacts to an external interference along the roll axis. A higher value means faster reaction, but maybe also oscillation. A lower value means slower reaction, but may result in causing a too little effect." Name="Roll Proportional">100.0</Parameter>
+				<Parameter Description="This value takes account of the external interferences' duration and intensity along the roll axis." Name="Roll Integral">0.0</Parameter>
+				<Parameter Description="This parameter helps to get rid of a pendulum effect caused by external interferences along the roll axis. Decrease or increase until this effect is mostly gone." Name="Roll Derivative">-300.0</Parameter>
+				<Parameter Description="Determines how fast your copter reacts to an external interference along the pitch axis. A higher value means faster reaction, but maybe also oscillation. A lower value means slower reaction, but may result in causing a too little effect." Name="Pitch Proportional">100.0</Parameter>
+				<Parameter Description="This value takes account of the external interferences' duration and intensity along the pitch axis." Name="Pitch Integral">0.0</Parameter>
+				<Parameter Description="This parameter helps to get rid of a pendulum effect caused by external interferences along the pitch axis. Decrease or increase until this effect is mostly gone." Name="Pitch Derivative">-300.0</Parameter>
+				<Parameter Description="Determines how sensitive your copter reacts to angular movements. A higher value will result in a more agile flight characteristic." Name="Rotation Speed">1</Parameter>
 			</ParameterType>
-			<ParameterType Name="Stable (Attitude) Mode">
+			<ParameterType Name="Attitude Mode">
 				<Requirement>All</Requirement>
 				<Command>B</Command>
 				<Telemetry>b</Telemetry>
 				<UpdateEEPROM>W</UpdateEEPROM>
-				<Parameter Description="" Name="Roll Accel Proportional">4.0</Parameter>
-				<Parameter Description="" Name="Roll Accel Integral">0.0</Parameter>
-				<Parameter Description="" Name="Roll Accel Derivative">-100.0</Parameter>
-				<Parameter Description="" Name="Pitch Accel Proportional">4.0</Parameter>
-				<Parameter Description="" Name="Pitch Accel Integral">0.0</Parameter>
-				<Parameter Description="" Name="Pitch Accel Derivative">-100</Parameter>
-				<Parameter Description="" Name="Roll Gyro Proportional">3.0</Parameter>
-				<Parameter Description="" Name="Roll Gyro Integral">0.0</Parameter>
-				<Parameter Description="" Name="Roll Gyro Derivative">-200</Parameter>
-				<Parameter Description="" Name="Pitch Gyro Proportional">3.0</Parameter>
-				<Parameter Description="" Name="Pitch Gyro Integral">0.0</Parameter>
-				<Parameter Description="" Name="Pitch Gyro Derivative">-200</Parameter>
-				<Parameter Description="" Name="Windup Guard">1000</Parameter>
+				<Parameter Description="missing" Name="Roll Accel Proportional">4.0</Parameter>
+				<Parameter Description="missing" Name="Roll Accel Integral">0.0</Parameter>
+				<Parameter Description="missing" Name="Roll Accel Derivative">0.0</Parameter>
+				<Parameter Description="missing" Name="Pitch Accel Proportional">4.0</Parameter>
+				<Parameter Description="missing" Name="Pitch Accel Integral">0.0</Parameter>
+				<Parameter Description="missing" Name="Pitch Accel Derivative">0</Parameter>
+				<Parameter Description="Determines how fast your copter reacts to an external interference along the roll axis. A higher value means faster reaction, but maybe also oscillation. A lower value means slower reaction, but may result in causing a too little effect." Name="Roll Gyro Proportional">100.0</Parameter>
+				<Parameter Description="This value takes account of the external interferences' duration and intensity along the roll axis." Name="Roll Gyro Integral">0.0</Parameter>
+				<Parameter Description="This parameter helps to get rid of a pendulum effect caused by external interferences along the roll axis. Decrease or increase until this effect is mostly gone." Name="Roll Gyro Derivative">-300</Parameter>
+				<Parameter Description="Determines how fast your copter reacts to an external interference along the pitch axis. A higher value means faster reaction, but maybe also oscillation. A lower value means slower reaction, but may result in causing a too little effect." Name="Pitch Gyro Proportional">100.0</Parameter>
+				<Parameter Description="This value takes account of the external interferences' duration and intensity along the pitch axis." Name="Pitch Gyro Integral">0.0</Parameter>
+				<Parameter Description="This parameter helps to get rid of a pendulum effect caused by external interferences along the pitch axis. Decrease or increase until this effect is mostly gone." Name="Pitch Gyro Derivative">-300</Parameter>
+				<Parameter Description="missing" Name="Windup Guard">1000</Parameter>
 			</ParameterType>
 			<ParameterType Name="Yaw Configuration">
 				<Requirement>All</Requirement>
 				<Command>C</Command>
 				<Telemetry>c</Telemetry>
 				<UpdateEEPROM>W</UpdateEEPROM>
-				<Parameter Description="" Name="Yaw Proportional">5.0</Parameter>
-				<Parameter Description="" Name="Yaw Integral">0.0</Parameter>
-				<Parameter Description="" Name="Yaw Derivative">0.0</Parameter>
-				<Parameter Description="" Name="Heading Hold Proportional">2.0</Parameter>
-				<Parameter Description="" Name="Heading Hold Integral">0.0</Parameter>
-				<Parameter Description="" Name="Heading Hold Derivative">0.0</Parameter>
-				<Parameter Description="1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
+				<Parameter Description="Determines how fast your copter reacts to an external interference along the yaw axis. A higher value means faster reaction, but maybe also oscillation. A lower value means slower reaction, but may result in causing a too little effect." Name="Yaw Proportional">200.0</Parameter>
+				<Parameter Description="This value takes account of the external interferences' duration and intensity along the yaw axis." Name="Yaw Integral">5.0</Parameter>
+				<Parameter Description="This parameter helps to get rid of a pendulum effect caused by external interferences along the yaw axis. Decrease or increase until this effect is mostly gone." Name="Yaw Derivative">0.0</Parameter>
+				<Parameter Description="Determines how fast your copter reacts to changes in heading which are not caues by pilot input (e.g. wind). A higher value means faster reaction, but maybe also oscillation. A lower value means slower reaction, but may result in causing a too little effect." Name="Heading Hold Proportional">2.0</Parameter>
+				<Parameter Description="This value takes account of the heading changes' duration and intensity." Name="Heading Hold Integral">0.0</Parameter>
+				<Parameter Description="This parameter helps to get rid of a pendulum effect caused by the Heading Hold feature. Decrease or increase until this effect is mostly gone." Name="Heading Hold Derivative">0.0</Parameter>
+				<Parameter Description="Controls the state of the Heading Hold feature: 1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
+			</ParameterType>
+			<ParameterType Name="Altitude Hold">
+				<Requirement>All</Requirement>
+				<Command>D</Command>
+				<Telemetry>d</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="Determines how fast your copter reacts to a change in altitude. A higher value means faster reaction, but maybe also oscillation. A lower value means slower reaction, but may result in causing a too little effect." Name="Barometer Altitude Proportional">25.0</Parameter>
+				<Parameter Description="This value takes account of the change's duration and intensity." Name="Barometer Altitude Integral">0.6</Parameter>
+				<Parameter Description="This parameter helps to get rid of a pendulum effect meaning your copter is moving up und down around the desired altitude. Decrease or increase until this effect is mostly gone." Name="Barometer Altitude Derivative">0.0</Parameter>
+				<Parameter Description="missing" Name="Windup Guard">1000</Parameter>
+				<Parameter Description="Declares the needed amount of increase/decrease in the throttle value (relatively to the value when Altitude Hold was enabled) to cause the altitude setpoint to be increased/decreased." Name="Throttle Bump Value">90</Parameter>
+				<Parameter Description="Declares the needed amount of increase/decrease in the throttle value (relatively to the value when Altitude Hold was enabled) to immediately turn Altitude Hold off." Name="Throttle Panic Value">250</Parameter>
+				<Parameter Description="Declares the maximum amount of allowed positive throttle change to prevent unexpected throttle changes. Must be a positive value." Name="Maximum Throttle Adjust">50</Parameter>
+				<Parameter Description="Declares the maximum amount of allowed negative throttle change to prevent unexpected throttle changes. Must be a negative value." Name="Minimum Throttle Adjust">-50</Parameter>
+				<Parameter Description="Used to smooth spikes in the measured altitude value." Name="Altitude Smooth Factor">0.1</Parameter>
+				<Parameter Description="Not used at the moment." Name="Z-Dampening Proportional">0.0</Parameter>
+				<Parameter Description="Not used at the moment." Name="Z-Dampening Integral">0.0</Parameter>
+				<Parameter Description="Not used at the moment." Name="Z-Dampening Derivative">0.0</Parameter>
+			</ParameterType>
+			<ParameterType Name="GPS Position Hold">
+				<Requirement>All</Requirement>
+				<Command>V</Command>
+				<Telemetry>v</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="missing" Name="Roll Proportional">0.8</Parameter>
+				<Parameter Description="missing" Name="Roll Integral">0.0</Parameter>
+				<Parameter Description="missing" Name="Roll Derivative">0.0</Parameter>
+				<Parameter Description="missing" Name="Pitch Proportional">0.8</Parameter>
+				<Parameter Description="missing" Name="Pitch Integral">0.0</Parameter>
+				<Parameter Description="missing" Name="Pitch Derivative">0.0</Parameter>
+				<Parameter Description="missing" Name="Yaw Proportional">50.0</Parameter>
+				<Parameter Description="missing" Name="Yaw Integral">0.0</Parameter>
+				<Parameter Description="missing" Name="Yaw Derivative">0.0</Parameter>
+			</ParameterType>
+			<ParameterType Name="Transmitter Smoothing">
+				<Requirement>All</Requirement>
+				<Command>F</Command>
+				<Telemetry>f</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="Defines how all received transmitter values are scaled. A factor of 1 means the values are processed as received without modification." Name="Transmitter Factor">1.0</Parameter>
+				<Parameter Description="Defines how the received Roll value is scaled. A factor of 1 means the value is processed as received without modification." Name="Roll Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received Pitch value is scaled. A factor of 1 means the value is processed as received without modification." Name="Pitch Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received Yaw value is scaled. A factor of 1 means the value is processed as received without modification." Name="Yaw Smoothing">0.5</Parameter>
+				<Parameter Description="Defines how the received Throttle value is scaled. A factor of 1 means the value is processed as received without modification." Name="Throttle Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received Mode value is scaled. A factor of 1 means the value is processed as received without modification." Name="Mode Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received AUX1 value is scaled. A factor of 1 means the value is processed as received without modification." Name="AUX1 Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received AUX2 value is scaled. A factor of 1 means the value is processed as received without modification." Name="AUX2 Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received AUX3 value is scaled. A factor of 1 means the value is processed as received without modification." Name="AUX3 Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received AUX4 value is scaled. A factor of 1 means the value is processed as received without modification." Name="AUX4 Smoothing">1.0</Parameter>
+				<Parameter Description="Defines how the received AUX5 value is scaled. A factor of 1 means the value is processed as received without modification." Name="AUX5 Smoothing">1.0</Parameter>
+			</ParameterType>
+			<ParameterType Name="Battery Monitor">
+				<Requirement>Battery Monitor: Enabled</Requirement>
+				<Command>N</Command>
+				<Telemetry>n</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="Defines the voltage value (per cell) when battery alarm (second level) is triggered. The battery warning (first level) is 110% of this value (e.g. alarm = 3.3 means warning = 3.63)." Name="Alarm Voltage">3.33</Parameter>
+				<Parameter Description="Only needed if BatteryMonitorAutoDescend is enabled in the software. Used to initiate an automatical descent of your copter once battery alarm is hit. Defines the target throttle value which you want to reach." Name="Throttle Target">1450</Parameter>
+				<Parameter Description="Only needed if BatteryMonitorAutoDescend is enabled in the software. Defines the time (in milliseconds) in which you want to reach the target throttle value set above." Name="Going Down Time">60000</Parameter>
+			</ParameterType>
+			<ParameterType Name="Camera Stabilization">
+				<Requirement>Camera Stability: Enabled</Requirement>
+				<Command>P</Command>
+				<Telemetry>p</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="Controls the state of the camera stabilization feature. 0 = disabled, 1 = enabled" Name="Mode">1</Parameter>
+				<Parameter Description="Sets the center position for pitch servo." Name="Center Pitch">1500</Parameter>
+				<Parameter Description="Sets the center position for roll servo." Name="Center Roll">1500</Parameter>
+				<Parameter Description="Sets the center position for yaw servo." Name="Center Yaw">1500</Parameter>
+				<Parameter Description="Sets the speed how fast the pitch servo will respond to changes in pitch angle (negative numbers will reverse servo direction)." Name="Scale Pitch Angle">1273.2</Parameter>
+				<Parameter Description="Sets the speed how fast the roll servo will respond to changes in roll angle (negative numbers will reverse servo direction)." Name="Scale Roll Angle">636.6</Parameter>
+				<Parameter Description="Sets the speed how fast the yaw servo will respond to changes in yaw angle (negative numbers will reverse servo direction)." Name="Scale Yaw Angle">318.3</Parameter>
+				<Parameter Description="Sets the minimum position of the pitch servo." Name="Servo Minimum Pitch">1000</Parameter>
+				<Parameter Description="Sets the minimum position of the roll servo." Name="Servo Minimum Roll">1000</Parameter>
+				<Parameter Description="Sets the minimum position of the yaw servo." Name="Servo Minimum Yaw">1000</Parameter>
+				<Parameter Description="Sets the maximum position of the pitch servo." Name="Servo Maximum Pitch">2000</Parameter>
+				<Parameter Description="Sets the maximum position of the roll servo." Name="Servo Maximum Roll">2000</Parameter>
+				<Parameter Description="Sets the maximum position of the yaw servo." Name="Servo Maximum Yaw">2000</Parameter>
+			</ParameterType>
+			<ParameterType Name="Miscellaneous Configuration">
+				<Requirement>All</Requirement>
+				<Command>E</Command>
+				<Telemetry>e</Telemetry>
+				<UpdateEEPROM>W</UpdateEEPROM>
+				<Parameter Description="Defines the voltage reference value. For our newer boards (v1.8+ and AeroQuad32) you don't need to change the default value!" Name="Voltage Reference">5.0</Parameter>
+				<Parameter Description="Defines the throttle value sent to the motors while idling. If your motors don't start spinning when armed, increase this values slowly. If they spin too fast, decrease it." Name="Minimum Armed (Idle) Throttle">1100</Parameter>
 			</ParameterType>
 		</Subpanel>
 		<Subpanel Name="Serial Monitor">
