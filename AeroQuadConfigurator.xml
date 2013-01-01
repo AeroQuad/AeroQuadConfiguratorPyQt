@@ -229,4 +229,43 @@
                 <Parameter Description="Defines the throttle value sent to the motors while idling. If your motors don't start spinning when armed, increase this values slowly. If they spin too fast, decrease it." Name="Minimum Armed (Idle) Throttle">1100</Parameter>
             </ParameterType>
         </Subpanel>
+        <Subpanel Name="Attitude">
+            <Requirement>Gyroscope: Detected</Requirement>
+            <Requirement>Accelerometer: Detected</Requirement>
+            <Requirement>Magnetometer: Detected</Requirement>
+            <Path>dataPlot.dataPlot</Path>
+            <Class>dataPlot</Class>
+            <Telemetry>r</Telemetry>
+            <Index>0</Index>
+            <PlotSize>128</PlotSize>
+            <PlotName>Roll</PlotName>
+            <PlotName>Pitch</PlotName>
+            <PlotName>Yaw</PlotName>
+        </Subpanel>
+        <Subpanel Name="Transmitter Data">
+            <Path>dataPlot.dataPlot</Path>
+            <Class>dataPlot</Class>
+            <Telemetry>t</Telemetry>
+            <Index>0</Index>
+            <PlotSize>128</PlotSize>
+            <PlotName>Roll</PlotName>
+            <PlotName>Pitch</PlotName>
+            <PlotName>Yaw</PlotName>
+            <PlotName>Throttle</PlotName>
+            <PlotName>Mode</PlotName>
+            <PlotName>Aux1</PlotName>
+            <PlotName>Aux2</PlotName>
+            <PlotName>Aux3</PlotName>
+            <PlotName>Aux4</PlotName>
+            <PlotName>Aux5</PlotName>
+        </Subpanel>
+        <Subpanel Name="Barometer Data">
+            <Requirement>Barometer: Detected</Requirement>
+            <Path>dataPlot.dataPlot</Path>
+            <Class>dataPlot</Class>
+            <Telemetry>z</Telemetry>
+            <Index>0</Index>
+            <PlotSize>128</PlotSize>
+            <PlotName>Altitude</PlotName>
+        </Subpanel>
 </Configurator>
