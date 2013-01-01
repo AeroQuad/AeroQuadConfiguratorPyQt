@@ -8,6 +8,7 @@ import sys
 import time
 
 from PyQt4 import QtCore, QtGui
+from serial import SerialException
 from ui.mainWindow import Ui_MainWindow
 from communication.serialCom import AQSerial
 #from subpanel.subPanelConfiguration import subPanelConfiguration
@@ -79,32 +80,41 @@ class AQMain(QtGui.QMainWindow):
         # Setup serial port
         bootupDelay = float(xml.find("./Settings/BootUpDelay").text)
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
-        self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
-        versionRequest = xml.find("./Settings/SoftwareVersion").text
-        self.comm.write(versionRequest)
-        version = self.comm.waitForRead()
+        
+        try:
+            self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
+            versionRequest = xml.find("./Settings/SoftwareVersion").text
+            self.comm.write(versionRequest)
+            version = self.comm.waitForRead()
 
-        if version != "":
-            self.storeComPortSelection()
-            self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
-            # Read board configuration
-            config = xml.find("./Settings/BoardConfiguration").text
-            self.comm.write(config)
-            size = int(self.comm.waitForRead())
-            for index in range(size):
-                response = self.comm.waitForRead()
-                self.boardConfiguration.append(response)
-            # Hide menu items that don't match board configuration
-            for index in range(len(self.subPanelMenu)):
-                hide = self.checkRequirementsMatch(self.subPanelList[index])
-                self.subPanelMenu[index].setVisible(hide)
-            # Load configuration screen
-            self.selectSubPanel("Vehicle Configuration")
-            self.restartSubPanel()
-        else:
-            self.disconnect()
-            self.ui.status.setText("Not connected to the AeroQuad")
-            QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
+            if version != "":
+                self.storeComPortSelection()
+                self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
+                # Read board configuration
+                config = xml.find("./Settings/BoardConfiguration").text
+                self.comm.write(config)
+                size = int(self.comm.waitForRead())
+                for index in range(size):
+                    response = self.comm.waitForRead()
+                    self.boardConfiguration.append(response)
+                # Hide menu items that don't match board configuration
+                for index in range(len(self.subPanelMenu)):
+                    hide = self.checkRequirementsMatch(self.subPanelList[index])
+                    self.subPanelMenu[index].setVisible(hide)
+                # Load configuration screen
+                self.selectSubPanel("Vehicle Configuration")
+                self.restartSubPanel()
+            else:
+                self.disconnect()
+                self.ui.status.setText("Not connected to the AeroQuad")
+                QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
+        except SerialException, se:
+            self.ui.buttonDisconnect.setEnabled(False)
+            self.ui.buttonConnect.setEnabled(True)
+            self.ui.comPort.setEnabled(True)
+            self.ui.baudRate.setEnabled(True)
+            self.ui.status.setText("Connection Failed")
+            self.boardConfiguration = []
         
     def disconnect(self):
         '''Disconnect from the AeroQuad'''
