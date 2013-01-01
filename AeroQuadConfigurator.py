@@ -58,6 +58,7 @@ class AQMain(QtGui.QMainWindow):
         self.activeSubPanelName = ""
 
         # Connect GUI slots and signals
+        self.ui.comPort.return_handler = self.connect
         self.ui.buttonConnect.clicked.connect(self.connect)
         self.ui.buttonDisconnect.clicked.connect(self.disconnect)
         self.ui.actionExit.triggered.connect(QtGui.qApp.quit)
