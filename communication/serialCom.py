@@ -31,7 +31,7 @@ class AQSerial(object):
         
     def flushResponse(self):
         while self.dataAvailable():
-            time.sleep(100)
+            time.sleep(0.100)
             self.read()
         
     def disconnect(self):
