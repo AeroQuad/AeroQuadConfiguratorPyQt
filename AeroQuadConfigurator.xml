@@ -1,99 +1,47 @@
 <Configurator>
 
-	<Settings>
-		<DefaultComPort>COM5</DefaultComPort>
-		<BootUpDelay>0.0</BootUpDelay>
-		<CommTimeOut>1.0</CommTimeOut>
-		<DefaultBaudRate>115200</DefaultBaudRate>
-		<AvailableBaudRates>1200,9600,38400,57600,111111,115200</AvailableBaudRates>
-		<SoftwareVersion>!</SoftwareVersion>
-		<StopTelemetry>X</StopTelemetry>
-		<BoardConfiguration>#</BoardConfiguration>
-	</Settings>
-	
-	<Subpanels>
-		<Subpanel Name="Vehicle Configuration">
-			<Requirement>All</Requirement>
-			<Path>vehicleConfiguration.vehicleConfiguration</Path>
-			<Class>vehicleConfiguration</Class>
-			<VehicleGraphics>
-				<Vehicle Name="Quad +">./resources/Quad+.png</Vehicle>
-				<Vehicle Name="Quad X">./resources/QuadX.png</Vehicle>
-				<Vehicle Name="Quad Y4">./resources/QuadX.png</Vehicle>
-				<Vehicle Name="Tri">./resources/QuadX.png</Vehicle>
-				<Vehicle Name="Hex +">./resources/Hexa+.png</Vehicle>
-				<Vehicle Name="Hex X">./resources/HexaX.png</Vehicle>
-				<Vehicle Name="Hex Y6">./resources/HexaX.png</Vehicle>
-				<Vehicle Name="Octo X8">./resources/QuadX.png</Vehicle>
-				<Vehicle Name="Octo X">./resources/OctoX.png</Vehicle>
-				<Vehicle Name="Octo X+">./resources/Octo+.png</Vehicle>
-			</VehicleGraphics>
-		</Subpanel>
-		<Subpanel Name="Vehicle Status">
-			<Requirement>All</Requirement>
-			<Path>vehicleStatus.vehicleStatus</Path>
-			<Class>vehicleStatus</Class>
-			<Telemetry>s</Telemetry>
-		</Subpanel>
-		<Subpanel Name="Serial Monitor">
-			<Requirement>All</Requirement>
-			<Path>commMonitor.commMonitor</Path>
-			<Class>commMonitor</Class>
-		</Subpanel>
-		<Subpanel Name="Sensor Data">
-			<Requirement>Gyroscope: Detected</Requirement>
-			<Requirement>Accelerometer: Detected</Requirement>
-			<Requirement>Magnetometer: Detected</Requirement>
-			<Path>dataPlot.dataPlot</Path> 
-			<Class>dataPlot</Class> 
-			<Telemetry>i</Telemetry>
-			<Index>0</Index>
-			<PlotSize>128</PlotSize>
-			<PlotName>Gyro X Axis</PlotName>
-			<PlotName>Gyro Y Axis</PlotName>
-			<PlotName>Gyro Z Axis</PlotName>
-			<PlotName>Accel X Axis</PlotName>
-			<PlotName>Accel Y Axis</PlotName>
-			<PlotName>Accel Z Axis</PlotName>
-			<PlotName>Mag X Axis</PlotName>
-			<PlotName>Mag Y Axis</PlotName>
-			<PlotName>Mag Z Axis</PlotName>
-		</Subpanel>
-		<Subpanel Name="Gyroscope Data">
-			<Requirement>Gyroscope: Detected</Requirement>
-			<Path>dataPlot.dataPlot</Path> 
-			<Class>dataPlot</Class> 
-			<Telemetry>i</Telemetry>
-			<Index>0</Index>
-			<PlotSize>128</PlotSize>
-			<PlotName>Gyro X Axis</PlotName>
-			<PlotName>Gyro Y Axis</PlotName>
-			<PlotName>Gyro Z Axis</PlotName>
-		</Subpanel>
-		<Subpanel Name="Accelerometer Data">
-			<Requirement>Accelerometer: Detected</Requirement>
-			<Path>dataPlot.dataPlot</Path> 
-			<Class>dataPlot</Class> 
-			<Telemetry>i</Telemetry>
-			<Index>3</Index>
-			<PlotSize>128</PlotSize>
-			<PlotName>Accel X Axis</PlotName>
-			<PlotName>Accel Y Axis</PlotName>
-			<PlotName>Accel Z Axis</PlotName>
-		</Subpanel>
-		<Subpanel Name="Magnetometer Data">
-			<Requirement>Magnetometer: Detected</Requirement>
-			<Path>dataPlot.dataPlot</Path> 
-			<Class>dataPlot</Class> 
-			<Telemetry>i</Telemetry>
-			<Index>6</Index>
-			<PlotSize>128</PlotSize>
-			<PlotName>Mag X Axis</PlotName>
-			<PlotName>Mag Y Axis</PlotName>
-			<PlotName>Mag Z Axis</PlotName>
-		</Subpanel>
-	</Subpanels>
-	
+    <Settings>
+        <DefaultComPort>/dev/tty.usbmodem411</DefaultComPort>
+        <BootUpDelay>4.0</BootUpDelay>
+        <CommTimeOut>0.0</CommTimeOut>
+        <DefaultBaudRate>115200</DefaultBaudRate>
+        <AvailableBaudRates>1200,9600,38400,57600,111111,115200</AvailableBaudRates>
+        <SoftwareVersion>!</SoftwareVersion>
+        <StopTelemetry>X</StopTelemetry>
+        <BoardConfiguration>#</BoardConfiguration>
+    </Settings>
+    
+    <Subpanels>
+        <Subpanel Name="Serial Monitor">
+            <Requirement>All</Requirement>
+            <Path>commMonitor.commMonitor</Path>
+            <Class>commMonitor</Class>
+        </Subpanel>
+
+        <Subpanel Name="Vehicle Configuration">
+            <Requirement>All</Requirement>
+            <Path>vehicleConfiguration.vehicleConfiguration</Path>
+            <Class>vehicleConfiguration</Class>
+            <VehicleGraphics>
+                <Vehicle Name="Quad +">./resources/Quad+.png</Vehicle>
+                <Vehicle Name="Quad X">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Quad Y4">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Tri">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Hex +">./resources/Hexa+.png</Vehicle>
+                <Vehicle Name="Hex X">./resources/HexaX.png</Vehicle>
+                <Vehicle Name="Hex Y6">./resources/HexaX.png</Vehicle>
+                <Vehicle Name="Octo X8">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Octo X">./resources/OctoX.png</Vehicle>
+                <Vehicle Name="Octo X+">./resources/Octo+.png</Vehicle>
+            </VehicleGraphics>
+        </Subpanel>
+
+        <Subpanel Name="Vehicle Status">
+            <Requirement>All</Requirement>
+            <Path>vehicleStatus.vehicleStatus</Path>
+            <Class>vehicleStatus</Class>
+            <Telemetry>s</Telemetry>
+        </Subpanel>
         <Subpanel Name="Update Parameters">
             <Path>updateParameters.updateParameters</Path>
             <Class>updateParameters</Class>
@@ -229,6 +177,62 @@
                 <Parameter Description="Defines the throttle value sent to the motors while idling. If your motors don't start spinning when armed, increase this values slowly. If they spin too fast, decrease it." Name="Minimum Armed (Idle) Throttle">1100</Parameter>
             </ParameterType>
         </Subpanel>
+
+        <Subpanel Name="Sensor Data">
+            <Requirement>Gyroscope: Detected</Requirement>
+            <Requirement>Accelerometer: Detected</Requirement>
+            <Requirement>Magnetometer: Detected</Requirement>
+            <Path>dataPlot.dataPlot</Path> 
+            <Class>dataPlot</Class> 
+            <Telemetry>i</Telemetry>
+            <Index>0</Index>
+            <PlotSize>128</PlotSize>
+            <PlotName>Gyro X Axis</PlotName>
+            <PlotName>Gyro Y Axis</PlotName>
+            <PlotName>Gyro Z Axis</PlotName>
+            <PlotName>Accel X Axis</PlotName>
+            <PlotName>Accel Y Axis</PlotName>
+            <PlotName>Accel Z Axis</PlotName>
+            <PlotName>Mag X Axis</PlotName>
+            <PlotName>Mag Y Axis</PlotName>
+            <PlotName>Mag Z Axis</PlotName>
+        </Subpanel>
+
+        <Subpanel Name="Gyroscope Data">
+            <Requirement>Gyroscope: Detected</Requirement>
+            <Path>dataPlot.dataPlot</Path> 
+            <Class>dataPlot</Class> 
+            <Telemetry>i</Telemetry>
+            <Index>0</Index>
+            <PlotSize>128</PlotSize>
+            <PlotName>Gyro X Axis</PlotName>
+            <PlotName>Gyro Y Axis</PlotName>
+            <PlotName>Gyro Z Axis</PlotName>
+        </Subpanel>
+
+        <Subpanel Name="Accelerometer Data">
+            <Requirement>Accelerometer: Detected</Requirement>
+            <Path>dataPlot.dataPlot</Path> 
+            <Class>dataPlot</Class> 
+            <Telemetry>i</Telemetry>
+            <Index>3</Index>
+            <PlotSize>128</PlotSize>
+            <PlotName>Accel X Axis</PlotName>
+            <PlotName>Accel Y Axis</PlotName>
+            <PlotName>Accel Z Axis</PlotName>
+        </Subpanel>
+
+        <Subpanel Name="Magnetometer Data">
+            <Requirement>Magnetometer: Detected</Requirement>
+            <Path>dataPlot.dataPlot</Path> 
+            <Class>dataPlot</Class> 
+            <Telemetry>i</Telemetry>
+            <Index>6</Index>
+            <PlotSize>128</PlotSize>
+            <PlotName>Mag X Axis</PlotName>
+            <PlotName>Mag Y Axis</PlotName>
+            <PlotName>Mag Z Axis</PlotName>
+        </Subpanel>
         <Subpanel Name="Attitude">
             <Requirement>Gyroscope: Detected</Requirement>
             <Requirement>Accelerometer: Detected</Requirement>
@@ -268,4 +272,6 @@
             <PlotSize>128</PlotSize>
             <PlotName>Altitude</PlotName>
         </Subpanel>
+    </Subpanels>
+
 </Configurator>
