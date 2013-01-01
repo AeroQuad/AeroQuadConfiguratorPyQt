@@ -42,7 +42,7 @@ class subpanel(object):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel = xmlSubPanel
         if self.comm.isConnected() == True:
-            telemetry = self.xml.find(xmlSubPanel + "/Telemetry")
+            telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
             if telemetry != None:
                 self.comm.write(telemetry)
             self.timer = QtCore.QTimer()
@@ -62,6 +62,8 @@ class subpanel(object):
         '''This method enables a flag which closes the continuous serial read thread'''
         if self.comm.isConnected() == True:
             if self.timer != None:
+                self.comm.write(self.xml.find("./Settings/StopTelemetry").text)
+                self.comm.flushResponse()
                 self.timer.timeout.disconnect(self.readContinuousData)
                 self.timer.stop()
         

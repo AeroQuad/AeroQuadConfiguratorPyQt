@@ -15,20 +15,17 @@ class dataPlot(QtGui.QWidget, subpanel):
         QtGui.QWidget.__init__(self)
         subpanel.__init__(self)
 
-        pg.setConfigOption('background', (255,255,255))
+        #pg.setConfigOption('background', (255,255,255))
         pg.setConfigOption('foreground', (128,128,128))
-        
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)
         self.ui.graphicsView.hideAxis('bottom')
-        #self.ui.graphicsView.showGrid(y=True)
         self.ui.graphicsView.getAxis('top').setHeight(10)
         self.ui.graphicsView.getAxis('bottom').setHeight(10)
         self.ui.graphicsView.getAxis('left').setWidth(50)
-        #self.ui.graphicsView.enableAutoRange(False)
+        self.ui.graphicsView.setBackground((255,255,255))
         self.plotCount = 0
         self.legend = None
-        
         self.colors = [QtGui.QColor('blue'),
                        QtGui.QColor('red'),
                        QtGui.QColor('lime'),
@@ -68,7 +65,6 @@ class dataPlot(QtGui.QWidget, subpanel):
         self.ui.treeWidget.resizeColumnToContents(1)
         self.legend = self.ui.treeWidget.invisibleRootItem()
 
-            
         if self.comm.isConnected() == True:
             telemetry = self.xml.find(self.xmlSubPanel + "/Telemetry").text
             if telemetry != "":
@@ -93,6 +89,6 @@ class dataPlot(QtGui.QWidget, subpanel):
                             self.output[i].pop()
                         except:
                             pass # Do not update output data if invalid number detected from comm read
-                        self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(self.colors[i], width=2))
+                        self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(self.colors[i], width=3))
                         legendRow.setText(2, dataValue)
 

@@ -14,7 +14,7 @@
    <string>AeroQuad Configurator</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/AQresources.qrc">
+   <iconset>
     <normaloff>:/AQ/AeroQuadMacIcon.ico</normaloff>:/AQ/AeroQuadMacIcon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -198,7 +198,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../resources/AQresources.qrc"/>
+  <include location="AQresources.qrc"/>
  </resources>
  <connections/>
 </ui>

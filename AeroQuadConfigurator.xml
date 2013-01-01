@@ -12,15 +12,28 @@
 	</Settings>
 	
 	<Subpanels>
-		<Subpanel Name="Serial Monitor">
-			<Requirement>All</Requirement>
-			<Path>commMonitor.commMonitor</Path>
-			<Class>commMonitor</Class>
-		</Subpanel>
 		<Subpanel Name="Vehicle Configuration">
 			<Requirement>All</Requirement>
 			<Path>vehicleConfiguration.vehicleConfiguration</Path>
 			<Class>vehicleConfiguration</Class>
+			<VehicleGraphics>
+				<Vehicle Name="Quad +">./resources/Quad+.png</Vehicle>
+				<Vehicle Name="Quad X">./resources/QuadX.png</Vehicle>
+				<Vehicle Name="Quad Y4">./resources/QuadX.png</Vehicle>
+				<Vehicle Name="Tri">./resources/QuadX.png</Vehicle>
+				<Vehicle Name="Hex +">./resources/Hexa+.png</Vehicle>
+				<Vehicle Name="Hex X">./resources/HexaX.png</Vehicle>
+				<Vehicle Name="Hex Y6">./resources/HexaX.png</Vehicle>
+				<Vehicle Name="Octo X8">./resources/QuadX.png</Vehicle>
+				<Vehicle Name="Octo X">./resources/OctoX.png</Vehicle>
+				<Vehicle Name="Octo X+">./resources/Octo+.png</Vehicle>
+			</VehicleGraphics>
+		</Subpanel>
+		<Subpanel Name="Vehicle Status">
+			<Requirement>All</Requirement>
+			<Path>vehicleStatus.vehicleStatus</Path>
+			<Class>vehicleStatus</Class>
+			<Telemetry>s</Telemetry>
 		</Subpanel>
 		<Subpanel Name="Update Parameters">
 			<Path>updateParameters.updateParameters</Path>
@@ -70,6 +83,11 @@
 				<Parameter Description="" Name="Heading Hold Derivative">0.0</Parameter>
 				<Parameter Description="1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
 			</ParameterType>
+		</Subpanel>
+		<Subpanel Name="Serial Monitor">
+			<Requirement>All</Requirement>
+			<Path>commMonitor.commMonitor</Path>
+			<Class>commMonitor</Class>
 		</Subpanel>
 		<Subpanel Name="Sensor Data">
 			<Requirement>Gyroscope: Detected</Requirement>

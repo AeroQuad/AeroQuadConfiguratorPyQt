@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'updateParametersWindow.ui'
 #
-# Created: Fri Nov 30 01:37:28 2012
+# Created: Sat Dec 15 02:44:47 2012
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,6 +32,7 @@ class Ui_parameterUpdate(object):
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 2, 0, 1, 2)
         self.parameterTable = QtGui.QTableWidget(parameterUpdate)
+        self.parameterTable.setStyleSheet(_fromUtf8(""))
         self.parameterTable.setAlternatingRowColors(True)
         self.parameterTable.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
         self.parameterTable.setObjectName(_fromUtf8("parameterTable"))

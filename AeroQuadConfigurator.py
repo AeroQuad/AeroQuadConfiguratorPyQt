@@ -10,6 +10,7 @@ import time
 from PyQt4 import QtCore, QtGui
 from ui.mainWindow import Ui_MainWindow
 from communication.serialCom import AQSerial
+#from subpanel.subPanelConfiguration import subPanelConfiguration
 from ui.splashScreen import Ui_splashScreen
 import xml.etree.ElementTree as ET
 xml = ET.parse('AeroQuadConfigurator.xml')
@@ -46,9 +47,9 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.setCurrentIndex(commIndex)
         
         # Load splash screen
-        self.subPanel = Ui_splashScreen()
-        self.subPanel.setupUi(self.subPanel)
-        self.ui.subPanel.addWidget(self.subPanel)
+        splash = Ui_splashScreen()
+        splash.setupUi(splash)
+        self.ui.subPanel.addWidget(splash)
         
         # Dynamically configure board type menu and subPanel menu from XML configuration file
         self.configureSubPanelMenu()
@@ -62,7 +63,6 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
-
 
     ####### Communication Methods #######       
     def connect(self):
@@ -98,6 +98,8 @@ class AQMain(QtGui.QMainWindow):
             for index in range(len(self.subPanelMenu)):
                 hide = self.checkRequirementsMatch(self.subPanelList[index])
                 self.subPanelMenu[index].setVisible(hide)
+            # Load configuration screen
+            self.selectSubPanel("Vehicle Configuration")
             self.restartSubPanel()
         else:
             self.disconnect()
@@ -114,6 +116,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.setEnabled(True)
         self.ui.baudRate.setEnabled(True)
         self.ui.status.setText("Disconnected from the AeroQuad")
+        self.boardConfiguration = []
         self.restartSubPanel()
 
     def updateDetectedPorts(self):
@@ -182,6 +185,8 @@ class AQMain(QtGui.QMainWindow):
         '''Dynamically add subpanels to View menu based on XML file configuration
         This also adds the subpanel to a stacked widget and stores object instances so that they can run when selected'''
         subPanels = xml.findall("./Subpanels/Subpanel")
+        #subPanelConfig = subPanelConfiguration()
+        #subPanels = subPanelConfig.subPanelList
         subPanelCount = 1
         self.subPanelList = [] # Stores subpanel names
         self.subPanelClasses = [] # Stores subpanel object instances
@@ -197,6 +202,8 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()
+            #self.subPanelList.append(subPanel.name)
+            #tempSubPanel = subPanel.module           
             tempSubPanel.initialize(self.comm, xml, self.ui, self.boardConfiguration)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
@@ -210,6 +217,31 @@ class AQMain(QtGui.QMainWindow):
             subPanel.triggered.connect(self.subPanelMapper.map)
             subPanel.setCheckable(True)
         self.subPanelMapper.mapped[str].connect(self.selectSubPanel)
+
+#    def configureSubPanelMenu(self):
+#        '''Dynamically add subpanels to View menu based on XML file configuration
+#        This also adds the subpanel to a stacked widget and stores object instances so that they can run when selected'''
+#        subPanelConfig = subPanelConfiguration()
+#        subPanels = subPanelConfig.subPanelList
+#        subPanelCount = 1
+#        self.subPanelList = [] # Stores subpanel names
+#        self.subPanelClasses = [] # Stores subpanel object instances
+#        for subPanel in subPanels:
+#            self.subPanelList.append(subPanel.name)
+#            tempSubPanel = subPanel.module
+#            tempSubPanel.initialize(self.comm, xml, self.ui, self.boardConfiguration)
+#            self.ui.subPanel.addWidget(tempSubPanel)
+#            self.subPanelClasses.append(tempSubPanel)
+#            subPanelCount += 1
+#        self.subPanelMapper = QtCore.QSignalMapper(self)
+#        self.subPanelMenu = []
+#        for subPanelName in self.subPanelList:
+#            subPanel = self.ui.menuView.addAction(subPanelName)
+#            self.subPanelMenu.append(subPanel) # Need to store this separately because Python only binds stuff at runtime
+#            self.subPanelMapper.setMapping(subPanel, subPanelName)
+#            subPanel.triggered.connect(self.subPanelMapper.map)
+#            subPanel.setCheckable(True)
+#        self.subPanelMapper.mapped[str].connect(self.selectSubPanel)        
   
     def selectSubPanel(self, subPanelName):
         '''Places check mark beside selected subpanel name
@@ -261,6 +293,11 @@ class AQMain(QtGui.QMainWindow):
         self.comm.disconnect()
         sys.exit(app.exec_())
 
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QtGui.QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

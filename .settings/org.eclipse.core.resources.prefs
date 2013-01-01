@@ -1,10 +1,11 @@
 eclipse.preferences.version=1
-encoding//resources/AQresources_rc.py=utf-8
 encoding//subpanel/commMonitor/commMonitor.py=utf-8
 encoding//subpanel/commMonitor/commMonitorWindow.py=utf-8
 encoding//subpanel/dataPlot/dataPlot.py=utf-8
 encoding//subpanel/dataPlot/dataPlotWindow.py=utf-8
 encoding//subpanel/updateParameters/updateParametersWindow.py=utf-8
 encoding//subpanel/vehicleConfiguration/vehicleConfigurationWindow.py=utf-8
+encoding//subpanel/vehicleStatus/vehicleStatusWindow.py=utf-8
+encoding//ui/AQresources_rc.py=utf-8
 encoding//ui/mainWindow.py=utf-8
 encoding//ui/splashScreen.py=utf-8
