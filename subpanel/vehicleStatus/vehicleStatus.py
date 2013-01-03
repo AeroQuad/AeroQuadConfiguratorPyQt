@@ -7,8 +7,6 @@ Created on Dec 6, 2012
 from PyQt4 import QtCore, QtGui
 from subpanel.subPanelTemplate import subpanel
 from subpanel.vehicleStatus.vehicleStatusWindow import Ui_vehicleStatus
-#from scipy.misc import imread
-#from scipy.ndimage.interpolation import rotate
 import math
 
 class vehicleStatus(QtGui.QWidget, subpanel):
@@ -17,14 +15,18 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         subpanel.__init__(self)
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
-        
-        self.ui.verticalScrollBar.setMinimum(1000)
-        self.ui.verticalScrollBar.setMaximum(2000)
-        self.ui.verticalScrollBar.setValue(1000)
-        self.ui.verticalScrollBar.setInvertedAppearance(True)
-        self.ui.verticalScrollBar.setInvertedControls(True)
-        self.ui.verticalScrollBar.valueChanged.connect(self.updateBarGauge)
-
+     
+        self.receiverChannels = 10
+        #configCount = len(self.boardConfiguration)
+        for config in self.boardConfiguration:
+            if "Receiver Channels" in config:
+                receiverConfig = config.split(": ")
+                self.receiverChannels = int(receiverConfig[1])
+                break
+        if "Barometer: Detected" in self.boardConfiguration:
+            self.altitude = True
+        if "Battery Monitor: Enabled" in self.boardConfiguration:
+            self.batteryMonitor = True
         
         # Setup artificial horizon    
         horizon = QtGui.QPixmap("./resources/artificialHorizonBackGround.svg")
@@ -73,37 +75,41 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         
         # Setup plots to display rest of transmitter channels
         transmitterScene = QtGui.QGraphicsScene()
-        self.channelCount = 4
+        self.channelCount = self.receiverChannels - 4
+        self.barGaugeWidth = 25.0
         self.xmitChannel = []
+        self.xmitLabel = []
+        self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4", "Aux5"]
+        self.labelHeight = 25
+
         for channel in range(self.channelCount):
-            barGauge = QtGui.QGraphicsRectItem() #QtGui.QGraphicsRectItem(channel * self.barPosition, -100, 25.0, 100.0) # Image is 200x25 pixels
+            barGauge = QtGui.QGraphicsRectItem()
             barGauge.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
             self.xmitChannel.append(barGauge)
             transmitterScene.addItem(self.xmitChannel[channel])
+            label = transmitterScene.addText(self.xmitLabels[channel])
+            label.setDefaultTextColor(QtCore.Qt.white)
+            label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
+            self.xmitLabel.append(label)
         self.ui.transmitterOutput.setScene(transmitterScene)
-        
-        configCount = len(self.boardConfiguration)
-        for config in self.boardConfiguration:
-            if "Receiver Channels" in config:
-                receiverConfig = config.split(": ")
-                self.receiverChannls = int(receiverConfig[1])
-                break
-        if "Barometer: Detected" in self.boardConfiguration:
-            self.altitude = True
-        if "Battery Monitor: Enabled" in self.boardConfiguration:
-            self.batteryMonitor = True
             
-    def updateBarGauge(self, value):
-        output = self.scale(value, (1000.0, 2000.0), (0.0, self.windowHeight))
-        print(value, output)
-        for channel in range(self.channelCount):
-            self.xmitChannel[channel].setRect(channel * self.barPosition, -output, 25.0, output)
-            
+    def updateBarGauge(self, channel, value):
+        output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
+        self.xmitChannel[channel].setRect(self.xmitChannelLocation(channel), self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
+
+    def xmitChannelLocation(self, channel):
+        barPosition = (self.ui.transmitterOutput.width() - (self.barGaugeWidth * self.channelCount)) / (self.channelCount + 1)
+        location = ((channel + 1) * barPosition) + (channel * self.barGaugeWidth)
+        return location
+
     def resizeEvent(self, event):
         #size = event.size()
         self.windowHeight = self.ui.transmitterOutput.height()
         self.windowWidth = self.ui.transmitterOutput.width()
-        self.barPosition = self.windowWidth / self.channelCount
+        self.ui.transmitterOutput.setSceneRect(0, 0, self.windowWidth*2, self.windowHeight*2)
+        for channel in range(self.channelCount):
+            self.updateBarGauge(channel, 1000)
+            self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
 
     def updatePitchRoll(self, rollAngle, pitchAngle):
         pitchPosition = self.scale(-pitchAngle, (-135.0, 135.0), (540.0, -540.0))
@@ -144,12 +150,10 @@ class vehicleStatus(QtGui.QWidget, subpanel):
                 self.updateHeading(heading)
                 altitude = float(data[4])
                 altitudeHold = int(data[5])
-                # Do some checking based on number of transmitter channels
-                receiverData = []
-                for receiverIndex in range(8):
-                    receiverData.append(int(data[receiverIndex+6]))
-                self.updateLeftStick(receiverData[3], receiverData[2])
-                self.updateRightStick(receiverData[0], receiverData[1])
+                self.updateRightStick(int(data[6]), int(data[7]))
+                self.updateLeftStick(int(data[9]), int(data[8]))
+                for receiverIndex in range(self.channelCount):
+                    self.updateBarGauge(receiverIndex, int(data[receiverIndex+10]))
                 motorPower = []
                 for motorIndex in range(8):
                     motorPower.append(int(data[motorIndex+14]))

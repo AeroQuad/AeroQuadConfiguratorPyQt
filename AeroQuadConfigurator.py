@@ -80,6 +80,11 @@ class AQMain(QtGui.QMainWindow):
         bootupDelay = float(xml.find("./Settings/BootUpDelay").text)
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
         self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
+        # Stop and flush any telemetry being streamed
+        stopTelemetry = xml.find("./Settings/StopTelemetry").text
+        self.comm.write(stopTelemetry)
+        self.comm.flushResponse()
+        # Request version number to identify AeroQuad board
         versionRequest = xml.find("./Settings/SoftwareVersion").text
         self.comm.write(versionRequest)
         version = self.comm.waitForRead()
