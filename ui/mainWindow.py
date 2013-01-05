@@ -14,12 +14,24 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
+class ReturningComboBox(QtGui.QComboBox):
+    def __init__(self, parent=None):
+        super(ReturningComboBox, self).__init__(parent)
+
+        self.return_handler = None
+
+    def keyPressEvent(self, event):
+        super(ReturningComboBox, self).keyPressEvent(event)
+
+        if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
+            self.return_handler()
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(800, 400)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/AQ/AeroQuadMacIcon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/AQ/AeroQuadIcon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -33,7 +45,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.status)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.comPort = QtGui.QComboBox(self.centralwidget)
+        self.comPort = ReturningComboBox(self.centralwidget)
         self.comPort.setMinimumSize(QtCore.QSize(0, 0))
         self.comPort.setEditable(True)
         self.comPort.setObjectName(_fromUtf8("comPort"))
