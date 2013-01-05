@@ -5,7 +5,6 @@ Created on Nov 6, 2012
 @author: Ted Carancho
 '''
 import sys
-import time
 
 from PyQt4 import QtCore, QtGui
 from serial import SerialException
@@ -81,18 +80,13 @@ class AQMain(QtGui.QMainWindow):
         # Setup serial port
         bootupDelay = float(xml.find("./Settings/BootUpDelay").text)
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
-        self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
-        # Stop and flush any telemetry being streamed
-        stopTelemetry = xml.find("./Settings/StopTelemetry").text
-        self.comm.write(stopTelemetry)
-        self.comm.flushResponse()
-        # Request version number to identify AeroQuad board
-        versionRequest = xml.find("./Settings/SoftwareVersion").text
-        self.comm.write(versionRequest)
-        version = self.comm.waitForRead()
-        
         try:
             self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
+            # Stop and flush any telemetry being streamed
+            stopTelemetry = xml.find("./Settings/StopTelemetry").text
+            self.comm.write(stopTelemetry)
+            self.comm.flushResponse()
+            # Request version number to identify AeroQuad board
             versionRequest = xml.find("./Settings/SoftwareVersion").text
             self.comm.write(versionRequest)
             version = self.comm.waitForRead()
@@ -205,8 +199,6 @@ class AQMain(QtGui.QMainWindow):
         '''Dynamically add subpanels to View menu based on XML file configuration
         This also adds the subpanel to a stacked widget and stores object instances so that they can run when selected'''
         subPanels = xml.findall("./Subpanels/Subpanel")
-        #subPanelConfig = subPanelConfiguration()
-        #subPanels = subPanelConfig.subPanelList
         subPanelCount = 1
         self.subPanelList = [] # Stores subpanel names
         self.subPanelClasses = [] # Stores subpanel object instances
@@ -221,9 +213,7 @@ class AQMain(QtGui.QMainWindow):
             for package in packageList[1:]: # In case the module is buried into a deep package folder, loop until module is reached
                 module = getattr(module, package)
             module = getattr(module, className)
-            tempSubPanel = module()
-            #self.subPanelList.append(subPanel.name)
-            #tempSubPanel = subPanel.module           
+            tempSubPanel = module()          
             tempSubPanel.initialize(self.comm, xml, self.ui, self.boardConfiguration)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
@@ -236,32 +226,7 @@ class AQMain(QtGui.QMainWindow):
             self.subPanelMapper.setMapping(subPanel, subPanelName)
             subPanel.triggered.connect(self.subPanelMapper.map)
             subPanel.setCheckable(True)
-        self.subPanelMapper.mapped[str].connect(self.selectSubPanel)
-
-#    def configureSubPanelMenu(self):
-#        '''Dynamically add subpanels to View menu based on XML file configuration
-#        This also adds the subpanel to a stacked widget and stores object instances so that they can run when selected'''
-#        subPanelConfig = subPanelConfiguration()
-#        subPanels = subPanelConfig.subPanelList
-#        subPanelCount = 1
-#        self.subPanelList = [] # Stores subpanel names
-#        self.subPanelClasses = [] # Stores subpanel object instances
-#        for subPanel in subPanels:
-#            self.subPanelList.append(subPanel.name)
-#            tempSubPanel = subPanel.module
-#            tempSubPanel.initialize(self.comm, xml, self.ui, self.boardConfiguration)
-#            self.ui.subPanel.addWidget(tempSubPanel)
-#            self.subPanelClasses.append(tempSubPanel)
-#            subPanelCount += 1
-#        self.subPanelMapper = QtCore.QSignalMapper(self)
-#        self.subPanelMenu = []
-#        for subPanelName in self.subPanelList:
-#            subPanel = self.ui.menuView.addAction(subPanelName)
-#            self.subPanelMenu.append(subPanel) # Need to store this separately because Python only binds stuff at runtime
-#            self.subPanelMapper.setMapping(subPanel, subPanelName)
-#            subPanel.triggered.connect(self.subPanelMapper.map)
-#            subPanel.setCheckable(True)
-#        self.subPanelMapper.mapped[str].connect(self.selectSubPanel)        
+        self.subPanelMapper.mapped[str].connect(self.selectSubPanel)       
   
     def selectSubPanel(self, subPanelName):
         '''Places check mark beside selected subpanel name
