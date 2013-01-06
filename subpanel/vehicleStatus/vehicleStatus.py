@@ -49,6 +49,38 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         horizonScene.addItem(horizonDialItem)
         horizonScene.addItem(horizonCompassBackGroundItem)
         horizonScene.addItem(self.horizonCompassItem)
+
+        # Setup text updates
+        rollLabel = horizonScene.addText("Roll:")
+        rollLabel.setDefaultTextColor(QtCore.Qt.white)
+        rollLabel.setPos(102, 653)
+        self.roll = horizonScene.addText("0.0")
+        self.roll.setDefaultTextColor(QtCore.Qt.white)
+        self.roll.setPos(125, 653)
+        pitchLabel = horizonScene.addText("Pitch:")
+        pitchLabel.setDefaultTextColor(QtCore.Qt.white)
+        pitchLabel.setPos(102, 668)
+        self.pitch = horizonScene.addText("0.0")
+        self.pitch.setDefaultTextColor(QtCore.Qt.white)
+        self.pitch.setPos(132, 668)
+        headingLabel = horizonScene.addText("Heading:")
+        headingLabel.setDefaultTextColor(QtCore.Qt.white)
+        headingLabel.setPos(102, 390)
+        self.heading = horizonScene.addText("0.0")
+        self.heading.setDefaultTextColor(QtCore.Qt.white)
+        self.heading.setPos(147, 390)
+        altitudeLabel = horizonScene.addText("Altitude:")
+        altitudeLabel.setDefaultTextColor(QtCore.Qt.white)
+        altitudeLabel.setPos(320, 390)
+        self.altitude = horizonScene.addText("000.0")
+        self.altitude.setDefaultTextColor(QtCore.Qt.white)
+        self.altitude.setPos(363, 390)
+        altHoldLabel = horizonScene.addText("Alt Hold:")
+        altHoldLabel.setDefaultTextColor(QtCore.Qt.white)
+        altHoldLabel.setPos(331, 405)
+        self.altitudeHold = horizonScene.addText("Off")
+        self.altitudeHold.setDefaultTextColor(QtCore.Qt.white)
+        self.altitudeHold.setPos(374, 405)
         self.ui.artificialHorizon.setScene(horizonScene)
         
         # Setup left transmitter stick
@@ -92,7 +124,8 @@ class vehicleStatus(QtGui.QWidget, subpanel):
             label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
             self.xmitLabel.append(label)
         self.ui.transmitterOutput.setScene(transmitterScene)
-            
+
+    
     def updateBarGauge(self, channel, value):
         output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
         self.xmitChannel[channel].setRect(self.xmitChannelLocation(channel), self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
@@ -144,12 +177,20 @@ class vehicleStatus(QtGui.QWidget, subpanel):
                 data = rawData.split(",")
                 motorArmed = int(data[0])
                 roll = math.degrees(float(data[1]))
+                self.roll.setPlainText("{:.1f}".format(roll))
                 pitch = math.degrees(float(data[2]))
+                self.pitch.setPlainText("{:.1f}".format(pitch))
                 heading = math.degrees(float(data[3]))
+                self.heading.setPlainText("{:.1f}".format(heading).zfill(5))
                 self.updatePitchRoll(roll, pitch)
                 self.updateHeading(heading)
                 altitude = float(data[4])
+                self.altitude.setPlainText("{:.1f}".format(altitude).zfill(5))
                 altitudeHold = int(data[5])
+                if altitudeHold:
+                    self.altitudeHold.setPlainText("On")
+                else:
+                    self.altitudeHold.setPlainText("Off")
                 self.updateRightStick(int(data[6]), int(data[7]))
                 self.updateLeftStick(int(data[9]), int(data[8]))
                 for receiverIndex in range(self.channelCount):
