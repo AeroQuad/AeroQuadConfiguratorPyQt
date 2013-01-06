@@ -22,6 +22,7 @@ class commMonitor(QtGui.QWidget, subpanel):
         self.ui.clearButton.setEnabled(False)
                 
         # Connect GUI slots and signals
+        self.ui.lineEdit.returnPressed.connect(self.sendCommand)
         self.ui.sendButton.clicked.connect(self.sendCommand)
         self.ui.clearButton.clicked.connect(self.clearComm)
         
