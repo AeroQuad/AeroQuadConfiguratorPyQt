@@ -29,7 +29,6 @@ class vehicleConfiguration(QtGui.QWidget, subpanel):
         self.ui.configView.setAlignment(QtCore.Qt.AlignCenter)
         
     def start(self, xmlSubPanel):
-        '''This method starts a timer used for any long running loops in a subpanel'''
         if self.comm.isConnected():       
             for spec in self.boardConfiguration:
                 if "Flight Config: " in spec:

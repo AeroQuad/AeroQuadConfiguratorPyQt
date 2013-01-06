@@ -1,9 +1,9 @@
 <Configurator>
 
     <Settings>
-        <DefaultComPort>/dev/tty.usbmodem411</DefaultComPort>
-        <BootUpDelay>4.0</BootUpDelay>
-        <CommTimeOut>0.0</CommTimeOut>
+        <DefaultComPort>COM5</DefaultComPort>
+        <BootUpDelay>0.0</BootUpDelay>
+        <CommTimeOut>1.0</CommTimeOut>
         <DefaultBaudRate>115200</DefaultBaudRate>
         <AvailableBaudRates>1200,9600,38400,57600,111111,115200</AvailableBaudRates>
         <SoftwareVersion>!</SoftwareVersion>
