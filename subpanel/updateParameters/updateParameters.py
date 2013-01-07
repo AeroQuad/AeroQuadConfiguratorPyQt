@@ -25,8 +25,9 @@ class updateParameters(QtGui.QWidget, subpanel):
         self.ui.buttonSave.clicked.connect(self.underConstruction)
         self.ui.buttonLoad.clicked.connect(self.underConstruction)
         
-    def start(self, xmlSubPanel):
+    def start(self, xmlSubPanel, boardConfiguration):
         self.subPanelName = xmlSubPanel
+        self.boardConfiguration = boardConfiguration
         parameterTypes = self.xml.findall(self.subPanelName + "/ParameterType")
         self.ui.listParameterType.clear()
         # Load parameter types

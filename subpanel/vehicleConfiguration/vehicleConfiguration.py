@@ -28,7 +28,8 @@ class vehicleConfiguration(QtGui.QWidget, subpanel):
         self.ui.configView.setPixmap(scaledImage)
         self.ui.configView.setAlignment(QtCore.Qt.AlignCenter)
         
-    def start(self, xmlSubPanel):
+    def start(self, xmlSubPanel, boardConfiguration):
+        self.boardConfiguration = boardConfiguration
         if self.comm.isConnected():       
             for spec in self.boardConfiguration:
                 if "Flight Config: " in spec:
