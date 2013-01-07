@@ -82,7 +82,7 @@ class AQMain(QtGui.QMainWindow):
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
         try:
             self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
-            # Stop and flush any telemetry being streamed
+            # Stop and flush any previous telemetry being streamed
             stopTelemetry = xml.find("./Settings/StopTelemetry").text
             self.comm.write(stopTelemetry)
             self.comm.flushResponse()
@@ -214,7 +214,7 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()          
-            tempSubPanel.initialize(self.comm, xml, self.ui, self.boardConfiguration)
+            tempSubPanel.initialize(self.comm, xml, self.ui)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1
@@ -241,9 +241,8 @@ class AQMain(QtGui.QMainWindow):
         self.subPanelMenu[selected].setChecked(True)
         self.ui.subPanel.setCurrentIndex(selected+1) # index 0 is splash screen
         self.activeSubPanel = self.subPanelClasses[selected]
-        selectedSubPanelName = "./Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
-        self.activeSubPanelName = selectedSubPanelName
-        self.activeSubPanel.start(selectedSubPanelName)
+        self.activeSubPanelName = "./Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
+        self.activeSubPanel.start(self.activeSubPanelName, self.boardConfiguration)
         self.ui.status.setText(subPanelName)
         app.processEvents()
 
@@ -255,7 +254,8 @@ class AQMain(QtGui.QMainWindow):
     def restartSubPanel(self):
         if self.activeSubPanel != None: # Restart any running subpanels
             self.activeSubPanel.stop()
-            self.activeSubPanel.start(self.activeSubPanelName)
+            self.activeSubPanel.start(self.activeSubPanelName, self.boardConfiguration)
+            app.processEvents()
             
     def checkRequirementsMatch(self, subPanelName):
         # Read requirements for the specified subpanel form the XML config file
@@ -273,7 +273,7 @@ class AQMain(QtGui.QMainWindow):
             check = check and (testRequirement in self.boardConfiguration)
         return check
 
-    ''' Housekeeping Functions'''
+    ####### Housekeeping Functions #######
     def exit(self):
         self.comm.disconnect()
         sys.exit(app.exec_())

@@ -37,9 +37,10 @@ class dataPlot(QtGui.QWidget, subpanel):
                        QtGui.QColor('firebrick'),
                        QtGui.QColor('aqua')]
         
-    def start(self, xmlSubPanel):
+    def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel = xmlSubPanel
+        self.boardConfiguration = boardConfiguration
     
         self.plotIndex = int(self.xml.find(self.xmlSubPanel + "/Index").text)            
         plotSize = int(self.xml.find(self.xmlSubPanel + "/PlotSize").text)

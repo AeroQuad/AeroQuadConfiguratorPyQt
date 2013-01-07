@@ -26,7 +26,7 @@ class commMonitor(QtGui.QWidget, subpanel):
         self.ui.sendButton.clicked.connect(self.sendCommand)
         self.ui.clearButton.clicked.connect(self.clearComm)
         
-    def start(self, xmlSubPanel):
+    def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
         if self.comm.isConnected() == True:
             self.timer = QtCore.QTimer()

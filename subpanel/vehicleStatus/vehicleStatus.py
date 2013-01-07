@@ -15,18 +15,8 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         subpanel.__init__(self)
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
-     
-        self.receiverChannels = 10
-        #configCount = len(self.boardConfiguration)
-        for config in self.boardConfiguration:
-            if "Receiver Channels" in config:
-                receiverConfig = config.split(": ")
-                self.receiverChannels = int(receiverConfig[1])
-                break
-        if "Barometer: Detected" in self.boardConfiguration:
-            self.altitude = True
-        if "Battery Monitor: Enabled" in self.boardConfiguration:
-            self.batteryMonitor = True
+        
+        self.channelCount = 0
         
         # Setup artificial horizon    
         horizon = QtGui.QPixmap("./resources/artificialHorizonBackGround.svg")
@@ -50,19 +40,19 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         horizonScene.addItem(horizonCompassBackGroundItem)
         horizonScene.addItem(self.horizonCompassItem)
 
-        # Setup text updates
+        # Setup text info in artificial horizon
         rollLabel = horizonScene.addText("Roll:")
         rollLabel.setDefaultTextColor(QtCore.Qt.white)
-        rollLabel.setPos(102, 653)
+        rollLabel.setPos(102, 420)
         self.roll = horizonScene.addText("0.0")
         self.roll.setDefaultTextColor(QtCore.Qt.white)
-        self.roll.setPos(125, 653)
+        self.roll.setPos(125, 420)
         pitchLabel = horizonScene.addText("Pitch:")
         pitchLabel.setDefaultTextColor(QtCore.Qt.white)
-        pitchLabel.setPos(102, 668)
+        pitchLabel.setPos(102, 405)
         self.pitch = horizonScene.addText("0.0")
         self.pitch.setDefaultTextColor(QtCore.Qt.white)
-        self.pitch.setPos(132, 668)
+        self.pitch.setPos(132, 405)
         headingLabel = horizonScene.addText("Heading:")
         headingLabel.setDefaultTextColor(QtCore.Qt.white)
         headingLabel.setPos(102, 390)
@@ -79,8 +69,26 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         altHoldLabel.setDefaultTextColor(QtCore.Qt.white)
         altHoldLabel.setPos(331, 405)
         self.altitudeHold = horizonScene.addText("Off")
-        self.altitudeHold.setDefaultTextColor(QtCore.Qt.white)
+        self.altitudeHold.setDefaultTextColor(QtCore.Qt.red)
         self.altitudeHold.setPos(374, 405)
+        armLabel = horizonScene.addText("Motors:")
+        armLabel.setDefaultTextColor(QtCore.Qt.white)
+        armLabel.setPos(102, 653)
+        self.motorArm = horizonScene.addText("Not Armed")
+        self.motorArm.setDefaultTextColor(QtCore.Qt.red)
+        self.motorArm.setPos(102, 668)
+        battLabel = horizonScene.addText("Batt:")
+        battLabel.setDefaultTextColor(QtCore.Qt.white)
+        battLabel.setPos(330, 653)
+        self.batteryPower = horizonScene.addText("0.000")
+        self.batteryPower.setDefaultTextColor(QtCore.Qt.white)
+        self.batteryPower.setPos(357, 653)
+        modeLabel = horizonScene.addText("Mode:")
+        modeLabel.setDefaultTextColor(QtCore.Qt.white)
+        modeLabel.setPos(330, 668)
+        self.flightMode = horizonScene.addText("Acro")
+        self.flightMode.setDefaultTextColor(QtCore.Qt.yellow)
+        self.flightMode.setPos(362, 668)
         self.ui.artificialHorizon.setScene(horizonScene)
         
         # Setup left transmitter stick
@@ -104,6 +112,28 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.rightStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
+
+    def start(self, xmlSubPanel, boardConfiguration):
+        '''This method starts a timer used for any long running loops in a subpanel'''
+        self.xmlSubPanel = xmlSubPanel
+        self.boardConfiguration = boardConfiguration
+        if self.comm.isConnected() == True:
+            telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
+            if telemetry != None:
+                self.comm.write(telemetry)
+            self.timer = QtCore.QTimer()
+            self.timer.timeout.connect(self.readContinuousData)
+            self.timer.start(10)
+             
+        self.receiverChannels = 10
+        for config in self.boardConfiguration:
+            if "Receiver Channels" in config:
+                receiverConfig = config.split(": ")
+                self.receiverChannels = int(receiverConfig[1])
+                break
+        # Do we need these?
+        self.altitudeDetect = "Barometer: Detected" in self.boardConfiguration
+        self.batteryMonitorDetect = "Battery Monitor: Enabled" in self.boardConfiguration
         
         # Setup plots to display rest of transmitter channels
         transmitterScene = QtGui.QGraphicsScene()
@@ -124,10 +154,17 @@ class vehicleStatus(QtGui.QWidget, subpanel):
             label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
             self.xmitLabel.append(label)
         self.ui.transmitterOutput.setScene(transmitterScene)
-
+        
+        for channel in range(self.channelCount):
+            self.updateBarGauge(channel, 1000)
+            self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
+            
+        # Center transmitter output window
+        self.ui.transmitterOutput.centerOn(0.0, 0.0)
     
     def updateBarGauge(self, channel, value):
-        output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
+        #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
+        output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 10)) - self.labelHeight
         self.xmitChannel[channel].setRect(self.xmitChannelLocation(channel), self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
 
     def xmitChannelLocation(self, channel):
@@ -140,6 +177,7 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.windowHeight = self.ui.transmitterOutput.height()
         self.windowWidth = self.ui.transmitterOutput.width()
         self.ui.transmitterOutput.setSceneRect(0, 0, self.windowWidth*2, self.windowHeight*2)
+        self.ui.transmitterOutput.centerOn(0,0)
         for channel in range(self.channelCount):
             self.updateBarGauge(channel, 1000)
             self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
@@ -176,6 +214,12 @@ class vehicleStatus(QtGui.QWidget, subpanel):
                 rawData = self.comm.read()
                 data = rawData.split(",")
                 motorArmed = int(data[0])
+                if motorArmed:
+                    self.motorArm.setPlainText("Armed")
+                    self.motorArm.setDefaultTextColor(QtCore.Qt.green)
+                else:
+                    self.motorArm.setPlainText("Not Armed")
+                    self.motorArm.setDefaultTextColor(QtCore.Qt.red)
                 roll = math.degrees(float(data[1]))
                 self.roll.setPlainText("{:.1f}".format(roll))
                 pitch = math.degrees(float(data[2]))
@@ -189,8 +233,10 @@ class vehicleStatus(QtGui.QWidget, subpanel):
                 altitudeHold = int(data[5])
                 if altitudeHold:
                     self.altitudeHold.setPlainText("On")
+                    self.altitudeHold.setDefaultTextColor(QtCore.Qt.green)
                 else:
                     self.altitudeHold.setPlainText("Off")
+                    self.altitudeHold.setDefaultTextColor(QtCore.Qt.red)
                 self.updateRightStick(int(data[6]), int(data[7]))
                 self.updateLeftStick(int(data[9]), int(data[8]))
                 for receiverIndex in range(self.channelCount):
@@ -199,4 +245,11 @@ class vehicleStatus(QtGui.QWidget, subpanel):
                 for motorIndex in range(8):
                     motorPower.append(int(data[motorIndex+14]))
                 batteryPower = float(data[22])
+                self.batteryPower.setPlainText("{:.3f}".format(batteryPower))
                 flightMode = int(data[23])
+                if flightMode:
+                    self.flightMode.setPlainText("Stable")
+                    self.flightMode.setDefaultTextColor(QtCore.Qt.green)
+                else:
+                    self.flightMode.setPlainText("Acro")
+                    self.flightMode.setDefaultTextColor(QtCore.Qt.yellow)

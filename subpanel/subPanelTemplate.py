@@ -21,12 +21,11 @@ class subpanel(object):
         self.mainUi = None
         self.boardConfiguration = []
                
-    def initialize(self, commTransport,  xml, mainWindow, boardConfiguration):
+    def initialize(self, commTransport, xml, mainWindow):
         '''This initializes your class with required external arguments'''
         self.comm = commTransport
         self.xml = xml
         self.mainUi = mainWindow
-        self.boardConfiguration = boardConfiguration
                 
     def sendCommand(self, command):
         '''Send a serial command'''
@@ -38,9 +37,10 @@ class subpanel(object):
         response = self.comm.read()
         return response
     
-    def start(self, xmlSubPanel):
+    def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel = xmlSubPanel
+        self.boardConfiguration = boardConfiguration
         if self.comm.isConnected() == True:
             telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
             if telemetry != None:
