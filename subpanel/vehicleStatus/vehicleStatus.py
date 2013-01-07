@@ -40,7 +40,7 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         horizonScene.addItem(horizonCompassBackGroundItem)
         horizonScene.addItem(self.horizonCompassItem)
 
-        # Setup text updates
+        # Setup text info in artificial horizon
         rollLabel = horizonScene.addText("Roll:")
         rollLabel.setDefaultTextColor(QtCore.Qt.white)
         rollLabel.setPos(102, 420)
@@ -113,7 +113,6 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
 
-
     def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel = xmlSubPanel
@@ -132,6 +131,7 @@ class vehicleStatus(QtGui.QWidget, subpanel):
                 receiverConfig = config.split(": ")
                 self.receiverChannels = int(receiverConfig[1])
                 break
+        # Do we need these?
         self.altitudeDetect = "Barometer: Detected" in self.boardConfiguration
         self.batteryMonitorDetect = "Battery Monitor: Enabled" in self.boardConfiguration
         
@@ -158,9 +158,13 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         for channel in range(self.channelCount):
             self.updateBarGauge(channel, 1000)
             self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
+            
+        # Center transmitter output window
+        self.ui.transmitterOutput.centerOn(0.0, 0.0)
     
     def updateBarGauge(self, channel, value):
-        output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
+        #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
+        output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 10)) - self.labelHeight
         self.xmitChannel[channel].setRect(self.xmitChannelLocation(channel), self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
 
     def xmitChannelLocation(self, channel):
@@ -173,6 +177,7 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.windowHeight = self.ui.transmitterOutput.height()
         self.windowWidth = self.ui.transmitterOutput.width()
         self.ui.transmitterOutput.setSceneRect(0, 0, self.windowWidth*2, self.windowHeight*2)
+        self.ui.transmitterOutput.centerOn(0,0)
         for channel in range(self.channelCount):
             self.updateBarGauge(channel, 1000)
             self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
