@@ -15,6 +15,7 @@ class dataPlot(QtGui.QWidget, subpanel):
         QtGui.QWidget.__init__(self)
         subpanel.__init__(self)
 
+        pg.setConfigOption('antialias', True)
         #pg.setConfigOption('background', (255,255,255))
         pg.setConfigOption('foreground', (128,128,128))
         self.ui = Ui_plotWindow()
@@ -24,6 +25,7 @@ class dataPlot(QtGui.QWidget, subpanel):
         self.ui.graphicsView.getAxis('bottom').setHeight(10)
         self.ui.graphicsView.getAxis('left').setWidth(50)
         self.ui.graphicsView.setBackground((255,255,255))
+        self.ui.graphicsView.setRange(xRange=(0,128))
         self.plotCount = 0
         self.legend = None
         self.colors = [QtGui.QColor('blue'),
@@ -48,8 +50,10 @@ class dataPlot(QtGui.QWidget, subpanel):
         self.plotCount = len(plotNames)
 
         self.output = []
+        self.curves = []
         for i in range(self.plotCount):
-            self.output.append(deque([0.0]*plotSize))
+            self.output.append(deque([0.0] * plotSize))
+            self.curves.append(self.ui.graphicsView.plot(self.output[i], pen=pg.mkPen(self.colors[i], width=2)))
             
         self.axis = deque(range(plotSize))
         self.value = plotSize
@@ -72,15 +76,19 @@ class dataPlot(QtGui.QWidget, subpanel):
                 self.comm.write(telemetry)
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(5)
+            self.timer.start(100)
+
+        self.plot_timer = QtCore.QTimer()
+        self.plot_timer.timeout.connect(self.update_plot)
+        self.plot_timer.start(20)
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''
         if self.comm.isConnected() == True: 
             if self.comm.dataAvailable():           
                 rawData = self.comm.read()
-                data = rawData.split(",")
-                self.ui.graphicsView.clear()
+                data = rawData.split(",")  
+                                 
                 for i in range(self.plotCount):
                     legendRow = self.legend.child(i)
                     if legendRow.checkState(0) == 2:
@@ -90,6 +98,13 @@ class dataPlot(QtGui.QWidget, subpanel):
                             self.output[i].pop()
                         except:
                             pass # Do not update output data if invalid number detected from comm read
-                        self.ui.graphicsView.plot(y=list(self.output[i]), pen=pg.mkPen(self.colors[i], width=3))
                         legendRow.setText(2, dataValue)
+    
+    def update_plot(self):
+        for i in range(self.plotCount):
+            legendRow = self.legend.child(i)
+            if legendRow.checkState(0) == 2:
+                self.curves[i].setData(self.output[i])
+            else:
+                self.curves[i].clear()
 

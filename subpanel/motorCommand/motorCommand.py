@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import time
+from time import sleep
+
 from PyQt4 import QtCore, QtGui
 from subpanel.subPanelTemplate import subpanel
 from subpanel.motorCommand.motorCommandWindow import Ui_motorCommand
@@ -83,7 +84,7 @@ class motorCommand(QtGui.QWidget, subpanel):
         ])
         self.comm.write(self.command_motor)
         self.comm.write(serial_string)
-        time.sleep(0.150)
+        sleep(0.150)
 
     def readContinuousData(self):
         isConnected = self.comm.isConnected()
@@ -98,5 +99,5 @@ class motorCommand(QtGui.QWidget, subpanel):
         self.comm.write(serial_string)
         for motor_slider in self.ui.motor_sliders:
             motor_slider.slider.setValue(1000)
-        time.sleep(0.150)
+        sleep(0.150)
 
