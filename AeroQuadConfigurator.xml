@@ -42,6 +42,15 @@
             <Class>vehicleStatus</Class>
             <Telemetry>s</Telemetry>
         </Subpanel>
+
+        <Subpanel Name="Motor Command">
+            <Requirement>All</Requirement>
+            <Path>motorCommand.motorCommand</Path>
+            <Class>motorCommand</Class>
+            <ValidateCommand>123.45</ValidateCommand>
+            <CommandMotor>5</CommandMotor>
+        </Subpanel>
+
         <Subpanel Name="Update Parameters">
             <Path>updateParameters.updateParameters</Path>
             <Class>updateParameters</Class>
