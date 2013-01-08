@@ -60,7 +60,7 @@ class motorCommand(QtGui.QWidget, subpanel):
             self.ui.sendButton.setEnabled(True)
             self.ui.clearButton.setEnabled(True)
 
-            self.board_onfiguration = {}
+            self.board_configuration = {}
             for configuration in boardConfiguration:
                 configuration = configuration.split(':')
                 self.board_configuration[configuration[0]] = configuration[1].strip()
