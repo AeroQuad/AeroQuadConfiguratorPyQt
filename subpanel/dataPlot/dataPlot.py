@@ -3,61 +3,59 @@ Created on Nov 21, 2012
 
 @author: Ted Carancho
 '''
+from collections import deque
 
 from PyQt4 import QtGui, QtCore
-from collections import deque
+from pyqtgraph import PlotCurveItem
+
 from subpanel.subPanelTemplate import subpanel
 from subpanel.dataPlot.dataPlotWindow import Ui_plotWindow
-import pyqtgraph as pg
+
 
 class dataPlot(QtGui.QWidget, subpanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         subpanel.__init__(self)
 
-        pg.setConfigOption('antialias', True)
-        #pg.setConfigOption('background', (255,255,255))
-        pg.setConfigOption('foreground', (128,128,128))
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)
-        self.ui.graphicsView.hideAxis('bottom')
-        self.ui.graphicsView.getAxis('top').setHeight(10)
-        self.ui.graphicsView.getAxis('bottom').setHeight(10)
-        self.ui.graphicsView.getAxis('left').setWidth(50)
-        self.ui.graphicsView.setBackground((255,255,255))
-        self.ui.graphicsView.setRange(xRange=(0,128))
+
         self.plotCount = 0
-        self.legend = None
-        self.colors = [QtGui.QColor('blue'),
-                       QtGui.QColor('red'),
-                       QtGui.QColor('lime'),
-                       QtGui.QColor('cornflowerblue'),
-                       QtGui.QColor('greenyellow'),
-                       QtGui.QColor('violet'),
-                       QtGui.QColor('orange'),
-                       QtGui.QColor('deepskyblue'),
-                       QtGui.QColor('firebrick'),
-                       QtGui.QColor('aqua')]
-        
+        self.legend    = None
+        self.colors    = [
+            QtGui.QColor('blue'),
+            QtGui.QColor('red'),
+            QtGui.QColor('lime'),
+            QtGui.QColor('cornflowerblue'),
+            QtGui.QColor('greenyellow'),
+            QtGui.QColor('violet'),
+            QtGui.QColor('orange'),
+            QtGui.QColor('deepskyblue'),
+            QtGui.QColor('firebrick'),
+            QtGui.QColor('aqua')
+        ]
+
     def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel = xmlSubPanel
         self.boardConfiguration = boardConfiguration
-    
-        self.plotIndex = int(self.xml.find(self.xmlSubPanel + "/Index").text)            
+
+        self.plotIndex = int(self.xml.find(self.xmlSubPanel + "/Index").text)
         plotSize = int(self.xml.find(self.xmlSubPanel + "/PlotSize").text)
         plotNames = self.xml.findall(self.xmlSubPanel + "/PlotName")
         self.plotCount = len(plotNames)
 
-        self.output = []
-        self.curves = []
+        self.ui.graphicsView.setRange(xRange=(0, plotSize), padding=0.0)
+        self.ui.graphicsView.clear()
+
+        self.data, self.curves = [], []
         for i in range(self.plotCount):
-            self.output.append(deque([0.0] * plotSize))
-            self.curves.append(self.ui.graphicsView.plot(self.output[i], pen=pg.mkPen(self.colors[i], width=2)))
-            
-        self.axis = deque(range(plotSize))
-        self.value = plotSize
-        
+            self.data.append([0.0] * plotSize)
+            self.curves.append(
+                PlotCurveItem(self.data[i], pen={'color':self.colors[i], 'width': 2})
+            )
+            self.ui.graphicsView.addItem(self.curves[i])
+
         self.ui.treeWidget.clear()
         for i in range(self.plotCount):
             plotName = plotNames[i].text
@@ -84,27 +82,29 @@ class dataPlot(QtGui.QWidget, subpanel):
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''
-        if self.comm.isConnected() == True: 
-            if self.comm.dataAvailable():           
+        if self.comm.isConnected() == True:
+            if self.comm.dataAvailable():
                 rawData = self.comm.read()
-                data = rawData.split(",")  
-                                 
+                data = rawData.split(",")
+
                 for i in range(self.plotCount):
                     legendRow = self.legend.child(i)
-                    if legendRow.checkState(0) == 2:
-                        try:
-                            dataValue = data[i + self.plotIndex]
-                            self.output[i].appendleft(float(dataValue))
-                            self.output[i].pop()
-                        except:
-                            pass # Do not update output data if invalid number detected from comm read
+                    try:
+                        dataValue = data[i + self.plotIndex]
+                        self.data[i].insert(0, float(dataValue))
+                        self.data[i].pop()
                         legendRow.setText(2, dataValue)
-    
+                    except:
+                        pass # Do not update output data if invalid number detected from comm read
+
     def update_plot(self):
         for i in range(self.plotCount):
             legendRow = self.legend.child(i)
             if legendRow.checkState(0) == 2:
-                self.curves[i].setData(self.output[i])
+                self.curves[i].setData(self.data[i])
+                if self.curves[i] not in self.ui.graphicsView.items():
+                    self.ui.graphicsView.addItem(self.curves[i])
             else:
                 self.curves[i].clear()
-
+                self.ui.graphicsView.removeItem(self.curves[i])
+        self.ui.graphicsView.autoRange()
