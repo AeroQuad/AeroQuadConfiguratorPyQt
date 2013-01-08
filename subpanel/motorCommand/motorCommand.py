@@ -60,11 +60,11 @@ class motorCommand(QtGui.QWidget, subpanel):
             self.ui.sendButton.setEnabled(True)
             self.ui.clearButton.setEnabled(True)
 
-            self.boardConfiguration = {}
+            self.board_onfiguration = {}
             for configuration in boardConfiguration:
                 configuration = configuration.split(':')
-                self.boardConfiguration[configuration[0]] = configuration[1].strip()
-            motor_count = int(self.boardConfiguration['Motors'])
+                self.board_configuration[configuration[0]] = configuration[1].strip()
+            motor_count = int(self.board_configuration['Motors'])
 
             layout = QtGui.QHBoxLayout()
 
