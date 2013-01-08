@@ -50,7 +50,7 @@ class motorCommand(QtGui.QWidget, subpanel):
         self.ui.sendButton.clicked.connect(self.sendCommand)
         self.ui.clearButton.clicked.connect(self.clearCommand)
 
-    def start(self, xmlSubPanel):
+    def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel     = xmlSubPanel
         self.validateCommand = self.xml.find(self.xmlSubPanel + 'ValidateCommand').text
@@ -60,11 +60,11 @@ class motorCommand(QtGui.QWidget, subpanel):
             self.ui.sendButton.setEnabled(True)
             self.ui.clearButton.setEnabled(True)
 
-            self.boardConfigurationDictionary = {}
-            for configuration in self.boardConfiguration:
+            self.boardConfiguration = {}
+            for configuration in boardConfiguration:
                 configuration = configuration.split(':')
-                self.boardConfigurationDictionary[configuration[0]] = configuration[1].strip()
-            motor_count = int(self.boardConfigurationDictionary['Motors'])
+                self.boardConfiguration[configuration[0]] = configuration[1].strip()
+            motor_count = int(self.boardConfiguration['Motors'])
 
             layout = QtGui.QHBoxLayout()
 
