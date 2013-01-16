@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'vehicleStatusWindow.ui'
 #
-# Created: Thu Jan 03 00:49:26 2013
+# Created: Sun Jan 13 22:30:18 2013
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -67,6 +67,10 @@ class Ui_vehicleStatus(object):
         self.transmitterOutput.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.transmitterOutput.setObjectName(_fromUtf8("transmitterOutput"))
         self.gridLayout.addWidget(self.transmitterOutput, 2, 0, 1, 2)
+        self.verticalScrollBar = QtGui.QScrollBar(vehicleStatus)
+        self.verticalScrollBar.setOrientation(QtCore.Qt.Vertical)
+        self.verticalScrollBar.setObjectName(_fromUtf8("verticalScrollBar"))
+        self.gridLayout.addWidget(self.verticalScrollBar, 0, 3, 1, 1)
 
         self.retranslateUi(vehicleStatus)
         QtCore.QMetaObject.connectSlotsByName(vehicleStatus)

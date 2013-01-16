@@ -10,7 +10,6 @@ from PyQt4 import QtCore, QtGui
 from serial import SerialException
 from ui.mainWindow import Ui_MainWindow
 from communication.serialCom import AQSerial
-#from subpanel.subPanelConfiguration import subPanelConfiguration
 from ui.splashScreen import Ui_splashScreen
 import xml.etree.ElementTree as ET
 xml = ET.parse('AeroQuadConfigurator.xml')

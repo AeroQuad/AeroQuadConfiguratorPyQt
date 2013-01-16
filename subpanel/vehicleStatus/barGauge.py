@@ -4,25 +4,61 @@ Created on Dec 27, 2012
 @author: Ted Carancho
 '''
 
-class BarGauge(object):
+from PyQt4 import QtCore, QtGui
+
+class BarGauge(QtGui.QGraphicsRectItem):
+    ''' Generic bar gauge to graphically display numeric values
     '''
-    classdocs
-    '''
 
+    def __init__(self, parent=None):
+        QtGui.QGraphicsRectItem.__init__(self, parent)
+        self.min = 1000.0
+        self.max = 2000.0
+        self.location = 0
+        self.labelHeight = 25
+        self.windowHeight = 100
+        self.barGaugeWidth = 25
+        self.label = "Test"
+        self.brush = QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern)
 
-    def __init__(cls, channelName, ui):
-        '''
-        Constructor
-        '''
-        cls.ui = ui
-        cls.channelName = channelName
-        # Setup plots to display rest of transmitter channels
-        transmitterScene = QtGui.QGraphicsScene()
-        cls.channelCount = 4
-        cls.labelWidth = 20
+        #self.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
+        #self.setPos(self.location, self.windowHeight - self.labelHeight)
+        #self.update(1000)
+            
+        # Center transmitter output window
+        #self.centerOn(0.0, 0.0)
+    
+    def boundingRect(self):
+        return QtCore.QRectF(0.0, 0.0, 100.0, 100.0)
+    
+    def paint(self, painter, option, widget):
+        #self.paint(painter, option, widget)
+        self.localPainter = painter
+        painter.fillRect(self.location, 5, self.barGaugeWidth, self.windowHeight, self.brush)
+        painter.setPen(QtCore.Qt.white)
+        painter.drawText(0, 0, self.label)
+        
+    def updateSize(self, windowHeight):
+        self.windowHeight = windowHeight
+        
+    def update(self, value):
+        output = self.scale(value, (self.min, self.max), (0, self.windowHeight))
+        #self.setRect(self.location, self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
+        print(output)
+        self.localPainter
+        #.drawRect(self.location, self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
 
-        cls.barGauge = QtGui.QGraphicsRectItem()
-        cls.barGauge.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
-        xmitLabel = transmitterScene.addText(cls.xmitLabels[channel])
-        xmitLabel.setPos(cls.xmitChannelLocation(channel), cls.ui.transmitterOutput.height())
-        print(cls.xmitChannelLocation(channel), cls.ui.transmitterOutput.height())
+    def setLocation(self, location):
+        self.location = location
+    
+    def setWidth(self, width):
+        self.barGaugeWidth = width
+        
+    def setMinMax(self, minimum, maximum):
+        self.min = minimum
+        self.max = maximum
+    
+    @staticmethod
+    def scale(val, src, dst):
+        '''Scale the given value from the scale of src to the scale of dst.'''
+        return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]

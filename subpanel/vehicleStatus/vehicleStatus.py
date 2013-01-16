@@ -8,6 +8,7 @@ from PyQt4 import QtCore, QtGui
 from subpanel.subPanelTemplate import subpanel
 from subpanel.vehicleStatus.vehicleStatusWindow import Ui_vehicleStatus
 import math
+from barGauge import BarGauge
 
 class vehicleStatus(QtGui.QWidget, subpanel):
     def __init__(self):
@@ -15,6 +16,10 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         subpanel.__init__(self)
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
+        
+        self.ui.verticalScrollBar.setMinimum(1000)
+        self.ui.verticalScrollBar.setMaximum(2000)
+        self.ui.verticalScrollBar.valueChanged.connect(self.updateTest)
         
         self.channelCount = 0
         
@@ -112,6 +117,9 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.rightStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
+        
+    def updateTest(self, value):
+        self.motor.update(value)
 
     def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
@@ -161,6 +169,12 @@ class vehicleStatus(QtGui.QWidget, subpanel):
             
         # Center transmitter output window
         self.ui.transmitterOutput.centerOn(0.0, 0.0)
+        
+        # Setup motor view
+#        motorScene = QtGui.QGraphicsScene()
+#        self.motor = BarGauge()
+#        motorScene.addItem(self.motor)
+#        self.ui.motorView.setScene(motorScene)
     
     def updateBarGauge(self, channel, value):
         #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
