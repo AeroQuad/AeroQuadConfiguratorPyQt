@@ -272,14 +272,16 @@
             <PlotName>Aux4</PlotName>
             <PlotName>Aux5</PlotName>
         </Subpanel>
-        <Subpanel Name="Barometer Data">
+        <Subpanel Name="Altitude Data">
             <Requirement>Barometer: Detected</Requirement>
+            <Requirement>Range Detection: Enabled</Requirement>
             <Path>dataPlot.dataPlot</Path>
             <Class>dataPlot</Class>
             <Telemetry>z</Telemetry>
             <Index>0</Index>
             <PlotSize>128</PlotSize>
-            <PlotName>Altitude</PlotName>
+            <PlotName>Barometer</PlotName>
+            <PlotName>Range Finder</PlotName>
         </Subpanel>
     </Subpanels>
 

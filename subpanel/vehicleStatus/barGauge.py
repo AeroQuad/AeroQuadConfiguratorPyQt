@@ -10,16 +10,17 @@ class BarGauge(QtGui.QGraphicsRectItem):
     ''' Generic bar gauge to graphically display numeric values
     '''
 
-    def __init__(self, parent=None):
+    def __init__(self, name ="", parent=None):
         QtGui.QGraphicsRectItem.__init__(self, parent)
         self.min = 1000.0
         self.max = 2000.0
         self.location = 0
-        self.labelHeight = 25
-        self.windowHeight = 100
-        self.barGaugeWidth = 25
-        self.label = "Test"
+        self.barGaugeHeight = 100
+        self.barGaugeWidth = 35
+        self.label = name
         self.brush = QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern)
+        self.barGaugeGap = 5
+        self.output = self.barGaugeGap
 
         #self.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
         #self.setPos(self.location, self.windowHeight - self.labelHeight)
@@ -29,24 +30,19 @@ class BarGauge(QtGui.QGraphicsRectItem):
         #self.centerOn(0.0, 0.0)
     
     def boundingRect(self):
-        return QtCore.QRectF(0.0, 0.0, 100.0, 100.0)
+        return QtCore.QRectF(0.0, 0.0, self.barGaugeHeight, self.barGaugeHeight)
     
     def paint(self, painter, option, widget):
-        #self.paint(painter, option, widget)
-        self.localPainter = painter
-        painter.fillRect(self.location, 5, self.barGaugeWidth, self.windowHeight, self.brush)
+        painter.fillRect(self.location, self.barGaugeHeight-self.output, self.barGaugeWidth, self.output, self.brush)
         painter.setPen(QtCore.Qt.white)
-        painter.drawText(0, 0, self.label)
+        painter.drawText(self.location, 0, self.label)
         
     def updateSize(self, windowHeight):
         self.windowHeight = windowHeight
+
         
     def update(self, value):
-        output = self.scale(value, (self.min, self.max), (0, self.windowHeight))
-        #self.setRect(self.location, self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
-        print(output)
-        self.localPainter
-        #.drawRect(self.location, self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
+        self.output = self.scale(value, (self.min, self.max), (self.barGaugeGap, self.barGaugeHeight-self.barGaugeGap))
 
     def setLocation(self, location):
         self.location = location
