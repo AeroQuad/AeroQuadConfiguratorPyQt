@@ -119,9 +119,10 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.ui.rightTransmitter.setScene(rightStickScene)
         
     def updateTest(self, value):
-        self.motor1.update(value)
-        self.motor2.update(value + 20)
-        self.ui.motorView.repaint()
+        self.motor1.setValue(value)
+        self.motor2.setValue(value + 100)
+        self.motor3.setValue(value - 100)
+        self.motor4.setValue(value + 200)
 
     def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
@@ -174,12 +175,19 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         
         # Setup motor view
         motorScene = QtGui.QGraphicsScene()
+        # change this to for loop later
         self.motor1 = BarGauge("Motor 1")
-        self.motor1.setLocation(0)
+        self.motor1.setPos(0, 0)
         self.motor2 = BarGauge("Motor 2")
-        self.motor2.setLocation(50)
+        self.motor2.setPos(300, 0)
+        self.motor3 = BarGauge("Motor 3")
+        self.motor3.setPos(0, 300)
+        self.motor4 = BarGauge("Motor 4")
+        self.motor4.setPos(300, 300)
         motorScene.addItem(self.motor1)
         motorScene.addItem(self.motor2)
+        motorScene.addItem(self.motor3)
+        motorScene.addItem(self.motor4)
         self.ui.motorView.setScene(motorScene)
     
     def updateBarGauge(self, channel, value):

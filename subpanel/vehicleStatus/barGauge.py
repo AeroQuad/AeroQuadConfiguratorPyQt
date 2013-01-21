@@ -17,42 +17,47 @@ class BarGauge(QtGui.QGraphicsRectItem):
         self.location = 0
         self.barGaugeHeight = 100
         self.barGaugeWidth = 35
-        self.label = name
-        self.brush = QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern)
-        self.barGaugeGap = 5
-        self.output = self.barGaugeGap
-
-        #self.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
-        #self.setPos(self.location, self.windowHeight - self.labelHeight)
-        #self.update(1000)
-            
-        # Center transmitter output window
-        #self.centerOn(0.0, 0.0)
-    
-    def boundingRect(self):
-        return QtCore.QRectF(0.0, 0.0, self.barGaugeHeight, self.barGaugeHeight)
-    
-    def paint(self, painter, option, widget):
-        painter.fillRect(self.location, self.barGaugeHeight-self.output, self.barGaugeWidth, self.output, self.brush)
-        painter.setPen(QtCore.Qt.white)
-        painter.drawText(self.location, 0, self.label)
+        self.barGaugeGap = 5 # Add a little line at the bottom to show a zero value, and space at the top to separate text
+        self.labelHeight = 15
+        self.labelWidth = 0.0
+        self.setValue(1000)
         
-    def updateSize(self, windowHeight):
-        self.windowHeight = windowHeight
-
+        gradient = QtGui.QLinearGradient(0, 100, 100, 0)
+        gradient.setColorAt(0.0, QtCore.Qt.black);
+        gradient.setColorAt(0.8, QtCore.Qt.gray);
+        gradient.setColorAt(1.0, QtCore.Qt.white);
+        self.setBrush(gradient)
         
-    def update(self, value):
-        self.output = self.scale(value, (self.min, self.max), (self.barGaugeGap, self.barGaugeHeight-self.barGaugeGap))
+        # Setup gauge label
+        self.labelItem = QtGui.QGraphicsTextItem(name)
+        self.labelItem.setParentItem(self)
+        self.labelItem.setDefaultTextColor(QtCore.Qt.white)
+        # Center label
+        self.labelWidth = self.labelItem.boundingRect().width()
+        self.labelItem.setPos((self.barGaugeWidth-self.labelWidth)/2.0, 0)
 
-    def setLocation(self, location):
-        self.location = location
+
+    def setHeight(self, height):
+        self.barGaugeHeight = height
     
     def setWidth(self, width):
         self.barGaugeWidth = width
+        self.labelItem.setPos((self.barGaugeWidth-self.labelWidth)/2.0, 0)
         
-    def setMinMax(self, minimum, maximum):
-        self.min = minimum
-        self.max = maximum
+    def setValue(self, value):
+        if value > self.max:
+            value = self.max
+        if value < self.min:
+            value = self.min
+        self.output = self.scale(value, (self.min, self.max), (self.barGaugeGap, self.barGaugeHeight-self.barGaugeGap))
+        self.updateRect()
+    
+    def setValueMinMax(self, min, max):
+        self.min, self.max = min, max
+        self.updateRect()
+    
+    def updateRect(self):
+        self.setRect(self.location, (self.barGaugeHeight-self.output)+self.labelHeight, self.barGaugeWidth, self.output)
     
     @staticmethod
     def scale(val, src, dst):
