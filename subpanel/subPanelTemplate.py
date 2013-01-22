@@ -19,7 +19,7 @@ class subpanel(object):
         self.xmlSubPanel = None
         self.comm = None
         self.mainUi = None
-        self.boardConfiguration = []
+        self.boardConfiguration = {}
                
     def initialize(self, commTransport, xml, mainWindow):
         '''This initializes your class with required external arguments'''

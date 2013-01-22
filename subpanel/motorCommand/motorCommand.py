@@ -55,16 +55,13 @@ class motorCommand(QtGui.QWidget, subpanel):
         self.xmlSubPanel     = xmlSubPanel
         self.validateCommand = self.xml.find(self.xmlSubPanel + 'ValidateCommand').text
         self.command_motor   = self.xml.find(self.xmlSubPanel + 'CommandMotor').text
+        self.boardConfiguration = boardConfiguration
 
         if self.comm.isConnected() == True:
             self.ui.sendButton.setEnabled(True)
             self.ui.clearButton.setEnabled(True)
 
-            self.board_configuration = {}
-            for configuration in boardConfiguration:
-                configuration = configuration.split(':')
-                self.board_configuration[configuration[0]] = configuration[1].strip()
-            motor_count = int(self.board_configuration['Motors'])
+            motor_count = int(self.boardConfiguration['Motors'])
 
             layout = QtGui.QHBoxLayout()
 

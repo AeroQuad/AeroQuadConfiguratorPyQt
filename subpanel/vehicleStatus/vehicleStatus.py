@@ -117,12 +117,6 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.rightStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
-        
-    def updateTest(self, value):
-        self.motor1.setValue(value)
-        self.motor2.setValue(value + 100)
-        self.motor3.setValue(value - 100)
-        self.motor4.setValue(value + 200)
 
     def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a timer used for any long running loops in a subpanel'''
@@ -136,15 +130,13 @@ class vehicleStatus(QtGui.QWidget, subpanel):
             self.timer.timeout.connect(self.readContinuousData)
             self.timer.start(10)
              
-        self.receiverChannels = 10
-        for config in self.boardConfiguration:
-            if "Receiver Channels" in config:
-                receiverConfig = config.split(": ")
-                self.receiverChannels = int(receiverConfig[1])
-                break
+        try:
+            self.receiverChannels = int(self.boardConfiguration["Receiver Channels"])
+        except:
+            self.receiverChannels = 10
         # Do we need these?
-        self.altitudeDetect = "Barometer: Detected" in self.boardConfiguration
-        self.batteryMonitorDetect = "Battery Monitor: Enabled" in self.boardConfiguration
+        self.altitudeDetect = self.boardConfiguration["Barometer"] == "Detected"
+        self.batteryMonitorDetect = self.boardConfiguration["Battery Monitor"] == "Enabled"
         
         # Setup plots to display rest of transmitter channels
         transmitterScene = QtGui.QGraphicsScene()
@@ -174,6 +166,7 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.ui.transmitterOutput.centerOn(0.0, 0.0)
         
         # Setup motor view
+        
         motorScene = QtGui.QGraphicsScene()
         # change this to for loop later
         self.motor1 = BarGauge("Motor 1")
@@ -189,6 +182,12 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         motorScene.addItem(self.motor3)
         motorScene.addItem(self.motor4)
         self.ui.motorView.setScene(motorScene)
+        
+    def updateTest(self, value):
+        self.motor1.setValue(value)
+        self.motor2.setValue(value + 100)
+        self.motor3.setValue(value - 100)
+        self.motor4.setValue(value + 200)
     
     def updateBarGauge(self, channel, value):
         #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight

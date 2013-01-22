@@ -41,6 +41,18 @@
             <Path>vehicleStatus.vehicleStatus</Path>
             <Class>vehicleStatus</Class>
             <Telemetry>s</Telemetry>
+            <VehicleGraphics>
+                <Vehicle Name="Quad +">./resources/Quad+.png</Vehicle>
+                <Vehicle Name="Quad X">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Quad Y4">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Tri">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Hex +">./resources/Hexa+.png</Vehicle>
+                <Vehicle Name="Hex X">./resources/HexaX.png</Vehicle>
+                <Vehicle Name="Hex Y6">./resources/HexaX.png</Vehicle>
+                <Vehicle Name="Octo X8">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Octo X">./resources/OctoX.png</Vehicle>
+                <Vehicle Name="Octo X+">./resources/Octo+.png</Vehicle>
+            </VehicleGraphics>
         </Subpanel>
 
         <Subpanel Name="Motor Command">

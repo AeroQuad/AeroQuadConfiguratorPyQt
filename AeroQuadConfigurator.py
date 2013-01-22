@@ -36,7 +36,7 @@ class AQMain(QtGui.QMainWindow):
         self.availablePorts = []
         self.updateComPortSelection()
         self.updateBaudRates()
-        self.boardConfiguration = []
+        self.boardConfiguration = {}
         
         # Update comm port combo box to use last used comm port
         defaultComPort = xml.find("./Settings/DefaultComPort").text
@@ -99,7 +99,9 @@ class AQMain(QtGui.QMainWindow):
                 size = int(self.comm.waitForRead())
                 for index in range(size):
                     response = self.comm.waitForRead()
-                    self.boardConfiguration.append(response)
+                    configuration = response.split(':')
+                    self.boardConfiguration[configuration[0]] = configuration[1].strip()
+            
                 # Hide menu items that don't match board configuration
                 for index in range(len(self.subPanelMenu)):
                     hide = self.checkRequirementsMatch(self.subPanelList[index])
@@ -111,13 +113,13 @@ class AQMain(QtGui.QMainWindow):
                 self.disconnect()
                 self.ui.status.setText("Not connected to the AeroQuad")
                 QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
-        except SerialException, se:
+        except SerialException:
             self.ui.buttonDisconnect.setEnabled(False)
             self.ui.buttonConnect.setEnabled(True)
             self.ui.comPort.setEnabled(True)
             self.ui.baudRate.setEnabled(True)
             self.ui.status.setText("Connection Failed")
-            self.boardConfiguration = []
+            self.boardConfiguration = {}
         
     def disconnect(self):
         '''Disconnect from the AeroQuad'''
@@ -129,7 +131,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.setEnabled(True)
         self.ui.baudRate.setEnabled(True)
         self.ui.status.setText("Disconnected from the AeroQuad")
-        self.boardConfiguration = []
+        self.boardConfiguration = {}
         self.restartSubPanel()
 
     def updateDetectedPorts(self):
@@ -260,16 +262,22 @@ class AQMain(QtGui.QMainWindow):
         # Read requirements for the specified subpanel form the XML config file
         xmlRequirement = "./Subpanels/Subpanel/[@Name='" + subPanelName +"']/Requirement"
         subPanelRequirements = xml.findall(xmlRequirement)
-        panelRequirements = [] # Holds the requirements as a list of strings
-        for requirement in subPanelRequirements:
-            panelRequirements.append(requirement.text)
+        
+        panelRequirements = {}        
+        for requirements in subPanelRequirements:
+            requirement = requirements.text.split(':')
+            if requirement[0] == "All": # Need element 1 populated if "All" detected
+                requirement.append("All")
+            panelRequirements[requirement[0]] = requirement[1].strip()
+
         check = True
         # Go through each subpanel requirement and check against board configuration
-        for testRequirement in panelRequirements:
+        requirementType = panelRequirements.keys()
+        for testRequirement in requirementType:
             if (testRequirement == "All"):
                 check = True
                 break;
-            check = check and (testRequirement in self.boardConfiguration)
+            check = check and (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
         return check
 
     ####### Housekeeping Functions #######

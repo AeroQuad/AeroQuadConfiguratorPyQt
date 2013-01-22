@@ -30,23 +30,21 @@ class vehicleConfiguration(QtGui.QWidget, subpanel):
         
     def start(self, xmlSubPanel, boardConfiguration):
         self.boardConfiguration = boardConfiguration
-        if self.comm.isConnected():       
-            for spec in self.boardConfiguration:
-                if "Flight Config: " in spec:
-                    vehicle = spec.split("Flight Config: ")
-                    vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle[1] + "']")
-                    self.image = QtGui.QPixmap(vehicleFile.text)
-                    self.displayVehicle()
-                    break
+        if self.comm.isConnected():
+            vehicle = self.boardConfiguration["Flight Config"]
+            vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
+            self.image = QtGui.QPixmap(vehicleFile.text)
+            self.displayVehicle()
             
             # Populate configuration list
             rowCount = len(self.boardConfiguration)
+            configName = self.boardConfiguration.keys()
             self.ui.configSpecs.clear()
             self.ui.configSpecs.setRowCount(rowCount)
             self.ui.configSpecs.setColumnCount(1)
             
             for currentRow in range(rowCount):
-                spec = QtGui.QTableWidgetItem("   " + self.boardConfiguration[currentRow])
+                spec = QtGui.QTableWidgetItem("   " + configName[currentRow] + ": " + self.boardConfiguration[configName[currentRow]])
                 spec.setTextColor(QtCore.Qt.white)
                 spec.setFlags(QtCore.Qt.ItemIsTristate)
                 self.ui.configSpecs.setItem(currentRow, 0, spec)
