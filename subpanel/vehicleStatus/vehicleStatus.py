@@ -8,7 +8,7 @@ from PyQt4 import QtCore, QtGui
 from subpanel.subPanelTemplate import subpanel
 from subpanel.vehicleStatus.vehicleStatusWindow import Ui_vehicleStatus
 import math
-from barGauge import BarGauge
+from utilities.barGauge import BarGauge
 
 class vehicleStatus(QtGui.QWidget, subpanel):
     def __init__(self):
@@ -135,8 +135,8 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         except:
             self.receiverChannels = 10
         # Do we need these?
-        self.altitudeDetect = self.boardConfiguration["Barometer"] == "Detected"
-        self.batteryMonitorDetect = self.boardConfiguration["Battery Monitor"] == "Enabled"
+        #self.altitudeDetect = self.boardConfiguration["Barometer"] == "Detected"
+        #self.batteryMonitorDetect = self.boardConfiguration["Battery Monitor"] == "Enabled"
         
         # Setup plots to display rest of transmitter channels
         transmitterScene = QtGui.QGraphicsScene()
