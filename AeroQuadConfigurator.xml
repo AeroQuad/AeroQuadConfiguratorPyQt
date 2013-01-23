@@ -42,16 +42,16 @@
             <Class>vehicleStatus</Class>
             <Telemetry>s</Telemetry>
             <VehicleGraphics>
-                <Vehicle Name="Quad +">./resources/Quad+.png</Vehicle>
-                <Vehicle Name="Quad X">./resources/QuadX.png</Vehicle>
-                <Vehicle Name="Quad Y4">./resources/QuadX.png</Vehicle>
-                <Vehicle Name="Tri">./resources/QuadX.png</Vehicle>
-                <Vehicle Name="Hex +">./resources/Hexa+.png</Vehicle>
-                <Vehicle Name="Hex X">./resources/HexaX.png</Vehicle>
-                <Vehicle Name="Hex Y6">./resources/HexaX.png</Vehicle>
-                <Vehicle Name="Octo X8">./resources/QuadX.png</Vehicle>
-                <Vehicle Name="Octo X">./resources/OctoX.png</Vehicle>
-                <Vehicle Name="Octo X+">./resources/Octo+.png</Vehicle>
+                <Vehicle Name="Quad +" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240)">./resources/Quad+.png</Vehicle>
+                <Vehicle Name="Quad X" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240)">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Quad Y4" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240)">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Tri" Width="400" Height="400" Motors="(75,35), (280,35), (75,240)">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Hex +" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240)">./resources/Hexa+.png</Vehicle>
+                <Vehicle Name="Hex X" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240)">./resources/HexaX.png</Vehicle>
+                <Vehicle Name="Hex Y6" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240)">./resources/HexaX.png</Vehicle>
+                <Vehicle Name="Octo X8" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240), (75,240), (280,240)">./resources/QuadX.png</Vehicle>
+                <Vehicle Name="Octo X" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240), (75,240), (280,240)">./resources/OctoX.png</Vehicle>
+                <Vehicle Name="Octo X+" Width="400" Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240), (75,240), (280,240)">./resources/Octo+.png</Vehicle>
             </VehicleGraphics>
         </Subpanel>
 

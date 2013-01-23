@@ -7,8 +7,9 @@ Created on Dec 6, 2012
 from PyQt4 import QtCore, QtGui
 from subpanel.subPanelTemplate import subpanel
 from subpanel.vehicleStatus.vehicleStatusWindow import Ui_vehicleStatus
-import math
 from utilities.barGauge import BarGauge
+import math
+import ast
 
 class vehicleStatus(QtGui.QWidget, subpanel):
     def __init__(self):
@@ -165,29 +166,38 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         # Center transmitter output window
         self.ui.transmitterOutput.centerOn(0.0, 0.0)
         
-        # Setup motor view
-        
+        # Setup background for motor view
         motorScene = QtGui.QGraphicsScene()
-        # change this to for loop later
-        self.motor1 = BarGauge("Motor 1")
-        self.motor1.setPos(0, 0)
-        self.motor2 = BarGauge("Motor 2")
-        self.motor2.setPos(300, 0)
-        self.motor3 = BarGauge("Motor 3")
-        self.motor3.setPos(0, 300)
-        self.motor4 = BarGauge("Motor 4")
-        self.motor4.setPos(300, 300)
-        motorScene.addItem(self.motor1)
-        motorScene.addItem(self.motor2)
-        motorScene.addItem(self.motor3)
-        motorScene.addItem(self.motor4)
+        try:
+            vehicle = self.boardConfiguration["Flight Config"]
+        except:
+            vehicle = "Quad X"
+        vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
+        vehicleImage = QtGui.QPixmap(vehicleFile.text)
+        print(vehicleFile.attrib["Width"])
+        vehicleHeight = int(vehicleFile.attrib["Height"])
+        vehicleWidth = int(vehicleFile.attrib["Width"])
+        scaledImage = vehicleImage.scaled(vehicleWidth, vehicleHeight, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        motorScene.addPixmap(scaledImage)
+        
+        # Setup motor view
+        try:
+            motorCount = int(self.boardConfiguration["Motors"])
+        except:
+            motorCount = 4
+        self.motor = []
+        motorLocation = ast.literal_eval(vehicleFile.attrib["Motors"]) # read in motor locations from XML
+        for motorIndex in range(motorCount):
+            self.motor.append(BarGauge("Motor " + str(motorIndex+1)))
+            self.motor[motorIndex].setPos(motorLocation[motorIndex][0], motorLocation[motorIndex][1])
+            motorScene.addItem(self.motor[motorIndex])
         self.ui.motorView.setScene(motorScene)
         
     def updateTest(self, value):
-        self.motor1.setValue(value)
-        self.motor2.setValue(value + 100)
-        self.motor3.setValue(value - 100)
-        self.motor4.setValue(value + 200)
+        self.motor[0].setValue(value)
+        self.motor[1].setValue(value + 100)
+        self.motor[2].setValue(value - 100)
+        self.motor[3].setValue(value + 200)
     
     def updateBarGauge(self, channel, value):
         #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight

@@ -8,7 +8,7 @@
 <path>/AeroQuadConfiguratorPyQt/resources</path>
 <path>/AeroQuadConfiguratorPyQt/subpanel</path>
 <path>/AeroQuadConfiguratorPyQt/ui</path>
-<path>/AeroQuadConfiguratorPyQt/utilties</path>
+<path>/AeroQuadConfiguratorPyQt/utilities</path>
 </pydev_pathproperty>
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
 <path>C:\Python27\Lib\site-packages\pyqtgraph</path>
