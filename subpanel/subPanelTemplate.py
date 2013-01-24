@@ -76,18 +76,33 @@ class subpanel(object):
 
     def status(self, message):
         self.mainUi.status.setText(message)
-        
+    
     def checkRequirementsMatch(self, xmlRequirementPath):
         # Read requirements for the specified subpanel form the XML config file
         subPanelRequirements = self.xml.findall(xmlRequirementPath)
-        panelRequirements = [] # Holds the requirements as a list of strings
-        for requirement in subPanelRequirements:
-            panelRequirements.append(requirement.text)
-        check = True
+        panelRequirements = {}
+        booleanOperation = {}      
+        for requirements in subPanelRequirements:
+            requirement = requirements.text.split(':')
+            if requirement[0] == "All": # Need element 1 populated if "All" detected
+                requirement.append("All")
+            panelRequirements[requirement[0]] = requirement[1].strip()
+            booleanOperation[requirement[0]] = requirements.get("type")
+
         # Go through each subpanel requirement and check against board configuration
-        for testRequirement in panelRequirements:
-            if (testRequirement == "All"):
+        # If no boolean type defined, assume AND
+        requirementType = panelRequirements.keys()
+        # If no Requirement found, assume ALL
+        try:
+            if (requirementType[0] == "All"):
                 check = True
-                break;
-            check = check and (testRequirement in self.boardConfiguration)
+            else:
+                check = panelRequirements[requirementType[0]] in self.boardConfiguration.values()
+                for testRequirement in requirementType[1:]:
+                    if (booleanOperation[testRequirement] == "or") or (booleanOperation[testRequirement] == "OR"):
+                        check = check or (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
+                    else:
+                        check = check and (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])   
+        except:
+            check = True
         return check

@@ -270,19 +270,24 @@ class AQMain(QtGui.QMainWindow):
             if requirement[0] == "All": # Need element 1 populated if "All" detected
                 requirement.append("All")
             panelRequirements[requirement[0]] = requirement[1].strip()
-            booleanOperation[requirement[0]] = requirement.attrib("type")
+            booleanOperation[requirement[0]] = requirements.get("type")
 
         # Go through each subpanel requirement and check against board configuration
-        check = "and" in booleanOperation.values()
+        # If no boolean type defined, assume AND
         requirementType = panelRequirements.keys()
-        for testRequirement in requirementType:
-            if (testRequirement == "All"):
+        # If no Requirement found, assume ALL
+        try:
+            if (requirementType[0] == "All"):
                 check = True
-                break;
-            if booleanOperation[testRequirement] == "or":
-                check = check or (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
             else:
-                check = check and (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
+                check = panelRequirements[requirementType[0]] in self.boardConfiguration.values()
+                for testRequirement in requirementType[1:]:
+                    if (booleanOperation[testRequirement] == "or") or (booleanOperation[testRequirement] == "OR"):
+                        check = check or (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
+                    else:
+                        check = check and (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])   
+        except:
+            check = True
         return check
 
     ####### Housekeeping Functions #######
