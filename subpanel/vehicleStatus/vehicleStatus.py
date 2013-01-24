@@ -17,11 +17,6 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         subpanel.__init__(self)
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
-        
-        self.ui.verticalScrollBar.setMinimum(1000)
-        self.ui.verticalScrollBar.setMaximum(2000)
-        self.ui.verticalScrollBar.valueChanged.connect(self.updateTest)
-        
         self.channelCount = 0
         
         # Setup artificial horizon    
@@ -174,7 +169,6 @@ class vehicleStatus(QtGui.QWidget, subpanel):
             vehicle = "Quad X"
         vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
         vehicleImage = QtGui.QPixmap(vehicleFile.text)
-        print(vehicleFile.attrib["Width"])
         vehicleHeight = int(vehicleFile.attrib["Height"])
         vehicleWidth = int(vehicleFile.attrib["Width"])
         scaledImage = vehicleImage.scaled(vehicleWidth, vehicleHeight, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
@@ -182,22 +176,16 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         
         # Setup motor view
         try:
-            motorCount = int(self.boardConfiguration["Motors"])
+            self.motorCount = int(self.boardConfiguration["Motors"])
         except:
-            motorCount = 4
+            self.motorCount = 4
         self.motor = []
         motorLocation = ast.literal_eval(vehicleFile.attrib["Motors"]) # read in motor locations from XML
-        for motorIndex in range(motorCount):
+        for motorIndex in range(self.motorCount):
             self.motor.append(BarGauge("Motor " + str(motorIndex+1)))
             self.motor[motorIndex].setPos(motorLocation[motorIndex][0], motorLocation[motorIndex][1])
             motorScene.addItem(self.motor[motorIndex])
         self.ui.motorView.setScene(motorScene)
-        
-    def updateTest(self, value):
-        self.motor[0].setValue(value)
-        self.motor[1].setValue(value + 100)
-        self.motor[2].setValue(value - 100)
-        self.motor[3].setValue(value + 200)
     
     def updateBarGauge(self, channel, value):
         #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
@@ -278,9 +266,8 @@ class vehicleStatus(QtGui.QWidget, subpanel):
                 self.updateLeftStick(int(data[9]), int(data[8]))
                 for receiverIndex in range(self.channelCount):
                     self.updateBarGauge(receiverIndex, int(data[receiverIndex+10]))
-                motorPower = []
-                for motorIndex in range(8):
-                    motorPower.append(int(data[motorIndex+14]))
+                for motorIndex in range(self.motorCount):
+                    self.motor[motorIndex].setValue(int(data[motorIndex+14]))
                 batteryPower = float(data[22])
                 self.batteryPower.setPlainText("{:.3f}".format(batteryPower))
                 flightMode = int(data[23])
