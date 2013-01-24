@@ -263,21 +263,26 @@ class AQMain(QtGui.QMainWindow):
         xmlRequirement = "./Subpanels/Subpanel/[@Name='" + subPanelName +"']/Requirement"
         subPanelRequirements = xml.findall(xmlRequirement)
         
-        panelRequirements = {}        
+        panelRequirements = {}
+        booleanOperation = {}      
         for requirements in subPanelRequirements:
             requirement = requirements.text.split(':')
             if requirement[0] == "All": # Need element 1 populated if "All" detected
                 requirement.append("All")
             panelRequirements[requirement[0]] = requirement[1].strip()
+            booleanOperation[requirement[0]] = requirement.attrib("type")
 
-        check = True
         # Go through each subpanel requirement and check against board configuration
+        check = "and" in booleanOperation.values()
         requirementType = panelRequirements.keys()
         for testRequirement in requirementType:
             if (testRequirement == "All"):
                 check = True
                 break;
-            check = check and (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
+            if booleanOperation[testRequirement] == "or":
+                check = check or (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
+            else:
+                check = check and (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
         return check
 
     ####### Housekeeping Functions #######

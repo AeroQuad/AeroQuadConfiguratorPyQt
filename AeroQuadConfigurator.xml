@@ -112,7 +112,8 @@
                 <Parameter Description="Controls the state of the Heading Hold feature: 1 = Enabled, 0 = Disabled" Name="Heading Hold Configuration">1</Parameter>
             </ParameterType>
             <ParameterType Name="Altitude Hold">
-                <Requirement>All</Requirement>
+                <Requirement type="or">Altitude Hold: Enabled</Requirement>
+                <Requirement type="or">Range Detection: Enabled</Requirement>
                 <Command>D</Command>
                 <Telemetry>d</Telemetry>
                 <UpdateEEPROM>W</UpdateEEPROM>
@@ -200,9 +201,9 @@
         </Subpanel>
 
         <Subpanel Name="Sensor Data">
-            <Requirement>Gyroscope: Detected</Requirement>
-            <Requirement>Accelerometer: Detected</Requirement>
-            <Requirement>Magnetometer: Detected</Requirement>
+            <Requirement type="and">Gyroscope: Detected</Requirement>
+            <Requirement type="and">Accelerometer: Detected</Requirement>
+            <Requirement type="and">Magnetometer: Detected</Requirement>
             <Path>dataPlot.dataPlot</Path> 
             <Class>dataPlot</Class> 
             <Telemetry>i</Telemetry>
@@ -255,9 +256,9 @@
             <PlotName>Mag Z Axis</PlotName>
         </Subpanel>
         <Subpanel Name="Attitude">
-            <Requirement>Gyroscope: Detected</Requirement>
-            <Requirement>Accelerometer: Detected</Requirement>
-            <Requirement>Magnetometer: Detected</Requirement>
+            <Requirement type="and">Gyroscope: Detected</Requirement>
+            <Requirement type="and">Accelerometer: Detected</Requirement>
+            <Requirement type="and">Magnetometer: Detected</Requirement>
             <Path>dataPlot.dataPlot</Path>
             <Class>dataPlot</Class>
             <Telemetry>r</Telemetry>
@@ -285,8 +286,8 @@
             <PlotName>Aux5</PlotName>
         </Subpanel>
         <Subpanel Name="Altitude Data">
-            <Requirement>Barometer: Detected</Requirement>
-            <Requirement>Range Detection: Enabled</Requirement>
+            <Requirement type="or">Barometer: Detected</Requirement>
+            <Requirement type="or">Range Detection: Enabled</Requirement>
             <Path>dataPlot.dataPlot</Path>
             <Class>dataPlot</Class>
             <Telemetry>z</Telemetry>
