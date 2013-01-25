@@ -15,6 +15,7 @@ class Ui_motorCommand(object):
         self.clearButton.setObjectName('clearButton')
         self.gridLayout.addWidget(self.clearButton, 1, 1, 1, 1)
         self.motor_slider_widget = QtGui.QWidget()
+        self.motor_slider_widget.setLayout(QtGui.QHBoxLayout())
         self.gridLayout.addWidget(self.motor_slider_widget, 0, 0, 1, 2)
 
         self.retranslateUi(motorCommand)

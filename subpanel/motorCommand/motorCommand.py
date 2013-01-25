@@ -40,6 +40,7 @@ class motorCommand(QtGui.QWidget, subpanel):
     def __init__(self, parent=None):
         super(motorCommand, self).__init__(parent)
         subpanel.__init__(self)
+        self.started = False
 
         self.ui = Ui_motorCommand()
         self.ui.setupUi(self)
@@ -61,14 +62,15 @@ class motorCommand(QtGui.QWidget, subpanel):
             self.ui.sendButton.setEnabled(True)
             self.ui.clearButton.setEnabled(True)
 
-            motor_count = int(self.boardConfiguration['Motors'])
+            if not self.started:
+                motor_count  = int(self.boardConfiguration['Motors'])
+                motor_layout = self.ui.motor_slider_widget.layout()
 
-            layout = QtGui.QHBoxLayout()
+                self.ui.motor_sliders = [MotorSlider(motor_number=(i + 1)) for i in xrange(motor_count)]
+                for motor in self.ui.motor_sliders:
+                    motor_layout.addWidget(motor)
 
-            self.ui.motor_sliders = [MotorSlider(motor_number=(i + 1)) for i in xrange(motor_count)]
-            for motor in self.ui.motor_sliders:
-                layout.addWidget(motor)
-            self.ui.motor_slider_widget.setLayout(layout)
+                self.started = True
 
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
