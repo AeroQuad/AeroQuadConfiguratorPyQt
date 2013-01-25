@@ -280,12 +280,12 @@ class AQMain(QtGui.QMainWindow):
             if (requirementType[0] == "All"):
                 check = True
             else:
-                check = panelRequirements[requirementType[0]] in self.boardConfiguration.values()
+                check = any(panelRequirements[requirementType[0]] in s for s in self.boardConfiguration.values())
                 for testRequirement in requirementType[1:]:
                     if (booleanOperation[testRequirement] == "or") or (booleanOperation[testRequirement] == "OR"):
-                        check = check or (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])
+                        check = check or any(panelRequirements[testRequirement] in s for s in self.boardConfiguration.values())
                     else:
-                        check = check and (panelRequirements[testRequirement] == self.boardConfiguration[testRequirement])   
+                        check = check and any(panelRequirements[testRequirement] in s for s in self.boardConfiguration.values())
         except:
             check = True
         return check

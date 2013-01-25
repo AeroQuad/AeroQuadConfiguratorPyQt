@@ -42,17 +42,17 @@
             <Class>vehicleStatus</Class>
             <Telemetry>s</Telemetry>
 			<VehicleGraphics>
-				<Vehicle Name="Quad +" Width="400" Height="400" Motors="(182,22), (300,140), (182,255), (62,140)">./resources/Quad+ v2.png</Vehicle>
-				<Vehicle Name="Quad X" Width="400" Height="400" Motors="(80,35), (280,35), (80,240), (280,240)">./resources/QuadX v2.png</Vehicle>
-				<Vehicle Name="Quad Y4" Width="400" Height="400" Motors="(66,23), (222,23), (145,260), (300,260)">./resources/QuadY4 v2.png</Vehicle>
-				<Vehicle Name="Tri" Width="400" Height="400" Motors="(330,240), (80,35), (285,35), (182,240)">./resources/Tri v2.png</Vehicle>
-				<Vehicle Name="Hexa +" Width="500" Height="500" Motors="(235,30), (390,100), (390,275),(235,350), (75,275), (75,100)">./resources/Hexa+ v2.png</Vehicle>
-				<Vehicle Name="Hexa X" Width="500" Height="500" Motors="(150,30), (320,30), (390,190), (320,350), (150,350), (75,190)">./resources/HexaX v2.png</Vehicle>
-				<Vehicle Name="Hex Y6" Width="500" Height="500" Motors="(50,45), (170,45), (170,340), (295,45), (420,45), (300,340)">./resources/HexY6 v2.png</Vehicle>
-				<Vehicle Name="Octo X8 +" Width="500" Height="500" Motors="(192,27), (325,190), (192,350), (55,190),(275,27), (410,190), (275,350), (140,190)">./resources/X8+ v2.png</Vehicle>
-				<Vehicle Name="Octo X8 X" Width="500" Height="500" Motors="(60,40), (310,40), (310,345), (60,345),(160,40), (410,40), (410,345), (160,345)">./resources/X8X v2.png</Vehicle>
-				<Vehicle Name="Octo X" Width="500" Height="500" Motors="(165,25), (295,25), (385,130), (385,260), (295,350), (165,350), (70,260), (70,130)">./resources/OctoX v2.png</Vehicle>
-				<Vehicle Name="Octo +" Width="500" Height="500" Motors="(235,30), (360,65), (395,185), (360,315), (235,350), (110,315), (75,185), (110,65)">./resources/Octo+ v2.png</Vehicle>
+				<Vehicle Height="400" Motors="(182,22), (300,140), (182,255), (62,140)" Name="Quad +" Width="400">./resources/Quad+ v2.png</Vehicle>
+				<Vehicle Height="400" Motors="(80,35), (280,35), (80,240), (280,240)" Name="Quad X" Width="400">./resources/QuadX v2.png</Vehicle>
+				<Vehicle Height="400" Motors="(66,23), (222,23), (145,260), (300,260)" Name="Quad Y4" Width="400">./resources/QuadY4 v2.png</Vehicle>
+				<Vehicle Height="400" Motors="(330,240), (80,35), (285,35), (182,240)" Name="Tri" Width="400">./resources/Tri v2.png</Vehicle>
+				<Vehicle Height="500" Motors="(235,30), (390,100), (390,275),(235,350), (75,275), (75,100)" Name="Hexa +" Width="500">./resources/Hexa+ v2.png</Vehicle>
+				<Vehicle Height="500" Motors="(150,30), (320,30), (390,190), (320,350), (150,350), (75,190)" Name="Hexa X" Width="500">./resources/HexaX v2.png</Vehicle>
+				<Vehicle Height="500" Motors="(50,45), (170,45), (170,340), (295,45), (420,45), (300,340)" Name="Hex Y6" Width="500">./resources/HexY6 v2.png</Vehicle>
+				<Vehicle Height="500" Motors="(192,27), (325,190), (192,350), (55,190),(275,27), (410,190), (275,350), (140,190)" Name="Octo X8 +" Width="500">./resources/X8+ v2.png</Vehicle>
+				<Vehicle Height="500" Motors="(60,40), (310,40), (310,345), (60,345),(160,40), (410,40), (410,345), (160,345)" Name="Octo X8 X" Width="500">./resources/X8X v2.png</Vehicle>
+				<Vehicle Height="500" Motors="(165,25), (295,25), (385,130), (385,260), (295,350), (165,350), (70,260), (70,130)" Name="Octo X" Width="500">./resources/OctoX v2.png</Vehicle>
+				<Vehicle Height="500" Motors="(235,30), (360,65), (395,185), (360,315), (235,350), (110,315), (75,185), (110,65)" Name="Octo +" Width="500">./resources/Octo+ v2.png</Vehicle>
 			</VehicleGraphics>
         </Subpanel>
 
