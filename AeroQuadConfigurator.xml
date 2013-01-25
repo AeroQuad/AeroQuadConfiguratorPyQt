@@ -41,18 +41,19 @@
             <Path>vehicleStatus.vehicleStatus</Path>
             <Class>vehicleStatus</Class>
             <Telemetry>s</Telemetry>
-            <VehicleGraphics>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240)" Name="Quad +" Width="400">./resources/Quad+.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240)" Name="Quad X" Width="400">./resources/QuadX.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240)" Name="Quad Y4" Width="400">./resources/QuadX.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240)" Name="Tri" Width="400">./resources/QuadX.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240)" Name="Hex +" Width="400">./resources/Hexa+.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240)" Name="Hex X" Width="400">./resources/HexaX.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240)" Name="Hex Y6" Width="400">./resources/HexaX.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240), (75,240), (280,240)" Name="Octo X8" Width="400">./resources/QuadX.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240), (75,240), (280,240)" Name="Octo X" Width="400">./resources/OctoX.png</Vehicle>
-                <Vehicle Height="400" Motors="(75,35), (280,35), (75,240), (280,240), (75,240), (280,240), (75,240), (280,240)" Name="Octo X+" Width="400">./resources/Octo+.png</Vehicle>
-            </VehicleGraphics>
+			<VehicleGraphics>
+				<Vehicle Name="Quad +" Width="400" Height="400" Motors="(182,22), (300,140), (182,255), (62,140)">./resources/Quad+ v2.png</Vehicle>
+				<Vehicle Name="Quad X" Width="400" Height="400" Motors="(80,35), (280,35), (80,240), (280,240)">./resources/QuadX v2.png</Vehicle>
+				<Vehicle Name="Quad Y4" Width="400" Height="400" Motors="(66,23), (222,23), (145,260), (300,260)">./resources/QuadY4 v2.png</Vehicle>
+				<Vehicle Name="Tri" Width="400" Height="400" Motors="(330,240), (80,35), (285,35), (182,240)">./resources/Tri v2.png</Vehicle>
+				<Vehicle Name="Hexa +" Width="500" Height="500" Motors="(235,30), (390,100), (390,275),(235,350), (75,275), (75,100)">./resources/Hexa+ v2.png</Vehicle>
+				<Vehicle Name="Hexa X" Width="500" Height="500" Motors="(150,30), (320,30), (390,190), (320,350), (150,350), (75,190)">./resources/HexaX v2.png</Vehicle>
+				<Vehicle Name="Hex Y6" Width="500" Height="500" Motors="(50,45), (170,45), (170,340), (295,45), (420,45), (300,340)">./resources/HexY6 v2.png</Vehicle>
+				<Vehicle Name="Octo X8 +" Width="500" Height="500" Motors="(192,27), (325,190), (192,350), (55,190),(275,27), (410,190), (275,350), (140,190)">./resources/X8+ v2.png</Vehicle>
+				<Vehicle Name="Octo X8 X" Width="500" Height="500" Motors="(60,40), (310,40), (310,345), (60,345),(160,40), (410,40), (410,345), (160,345)">./resources/X8X v2.png</Vehicle>
+				<Vehicle Name="Octo X" Width="500" Height="500" Motors="(165,25), (295,25), (385,130), (385,260), (295,350), (165,350), (70,260), (70,130)">./resources/OctoX v2.png</Vehicle>
+				<Vehicle Name="Octo +" Width="500" Height="500" Motors="(235,30), (360,65), (395,185), (360,315), (235,350), (110,315), (75,185), (110,65)">./resources/Octo+ v2.png</Vehicle>
+			</VehicleGraphics>
         </Subpanel>
 
         <Subpanel Name="Motor Command">
@@ -131,7 +132,7 @@
                 <Parameter Description="Not used at the moment." Name="Z-Dampening Derivative">0.0</Parameter>
             </ParameterType>
             <ParameterType Name="GPS Position Hold">
-                <Requirement>All</Requirement>
+                <Requirement>GPS: Detected</Requirement>
                 <Command>V</Command>
                 <Telemetry>v</Telemetry>
                 <UpdateEEPROM>W</UpdateEEPROM>

@@ -166,7 +166,7 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         try:
             vehicle = self.boardConfiguration["Flight Config"]
         except:
-            vehicle = "Quad X"
+            vehicle = "Quad +"
         vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
         vehicleImage = QtGui.QPixmap(vehicleFile.text)
         vehicleHeight = int(vehicleFile.attrib["Height"])
