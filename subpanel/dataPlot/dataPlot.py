@@ -70,29 +70,29 @@ class dataPlot(QtGui.QWidget, subpanel):
                 self.comm.write(telemetry)
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(40)
+            self.timer.start(50)
+            self.startCommThread()
 
         self.plot_timer = QtCore.QTimer()
         self.plot_timer.timeout.connect(self.update_plot)
-        self.plot_timer.start(20)
+        self.plot_timer.start(100)
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''
-        if self.comm.isConnected() == True:
-            if self.comm.dataAvailable():
-                rawData = self.comm.read()
-                data = rawData.split(',')
+        if self.comm.isConnected() and not self.commData.empty():
+            rawData = self.commData.get()
+            data = rawData.split(',')
 
-                for i in xrange(self.plotCount):
-                    legendRow = self.legend.child(i)
-                    if legendRow.checkState(0) == 2:
-                        try:
-                            dataValue = data[i + self.plotIndex]
-                            self.data[i].insert(0, float(dataValue))
-                            self.data[i].pop()
-                            legendRow.setText(2, dataValue)
-                        except:
-                            pass # Do not update output data if invalid number detected from comm read
+            for i in xrange(self.plotCount):
+                legendRow = self.legend.child(i)
+                if legendRow.checkState(0) == 2:
+                    try:
+                        dataValue = data[i + self.plotIndex]
+                        self.data[i].insert(0, float(dataValue))
+                        self.data[i].pop()
+                        legendRow.setText(2, dataValue)
+                    except:
+                        pass # Do not update output data if invalid number detected from comm read
 
     def update_plot(self):
         for i in xrange(self.plotCount):

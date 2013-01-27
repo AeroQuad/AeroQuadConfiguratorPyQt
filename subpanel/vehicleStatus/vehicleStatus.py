@@ -10,6 +10,7 @@ from subpanel.vehicleStatus.vehicleStatusWindow import Ui_vehicleStatus
 from utilities.barGauge import BarGauge
 import math
 import ast
+import time
 
 class vehicleStatus(QtGui.QWidget, subpanel):
     def __init__(self):
@@ -18,6 +19,7 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
         self.channelCount = 0
+        self.rawData = ""
         
         # Setup artificial horizon    
         horizon = QtGui.QPixmap("./resources/artificialHorizonBackGround.svg")
@@ -118,13 +120,21 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         '''This method starts a timer used for any long running loops in a subpanel'''
         self.xmlSubPanel = xmlSubPanel
         self.boardConfiguration = boardConfiguration
-        if self.comm.isConnected() == True:
+        if self.comm.isConnected():
             telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
             if telemetry != None:
                 self.comm.write(telemetry)
-            self.timer = QtCore.QTimer()
-            self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(10)
+                self.startCommThread()
+                # This timer keeps telemetry queue empty
+                self.timer = QtCore.QTimer()
+                self.timer.timeout.connect(self.readContinuousData)
+                self.timer.start(50)
+                # Wait a little to give time for self.timer to start
+                time.sleep(0.200)
+                # This timer updates front screen a eye pleasing rate
+                self.updateStatus = QtCore.QTimer()
+                self.updateStatus.timeout.connect(self.updateVehicleStatus)
+                self.updateStatus.start(100)
              
         try:
             self.receiverChannels = int(self.boardConfiguration["Receiver Channels"])
@@ -233,47 +243,50 @@ class vehicleStatus(QtGui.QWidget, subpanel):
         return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
 
     def readContinuousData(self):
-        '''This method continually reads telemetry from the AeroQuad'''
-        if self.comm.isConnected() == True: 
-            if self.comm.dataAvailable():           
-                rawData = self.comm.read()
-                data = rawData.split(",")
-                motorArmed = int(data[0])
-                if motorArmed:
-                    self.motorArm.setPlainText("Armed")
-                    self.motorArm.setDefaultTextColor(QtCore.Qt.green)
-                else:
-                    self.motorArm.setPlainText("Not Armed")
-                    self.motorArm.setDefaultTextColor(QtCore.Qt.red)
-                roll = math.degrees(float(data[1]))
-                self.roll.setPlainText("{:.1f}".format(roll))
-                pitch = math.degrees(float(data[2]))
-                self.pitch.setPlainText("{:.1f}".format(pitch))
-                heading = math.degrees(float(data[3]))
-                self.heading.setPlainText("{:.1f}".format(heading).zfill(5))
-                self.updatePitchRoll(roll, pitch)
-                self.updateHeading(heading)
-                altitude = float(data[4])
-                self.altitude.setPlainText("{:.1f}".format(altitude).zfill(5))
-                altitudeHold = int(data[5])
-                if altitudeHold:
-                    self.altitudeHold.setPlainText("On")
-                    self.altitudeHold.setDefaultTextColor(QtCore.Qt.green)
-                else:
-                    self.altitudeHold.setPlainText("Off")
-                    self.altitudeHold.setDefaultTextColor(QtCore.Qt.red)
-                self.updateRightStick(int(data[6]), int(data[7]))
-                self.updateLeftStick(int(data[9]), int(data[8]))
-                for receiverIndex in range(self.channelCount):
-                    self.updateBarGauge(receiverIndex, int(data[receiverIndex+10]))
-                for motorIndex in range(self.motorCount):
-                    self.motor[motorIndex].setValue(int(data[motorIndex+14]))
-                batteryPower = float(data[22])
-                self.batteryPower.setPlainText("{:.3f}".format(batteryPower))
-                flightMode = int(data[23])
-                if flightMode:
-                    self.flightMode.setPlainText("Stable")
-                    self.flightMode.setDefaultTextColor(QtCore.Qt.green)
-                else:
-                    self.flightMode.setPlainText("Acro")
-                    self.flightMode.setDefaultTextColor(QtCore.Qt.yellow)
+        '''This method continually emptys the telemetry queue from the AeroQuad'''
+        if self.comm.isConnected() and not self.commData.empty():           
+            self.rawData = self.commData.get()
+                
+    def updateVehicleStatus(self):
+        '''This method continually reads the last telemetry value from the AeroQuad'''
+        if self.comm.isConnected():        
+            data = self.rawData.split(",")
+            motorArmed = int(data[0])
+            if motorArmed:
+                self.motorArm.setPlainText("Armed")
+                self.motorArm.setDefaultTextColor(QtCore.Qt.green)
+            else:
+                self.motorArm.setPlainText("Not Armed")
+                self.motorArm.setDefaultTextColor(QtCore.Qt.red)
+            roll = math.degrees(float(data[1]))
+            self.roll.setPlainText("{:.1f}".format(roll))
+            pitch = math.degrees(float(data[2]))
+            self.pitch.setPlainText("{:.1f}".format(pitch))
+            heading = math.degrees(float(data[3]))
+            self.heading.setPlainText("{:.1f}".format(heading).zfill(5))
+            self.updatePitchRoll(roll, pitch)
+            self.updateHeading(heading)
+            altitude = float(data[4])
+            self.altitude.setPlainText("{:.1f}".format(altitude).zfill(5))
+            altitudeHold = int(data[5])
+            if altitudeHold:
+                self.altitudeHold.setPlainText("On")
+                self.altitudeHold.setDefaultTextColor(QtCore.Qt.green)
+            else:
+                self.altitudeHold.setPlainText("Off")
+                self.altitudeHold.setDefaultTextColor(QtCore.Qt.red)
+            self.updateRightStick(int(data[6]), int(data[7]))
+            self.updateLeftStick(int(data[9]), int(data[8]))
+            for receiverIndex in range(self.channelCount):
+                self.updateBarGauge(receiverIndex, int(data[receiverIndex+10]))
+            for motorIndex in range(self.motorCount):
+                self.motor[motorIndex].setValue(int(data[motorIndex+14]))
+            batteryPower = float(data[22])
+            self.batteryPower.setPlainText("{:.3f}".format(batteryPower))
+            flightMode = int(data[23])
+            if flightMode:
+                self.flightMode.setPlainText("Stable")
+                self.flightMode.setDefaultTextColor(QtCore.Qt.green)
+            else:
+                self.flightMode.setPlainText("Acro")
+                self.flightMode.setDefaultTextColor(QtCore.Qt.yellow)

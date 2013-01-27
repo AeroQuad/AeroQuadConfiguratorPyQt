@@ -18,6 +18,9 @@ class AQSerial(object):
         self.availablePorts = []
         self.connected = False
         self.timeout = 0.0
+        
+        self.bufferData = ""
+        self.lineDataReceived = ""
 
     def connect(self, port, baud, delay, commTimeout):
         self.comm = serial.Serial(port, baud, timeout=commTimeout)
@@ -54,6 +57,16 @@ class AQSerial(object):
                 break
         response = self.comm.readline().decode('utf-8')
         return response.rstrip('\r\n')
+    
+    def waitForLine(self):
+        while(self.comm.inWaiting()):
+            self.bufferData += self.comm.read(self.comm.inWaiting())
+            if '\n' in buffer:
+                lineData = self.bufferData.split('\n')
+                self.lineDataReceived = lineData[-2]
+                self.bufferData = lineData[-1]
+        return self.lineDataReceived
+                 
     
     def dataAvailable(self):
         return self.comm.inWaiting()

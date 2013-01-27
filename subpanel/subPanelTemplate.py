@@ -4,6 +4,8 @@ Created on Nov 19, 2012
 @author: Ted Carancho
 '''
 import time
+import threading
+import Queue
 from PyQt4 import QtCore
 
 class subpanel(object):
@@ -14,12 +16,14 @@ class subpanel(object):
 
     def __init__(self):
         self.connected = False
+        self.commState = False
         self.timer = None
         self.xml = None
         self.xmlSubPanel = None
         self.comm = None
         self.mainUi = None
         self.boardConfiguration = {}
+        self.commData = Queue.Queue()
                
     def initialize(self, commTransport, xml, mainWindow):
         '''This initializes your class with required external arguments'''
@@ -38,35 +42,63 @@ class subpanel(object):
         return response
     
     def start(self, xmlSubPanel, boardConfiguration):
-        '''This method starts a timer used for any long running loops in a subpanel'''
+        '''This method starts a dedicated communications thread and a timer to read data
+        commThread() will read telemetry data and insert it into a queue
+        readContinousData() can be used in each subpanel to empty out the queue
+        If you need to view data smoothly, create another timer that will process data that is retrieved from readContinuousData()
+        Use vehicleStatus.py as an example.'''
         self.xmlSubPanel = xmlSubPanel
         self.boardConfiguration = boardConfiguration
-        if self.comm.isConnected() == True:
+        if self.comm.isConnected():
             telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
             if telemetry != None:
                 self.comm.write(telemetry)
-            self.timer = QtCore.QTimer()
-            self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(10)
+                self.startCommThread()
+                self.timer = QtCore.QTimer()
+                self.timer.timeout.connect(self.readContinuousData)
+                self.timer.start(50)
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''
-        if self.comm.isConnected() == True: 
-            if self.comm.dataAvailable():           
-                rawData = self.comm.read()
-                data = rawData.split(",")
-                for i in data:
-                    print(i) # Replace this with desired functionality
+        if self.comm.isConnected() and not self.commData.empty:           
+            rawData = self.commData.get() # self.data is updated in commThread()
+            # Replace lines below with desired functionality
+            data = rawData.split(",")
+            for i in data:
+                print(i)
+                
+    def startCommThread(self):
+        self.commState = True
+        self.communicationThread = threading.Thread(target=self.commThread, args=[])
+        self.communicationThread.start()
+            
+    def commThread(self):
+        '''This runs an independent thread dedicated to reading the comminucations port
+        The data is written to the class variable self.data
+        To exit this thread, set self.commState = False
+        '''
+        while(self.commState):
+            try:
+                if self.comm.dataAvailable():
+                    self.commData.put(self.comm.read())
+                else:
+                    time.sleep(0.100)
+            except:
+                self.commState = False
+        # Thread halted, flush out comm port
+        if (self.comm.isConnected()):
+            self.comm.write(self.xml.find("./Settings/StopTelemetry").text)
+            self.comm.flushResponse()
 
     def stop(self):
         '''This method enables a flag which closes the continuous serial read thread'''
+        self.commState = False # Halt comm thread
+        time.sleep(0.250)
         if self.comm.isConnected() == True:
             if self.timer != None:
-                self.comm.write(self.xml.find("./Settings/StopTelemetry").text)
-                self.comm.flushResponse()
                 self.timer.timeout.disconnect(self.readContinuousData)
                 self.timer.stop()
-        
+
     def timeStamp(self):
         '''Records a timestamp for AeroQuad communication'''
         now = time.time()
@@ -75,10 +107,11 @@ class subpanel(object):
         return time.strftime('%H:%M:%S.', localtime) + milliseconds
 
     def status(self, message):
+        '''Send a message to the status bar on the main window'''
         self.mainUi.status.setText(message)
     
     def checkRequirementsMatch(self, xmlRequirementPath):
-        # Read requirements for the specified subpanel form the XML config file
+        '''Read requirements for the specified subpanel form the XML config file'''
         subPanelRequirements = self.xml.findall(xmlRequirementPath)
         panelRequirements = {}
         booleanOperation = {}      

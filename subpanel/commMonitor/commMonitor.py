@@ -16,6 +16,7 @@ class commMonitor(QtGui.QWidget, subpanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         subpanel.__init__(self)
+        self.subpanel = subpanel
         self.ui = Ui_commMonitor()
         self.ui.setupUi(self)
         self.ui.sendButton.setEnabled(False)
@@ -32,6 +33,7 @@ class commMonitor(QtGui.QWidget, subpanel):
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.readContinuousData)
             self.timer.start(50)
+            self.startCommThread()
             
     def sendCommand(self):
         command = str(self.ui.lineEdit.text())
@@ -45,11 +47,9 @@ class commMonitor(QtGui.QWidget, subpanel):
         isConnected = self.comm.isConnected()
         self.ui.sendButton.setEnabled(isConnected)
         self.ui.clearButton.setEnabled(isConnected)
-        if isConnected == True: 
-            if self.comm.dataAvailable():           
-                response = self.comm.read()
-                self.ui.commLog.append(self.timeStamp() + " <- " + response)
-                self.ui.commLog.ensureCursorVisible()
+        if isConnected and not self.commData.empty():         
+            self.ui.commLog.append(self.timeStamp() + " <- " + self.commData.get())
+            self.ui.commLog.ensureCursorVisible()
         
     def clearComm(self):
         self.ui.lineEdit.clear()
