@@ -11,8 +11,8 @@ from serial import SerialException
 from ui.mainWindow import Ui_MainWindow
 from communication.serialCom import AQSerial
 from ui.splashScreen import Ui_splashScreen
-import xml.etree.ElementTree as ET
-xml = ET.parse('AeroQuadConfigurator.xml')
+import xml.etree.ElementTree as xmlParser
+xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
