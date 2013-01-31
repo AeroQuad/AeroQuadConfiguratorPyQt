@@ -37,6 +37,7 @@ class AQMain(QtGui.QMainWindow):
         self.updateComPortSelection()
         self.updateBaudRates()
         self.boardConfiguration = {}
+        self.manualConnect = True
         
         # Update comm port combo box to use last used comm port
         defaultComPort = xml.find("./Settings/DefaultComPort").text
@@ -56,16 +57,16 @@ class AQMain(QtGui.QMainWindow):
         self.activeSubPanelName = ""
 
         # Connect GUI slots and signals
-        self.ui.comPort.return_handler = self.connect
-        self.ui.buttonConnect.clicked.connect(self.connect)
-        self.ui.buttonDisconnect.clicked.connect(self.disconnect)
+        self.ui.comPort.return_handler = self.connectBoard
+        self.ui.buttonConnect.clicked.connect(self.connectBoard)
+        self.ui.buttonDisconnect.clicked.connect(self.disconnectBoard)
         self.ui.actionExit.triggered.connect(QtGui.qApp.quit)
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
 
     ####### Communication Methods #######       
-    def connect(self):
+    def connectBoard(self):
         '''Initiates communication with the AeroQuad'''
         # Setup GUI
         self.ui.status.setText("Connecting...")
@@ -109,10 +110,13 @@ class AQMain(QtGui.QMainWindow):
                 # Load configuration screen
                 self.selectSubPanel("Vehicle Configuration")
                 self.restartSubPanel()
+                return True
             else:
-                self.disconnect()
+                self.disconnectBoard()
                 self.ui.status.setText("Not connected to the AeroQuad")
-                QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
+                if self.manualConnect:
+                    QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
+                return False
         except SerialException:
             self.ui.buttonDisconnect.setEnabled(False)
             self.ui.buttonConnect.setEnabled(True)
@@ -120,8 +124,9 @@ class AQMain(QtGui.QMainWindow):
             self.ui.baudRate.setEnabled(True)
             self.ui.status.setText("Connection Failed")
             self.boardConfiguration = {}
+            return False
         
-    def disconnect(self):
+    def disconnectBoard(self):
         '''Disconnect from the AeroQuad'''
         self.comm.write(xml.find("./Settings/StopTelemetry").text)
         self.comm.disconnect()
@@ -143,10 +148,20 @@ class AQMain(QtGui.QMainWindow):
             self.ui.status.setText("Updated list of available COM ports")
         elif selection == "Autoconnect":
             self.ui.comPort.setCurrentIndex(0)
-            self.ui.status.setText("This feature still under construction")
+            self.ui.status.setText("Beginning autoconnect...")
+            self.autoConnect()
             
     def autoConnect(self):
-        pass
+        self.manualConnect = False
+        for port in range(self.ui.comPort.count()):
+            self.ui.comPort.setCurrentIndex(port)
+            self.ui.status.setText("Attempting to connect to " + self.ui.comPort.currentText() + "...")
+            if self.connectBoard():
+                self.ui.status.setText("Autoconnect successful!")
+                break
+            else:
+                self.ui.status.setText("Autoconnect not successful...")
+        self.manualConnect = True
     
     def updateBootUpDelay(self):
         '''Creates dialog box to ask user for desired boot up delay.
