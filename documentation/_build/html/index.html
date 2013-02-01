@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the AeroQuad Configurator Developer Guide’s documentation! &mdash; AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/caktus.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="AeroQuad Configurator Developer&#39;s Guide 1.0 documentation" href="#" />
+    <link rel="next" title="Software Architecture" href="architecture.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="architecture.html" title="Software Architecture"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="document">
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+<h3>AeroQuad Configurator Developer's Guide</h3>
+<p class="tagline">A Python based Configurator for the AeroQuad Open Source Multicopter Project</p>
+
+<h3>Quick Links</h3>
+<ul>
+    
+    
+    <li><a href="https://github.com/AeroQuad/AeroQuadConfiguratorPyQt">Source on GitHub</a></li>
+    <li><a href="https://github.com/AeroQuad/AeroQuadConfiguratorPyQt/issues">Issue Tracker</a></li>
+    
+    
+    
+</ul>
+
+<a href="https://github.com/AeroQuad/AeroQuadConfiguratorPyQt">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+</a>
+
+
+<!--
+<p class="logo sponsor">
+    <a href="http://www.caktusgroup.com/services/">
+        <img class="logo" src="_static/caktus-logo.png" alt="Caktus Consulting Group"/>
+    </a>
+</p>
+<p class="sponsor">Development of this project is sponsored by <a href="http://www.caktusgroup.com">Caktus Consulting Group, LLC</a>.
+You can see more of our projects on our <a href="https://github.com/caktus">Github page</a>.</p>
+-->
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+        <div class="documentwrapper">
+            <div class="bodywrapper">
+                <div class="body">
+                    
+  <div class="section" id="welcome-to-the-aeroquad-configurator-developer-guide-s-documentation">
+<h1>Welcome to the AeroQuad Configurator Developer Guide&#8217;s documentation!<a class="headerlink" href="#welcome-to-the-aeroquad-configurator-developer-guide-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This is the developer&#8217;s guide for the Python based AeroQuad Configurator.  The Configurator is a visual tool used to verify the correct setup and operation of your AeroQuad flight control board.  It can also upload the latest firmware to take advantage of the latest flight control features.</p>
+<p>This developer&#8217;s guide will show you how to add your own features and capabilities to the AeroQuad Configurator.</p>
+<p>If you are looking for a User&#8217;s Guide for the Configurator, <a class="reference external" href="https://github.com/AeroQuad/AeroQuadConfiguratorPyQt">please check out our wiki!</a></p>
+<div class="section" id="installation-requirements">
+<h2>Installation Requirements<a class="headerlink" href="#installation-requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://python.org/download/releases/2.7.3/">Python v2.7</a></li>
+<li><a class="reference external" href="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt with Qt Designer</a> (get Binary Package)</li>
+<li><a class="reference external" href="http://www.eclipse.org/downloads/">Eclipse</a> (you&#8217;ll download PyDev inside Eclipse, I got the C++ version)</li>
+<li><a class="reference external" href="http://pydev.org/manual_101_install.html">PyDev</a> (can execute Python code directly from Eclipse)</li>
+<li><a class="reference external" href="http://www.saltycrane.com/blog/2007/06/how-to-get-code-completion-for-pyqt/">Setup code completion in Eclipse for PyDev</a></li>
+<li><a class="reference external" href="http://pyserial.sourceforge.net/pyserial.html#installation">PySerial</a> (serial drivers for Python)</li>
+<li><a class="reference external" href="http://www.pyqtgraph.org/">PyQtGraph</a></li>
+<li><a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy">NumPy</a></li>
+<li><a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#scipy">SciPy</a></li>
+<li><a class="reference external" href="http://www.vogella.com/articles/EGit/article.html">How to setup Git inside of Eclipse</a></li>
+<li>The GitHub repo is at: <a class="reference external" href="https://github.com/AeroQuad/AeroQuadConfiguratorPyQt.git">https://github.com/AeroQuad/AeroQuadConfiguratorPyQt.git</a></li>
+</ul>
+</div>
+<div class="section" id="configuring-eclipse">
+<h2>Configuring Eclipse:<a class="headerlink" href="#configuring-eclipse" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Insure c:\Python27 is in PATH</li>
+<li>Change PyDev - Interpreter from default to python</li>
+<li>Update PyDev - PYTHONPATH -&gt; External Libraries -&gt; pyqtgraph to point to python27</li>
+<li>If you want to <a class="reference external" href="http://stackoverflow.com/questions/6137848/eclipse-how-to-hide-custom-files-in-project-explorer">hide certain files/folders in the Eclipse project view</a></li>
+<li>To run the application, look for AeroQuadConfigurator.py in the project window and double click it to open the file. Then hit the Run button (the green circle with a triangle button pointing to the right) to execute it.</li>
+</ul>
+</div>
+<div class="section" id="configuring-visual-studio-2012">
+<h2>Configuring Visual Studio 2012:<a class="headerlink" href="#configuring-visual-studio-2012" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Setup: <a class="reference external" href="http://aeroquad.com/showwiki.php?title=Visual+Studio+2012+based+Python+IDE">http://aeroquad.com/showwiki.php?title=Visual+Studio+2012+based+Python+IDE</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subpanel.html">How to Setup Your Own Subpanels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source.html">Source Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="source.html#module-subPanelTemplate">The generic subpanel class</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and Tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+                </div>
+            </div>
+        </div>
+    <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="architecture.html" title="Software Architecture"
+             >next</a> |</li>
+        <li><a href="#">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; <a href="http://www.caktusgroup.com/">Copyright 2013, Ted Carancho</a>.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

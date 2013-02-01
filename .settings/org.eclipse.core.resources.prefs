@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//documentation/conf.py=utf-8
 encoding//subpanel/commMonitor/commMonitor.py=utf-8
 encoding//subpanel/commMonitor/commMonitorWindow.py=utf-8
 encoding//subpanel/dataPlot/dataPlot.py=utf-8
