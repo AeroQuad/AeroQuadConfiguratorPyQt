@@ -20,23 +20,13 @@ class BarGauge(QtGui.QGraphicsRectItem):
         self.barGaugeGap = 5 # Add a little line at the bottom to show a zero value, and space at the top to separate text
         self.labelHeight = 15
         self.labelWidth = 0.0
-        
-        self.redgradient = QtGui.QLinearGradient(0, 100, 100, 0)
-        self.redgradient.setColorAt(0.0, QtCore.Qt.red);
-        self.redgradient.setColorAt(0.8, QtCore.Qt.gray);
-        self.redgradient.setColorAt(1.0, QtCore.Qt.white);
-        
-        self.yellowgradient = QtGui.QLinearGradient(0, 100, 100, 0)
-        self.yellowgradient.setColorAt(0.0, QtCore.Qt.yellow);
-        self.yellowgradient.setColorAt(0.8, QtCore.Qt.gray);
-        self.yellowgradient.setColorAt(1.0, QtCore.Qt.white);
-        
-        self.blackgradient = QtGui.QLinearGradient(0, 100, 100, 0)
-        self.blackgradient.setColorAt(0.0, QtCore.Qt.black);
-        self.blackgradient.setColorAt(0.8, QtCore.Qt.gray);
-        self.blackgradient.setColorAt(1.0, QtCore.Qt.white);
-        self.setBrush(self.blackgradient)
-        
+
+        gradient = QtGui.QLinearGradient(0, 100, 100, 0)
+        gradient.setColorAt(0.0, QtCore.Qt.black);
+        gradient.setColorAt(0.8, QtCore.Qt.gray);
+        gradient.setColorAt(1.0, QtCore.Qt.white);
+        self.setBrush(gradient)
+
         self.setValue(1000)
         
         # Setup gauge label
@@ -62,12 +52,12 @@ class BarGauge(QtGui.QGraphicsRectItem):
             value = self.min
             
         if value > 1850:
-            self.setBrush(self.redgradient)
+            self.brush().gradient().setColorAt(0.0, QtCore.Qt.red)
         elif value > 1600:
-            self.setBrush(self.yellowgradient)
+            self.brush().gradient().setColorAt(0.0, QtCore.Qt.yellow)
         else:
-            self.setBrush(self.blackgradient)
-            
+            self.brush().gradient().setColorAt(0.0, QtCore.Qt.black)
+
         self.output = self.scale(value, (self.min, self.max), (self.barGaugeGap, self.barGaugeHeight-self.barGaugeGap))
         self.updateRect()
     
