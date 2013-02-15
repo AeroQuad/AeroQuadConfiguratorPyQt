@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'subCommMonitor.ui'
-#
-# Created: Sat Nov 10 12:22:32 2012
-#      by: PyQt4 UI code generator 4.9.5
-#
-# WARNING! All changes made in this file will be lost!
-
 import time
 from PyQt4 import QtCore, QtGui
 from subpanel.subPanelTemplate import subpanel
