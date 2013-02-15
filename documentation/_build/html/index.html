@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="top" title="AeroQuad Configurator Developer&#39;s Guide 1.0 documentation" href="#" />
-    <link rel="next" title="Software Architecture" href="architecture.html" /> 
+    <link rel="next" title="Source Code Setup and Installation" href="install.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,7 +38,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="architecture.html" title="Software Architecture"
+          <a href="install.html" title="Source Code Setup and Installation"
              accesskey="N">next</a> |</li>
         <li><a href="#">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li> 
       </ul>
@@ -104,43 +104,17 @@ You can see more of our projects on our <a href="https://github.com/caktus">Gith
 <p>This is the developer&#8217;s guide for the Python based AeroQuad Configurator.  The Configurator is a visual tool used to verify the correct setup and operation of your AeroQuad flight control board.  It can also upload the latest firmware to take advantage of the latest flight control features.</p>
 <p>This developer&#8217;s guide will show you how to add your own features and capabilities to the AeroQuad Configurator.</p>
 <p>If you are looking for a User&#8217;s Guide for the Configurator, <a class="reference external" href="https://github.com/AeroQuad/AeroQuadConfiguratorPyQt">please check out our wiki!</a></p>
-<div class="section" id="installation-requirements">
-<h2>Installation Requirements<a class="headerlink" href="#installation-requirements" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="http://python.org/download/releases/2.7.3/">Python v2.7</a></li>
-<li><a class="reference external" href="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt with Qt Designer</a> (get Binary Package)</li>
-<li><a class="reference external" href="http://www.eclipse.org/downloads/">Eclipse</a> (you&#8217;ll download PyDev inside Eclipse, I got the C++ version)</li>
-<li><a class="reference external" href="http://pydev.org/manual_101_install.html">PyDev</a> (can execute Python code directly from Eclipse)</li>
-<li><a class="reference external" href="http://www.saltycrane.com/blog/2007/06/how-to-get-code-completion-for-pyqt/">Setup code completion in Eclipse for PyDev</a></li>
-<li><a class="reference external" href="http://pyserial.sourceforge.net/pyserial.html#installation">PySerial</a> (serial drivers for Python)</li>
-<li><a class="reference external" href="http://www.pyqtgraph.org/">PyQtGraph</a></li>
-<li><a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy">NumPy</a></li>
-<li><a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#scipy">SciPy</a></li>
-<li><a class="reference external" href="http://www.vogella.com/articles/EGit/article.html">How to setup Git inside of Eclipse</a></li>
-<li>The GitHub repo is at: <a class="reference external" href="https://github.com/AeroQuad/AeroQuadConfiguratorPyQt.git">https://github.com/AeroQuad/AeroQuadConfiguratorPyQt.git</a></li>
-</ul>
-</div>
-<div class="section" id="configuring-eclipse">
-<h2>Configuring Eclipse:<a class="headerlink" href="#configuring-eclipse" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Insure c:\Python27 is in PATH</li>
-<li>Change PyDev - Interpreter from default to python</li>
-<li>Update PyDev - PYTHONPATH -&gt; External Libraries -&gt; pyqtgraph to point to python27</li>
-<li>If you want to <a class="reference external" href="http://stackoverflow.com/questions/6137848/eclipse-how-to-hide-custom-files-in-project-explorer">hide certain files/folders in the Eclipse project view</a></li>
-<li>To run the application, look for AeroQuadConfigurator.py in the project window and double click it to open the file. Then hit the Run button (the green circle with a triangle button pointing to the right) to execute it.</li>
-</ul>
-</div>
-<div class="section" id="configuring-visual-studio-2012">
-<h2>Configuring Visual Studio 2012:<a class="headerlink" href="#configuring-visual-studio-2012" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Setup: <a class="reference external" href="http://aeroquad.com/showwiki.php?title=Visual+Studio+2012+based+Python+IDE">http://aeroquad.com/showwiki.php?title=Visual+Studio+2012+based+Python+IDE</a></li>
-</ul>
-</div>
 </div>
 <div class="section" id="contents">
 <h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Source Code Setup and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installation-requirements">Installation Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#configuring-eclipse">Configuring Eclipse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#configuring-visual-studio-2012">Configuring Visual Studio 2012</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Software Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="subpanel.html">How to Setup Your Own Subpanels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source.html">Source Code</a><ul>
@@ -175,7 +149,7 @@ You can see more of our projects on our <a href="https://github.com/caktus">Gith
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="architecture.html" title="Software Architecture"
+          <a href="install.html" title="Source Code Setup and Installation"
              >next</a> |</li>
         <li><a href="#">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li> 
       </ul>

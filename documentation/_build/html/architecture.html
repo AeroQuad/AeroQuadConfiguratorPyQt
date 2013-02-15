@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Architecture &mdash; AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/caktus.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="AeroQuad Configurator Developer&#39;s Guide 1.0 documentation" href="index.html" />
+    <link rel="next" title="How to Setup Your Own Subpanels" href="subpanel.html" />
+    <link rel="prev" title="Source Code Setup and Installation" href="install.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="subpanel.html" title="How to Setup Your Own Subpanels"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Source Code Setup and Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="document">
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+<h3>AeroQuad Configurator Developer's Guide</h3>
+<p class="tagline">A Python based Configurator for the AeroQuad Open Source Multicopter Project</p>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Source Code Setup and Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="subpanel.html"
+                        title="next chapter">How to Setup Your Own Subpanels</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/architecture.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+        <div class="documentwrapper">
+            <div class="bodywrapper">
+                <div class="body">
+                    
+  <div class="section" id="software-architecture">
+<h1>Software Architecture<a class="headerlink" href="#software-architecture" title="Permalink to this headline">¶</a></h1>
+<p>The application consists of a communication system to control/configure an AeroQuad flight control board, a main Graphical User Interface (GUI) which allows the user to load dynamic custom subpanels and a file based menu system to allow the developer to show or hide menus/subpanels based on the type of AeroQuad board connected to the Configurator.</p>
+<img alt="_images/AeroQuadConfiguratorArchitecture_v4.png" class="align-center" src="_images/AeroQuadConfiguratorArchitecture_v4.png" />
+<p>Each subpanel has existing functions to send commands to the board, read continuous telemetry from the board or read a telemetry value once.  There is a subpanel class which provides access to these common functions, but allows you to easily override them in the event you need to customize their usage based on your own subpanel needs.</p>
+<img alt="_images/SubPanelArchitecture.png" class="align-center" src="_images/SubPanelArchitecture.png" />
+<p>The subpanel consists of a GUI that is built using PyQt.  After the GUI is designed, Python code is auto generated and used with a developer written Python script to provide the desired functionality such as EEPROM uploading, vehicle status reporting or firmware uploading.  The developer written subpanel script uses a subpanel main class that has functions to communicate with the AeroQuad board via the main Configurator application.</p>
+</div>
+
+
+                </div>
+            </div>
+        </div>
+    <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="subpanel.html" title="How to Setup Your Own Subpanels"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Source Code Setup and Installation"
+             >previous</a> |</li>
+        <li><a href="index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; <a href="http://www.caktusgroup.com/">Copyright 2013, Ted Carancho</a>.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
