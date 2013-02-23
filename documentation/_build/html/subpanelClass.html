@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subpanel Class &mdash; AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/caktus.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="AeroQuad Configurator Developer&#39;s Guide 1.0 documentation" href="index.html" />
+    <link rel="up" title="Source Code" href="source.html" />
+    <link rel="next" title="Serial Communications Class" href="serialComClass.html" />
+    <link rel="prev" title="Source Code" href="source.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="serialComClass.html" title="Serial Communications Class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="source.html" title="Source Code"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li>
+          <li><a href="source.html" accesskey="U">Source Code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="document">
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+<h3>AeroQuad Configurator Developer's Guide</h3>
+<p class="tagline">A Python based Configurator for the AeroQuad Open Source Multicopter Project</p>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="source.html"
+                        title="previous chapter">Source Code</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="serialComClass.html"
+                        title="next chapter">Serial Communications Class</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/subpanelClass.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+        <div class="documentwrapper">
+            <div class="bodywrapper">
+                <div class="body">
+                    
+  <div class="section" id="subpanel-class">
+<h1>Subpanel Class<a class="headerlink" href="#subpanel-class" title="Permalink to this headline">¶</a></h1>
+<p>This class defines commonly needed functions used for all subpanels.  It defaults to looking up a telemetry command in AeroQuadConfigurator.xml and setting up a continuous telemetry stream from the AeroQuad board.  Redefine <a class="reference internal" href="#subPanelTemplate.subpanel.start" title="subPanelTemplate.subpanel.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> if you desire different behaviour (such as read telemetry once, or don&#8217;t read any telemetry at all).</p>
+<dl class="class">
+<dt id="subPanelTemplate.subpanel">
+<em class="property">class </em><tt class="descclassname">subPanelTemplate.</tt><tt class="descname">subpanel</tt><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class that contains the methods required to add new subpanels to the Configurator
+You can override any of these functions by making new ones in the subpanel they will be used.
+Look at commMonitor.py for an example of how to add this subclass to your subpanel.</p>
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.checkRequirementsMatch">
+<tt class="descname">checkRequirementsMatch</tt><big>(</big><em>xmlRequirementPath</em><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.checkRequirementsMatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.checkRequirementsMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read requirements for the specified subpanel form the XML config file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.commThread">
+<tt class="descname">commThread</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.commThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.commThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>This runs an independent thread dedicated to reading the comminucations port
+The data is written to the class variable self.data
+To exit this thread, set self.commState = False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.initialize">
+<tt class="descname">initialize</tt><big>(</big><em>commTransport</em>, <em>xml</em>, <em>mainWindow</em><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This initializes your class with required external arguments</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.readContinuousData">
+<tt class="descname">readContinuousData</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.readContinuousData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.readContinuousData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method continually reads telemetry from the AeroQuad</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.readData">
+<tt class="descname">readData</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.readData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.readData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method reads a single response from the AeroQuad</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.sendCommand">
+<tt class="descname">sendCommand</tt><big>(</big><em>command</em><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.sendCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.sendCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a serial command</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.start">
+<tt class="descname">start</tt><big>(</big><em>xmlSubPanel</em>, <em>boardConfiguration</em><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method starts a dedicated communications thread and a timer to read data
+commThread() will read telemetry data and insert it into a queue
+readContinousData() can be used in each subpanel to empty out the queue
+If you need to view data smoothly, create another timer that will process data that is retrieved from readContinuousData()
+Use vehicleStatus.py as an example.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.status">
+<tt class="descname">status</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a message to the status bar on the main window</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method enables a flag which closes the continuous serial read thread</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="subPanelTemplate.subpanel.timeStamp">
+<tt class="descname">timeStamp</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/subPanelTemplate.html#subpanel.timeStamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#subPanelTemplate.subpanel.timeStamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Records a timestamp for AeroQuad communication</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+                </div>
+            </div>
+        </div>
+    <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="serialComClass.html" title="Serial Communications Class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="source.html" title="Source Code"
+             >previous</a> |</li>
+        <li><a href="index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li>
+          <li><a href="source.html" >Source Code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; <a href="http://www.caktusgroup.com/">Copyright 2013, Ted Carancho</a>.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

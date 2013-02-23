@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>communication.serialCom &mdash; AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/caktus.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="top" title="AeroQuad Configurator Developer&#39;s Guide 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../../index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="document">
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+<h3>AeroQuad Configurator Developer's Guide</h3>
+<p class="tagline">A Python based Configurator for the AeroQuad Open Source Multicopter Project</p>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+        <div class="documentwrapper">
+            <div class="bodywrapper">
+                <div class="body">
+                    
+  <h1>Source code for communication.serialCom</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Nov 7, 2012</span>
+
+<span class="sd">@author: Ted Carancho</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">serial</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">serial.tools</span> <span class="kn">import</span> <span class="n">list_ports</span>
+
+<div class="viewcode-block" id="AQSerial"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial">[docs]</a><span class="k">class</span> <span class="nc">AQSerial</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This handles all serial communication</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">availablePorts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mf">0.0</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">bufferData</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineDataReceived</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+<div class="viewcode-block" id="AQSerial.connect"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">commTimeout</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">commTimeout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">commTimeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">setDTR</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">setDTR</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="c">#self.flushResponse()</span>
+        </div>
+<div class="viewcode-block" id="AQSerial.flushResponse"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.flushResponse">[docs]</a>    <span class="k">def</span> <span class="nf">flushResponse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataAvailable</span><span class="p">():</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.100</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="AQSerial.disconnect"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="bp">False</span>
+        </div>
+<div class="viewcode-block" id="AQSerial.write"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)))</span>
+        </div>
+<div class="viewcode-block" id="AQSerial.read"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">)</span>
+    </div>
+<div class="viewcode-block" id="AQSerial.waitForRead"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.waitForRead">[docs]</a>    <span class="k">def</span> <span class="nf">waitForRead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataAvailable</span><span class="p">():</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.100</span><span class="p">)</span>
+            <span class="n">timeout</span> <span class="o">+=</span> <span class="mf">0.100</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">timeout</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">):</span>
+                <span class="k">break</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">)</span>
+    </div>
+    <span class="k">def</span> <span class="nf">waitForLine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bufferData</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">())</span>
+            <span class="k">if</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="ow">in</span> <span class="nb">buffer</span><span class="p">:</span>
+                <span class="n">lineData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferData</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lineDataReceived</span> <span class="o">=</span> <span class="n">lineData</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bufferData</span> <span class="o">=</span> <span class="n">lineData</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineDataReceived</span>
+                 
+    
+<div class="viewcode-block" id="AQSerial.dataAvailable"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.dataAvailable">[docs]</a>    <span class="k">def</span> <span class="nf">dataAvailable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="AQSerial.detectPorts"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.detectPorts">[docs]</a>    <span class="k">def</span> <span class="nf">detectPorts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">availablePorts</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">availablePorts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">portstr</span><span class="p">)</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">availablePorts</span> <span class="o">=</span> <span class="p">[</span><span class="n">port</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">list_ports</span><span class="o">.</span><span class="n">comports</span><span class="p">()]</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">availablePorts</span>
+</div>
+<div class="viewcode-block" id="AQSerial.isConnected"><a class="viewcode-back" href="../../serialComClass.html#communication.serialCom.AQSerial.isConnected">[docs]</a>    <span class="k">def</span> <span class="nf">isConnected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span></div></div>
+</pre></div>
+
+                </div>
+            </div>
+        </div>
+    <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../../index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; <a href="http://www.caktusgroup.com/">Copyright 2013, Ted Carancho</a>.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

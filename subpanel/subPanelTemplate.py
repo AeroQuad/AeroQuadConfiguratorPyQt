@@ -40,23 +40,6 @@ class subpanel(object):
         '''This method reads a single response from the AeroQuad'''
         response = self.comm.read()
         return response
-    
-    def start(self, xmlSubPanel, boardConfiguration):
-        '''This method starts a dedicated communications thread and a timer to read data
-        commThread() will read telemetry data and insert it into a queue
-        readContinousData() can be used in each subpanel to empty out the queue
-        If you need to view data smoothly, create another timer that will process data that is retrieved from readContinuousData()
-        Use vehicleStatus.py as an example.'''
-        self.xmlSubPanel = xmlSubPanel
-        self.boardConfiguration = boardConfiguration
-        if self.comm.isConnected():
-            telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
-            if telemetry != None:
-                self.comm.write(telemetry)
-                self.startCommThread()
-                self.timer = QtCore.QTimer()
-                self.timer.timeout.connect(self.readContinuousData)
-                self.timer.start(50)
                 
     def start(self, xmlSubPanel, boardConfiguration):
         '''This method starts a dedicated communications thread and a timer to read data

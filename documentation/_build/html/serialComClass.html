@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serial Communications Class &mdash; AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/caktus.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="AeroQuad Configurator Developer&#39;s Guide 1.0 documentation" href="index.html" />
+    <link rel="up" title="Source Code" href="source.html" />
+    <link rel="prev" title="Subpanel Class" href="subpanelClass.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="subpanelClass.html" title="Subpanel Class"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li>
+          <li><a href="source.html" accesskey="U">Source Code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="document">
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+<h3>AeroQuad Configurator Developer's Guide</h3>
+<p class="tagline">A Python based Configurator for the AeroQuad Open Source Multicopter Project</p>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="subpanelClass.html"
+                        title="previous chapter">Subpanel Class</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/serialComClass.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+        <div class="documentwrapper">
+            <div class="bodywrapper">
+                <div class="body">
+                    
+  <div class="section" id="serial-communications-class">
+<h1>Serial Communications Class<a class="headerlink" href="#serial-communications-class" title="Permalink to this headline">¶</a></h1>
+<p>This class defines commonly needed serial communications functions.</p>
+<dl class="class">
+<dt id="communication.serialCom.AQSerial">
+<em class="property">class </em><tt class="descclassname">communication.serialCom.</tt><tt class="descname">AQSerial</tt><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial" title="Permalink to this definition">¶</a></dt>
+<dd><p>This handles all serial communication to the AeroQuad board</p>
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.connect">
+<tt class="descname">connect</tt><big>(</big><em>port</em>, <em>baud</em>, <em>delay</em>, <em>commTimeout</em><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a comm port enable the &#8220;conencted&#8221; flag and toggle the DTR line for Arduino boards</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.dataAvailable">
+<tt class="descname">dataAvailable</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.dataAvailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.dataAvailable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for data to be available at the serial port</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.detectPorts">
+<tt class="descname">detectPorts</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.detectPorts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.detectPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect available serial ports</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the serial port and disable the &#8220;connected&#8221; flag</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.flushResponse">
+<tt class="descname">flushResponse</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.flushResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.flushResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keep reading the serial port until no data is detected</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.isConnected">
+<tt class="descname">isConnected</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.isConnected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.isConnected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns if &#8220;connected&#8221; flag is enabled or disabled</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.read">
+<tt class="descname">read</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a text string from the serial port and remove the newline character if it exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.waitForRead">
+<tt class="descname">waitForRead</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.waitForRead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.waitForRead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for data to be available at the port and return the resulting string.  If the timeout value is reached, stop waiting.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="communication.serialCom.AQSerial.write">
+<tt class="descname">write</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/communication/serialCom.html#AQSerial.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#communication.serialCom.AQSerial.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a text string to the serial port</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+                </div>
+            </div>
+        </div>
+    <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="subpanelClass.html" title="Subpanel Class"
+             >previous</a> |</li>
+        <li><a href="index.html">AeroQuad Configurator Developer&#39;s Guide 1.0 documentation</a> &raquo;</li>
+          <li><a href="source.html" >Source Code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; <a href="http://www.caktusgroup.com/">Copyright 2013, Ted Carancho</a>.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

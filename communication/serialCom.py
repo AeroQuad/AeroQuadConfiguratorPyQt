@@ -10,7 +10,7 @@ from serial.tools import list_ports
 
 class AQSerial(object):
     '''
-    This handles all serial communication
+    This handles all serial communication to the AeroQuad board
     '''
     
     def __init__(self):
@@ -23,7 +23,7 @@ class AQSerial(object):
         self.lineDataReceived = ""
 
     def connect(self, port, baud, delay, commTimeout):
-        ''' Open a comm port and toggle the DTR line for Arduino boards
+        ''' Open a comm port enable the "conencted" flag and toggle the DTR line for Arduino boards
         '''
         self.comm = serial.Serial(port, baud, timeout=commTimeout)
         self.timeout = commTimeout
@@ -32,25 +32,34 @@ class AQSerial(object):
         self.comm.setDTR(True)
         time.sleep(delay)
         self.connected = True
-        #self.flushResponse()
         
     def flushResponse(self):
+        ''' Keep reading the serial port until no data is detected
+        '''
         while self.dataAvailable():
             time.sleep(0.100)
             self.read()
         
     def disconnect(self):
+        ''' Close the serial port and disable the "connected" flag
+        '''
         self.comm.close()
         self.connected = False
         
     def write(self, data):
+        ''' Write a text string to the serial port
+        '''
         self.comm.write(bytes(data.encode('utf-8')))
         
     def read(self):
+        ''' Read a text string from the serial port and remove the newline character if it exists
+        '''
         response = self.comm.readline().decode('utf-8')
         return response.rstrip('\r\n')
     
     def waitForRead(self):
+        ''' Wait for data to be available at the port and return the resulting string.  If the timeout value is reached, stop waiting.
+        '''
         timeout = 0.0
         while not self.dataAvailable():
             time.sleep(0.100)
@@ -69,11 +78,14 @@ class AQSerial(object):
                 self.bufferData = lineData[-1]
         return self.lineDataReceived
                  
-    
     def dataAvailable(self):
+        ''' Wait for data to be available at the serial port
+        '''
         return self.comm.inWaiting()
         
     def detectPorts(self):
+        ''' Detect available serial ports
+        '''
         if os.name == 'nt':
             self.availablePorts = []
             for i in range(256):
@@ -89,4 +101,6 @@ class AQSerial(object):
         return self.availablePorts
 
     def isConnected(self):
+        ''' Returns if "connected" flag is enabled or disabled
+        '''
         return self.connected
