@@ -12,6 +12,12 @@
     </Settings>
     
     <Subpanels>
+        <Subpanel Name="Tutorial">
+            <Requirement>All</Requirement>
+            <Path>tutorial.tutorial</Path>
+            <Class>tutorial</Class>
+        </Subpanel>
+    
         <Subpanel Name="Serial Monitor">
             <Requirement>All</Requirement>
             <Path>commMonitor.commMonitor</Path>

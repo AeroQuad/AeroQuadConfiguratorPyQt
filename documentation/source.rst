@@ -1,12 +1,8 @@
 Source Code
 ===========
 
-**Still under construction!**
-
-The generic subpanel class
---------------------------
-.. automodule:: subPanelTemplate
-   :members:
+.. toctree::
+   :maxdepth: 2
    
-.. autoclass:: subpanel
-   :members:
+   subpanelClass
+   serialComClass

@@ -36,9 +36,6 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="source.html" title="Source Code"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -53,6 +50,14 @@
 
 <h3>AeroQuad Configurator Developer's Guide</h3>
 <p class="tagline">A Python based Configurator for the AeroQuad Open Source Multicopter Project</p>
+
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to Setup Your Own Subpanels</a><ul>
+<li><a class="reference internal" href="#default-subpanel-behavior">Default Subpanel Behavior</a></li>
+</ul>
+</li>
+</ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="architecture.html"
@@ -144,25 +149,81 @@
 <blockquote>
 <div><ol class="loweralpha simple">
 <li>In the PyDev Package Explorer, right click on you package and created New-&gt;PyDev Module</li>
-<li>Change the text MyClass to the name of your subpanel</li>
+<li>Inside the newly created file, change the text MyClass to the name of your subpanel</li>
+<li>Any references to the text &#8220;tutorial&#8221; can be replaced with your subpanel name</li>
 </ol>
 </div></blockquote>
 <a class="reference internal image-reference" href="_images/createModule.png"><img alt="_images/createModule.png" class="align-center" src="_images/createModule.png" style="width: 440.0px; height: 384.0px;" /></a>
 <ol class="arabic simple" start="6">
-<li>Your module will appear in the PyDev Package Explorer, add the following imports at the top of your code:</li>
+<li>Change the default auto-generated code to the following:</li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span>
 <span class="kn">from</span> <span class="nn">subpanel.subPanelTemplate</span> <span class="kn">import</span> <span class="n">subpanel</span>
 <span class="kn">from</span> <span class="nn">subpanel.tutorial.tutorialWindow</span> <span class="kn">import</span> <span class="n">Ui_tutorial</span>
+
+<span class="k">class</span> <span class="nc">tutorial</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">subpanel</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">subpanel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_tutorial</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getSoftwareVersion</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getSoftwareVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">isConnected</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>This last import listed above is derived from the .ui file you created in the QtDesigner, the package and the module you created in Eclipse</p>
-<ul class="last simple">
-<li>The first part is subpanel.&lt;your Python package name&gt;.&lt;your UI filename from step 4b&gt;</li>
-<li>The last part is found inside tutorialWindow.py and is the class name (the name of the QWidget from step 3c)</li>
+<p>From the line: <strong>from</strong> <em>subpanel.tutorial.tutorialWindow</em> <strong>import</strong> <em>Ui_tutorial</em></p>
+<ul class="simple">
+<li>The first part after <strong>from</strong> is subpanel.&lt;your Python package name&gt;.&lt;your UI filename from step 4b&gt;</li>
+<li>The last part after <strong>import</strong> is found inside tutorialWindow.py and is the class name (the name of the QWidget from step 3c)</li>
 </ul>
+<p>Inside <strong>__init__(self)</strong>, place any initialization steps you&#8217;d like to perform inside:</p>
+<ul class="last simple">
+<li>You have inherited all functions from the QtGui.QWidget and subpanel classes, so they get initialized here</li>
+<li>The object <strong>self.ui</strong> is defined from the UI you created<ul>
+<li>You will be able to interact with the widgets you created in Qt Designer through this object</li>
+<li>A good example is the pushbutton you created in the example above, so you refer to it as <em>self.ui.pushbutton</em></li>
+</ul>
+</li>
+<li>Since the <strong>tutorial</strong> class inherits from <strong>subpanel</strong>, all the function calls from <strong>subpanel</strong> are available to you<ul>
+<li>View the functions available to you <a class="reference internal" href="subpanelClass.html"><em>here</em></a>.</li>
+<li>This also includes the communications class, the function calls available are found <a class="reference internal" href="serialComClass.html"><em>here</em></a>.</li>
+<li>From here, you will need to learn how to work with Python and PyQt.  Google to find out the syntax you need to do what you want (which usually takes you to stackoverflow.com).</li>
+</ul>
+</li>
+</ul>
+</div>
+<ol class="arabic simple" start="7">
+<li>Add the newly created subpanel to the Configurator menu by editing <strong>AeroQuadConfigurator.xml</strong> under <strong>&lt;SubPanels&gt;</strong></li>
+</ol>
+<div class="highlight-python"><pre>&lt;Subpanel Name="Tutorial"&gt;
+    &lt;Requirement&gt;All&lt;/Requirement&gt;
+    &lt;Path&gt;tutorial.tutorial&lt;/Path&gt;
+    &lt;Class&gt;tutorial&lt;/Class&gt;
+&lt;/Subpanel&gt;</pre>
+</div>
+<div class="section" id="default-subpanel-behavior">
+<h2>Default Subpanel Behavior<a class="headerlink" href="#default-subpanel-behavior" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The default behavior of a subpanel is to read the <strong>&lt;Telemetry&gt;</strong> element inside AeroQuadConfigurator.xml.  This will then send that request to the AeroQuad board and will continually read the board response.</li>
+<li>To change this, you will need to redefine the <a class="reference internal" href="subpanelClass.html#subPanelTemplate.subpanel.start" title="subPanelTemplate.subpanel.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> method in the <a class="reference internal" href="subpanelClass.html"><em>subpanel</em></a> class.</li>
+<li>Look at the existing subpanels for examples on how to setup various subpanel bahaviors</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>commMonitor.py sends a command when the user hits the send button, then reads the communication buffer until empty</li>
+<li>motorCommand.py does not send any telemetry requests, but sends a command when a button is pressed</li>
+<li>updateParameters.py sends a telemetry request for various EEPROM stored values and sends an update command when the update button is pressed</li>
+<li>vehicleConfiguration sends a single telemetry command and waits for the response</li>
+<li>Both dataPlot.py and vehicleConfiguration sends a single telemetry request and continually reads and displays the streamed telemetry values</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 
@@ -178,9 +239,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
         <li class="right" >
           <a href="source.html" title="Source Code"
              >next</a> |</li>

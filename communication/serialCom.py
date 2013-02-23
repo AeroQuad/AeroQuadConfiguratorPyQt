@@ -23,6 +23,8 @@ class AQSerial(object):
         self.lineDataReceived = ""
 
     def connect(self, port, baud, delay, commTimeout):
+        ''' Open a comm port and toggle the DTR line for Arduino boards
+        '''
         self.comm = serial.Serial(port, baud, timeout=commTimeout)
         self.timeout = commTimeout
         self.comm.setDTR(False)
