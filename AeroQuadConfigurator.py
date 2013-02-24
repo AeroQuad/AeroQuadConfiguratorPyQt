@@ -154,7 +154,7 @@ class AQMain(QtGui.QMainWindow):
             
     def autoConnect(self):
         self.manualConnect = False
-        for port in range(self.ui.comPort.count()):
+        for port in xrange(self.ui.comPort.count() - 2):
             self.ui.comPort.setCurrentIndex(port)
             self.ui.status.setText("Attempting to connect to " + self.ui.comPort.currentText() + "...")
             if self.connectBoard():
