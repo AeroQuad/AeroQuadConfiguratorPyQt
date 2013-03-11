@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'vehicleConfigurationWindow.ui'
 #
-# Created: Thu Dec 06 16:19:29 2012
+# Created: Sun Mar 03 23:27:20 2013
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ class Ui_vehicleConfiguration(object):
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.configView = QtGui.QLabel(vehicleConfiguration)
         self.configView.setMinimumSize(QtCore.QSize(0, 0))
-        self.configView.setStyleSheet(_fromUtf8("background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(12, 57, 106, 255), stop:1 rgba(25, 134, 193, 255))"))
+        self.configView.setStyleSheet(_fromUtf8("color: rgba(255, 255, 255, 0);"))
         self.configView.setText(_fromUtf8(""))
         self.configView.setObjectName(_fromUtf8("configView"))
         self.gridLayout.addWidget(self.configView, 0, 0, 1, 3)
@@ -47,6 +47,9 @@ class Ui_vehicleConfiguration(object):
         self.configSpecs.setFont(font)
         self.configSpecs.setStyleSheet(_fromUtf8("background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(100, 100, 100, 255), stop:1 rgba(36, 36, 36, 255))\n"
 ""))
+        self.configSpecs.setFrameShape(QtGui.QFrame.Box)
+        self.configSpecs.setFrameShadow(QtGui.QFrame.Plain)
+        self.configSpecs.setLineWidth(1)
         self.configSpecs.setAlternatingRowColors(False)
         self.configSpecs.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
         self.configSpecs.setShowGrid(False)

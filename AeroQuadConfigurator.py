@@ -24,6 +24,9 @@ class AQMain(QtGui.QMainWindow):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        background = xml.find("./Settings/Background").text
+        self.ui.subPanel.setStyleSheet("QStackedWidget{background-image: url(" + background + ");}")
+        
         # TODO: figure out way to configure for different comm types (TCP, MAVLINK, etc) 
         self.comm = AQSerial()
         
@@ -64,6 +67,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
+        self.ui.buttonMenu.clicked.connect(self.returnToMenu)
 
     ####### Communication Methods #######       
     def connectBoard(self):
@@ -231,7 +235,7 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module()          
-            tempSubPanel.initialize(self.comm, xml, self.ui)
+            tempSubPanel.initialize(self.comm, xml, self.ui, self)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1
@@ -260,7 +264,10 @@ class AQMain(QtGui.QMainWindow):
         self.activeSubPanel = self.subPanelClasses[selected]
         self.activeSubPanelName = "./Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
         self.activeSubPanel.start(self.activeSubPanelName, self.boardConfiguration)
-        self.ui.status.setText(subPanelName)
+        if subPanelName == "Menu":
+            self.ui.status.setText("Choose Configurator Function")
+        else:
+            self.ui.status.setText(subPanelName)
         app.processEvents()
 
     def clearSubPanelMenu(self):
@@ -306,7 +313,11 @@ class AQMain(QtGui.QMainWindow):
             check = True
         return check
 
+
     ####### Housekeeping Functions #######
+    def returnToMenu(self):
+        self.selectSubPanel("Menu")
+        
     def exit(self):
         self.comm.disconnect()
         sys.exit(app.exec_())
@@ -319,7 +330,6 @@ class AQMain(QtGui.QMainWindow):
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    #app.setStyle("plastique")
     
     splash_pix = QtGui.QPixmap('./resources/AQ.png')
     splash = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)

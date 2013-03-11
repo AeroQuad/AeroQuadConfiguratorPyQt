@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(12, 57, 106, 255), stop:1 rgba(25, 134, 193, 255))</string>
+   <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -22,17 +22,14 @@
      <property name="maximumSize">
       <size>
        <width>800</width>
-       <height>400</height>
+       <height>250</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(12, 57, 106, 255), stop:1 rgba(25, 134, 193, 255))</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="AQresources.qrc">:/AQ/AeroQuad_1024x500.png</pixmap>
+      <pixmap resource="AQresources.qrc">:/AQ/AeroQuadLogo3.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>

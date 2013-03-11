@@ -15,12 +15,32 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>:/AQ/AeroQuadMacIcon.ico</normaloff>:/AQ/AeroQuadIcon.ico</iconset>
+    <normaloff>:/AQ/AeroQuadMacIcon.ico</normaloff>:/AQ/AeroQuadMacIcon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="buttonMenu">
+        <property name="text">
+         <string>Menu</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item>
        <widget class="QLabel" name="status">
         <property name="minimumSize">
@@ -31,6 +51,9 @@
         </property>
         <property name="text">
          <string>Not connected to AeroQuad</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>

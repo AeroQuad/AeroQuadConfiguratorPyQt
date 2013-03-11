@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWindow.ui'
 #
-# Created: Sat Dec 15 02:24:37 2012
+# Created: Wed Mar 06 12:11:54 2013
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,24 +14,12 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class ReturningComboBox(QtGui.QComboBox):
-    def __init__(self, parent=None):
-        super(ReturningComboBox, self).__init__(parent)
-
-        self.return_handler = None
-
-    def keyPressEvent(self, event):
-        super(ReturningComboBox, self).keyPressEvent(event)
-
-        if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
-            self.return_handler()
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(800, 400)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/AQ/AeroQuadIcon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/AQ/AeroQuadMacIcon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -39,13 +27,19 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.status = QtGui.QLabel(self.centralwidget)
-        self.status.setMinimumSize(QtCore.QSize(200, 0))
-        self.status.setObjectName(_fromUtf8("status"))
-        self.horizontalLayout.addWidget(self.status)
+        self.buttonMenu = QtGui.QPushButton(self.centralwidget)
+        self.buttonMenu.setObjectName(_fromUtf8("buttonMenu"))
+        self.horizontalLayout.addWidget(self.buttonMenu)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.comPort = ReturningComboBox(self.centralwidget)
+        self.status = QtGui.QLabel(self.centralwidget)
+        self.status.setMinimumSize(QtCore.QSize(200, 0))
+        self.status.setAlignment(QtCore.Qt.AlignCenter)
+        self.status.setObjectName(_fromUtf8("status"))
+        self.horizontalLayout.addWidget(self.status)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
+        self.comPort = QtGui.QComboBox(self.centralwidget)
         self.comPort.setMinimumSize(QtCore.QSize(0, 0))
         self.comPort.setEditable(True)
         self.comPort.setObjectName(_fromUtf8("comPort"))
@@ -124,6 +118,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "AeroQuad Configurator", None, QtGui.QApplication.UnicodeUTF8))
+        self.buttonMenu.setText(QtGui.QApplication.translate("MainWindow", "Menu", None, QtGui.QApplication.UnicodeUTF8))
         self.status.setText(QtGui.QApplication.translate("MainWindow", "Not connected to AeroQuad", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonConnect.setText(QtGui.QApplication.translate("MainWindow", "Connect", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonDisconnect.setText(QtGui.QApplication.translate("MainWindow", "Disconnect", None, QtGui.QApplication.UnicodeUTF8))

@@ -25,11 +25,13 @@ class subpanel(object):
         self.boardConfiguration = {}
         self.commData = Queue.Queue()
                
-    def initialize(self, commTransport, xml, mainWindow):
+    def initialize(self, commTransport, xml, mainWindow, mainApp):
         '''This initializes your class with required external arguments'''
+        # TODO: see if we can simplify to we handle argument list
         self.comm = commTransport
         self.xml = xml
         self.mainUi = mainWindow
+        self.configurator = mainApp
                 
     def sendCommand(self, command):
         '''Send a serial command'''

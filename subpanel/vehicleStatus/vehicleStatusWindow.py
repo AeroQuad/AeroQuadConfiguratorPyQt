@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'vehicleStatusWindow.ui'
 #
-# Created: Thu Jan 24 00:18:15 2013
+# Created: Sun Mar 03 23:11:54 2013
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,7 +21,8 @@ class Ui_vehicleStatus(object):
         self.gridLayout = QtGui.QGridLayout(vehicleStatus)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.motorView = QtGui.QGraphicsView(vehicleStatus)
-        self.motorView.setStyleSheet(_fromUtf8("background-color:  qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0397727, stop:0 rgba(12, 57, 106, 255), stop:1 rgba(25, 134, 193, 255))"))
+        self.motorView.setStyleSheet(_fromUtf8("background-color: rgba(255, 255, 255, 0);"))
+        self.motorView.setFrameShape(QtGui.QFrame.NoFrame)
         self.motorView.setObjectName(_fromUtf8("motorView"))
         self.gridLayout.addWidget(self.motorView, 0, 2, 3, 1)
         self.leftTransmitter = QtGui.QGraphicsView(vehicleStatus)
@@ -32,6 +33,9 @@ class Ui_vehicleStatus(object):
         self.leftTransmitter.setSizePolicy(sizePolicy)
         self.leftTransmitter.setMinimumSize(QtCore.QSize(147, 150))
         self.leftTransmitter.setMaximumSize(QtCore.QSize(147, 150))
+        self.leftTransmitter.setFrameShape(QtGui.QFrame.Box)
+        self.leftTransmitter.setFrameShadow(QtGui.QFrame.Plain)
+        self.leftTransmitter.setLineWidth(2)
         self.leftTransmitter.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.leftTransmitter.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.leftTransmitter.setObjectName(_fromUtf8("leftTransmitter"))
@@ -44,6 +48,9 @@ class Ui_vehicleStatus(object):
         self.artificialHorizon.setSizePolicy(sizePolicy)
         self.artificialHorizon.setMinimumSize(QtCore.QSize(300, 300))
         self.artificialHorizon.setMaximumSize(QtCore.QSize(300, 300))
+        self.artificialHorizon.setFrameShape(QtGui.QFrame.Box)
+        self.artificialHorizon.setFrameShadow(QtGui.QFrame.Plain)
+        self.artificialHorizon.setLineWidth(2)
         self.artificialHorizon.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.artificialHorizon.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.artificialHorizon.setObjectName(_fromUtf8("artificialHorizon"))
@@ -56,6 +63,9 @@ class Ui_vehicleStatus(object):
         self.rightTransmitter.setSizePolicy(sizePolicy)
         self.rightTransmitter.setMinimumSize(QtCore.QSize(147, 150))
         self.rightTransmitter.setMaximumSize(QtCore.QSize(147, 150))
+        self.rightTransmitter.setFrameShape(QtGui.QFrame.Box)
+        self.rightTransmitter.setFrameShadow(QtGui.QFrame.Plain)
+        self.rightTransmitter.setLineWidth(2)
         self.rightTransmitter.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.rightTransmitter.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.rightTransmitter.setObjectName(_fromUtf8("rightTransmitter"))
@@ -63,6 +73,9 @@ class Ui_vehicleStatus(object):
         self.transmitterOutput = QtGui.QGraphicsView(vehicleStatus)
         self.transmitterOutput.setMaximumSize(QtCore.QSize(16777215, 300))
         self.transmitterOutput.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:reflect, x1:0.548, y1:0.0170455, x2:0.548, y2:1, stop:0 rgba(30, 30, 30, 255), stop:1 rgba(66, 66, 66, 255))"))
+        self.transmitterOutput.setFrameShape(QtGui.QFrame.Box)
+        self.transmitterOutput.setFrameShadow(QtGui.QFrame.Plain)
+        self.transmitterOutput.setLineWidth(2)
         self.transmitterOutput.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.transmitterOutput.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.transmitterOutput.setObjectName(_fromUtf8("transmitterOutput"))

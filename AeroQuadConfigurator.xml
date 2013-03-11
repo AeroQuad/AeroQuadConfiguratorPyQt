@@ -9,15 +9,39 @@
         <SoftwareVersion>!</SoftwareVersion>
         <StopTelemetry>X</StopTelemetry>
         <BoardConfiguration>#</BoardConfiguration>
+        <Background>./resources/gradientBackground.png</Background>
     </Settings>
     
     <Subpanels>
+        <!-- Example of how to add an item to the menu.
         <Subpanel Name="Tutorial">
             <Requirement>All</Requirement>
             <Path>tutorial.tutorial</Path>
             <Class>tutorial</Class>
         </Subpanel>
-    
+        -->
+        <Subpanel Name="Menu">
+            <Requirement>All</Requirement>
+            <Path>menu.menu</Path>
+            <Class>menu</Class>
+            <MenuItems>
+            	<Menu Name="Vehicle Status">./subpanel/menu/buttonVehicleStatus.png</Menu>
+            	<Menu Name="Update Parameters">./subpanel/menu/buttonUpdateParameters.png</Menu>
+            	<Menu Name="Serial Monitor">./subpanel/menu/buttonSerialMonitor.png</Menu>
+            	<Menu Name="Motor Command">./subpanel/menu/buttonMotorCommand.png</Menu>
+            	<Menu Name="Vehicle Configuration">./subpanel/menu/buttonVehicleConfiguration.png</Menu>
+            	<!--
+            	<Menu Name="Vehicle Status">./subpanel/menu/buttonVehicleStatus.png</Menu>
+            	<Menu Name="Calibrations">./subpanel/menu/buttonCalibrations.png</Menu>
+				<Menu Name="Firmware Upload">./subpanel/menu/buttonFirmwareUpload.png</Menu>
+            	<Menu Name="Update Parameters">./subpanel/menu/buttonUpdateParameters.png</Menu>
+            	<Menu Name="Serial Monitor">./subpanel/menu/buttonSerialMonitor.png</Menu>
+            	<Menu Name="Motor Command">./subpanel/menu/buttonMotorCommand.png</Menu>
+            	<Menu Name="Vehicle Configuration">./subpanel/menu/buttonVehicleConfiguration.png</Menu>
+            	<Menu Name="Data Plots">./subpanel/menu/buttonDataPlots.png</Menu>
+            	-->
+            </MenuItems>
+        </Subpanel>    
         <Subpanel Name="Serial Monitor">
             <Requirement>All</Requirement>
             <Path>commMonitor.commMonitor</Path>
@@ -262,7 +286,7 @@
             <PlotName>Mag Y Axis</PlotName>
             <PlotName>Mag Z Axis</PlotName>
         </Subpanel>
-        <Subpanel Name="Attitude">
+        <Subpanel Name="Attitude Data">
             <Requirement type="and">Gyroscope: Detected</Requirement>
             <Requirement type="and">Accelerometer: Detected</Requirement>
             <Requirement type="and">Magnetometer: Detected</Requirement>
