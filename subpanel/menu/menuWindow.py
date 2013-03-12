@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'menuWindow.ui'
 #
-# Created: Mon Mar 04 15:47:23 2013
+# Created: Mon Mar 11 23:49:02 2013
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,13 +18,16 @@ class Ui_Menu(object):
     def setupUi(self, Menu):
         Menu.setObjectName(_fromUtf8("Menu"))
         Menu.resize(800, 600)
-        self.formLayout = QtGui.QFormLayout(Menu)
-        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
-        self.formLayout.setLabelAlignment(QtCore.Qt.AlignCenter)
-        self.formLayout.setFormAlignment(QtCore.Qt.AlignCenter)
-        self.formLayout.setMargin(20)
-        self.formLayout.setSpacing(20)
-        self.formLayout.setObjectName(_fromUtf8("formLayout"))
+        self.gridLayout = QtGui.QGridLayout(Menu)
+        self.gridLayout.setSpacing(2)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.splash = QtGui.QLabel(Menu)
+        self.splash.setMaximumSize(QtCore.QSize(800, 250))
+        self.splash.setText(_fromUtf8(""))
+        self.splash.setPixmap(QtGui.QPixmap(_fromUtf8(":/AQ/AeroQuadLogo3.png")))
+        self.splash.setScaledContents(True)
+        self.splash.setObjectName(_fromUtf8("splash"))
+        self.gridLayout.addWidget(self.splash, 0, 0, 1, 1)
 
         self.retranslateUi(Menu)
         QtCore.QMetaObject.connectSlotsByName(Menu)
@@ -32,3 +35,4 @@ class Ui_Menu(object):
     def retranslateUi(self, Menu):
         Menu.setWindowTitle(QtGui.QApplication.translate("Menu", "Form", None, QtGui.QApplication.UnicodeUTF8))
 
+import AQresources_rc

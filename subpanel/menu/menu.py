@@ -21,27 +21,39 @@ class menu(QtGui.QWidget, subpanel):
     def start(self, xmlSubPanel, boardConfiguration):
         self.subPanelName = xmlSubPanel
         self.boardConfiguration = boardConfiguration
-        menuList = self.xml.findall(self.subPanelName + "/MenuItems/Menu")
-        self.menu = {}
         # Clear out all previous menu items
-        for remove in reversed(range(self.ui.formLayout.count())):
-            self.ui.formLayout.itemAt(remove).widget().setParent(None)
+        for remove in reversed(range(self.ui.gridLayout.count())):
+            self.ui.gridLayout.itemAt(remove).widget().setParent(None)
+        menuList = self.xml.findall(self.subPanelName + "/MenuItems/Menu")
+        logo = QtGui.QLabel()
+        logo.setMaximumSize(QtCore.QSize(800, 250))
+        logo.setPixmap(QtGui.QPixmap("./resources/AQLogo.png"))
+        logo.setScaledContents(True)
+        self.ui.gridLayout.addWidget(logo, 0, 0, 1, 3, QtCore.Qt.AlignCenter)
         # Add menu items listed in XML file
+        buttonColumn, buttonRow = 1, 0
         for menuItem in menuList:
-            self.menu[menuItem.get("Name")] = menuItem.text
             menuButton = PictureButton(self)
             menuButton.setPixmap(QtGui.QPixmap(menuItem.text))
             menuButton.setAlignment(QtCore.Qt.AlignCenter)
             self.buttonList.append(menuButton)
-            self.ui.formLayout.addWidget(menuButton)
+            #self.ui.formLayout.addWidget(menuButton)
+            self.ui.gridLayout.addWidget(menuButton, buttonColumn, buttonRow, QtCore.Qt.AlignCenter)
             self.connect(menuButton, QtCore.SIGNAL('clicked()'), self.createMenu(menuItem.get("Name")))
+            buttonRow += 1
+            if buttonRow == 3:
+                buttonRow = 0
+                buttonColumn += 1
         
     def createMenu(self, name):
         def menuSelection():
-            self.configurator.selectSubPanel(name)
+            try:
+                self.configurator.selectSubPanel(name)
+            except:
+                QtGui.QMessageBox.information(self, "Under Construction", "This feature under construction.")
         return menuSelection
     
     def stop(self):
-        for remove in reversed(range(self.ui.formLayout.count())):
-            self.ui.formLayout.itemAt(remove).widget().setParent(None)
+        for remove in reversed(range(self.ui.gridLayout.count())):
+            self.ui.gridLayout.itemAt(remove).widget().setParent(None)
             

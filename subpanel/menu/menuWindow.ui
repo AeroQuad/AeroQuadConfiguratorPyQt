@@ -13,27 +13,34 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+  <layout class="QGridLayout" name="gridLayout" rowminimumheight="0">
+   <property name="spacing">
+    <number>2</number>
    </property>
-   <property name="labelAlignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="formAlignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="horizontalSpacing">
-    <number>20</number>
-   </property>
-   <property name="verticalSpacing">
-    <number>20</number>
-   </property>
-   <property name="margin">
-    <number>20</number>
-   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="splash">
+     <property name="maximumSize">
+      <size>
+       <width>800</width>
+       <height>250</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../ui/AQresources.qrc">:/AQ/AeroQuadLogo3.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../ui/AQresources.qrc"/>
+  <include location="AQresources.qrc"/>
+ </resources>
  <connections/>
 </ui>
