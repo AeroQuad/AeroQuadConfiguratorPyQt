@@ -13,13 +13,7 @@
     </Settings>
     
     <Subpanels>
-        <!-- Example of how to add an item to the menu.
-        <Subpanel Name="Tutorial">
-            <Requirement>All</Requirement>
-            <Path>tutorial.tutorial</Path>
-            <Class>tutorial</Class>
-        </Subpanel>
-        -->
+        
         <Subpanel Name="Menu">
             <Requirement>All</Requirement>
             <Path>menu.menu</Path>

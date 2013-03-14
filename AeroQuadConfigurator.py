@@ -166,6 +166,9 @@ class AQMain(QtGui.QMainWindow):
                 break
             else:
                 self.ui.status.setText("Autoconnect not successful...")
+                if sys.platform.startswith("linux"):
+                    QtGui.QMessageBox.information(self, 'Verify Comm Port Configuration', 'Verify that you are a member of the dialout group.  To add yourself to the dialout group, issue the following command in a terminal:\n"sudo adduser yourUserName dialout."')
+                    
         self.manualConnect = True
     
     def updateBootUpDelay(self):
