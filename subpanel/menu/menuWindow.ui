@@ -29,7 +29,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../ui/AQresources.qrc">:/AQ/AeroQuadLogo3.png</pixmap>
+      <pixmap>:/AQ/AeroQuadLogo3.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -38,9 +38,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../ui/AQresources.qrc"/>
-  <include location="AQresources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

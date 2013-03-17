@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'menuWindow.ui'
 #
-# Created: Mon Mar 11 23:49:02 2013
+# Created: Sun Mar 17 16:36:33 2013
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,4 +35,3 @@ class Ui_Menu(object):
     def retranslateUi(self, Menu):
         Menu.setWindowTitle(QtGui.QApplication.translate("Menu", "Form", None, QtGui.QApplication.UnicodeUTF8))
 
-import AQresources_rc
