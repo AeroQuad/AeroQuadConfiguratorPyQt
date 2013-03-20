@@ -8,7 +8,7 @@ import threading
 import Queue
 from PyQt4 import QtCore
 
-class subpanel(object):
+class SubPanel(object):
     '''This is a class that contains the methods required to add new subpanels to the Configurator
     You can override any of these functions by making new ones in the subpanel they will be used.
     Look at commMonitor.py for an example of how to add this subclass to your subpanel.

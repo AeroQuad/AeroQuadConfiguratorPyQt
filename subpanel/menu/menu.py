@@ -5,15 +5,15 @@ Created on Feb 24, 2013
 '''
    
 from PyQt4 import QtGui, QtCore
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.menu.menuWindow import Ui_Menu
 from utilities.PictureButton import PictureButton
 
-class menu(QtGui.QWidget, subpanel):
+class menu(QtGui.QWidget, SubPanel):
     
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        subpanel.__init__(self)
+        SubPanel.__init__(self)
         self.ui = Ui_Menu()
         self.ui.setupUi(self)
         self.buttonList = []
@@ -22,8 +22,7 @@ class menu(QtGui.QWidget, subpanel):
         self.subPanelName = xmlSubPanel
         self.boardConfiguration = boardConfiguration
         # Clear out all previous menu items
-        for remove in reversed(range(self.ui.gridLayout.count())):
-            self.ui.gridLayout.itemAt(remove).widget().setParent(None)
+        self.stop()
         menuList = self.xml.findall(self.subPanelName + "/MenuItems/Menu")
         logo = QtGui.QLabel()
         logo.setMaximumSize(QtCore.QSize(800, 250))
@@ -51,6 +50,7 @@ class menu(QtGui.QWidget, subpanel):
                 self.configurator.selectSubPanel(name)
             except:
                 QtGui.QMessageBox.information(self, "Under Construction", "This feature under construction.")
+                self.configurator.selectSubPanel("Menu")
         return menuSelection
     
     def stop(self):

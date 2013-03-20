@@ -5,13 +5,13 @@ Created on Dec 5, 2012
 '''
 
 from PyQt4 import QtCore, QtGui
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.vehicleConfiguration.vehicleConfigurationWindow import Ui_vehicleConfiguration
 
-class vehicleConfiguration(QtGui.QWidget, subpanel):
+class vehicleConfiguration(QtGui.QWidget, SubPanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        subpanel.__init__(self)
+        SubPanel.__init__(self)
         self.ui = Ui_vehicleConfiguration()
         self.ui.setupUi(self)
         self.image = QtGui.QPixmap("./resources/Quad+.png")
@@ -36,19 +36,20 @@ class vehicleConfiguration(QtGui.QWidget, subpanel):
             self.image = QtGui.QPixmap(vehicleFile.text)
             self.displayVehicle()
             
+            self.updateConfiguration()
             # Populate configuration list
-            rowCount = len(self.boardConfiguration)
-            configName = self.boardConfiguration.keys()
-            self.ui.configSpecs.clear()
-            self.ui.configSpecs.setRowCount(rowCount)
-            self.ui.configSpecs.setColumnCount(1)
-            
-            for currentRow in range(rowCount):
-                spec = QtGui.QTableWidgetItem("   " + configName[currentRow] + ": " + self.boardConfiguration[configName[currentRow]])
-                spec.setTextColor(QtCore.Qt.white)
-                spec.setFlags(QtCore.Qt.ItemIsTristate)
-                self.ui.configSpecs.setItem(currentRow, 0, spec)
-            self.ui.configSpecs.resizeColumnToContents(0)
+#            rowCount = len(self.boardConfiguration)
+#            configName = self.boardConfiguration.keys()
+#            self.ui.configSpecs.clear()
+#            self.ui.configSpecs.setRowCount(rowCount)
+#            self.ui.configSpecs.setColumnCount(1)
+#            
+#            for currentRow in range(rowCount):
+#                spec = QtGui.QTableWidgetItem("   " + configName[currentRow] + ": " + self.boardConfiguration[configName[currentRow]])
+#                spec.setTextColor(QtCore.Qt.white)
+#                spec.setFlags(QtCore.Qt.ItemIsTristate)
+#                self.ui.configSpecs.setItem(currentRow, 0, spec)
+#            self.ui.configSpecs.resizeColumnToContents(0)
         else:
             self.ui.configSpecs.clear()
             self.ui.configSpecs.setRowCount(2)

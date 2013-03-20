@@ -5,14 +5,14 @@ Created on Nov 28, 2012
 '''
 
 from PyQt4 import QtCore, QtGui
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.updateParameters.updateParametersWindow import Ui_parameterUpdate
 import time
 
-class updateParameters(QtGui.QWidget, subpanel):
+class updateParameters(QtGui.QWidget, SubPanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        subpanel.__init__(self)
+        SubPanel.__init__(self)
         self.ui = Ui_parameterUpdate()
         self.ui.setupUi(self)
         self.ui.parameterTable.verticalHeader().setVisible(False)

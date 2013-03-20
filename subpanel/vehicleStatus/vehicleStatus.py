@@ -5,17 +5,17 @@ Created on Dec 6, 2012
 '''
 
 from PyQt4 import QtCore, QtGui
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.vehicleStatus.vehicleStatusWindow import Ui_vehicleStatus
 from utilities.barGauge import BarGauge
 import math
 import ast
 import time
 
-class vehicleStatus(QtGui.QWidget, subpanel):
+class vehicleStatus(QtGui.QWidget, SubPanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        subpanel.__init__(self)
+        SubPanel.__init__(self)
         self.ui = Ui_vehicleStatus()
         self.ui.setupUi(self)
         self.channelCount = 0

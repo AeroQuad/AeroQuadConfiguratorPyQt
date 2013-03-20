@@ -1,13 +1,12 @@
 import time
 from PyQt4 import QtCore, QtGui
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.commMonitor.commMonitorWindow import Ui_commMonitor
 
-class commMonitor(QtGui.QWidget, subpanel):
+class commMonitor(QtGui.QWidget, SubPanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        subpanel.__init__(self)
-        self.subpanel = subpanel
+        SubPanel.__init__(self)
         self.ui = Ui_commMonitor()
         self.ui.setupUi(self)
         self.ui.sendButton.setEnabled(False)

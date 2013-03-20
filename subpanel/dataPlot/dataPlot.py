@@ -7,14 +7,14 @@ Created on Nov 21, 2012
 from PyQt4 import QtGui, QtCore
 from pyqtgraph import PlotCurveItem
 
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.dataPlot.dataPlotWindow import Ui_plotWindow
 
 
-class dataPlot(QtGui.QWidget, subpanel):
+class dataPlot(QtGui.QWidget, SubPanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        subpanel.__init__(self)
+        SubPanel.__init__(self)
 
         self.ui = Ui_plotWindow()
         self.ui.setupUi(self)

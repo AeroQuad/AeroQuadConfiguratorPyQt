@@ -58,6 +58,7 @@ class AQMain(QtGui.QMainWindow):
         self.configureSubPanelMenu()
         self.activeSubPanel = None
         self.activeSubPanelName = ""
+        self.selectSubPanel("Menu")
 
         # Connect GUI slots and signals
         self.ui.comPort.return_handler = self.connectBoard

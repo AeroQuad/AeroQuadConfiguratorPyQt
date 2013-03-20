@@ -3,7 +3,7 @@
 from time import sleep
 
 from PyQt4 import QtCore, QtGui
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.motorCommand.motorCommandWindow import Ui_motorCommand
 
 class MotorSlider(QtGui.QWidget):
@@ -36,10 +36,10 @@ class MotorSlider(QtGui.QWidget):
     def changeValue(self, value):
         self.speed.setText(str(value))
 
-class motorCommand(QtGui.QWidget, subpanel):
+class motorCommand(QtGui.QWidget, SubPanel):
     def __init__(self, parent=None):
         super(motorCommand, self).__init__(parent)
-        subpanel.__init__(self)
+        SubPanel.__init__(self)
         self.started = False
 
         self.ui = Ui_motorCommand()

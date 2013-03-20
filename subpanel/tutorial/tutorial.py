@@ -5,10 +5,10 @@ Created on Feb 15, 2013
 '''
 
 from PyQt4 import QtCore, QtGui
-from subpanel.subPanelTemplate import subpanel
+from subpanel.subPanel import SubPanel
 from subpanel.tutorial.tutorialWindow import Ui_tutorial
 
-class tutorial(QtGui.QWidget, subpanel):
+class tutorial(QtGui.QWidget, SubPanel):
     '''Tutorial example for creating your first subpanel. 
     This example will retrieve the AeroQuad flight software 
     version number and write it into a label when a push button is pressed.
@@ -20,7 +20,7 @@ class tutorial(QtGui.QWidget, subpanel):
         This initializes the tutorial subpanel
         '''
         QtGui.QWidget.__init__(self)
-        subpanel.__init__(self)
+        SubPanel.__init__(self)
         self.ui = Ui_tutorial()
         self.ui.setupUi(self)
         self.ui.pushButton.clicked.connect(self.getSoftwareVersion)
