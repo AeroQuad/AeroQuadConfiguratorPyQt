@@ -34,22 +34,8 @@ class vehicleConfiguration(QtGui.QWidget, SubPanel):
             vehicle = self.boardConfiguration["Flight Config"]
             vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
             self.image = QtGui.QPixmap(vehicleFile.text)
-            self.displayVehicle()
-            
+            self.displayVehicle()            
             self.updateConfiguration()
-            # Populate configuration list
-#            rowCount = len(self.boardConfiguration)
-#            configName = self.boardConfiguration.keys()
-#            self.ui.configSpecs.clear()
-#            self.ui.configSpecs.setRowCount(rowCount)
-#            self.ui.configSpecs.setColumnCount(1)
-#            
-#            for currentRow in range(rowCount):
-#                spec = QtGui.QTableWidgetItem("   " + configName[currentRow] + ": " + self.boardConfiguration[configName[currentRow]])
-#                spec.setTextColor(QtCore.Qt.white)
-#                spec.setFlags(QtCore.Qt.ItemIsTristate)
-#                self.ui.configSpecs.setItem(currentRow, 0, spec)
-#            self.ui.configSpecs.resizeColumnToContents(0)
         else:
             self.ui.configSpecs.clear()
             self.ui.configSpecs.setRowCount(2)

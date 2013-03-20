@@ -13,8 +13,7 @@ class tutorial(QtGui.QWidget, SubPanel):
     This example will retrieve the AeroQuad flight software 
     version number and write it into a label when a push button is pressed.
     '''
-
-
+    
     def __init__(self):
         '''
         This initializes the tutorial subpanel

@@ -58,7 +58,6 @@ class AQMain(QtGui.QMainWindow):
         self.configureSubPanelMenu()
         self.activeSubPanel = None
         self.activeSubPanelName = ""
-        self.selectSubPanel("Menu")
 
         # Connect GUI slots and signals
         self.ui.comPort.return_handler = self.connectBoard
@@ -69,7 +68,8 @@ class AQMain(QtGui.QMainWindow):
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
         self.ui.buttonMenu.clicked.connect(self.returnToMenu)
-
+            
+            
     ####### Communication Methods #######       
     def connectBoard(self):
         '''Initiates communication with the AeroQuad'''
@@ -112,15 +112,15 @@ class AQMain(QtGui.QMainWindow):
                 for index in range(len(self.subPanelMenu)):
                     hide = self.checkRequirementsMatch(self.subPanelList[index])
                     self.subPanelMenu[index].setVisible(hide)
-                # Load configuration screen
-                self.selectSubPanel("Vehicle Configuration")
-                self.restartSubPanel()
+
+#                self.selectSubPanel("Vehicle Status")
+#                self.restartSubPanel()
                 return True
             else:
                 self.disconnectBoard()
                 self.ui.status.setText("Not connected to the AeroQuad")
                 if self.manualConnect:
-                    QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
+                    QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Verify the board is plugged in.\n\nIf it is, try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
                 return False
         except SerialException:
             self.ui.buttonDisconnect.setEnabled(False)
@@ -160,6 +160,8 @@ class AQMain(QtGui.QMainWindow):
     def autoConnect(self):
         self.manualConnect = False
         autoConnectState = False
+        self.updateComPortSelection()
+        self.ui.comPort.setCurrentIndex(0)
         for port in xrange(self.ui.comPort.count() - 2):
             self.ui.comPort.setCurrentIndex(port)
             self.ui.status.setText("Attempting to connect to " + self.ui.comPort.currentText() + "...")
@@ -218,7 +220,15 @@ class AQMain(QtGui.QMainWindow):
         baudRate = baudRates.split(',')
         for i in baudRate:
             self.ui.baudRate.addItem(i)
-        self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))     
+        self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))
+        
+    def autoSetup(self):
+        # Load menu and autoconnect to board by default
+        self.selectSubPanel("Menu")
+#        if self.connectBoard():
+#            self.ui.status.setText("Successfully autoconnected to AeroQuad")
+#        else:
+#            self.autoConnect()
 
 
     ####### SubPanel Methods #######
@@ -349,4 +359,5 @@ if __name__ == "__main__":
     if sys.platform == 'darwin':
         MainWindow.raise_()
     splash.finish(MainWindow)
+    MainWindow.autoSetup()
     sys.exit(app.exec_())
