@@ -13,6 +13,18 @@
     </Settings>
     
     <Subpanels>
+    
+        <Subpanel Name="Lithium">
+          <Requirement>All</Requirement>
+          <Path>RCchannelsetup.RCchannelsetup</Path>
+          <Class>RCchannelsetup</Class>
+        </Subpanel>
+        
+        <Subpanel Name="Flight Board Configuration">
+          <Requirement>All</Requirement>
+          <Path>dynamicConfig.dynamicConfig</Path>
+          <Class>DynamicConfig</Class>
+        </Subpanel>
         
         <Subpanel Name="Menu">
             <Requirement>All</Requirement>
@@ -21,7 +33,7 @@
             <MenuItems>
             	<Menu Name="Vehicle Status">./subpanel/menu/buttonVehicleStatus.png</Menu>
             	<Menu Name="Calibrations">./subpanel/menu/buttonCalibrations.png</Menu>
-				<Menu Name="Firmware Upload">./subpanel/menu/buttonFirmwareUpload.png</Menu>
+				      <Menu Name="Firmware Upload">./subpanel/menu/buttonFirmwareUpload.png</Menu>
             	<Menu Name="Update Settings">./subpanel/menu/buttonUpdateSettings.png</Menu>
             	<Menu Name="Mission Planner">./subpanel/menu/buttonMissionPlanner.png</Menu>
             	<Menu Name="Motor Command">./subpanel/menu/buttonMotorCommand.png</Menu>
@@ -29,13 +41,20 @@
             	<Menu Name="Sensor Data">./subpanel/menu/buttonSensorPlots.png</Menu>
             	<Menu Name="Serial Monitor">./subpanel/menu/buttonSerialMonitor.png</Menu>
             </MenuItems>
-        </Subpanel>    
+        </Subpanel>
+        
         <Subpanel Name="Serial Monitor">
             <Requirement>All</Requirement>
             <Path>commMonitor.commMonitor</Path>
             <Class>commMonitor</Class>
         </Subpanel>
-
+        
+        <Subpanel Name="Calibrations">
+            <Requirement>All</Requirement>
+            <Path>calibrations.calibrations</Path>
+            <Class>Calibrations</Class>
+        </Subpanel>
+        
         <Subpanel Name="Vehicle Configuration">
             <Requirement>All</Requirement>
             <Path>vehicleConfiguration.vehicleConfiguration</Path>
