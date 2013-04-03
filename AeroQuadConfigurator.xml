@@ -53,6 +53,8 @@
             <Requirement>All</Requirement>
             <Path>calibrations.calibrations</Path>
             <Class>Calibrations</Class>
+            <AccelTelemetry>l</AccelTelemetry>
+            <MagTelemetry>j</MagTelemetry>
         </Subpanel>
         
         <Subpanel Name="Vehicle Configuration">
