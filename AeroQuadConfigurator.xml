@@ -14,25 +14,18 @@
     
     <Subpanels>
     
-<<<<<<< HEAD
-        <Subpanel Name="Lithium">
-=======
         <Subpanel Name="RC channel assigment">
->>>>>>> Changed rcchannelsetup added rccalibration
           <Requirement>All</Requirement>
           <Path>RCchannelsetup.RCchannelsetup</Path>
           <Class>RCchannelsetup</Class>
         </Subpanel>
         
-<<<<<<< HEAD
-=======
         <Subpanel Name="RC Calibration">
           <Requirement>All</Requirement>
           <Path>RCcalibration.RCcalibration</Path>
           <Class>RCcalibration</Class>
         </Subpanel>
         
->>>>>>> Changed rcchannelsetup added rccalibration
         <Subpanel Name="Flight Board Configuration">
           <Requirement>All</Requirement>
           <Path>dynamicConfig.dynamicConfig</Path>
