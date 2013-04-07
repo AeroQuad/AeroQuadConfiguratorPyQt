@@ -14,7 +14,7 @@
     
     <Subpanels>
     
-        <Subpanel Name="RC channel assigment">
+        <Subpanel Name="RC channel assignment">
           <Requirement>All</Requirement>
           <Path>RCchannelsetup.RCchannelsetup</Path>
           <Class>RCchannelsetup</Class>

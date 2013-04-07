@@ -1,4 +1,3 @@
-#<<<<<<< HEAD
 #'''
 #Created on Mar 21, 2013
 #
@@ -56,4 +55,3 @@ class Calibrations(QtGui.QWidget, SubPanel):
         self.wiz.show()
         self.wiz.exec_()
         
-#>>>>>>> Changed rcchannelsetup added rccalibration
