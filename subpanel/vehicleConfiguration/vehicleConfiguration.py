@@ -8,6 +8,8 @@ from PyQt4 import QtCore, QtGui
 from subpanel.subPanel import SubPanel
 from subpanel.vehicleConfiguration.vehicleConfigurationWindow import Ui_vehicleConfiguration
 
+# This have to be tested...
+
 class vehicleConfiguration(QtGui.QWidget, SubPanel):
     def __init__(self):
         QtGui.QWidget.__init__(self)
