@@ -1,3 +1,4 @@
+#<<<<<<< HEAD
 #'''
 #Created on Apr 1, 2013
 #
@@ -399,4 +400,5 @@ class Magnetometer(QtGui.QWizardPage):
         self.statusLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.statusLabel.setText("Calibration Complete")
         self.calButton.setText("Redo Calibration Measurement")
+#>>>>>>> Changed rcchannelsetup added rccalibration
 #        print(self.field("statusMag").toString())

@@ -1,3 +1,4 @@
+#<<<<<<< HEAD
 ## -*- coding: utf-8 -*-
 #
 ## Form implementation generated from reading ui file 'dynamicConfigWindow.ui'
@@ -340,3 +341,5 @@ class Ui_DynamicConfig(object):
         self.hexaPlusBox.setText(QtGui.QApplication.translate("DynamicConfig", "Hexa +", None, QtGui.QApplication.UnicodeUTF8))
         self.slowESC.setText(QtGui.QApplication.translate("DynamicConfig", "Slow ESC", None, QtGui.QApplication.UnicodeUTF8))
         self.reverseRotation.setText(QtGui.QApplication.translate("DynamicConfig", "Reverse Motor Rotation", None, QtGui.QApplication.UnicodeUTF8))
+
+#>>>>>>> Changed rcchannelsetup added rccalibration

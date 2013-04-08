@@ -1,3 +1,4 @@
+#<<<<<<< HEAD
 #'''
 #Created on Mar 27, 2013
 #
@@ -67,3 +68,4 @@ class DynamicConfig(QtGui.QWidget, SubPanel):
          
     def sendMiniConfig(self):
         pass
+#>>>>>>> Changed rcchannelsetup added rccalibration

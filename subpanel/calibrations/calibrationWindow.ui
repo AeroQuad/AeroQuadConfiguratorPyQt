@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CalibrationWizard</class>
@@ -55,3 +56,4 @@
  <resources/>
  <connections/>
 </ui>
+>>>>>>> Changed rcchannelsetup added rccalibration
