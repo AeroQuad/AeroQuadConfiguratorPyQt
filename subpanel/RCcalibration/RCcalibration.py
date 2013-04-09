@@ -63,8 +63,6 @@ class RCcalibration(QtGui.QWidget, SubPanel):
             self.amount_channels = 10
             print("Can't read amount of channels from boardconfiguration!")
         
-        print("Amount of channels found: " + str(self.amount_channels))
-        
 
     def start_RCcalibration(self):
         if self.running:    #we are already running and the user want to finish the calibration

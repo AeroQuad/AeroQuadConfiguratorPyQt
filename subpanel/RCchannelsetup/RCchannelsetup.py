@@ -36,8 +36,6 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         except:
             self.amount_channels = 10
             print("Can't read amount of channels from boardconfiguration!")
-        
-        print("Amount of channels found: " + str(self.amount_channels))
     
     def cancel_RC(self):
         self.stop_RCsetup()
