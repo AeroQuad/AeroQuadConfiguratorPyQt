@@ -43,7 +43,7 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         
         self.running = False
         
-        self.amount_channels = 8
+        self.amount_channels = 100
         
         self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
         self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
@@ -52,6 +52,19 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         
         self.ui.start.clicked.connect(self.start_RCcalibration)
         self.ui.cancel.clicked.connect(self.cancel_RCcalibration)
+
+    def start(self, xmlSubPanel, boardConfiguration):
+        self.xmlSubPanel = xmlSubPanel
+        self.boardConfiguration = boardConfiguration
+        
+        try:
+            self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
+        except:
+            self.amount_channels = 10
+            print("Can't read amount of channels from boardconfiguration!")
+        
+        print("Amount of channels found: " + str(self.amount_channels))
+        
 
     def start_RCcalibration(self):
         if self.running:    #we are already running and the user want to finish the calibration

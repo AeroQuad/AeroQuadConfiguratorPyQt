@@ -19,13 +19,25 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         self.ui.cancel.setEnabled(False)
         self.ui.cancel.clicked.connect(self.cancel_RC)
         self.ui.start.clicked.connect(self.start_RCsetup)
-        self.amount_channels = 8                                        #The amount of channels
+        self.amount_channels = 100                                        #The amount of channels
         self.last_RCvalue = [0, 0, 0, 0, 0, 0, 0, 0]                    #We store the last RC value in this array
         self.first_loop = 80                                            #We use this to have a stable reading, the first 10 readings we do nothing with the RC values
         self.channel_order = [100, 100, 100, 100, 100, 100, 100, 100]   #This array has the channel order the user wants, we never have a RC with 100 channels
         self.channel_detecting = 0                                      #Here we are going to save on what channel number we are searching at the moment
         self.running = False
         self.channel_offset = 200
+    
+    def start(self, xmlSubPanel, boardConfiguration):
+        self.xmlSubPanel = xmlSubPanel
+        self.boardConfiguration = boardConfiguration
+        
+        try:
+            self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
+        except:
+            self.amount_channels = 10
+            print("Can't read amount of channels from boardconfiguration!")
+        
+        print("Amount of channels found: " + str(self.amount_channels))
     
     def cancel_RC(self):
         self.stop_RCsetup()
