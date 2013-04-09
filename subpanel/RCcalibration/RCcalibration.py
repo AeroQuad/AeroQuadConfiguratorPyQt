@@ -43,7 +43,7 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         
         self.running = False
         
-        self.amount_channels = 100
+        self.amount_channels = 10
         
         self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
         self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
@@ -60,7 +60,6 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         try:
             self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
         except:
-            self.amount_channels = 10
             print("Can't read amount of channels from boardconfiguration!")
         
 
