@@ -173,10 +173,34 @@ class vehicleStatus(QtGui.QWidget, SubPanel):
         
         # Setup background for motor view
         motorScene = QtGui.QGraphicsScene()
+        vehicle = '0'
         try:
             vehicle = self.boardConfiguration["Flight Config"]
         except:
+            print("can't read vehicle config")
+            
+        if vehicle == "0" :
+            vehicle = "Quad X"
+        elif vehicle == '1' :
             vehicle = "Quad +"
+        elif vehicle == '2' :
+            vehicle = "Hex +"
+        elif vehicle == '3' :
+            vehicle = "Hex X"
+        elif vehicle == '4' :
+            vehicle = "Tri"
+        elif vehicle == '5' :
+            vehicle = "Quad Y4"
+        elif vehicle == '6' :
+            vehicle = "Hex Y6"
+        elif vehicle == '7' :
+            vehicle = "Octo X8"
+        elif vehicle == '8' :
+            vehicle = "Octo +"
+        elif vehicle == '9' :
+            vehicle = "Octo X"
+            
+            
         vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
         vehicleImage = QtGui.QPixmap(vehicleFile.text)
         vehicleHeight = int(vehicleFile.attrib["Height"])
