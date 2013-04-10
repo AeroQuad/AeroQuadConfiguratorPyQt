@@ -16,7 +16,7 @@
   <widget class="QGraphicsView" name="transmitterOutput">
    <property name="geometry">
     <rect>
-     <x>107</x>
+     <x>77</x>
      <y>186</y>
      <width>300</width>
      <height>120</height>
@@ -50,7 +50,7 @@
   <widget class="QGraphicsView" name="leftTransmitter">
    <property name="geometry">
     <rect>
-     <x>107</x>
+     <x>77</x>
      <y>30</y>
      <width>147</width>
      <height>150</height>
@@ -93,7 +93,7 @@
   <widget class="QGraphicsView" name="rightTransmitter">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>230</x>
      <y>30</y>
      <width>147</width>
      <height>150</height>
@@ -136,8 +136,8 @@
   <widget class="QPushButton" name="start">
    <property name="geometry">
     <rect>
-     <x>450</x>
-     <y>500</y>
+     <x>470</x>
+     <y>560</y>
      <width>100</width>
      <height>31</height>
     </rect>
@@ -149,8 +149,8 @@
   <widget class="QPushButton" name="cancel">
    <property name="geometry">
     <rect>
-     <x>560</x>
-     <y>500</y>
+     <x>580</x>
+     <y>560</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -162,8 +162,8 @@
   <widget class="QPushButton" name="next">
    <property name="geometry">
     <rect>
-     <x>670</x>
-     <y>500</y>
+     <x>690</x>
+     <y>560</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -175,7 +175,7 @@
   <widget class="QProgressBar" name="progressBar_RCmode">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>80</x>
      <y>340</y>
      <width>200</width>
      <height>25</height>
@@ -221,7 +221,7 @@
   <widget class="QProgressBar" name="progressBar_RCAux1">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>80</x>
      <y>370</y>
      <width>200</width>
      <height>25</height>
@@ -267,7 +267,7 @@
   <widget class="QProgressBar" name="progressBar_RCAux2">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>80</x>
      <y>400</y>
      <width>200</width>
      <height>25</height>
@@ -313,7 +313,7 @@
   <widget class="QProgressBar" name="progressBar_RCAux3">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>80</x>
      <y>430</y>
      <width>200</width>
      <height>25</height>
@@ -359,8 +359,8 @@
   <widget class="QTextBrowser" name="commLog">
    <property name="geometry">
     <rect>
-     <x>430</x>
-     <y>30</y>
+     <x>450</x>
+     <y>10</y>
      <width>341</width>
      <height>461</height>
     </rect>

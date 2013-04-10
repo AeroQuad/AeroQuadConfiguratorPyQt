@@ -4,6 +4,7 @@ Created on 25 mrt. 2013
 @author: Lithium
 '''
 import time
+import logging
 from PyQt4 import QtCore, QtGui
 from subpanel.subPanel import SubPanel
 from subpanel.RCchannelsetup.RCchannelsetupWindow import Ui_Form
@@ -34,7 +35,7 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         try:
             self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
         except:
-            print("Can't read amount of channels from boardconfiguration!")
+            logging.warning("Can't read amount of channels from boardconfiguration!")
     
     def cancel_RC(self):
         self.stop_RCsetup()

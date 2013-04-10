@@ -5,6 +5,7 @@ Created on Nov 6, 2012
 @author: Ted Carancho
 '''
 import sys
+import logging
 
 from PyQt4 import QtCore, QtGui
 from serial import SerialException
@@ -27,9 +28,13 @@ class AQMain(QtGui.QMainWindow):
         background = xml.find("./Settings/Background").text
         self.ui.subPanel.setStyleSheet("QStackedWidget{background-image: url(" + background + ");}")
         
+        #logging
+        logging.basicConfig(filename='logfile.log',level=logging.DEBUG)
+        logging.basicConfig(format='%(asctime)s %(message)s')
+        
         # TODO: figure out way to configure for different comm types (TCP, MAVLINK, etc) 
         self.comm = AQSerial()
-        
+                
         # Default main window conditions
         self.ui.buttonDisconnect.setEnabled(False)
         self.ui.buttonConnect.setEnabled(True)
@@ -68,7 +73,6 @@ class AQMain(QtGui.QMainWindow):
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
         self.ui.buttonMenu.clicked.connect(self.returnToMenu)
-            
             
     ####### Communication Methods #######       
     def connectBoard(self):

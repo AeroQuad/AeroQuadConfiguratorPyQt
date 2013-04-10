@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="cancel">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>550</y>
+     <x>580</x>
+     <y>560</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -210,8 +210,8 @@
   <widget class="QPushButton" name="start">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>550</y>
+     <x>470</x>
+     <y>560</y>
      <width>100</width>
      <height>31</height>
     </rect>
@@ -223,8 +223,8 @@
   <widget class="QPushButton" name="next">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>550</y>
+     <x>690</x>
+     <y>560</y>
      <width>101</width>
      <height>31</height>
     </rect>
