@@ -5,6 +5,7 @@ Created on 27 mrt. 2013
 '''
 
 import time
+import logging
 from PyQt4 import QtCore, QtGui
 from subpanel.subPanel import SubPanel
 from subpanel.RCcalibration.RCcalibrationWindow import Ui_Form
@@ -60,7 +61,7 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         try:
             self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
         except:
-            print("Can't read amount of channels from boardconfiguration!")
+            logging.warning("Can't read amount of channels from boardconfiguration!")
         
 
     def start_RCcalibration(self):
