@@ -135,11 +135,12 @@ class vehicleStatus(QtGui.QWidget, SubPanel):
                 self.updateStatus = QtCore.QTimer()
                 self.updateStatus.timeout.connect(self.updateVehicleStatus)
                 self.updateStatus.start(100)
-             
+            
+        self.receiverChannels = 10 
         try:
             self.receiverChannels = int(self.boardConfiguration["Receiver Channels"])
         except:
-            self.receiverChannels = 10
+            print("Can't read nb receiver channels from vehicle config")
         # Do we need these?
         #self.altitudeDetect = self.boardConfiguration["Barometer"] == "Detected"
         #self.batteryMonitorDetect = self.boardConfiguration["Battery Monitor"] == "Enabled"
@@ -150,7 +151,19 @@ class vehicleStatus(QtGui.QWidget, SubPanel):
         self.barGaugeWidth = 25.0
         self.xmitChannel = []
         self.xmitLabel = []
-        self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4", "Aux5"]
+        if (self.channelCount == 1) :
+            self.xmitLabels = ["Mode"]
+        elif (self.channelCount == 2) :
+            self.xmitLabels = ["Mode", "Aux1"]
+        elif (self.channelCount == 3) :
+            self.xmitLabels = ["Mode", "Aux1", "Aux2"]
+        elif (self.channelCount == 4) :
+            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3"]
+        elif (self.channelCount == 5) :
+            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4"]
+        else :
+            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4", "Aux5"]
+        
         self.labelHeight = 25
 
         for channel in range(self.channelCount):

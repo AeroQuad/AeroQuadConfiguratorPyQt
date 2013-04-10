@@ -42,9 +42,6 @@ class Ui_DynamicConfig(object):
         self.receiverFrame.setObjectName(_fromUtf8("receiverFrame"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.receiverFrame)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.sBusRecv = QtGui.QCheckBox(self.receiverFrame)
-        self.sBusRecv.setObjectName(_fromUtf8("sBusRecv"))
-        self.horizontalLayout.addWidget(self.sBusRecv)
         self.ppmRecv = QtGui.QCheckBox(self.receiverFrame)
         self.ppmRecv.setObjectName(_fromUtf8("ppmRecv"))
         self.horizontalLayout.addWidget(self.ppmRecv)
@@ -68,6 +65,7 @@ class Ui_DynamicConfig(object):
         self.channelCount.setObjectName(_fromUtf8("channelCount"))
         self.channelCount.addItem(_fromUtf8(""))
         self.channelCount.addItem(_fromUtf8(""))
+        self.channelCount.setEnabled(False)
         self.horizontalLayout.addWidget(self.channelCount)
         self.channelCount_2 = QtGui.QLabel(self.receiverFrame)
         self.channelCount_2.setObjectName(_fromUtf8("channelCount_2"))
@@ -86,6 +84,8 @@ class Ui_DynamicConfig(object):
         self.gridLayout_4.addWidget(self.pushButton, 6, 1, 1, 1)
         spacerItem6 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_4.addItem(spacerItem6, 0, 0, 1, 1)
+        
+        self.motorConfigGroup = QtGui.QButtonGroup()
         self.motorConfigFrame = QtGui.QFrame(self.frame)
         self.motorConfigFrame.setFrameShape(QtGui.QFrame.Box)
         self.motorConfigFrame.setFrameShadow(QtGui.QFrame.Raised)
@@ -101,15 +101,27 @@ class Ui_DynamicConfig(object):
         self.quadPlusBox = QtGui.QCheckBox(self.motorConfigFrame)
         self.quadPlusBox.setObjectName(_fromUtf8("quadPlusBox"))
         self.gridLayout_2.addWidget(self.quadPlusBox, 0, 2, 1, 1)
+        self.quadY4Box = QtGui.QCheckBox(self.motorConfigFrame)
+        self.quadY4Box.setObjectName(_fromUtf8("quadY4Box"))
+        self.gridLayout_2.addWidget(self.quadY4Box, 0, 3, 1, 1)
         self.Y6Box = QtGui.QCheckBox(self.motorConfigFrame)
         self.Y6Box.setObjectName(_fromUtf8("Y6Box"))
-        self.gridLayout_2.addWidget(self.Y6Box, 0, 3, 1, 1)
+        self.gridLayout_2.addWidget(self.Y6Box, 0, 4, 1, 1)
         self.hexaXBox = QtGui.QCheckBox(self.motorConfigFrame)
         self.hexaXBox.setObjectName(_fromUtf8("hexaXBox"))
-        self.gridLayout_2.addWidget(self.hexaXBox, 0, 4, 1, 1)
+        self.gridLayout_2.addWidget(self.hexaXBox, 0, 5, 1, 1)
         self.hexaPlusBox = QtGui.QCheckBox(self.motorConfigFrame)
         self.hexaPlusBox.setObjectName(_fromUtf8("hexaPlusBox"))
-        self.gridLayout_2.addWidget(self.hexaPlusBox, 0, 5, 1, 1)
+        
+        self.motorConfigGroup.addButton(self.triBox)
+        self.motorConfigGroup.addButton(self.quadBox)
+        self.motorConfigGroup.addButton(self.quadPlusBox)
+        self.motorConfigGroup.addButton(self.quadY4Box)
+        self.motorConfigGroup.addButton(self.Y6Box)
+        self.motorConfigGroup.addButton(self.hexaXBox)
+        self.motorConfigGroup.addButton(self.hexaPlusBox)
+        
+        self.gridLayout_2.addWidget(self.hexaPlusBox, 0, 6, 1, 1)
         self.slowESC = QtGui.QCheckBox(self.motorConfigFrame)
         self.slowESC.setObjectName(_fromUtf8("slowESC"))
         self.gridLayout_2.addWidget(self.slowESC, 1, 0, 1, 2)
@@ -142,11 +154,9 @@ class Ui_DynamicConfig(object):
 
     def retranslateUi(self, DynamicConfig):
         DynamicConfig.setWindowTitle(QtGui.QApplication.translate("DynamicConfig", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.sBusRecv.setText(QtGui.QApplication.translate("DynamicConfig", "SBus", None, QtGui.QApplication.UnicodeUTF8))
         self.ppmRecv.setText(QtGui.QApplication.translate("DynamicConfig", "PPM", None, QtGui.QApplication.UnicodeUTF8))
         self.normalRecv.setText(QtGui.QApplication.translate("DynamicConfig", "Normal", None, QtGui.QApplication.UnicodeUTF8))
-        self.channelCount.setItemText(0, QtGui.QApplication.translate("DynamicConfig", "6", None, QtGui.QApplication.UnicodeUTF8))
-        self.channelCount.setItemText(1, QtGui.QApplication.translate("DynamicConfig", "8", None, QtGui.QApplication.UnicodeUTF8))
+        self.channelCount.setItemText(0, QtGui.QApplication.translate("DynamicConfig", "5", None, QtGui.QApplication.UnicodeUTF8))
         self.channelCount_2.setText(QtGui.QApplication.translate("DynamicConfig", "Channel Count", None, QtGui.QApplication.UnicodeUTF8))
         self.receiverTitle.setText(QtGui.QApplication.translate("DynamicConfig", "Receiver", None, QtGui.QApplication.UnicodeUTF8))
         self.motorTitle.setText(QtGui.QApplication.translate("DynamicConfig", "Motor Configuration", None, QtGui.QApplication.UnicodeUTF8))
@@ -154,10 +164,17 @@ class Ui_DynamicConfig(object):
         self.triBox.setText(QtGui.QApplication.translate("DynamicConfig", "Tri", None, QtGui.QApplication.UnicodeUTF8))
         self.quadBox.setText(QtGui.QApplication.translate("DynamicConfig", "Quad", None, QtGui.QApplication.UnicodeUTF8))
         self.quadPlusBox.setText(QtGui.QApplication.translate("DynamicConfig", "Quad +", None, QtGui.QApplication.UnicodeUTF8))
+        self.quadY4Box.setText(QtGui.QApplication.translate("DynamicConfig", "Quad Y4", None, QtGui.QApplication.UnicodeUTF8))
         self.Y6Box.setText(QtGui.QApplication.translate("DynamicConfig", "Y6", None, QtGui.QApplication.UnicodeUTF8))
         self.hexaXBox.setText(QtGui.QApplication.translate("DynamicConfig", "Hexa X", None, QtGui.QApplication.UnicodeUTF8))
         self.hexaPlusBox.setText(QtGui.QApplication.translate("DynamicConfig", "Hexa +", None, QtGui.QApplication.UnicodeUTF8))
         self.slowESC.setText(QtGui.QApplication.translate("DynamicConfig", "Slow ESC", None, QtGui.QApplication.UnicodeUTF8))
         self.reverseRotation.setText(QtGui.QApplication.translate("DynamicConfig", "Reverse Motor Rotation", None, QtGui.QApplication.UnicodeUTF8))
 
-#>>>>>>> Changed rcchannelsetup added rccalibration
+        
+        
+        
+        
+        
+        
+        
