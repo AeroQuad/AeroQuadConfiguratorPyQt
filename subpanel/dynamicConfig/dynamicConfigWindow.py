@@ -79,9 +79,9 @@ class Ui_DynamicConfig(object):
         self.motorTitle = QtGui.QLabel(self.frame)
         self.motorTitle.setObjectName(_fromUtf8("motorTitle"))
         self.gridLayout_4.addWidget(self.motorTitle, 3, 0, 1, 1)
-        self.pushButton = QtGui.QPushButton(self.frame)
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.gridLayout_4.addWidget(self.pushButton, 6, 1, 1, 1)
+        self.updateAQButton = QtGui.QPushButton(self.frame)
+        self.updateAQButton.setObjectName(_fromUtf8("updateAQButton"))
+        self.gridLayout_4.addWidget(self.updateAQButton, 6, 1, 1, 1)
         spacerItem6 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_4.addItem(spacerItem6, 0, 0, 1, 1)
         
@@ -122,12 +122,9 @@ class Ui_DynamicConfig(object):
         self.motorConfigGroup.addButton(self.hexaPlusBox)
         
         self.gridLayout_2.addWidget(self.hexaPlusBox, 0, 6, 1, 1)
-        self.slowESC = QtGui.QCheckBox(self.motorConfigFrame)
-        self.slowESC.setObjectName(_fromUtf8("slowESC"))
-        self.gridLayout_2.addWidget(self.slowESC, 1, 0, 1, 2)
         self.reverseRotation = QtGui.QCheckBox(self.motorConfigFrame)
         self.reverseRotation.setObjectName(_fromUtf8("reverseRotation"))
-        self.gridLayout_2.addWidget(self.reverseRotation, 1, 2, 1, 3)
+        self.gridLayout_2.addWidget(self.reverseRotation, 1, 0, 1, 3)
         self.gridLayout_4.addWidget(self.motorConfigFrame, 4, 0, 1, 2)
         spacerItem7 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_4.addItem(spacerItem7, 7, 0, 1, 1)
@@ -160,7 +157,7 @@ class Ui_DynamicConfig(object):
         self.channelCount_2.setText(QtGui.QApplication.translate("DynamicConfig", "Channel Count", None, QtGui.QApplication.UnicodeUTF8))
         self.receiverTitle.setText(QtGui.QApplication.translate("DynamicConfig", "Receiver", None, QtGui.QApplication.UnicodeUTF8))
         self.motorTitle.setText(QtGui.QApplication.translate("DynamicConfig", "Motor Configuration", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton.setText(QtGui.QApplication.translate("DynamicConfig", "Update", None, QtGui.QApplication.UnicodeUTF8))
+        self.updateAQButton.setText(QtGui.QApplication.translate("DynamicConfig", "Update", None, QtGui.QApplication.UnicodeUTF8))
         self.triBox.setText(QtGui.QApplication.translate("DynamicConfig", "Tri", None, QtGui.QApplication.UnicodeUTF8))
         self.quadBox.setText(QtGui.QApplication.translate("DynamicConfig", "Quad", None, QtGui.QApplication.UnicodeUTF8))
         self.quadPlusBox.setText(QtGui.QApplication.translate("DynamicConfig", "Quad +", None, QtGui.QApplication.UnicodeUTF8))
@@ -168,8 +165,7 @@ class Ui_DynamicConfig(object):
         self.Y6Box.setText(QtGui.QApplication.translate("DynamicConfig", "Y6", None, QtGui.QApplication.UnicodeUTF8))
         self.hexaXBox.setText(QtGui.QApplication.translate("DynamicConfig", "Hexa X", None, QtGui.QApplication.UnicodeUTF8))
         self.hexaPlusBox.setText(QtGui.QApplication.translate("DynamicConfig", "Hexa +", None, QtGui.QApplication.UnicodeUTF8))
-        self.slowESC.setText(QtGui.QApplication.translate("DynamicConfig", "Slow ESC", None, QtGui.QApplication.UnicodeUTF8))
-        self.reverseRotation.setText(QtGui.QApplication.translate("DynamicConfig", "Reverse Motor Rotation", None, QtGui.QApplication.UnicodeUTF8))
+        self.reverseRotation.setText(QtGui.QApplication.translate("DynamicConfig", "Reverse Yaw Rotation", None, QtGui.QApplication.UnicodeUTF8))
 
         
         
