@@ -5,6 +5,7 @@ Created on Apr 10, 2013
 '''
 
 class ReceiverConfigType:
+    
     receiver_PPM = '0'
     receiver_PWM = '1'
     receiver_SBUS = '2'

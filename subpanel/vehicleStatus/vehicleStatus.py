@@ -138,7 +138,7 @@ class vehicleStatus(QtGui.QWidget, SubPanel):
             
         self.receiverChannels = 10 
         try:
-            self.receiverChannels = int(self.boardConfiguration["Receiver Channels"])
+            self.receiverChannels = int(self.boardConfiguration["Receiver Nb Channels"])
         except:
             print("Can't read nb receiver channels from vehicle config")
         # Do we need these?
@@ -286,7 +286,7 @@ class vehicleStatus(QtGui.QWidget, SubPanel):
                 
     def updateVehicleStatus(self):
         '''This method continually reads the last telemetry value from the AeroQuad'''
-        if self.comm.isConnected():        
+        if self.comm.isConnected():
             data = self.rawData.split(",")
             motorArmed = int(data[0])
             if motorArmed:

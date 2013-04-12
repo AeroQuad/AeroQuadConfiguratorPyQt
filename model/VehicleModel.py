@@ -19,6 +19,7 @@ class VehicleModel():
          
         self._flightConfigType = FlightConfigType.quadXConfig
         self._receiverType = ReceiverConfigType.receiver_PWM
+        self._reversedYaw = '1'
      
     @classmethod     
     def getInstance(cls):
