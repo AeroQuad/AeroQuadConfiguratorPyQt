@@ -20,13 +20,14 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         self.ui.cancel.setEnabled(False)
         self.ui.cancel.clicked.connect(self.cancel_RC)
         self.ui.start.clicked.connect(self.start_RCsetup)
-        self.amount_channels = 10                                        #The amount of channels
+        self.amount_channels = 5                                        #The amount of channels
         self.last_RCvalue = [0, 0, 0, 0, 0, 0, 0, 0]                    #We store the last RC value in this array
         self.first_loop = 80                                            #We use this to have a stable reading, the first 10 readings we do nothing with the RC values
         self.channel_order = [100, 100, 100, 100, 100, 100, 100, 100]   #This array has the channel order the user wants, we never have a RC with 100 channels
         self.channel_detecting = 0                                      #Here we are going to save on what channel number we are searching at the moment
         self.running = False
         self.channel_offset = 200
+        self.max_amount_channels = 12
     
     def start(self, xmlSubPanel, boardConfiguration):
         self.xmlSubPanel = xmlSubPanel
@@ -36,6 +37,9 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
             self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
         except:
             logging.warning("Can't read amount of channels from boardconfiguration!")
+        
+        #print("Amount of channels: " + str(self.amount_channels))    
+        self.enable_gui_attribute()
     
     def cancel_RC(self):
         self.stop_RCsetup()
@@ -115,13 +119,6 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         if self.running:                                            
             if label_number == 0:
                 self.ui.label.setText('Roll... Detecting')
-                self.ui.label_2.setText('Pitch')
-                self.ui.label_3.setText('Yaw')
-                self.ui.label_4.setText('Throttle')
-                self.ui.label_5.setText('Mode')
-                self.ui.label_6.setText('Aux1')
-                self.ui.label_7.setText('Aux2')
-                self.ui.label_8.setText('Aux3')
             elif label_number == 1:
                 self.ui.label.setText('Roll... Done')    
                 self.ui.label_2.setText('Pitch... Detecting')
@@ -145,6 +142,19 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
                 self.ui.label_8.setText('Aux3... Detecting')
             elif label_number == 8:
                 self.ui.label_8.setText('Aux3.. Done')
+                self.ui.label_9.setText('Aux4... Detecting')
+            elif label_number == 9:
+                self.ui.label_9.setText('Aux4.. Done')
+                self.ui.label_10.setText('Aux5... Detecting')
+            elif label_number == 10:
+                self.ui.label_10.setText('Aux5.. Done')
+                self.ui.label_11.setText('Aux6... Detecting')
+            elif label_number == 11:
+                self.ui.label_11.setText('Aux6.. Done')
+                self.ui.label_12.setText('Aux7... Detecting')
+            elif label_number == 12:
+                self.ui.label_12.setText('Aux7.. Done')
+
         else:
             self.ui.label.setText('Roll')
             self.ui.label_2.setText('Pitch')
@@ -153,5 +163,29 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
             self.ui.label_5.setText('Mode')
             self.ui.label_6.setText('Aux1')
             self.ui.label_7.setText('Aux2')
-            self.ui.label_8.setText('Aux3')                          
-        #return
+            self.ui.label_8.setText('Aux3')
+            self.ui.label_9.setText('Aux4')
+            self.ui.label_10.setText('Aux5')
+            self.ui.label_11.setText('Aux6')
+            self.ui.label_12.setText('Aux7')
+                                      
+    def enable_gui_attribute(self):
+        for i in range(0, self.max_amount_channels):
+            if i > (self.amount_channels - 1) and i == 5:
+                self.ui.label_6.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 6:
+                self.ui.label_7.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 7:
+                self.ui.label_8.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 8:
+                self.ui.label_9.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 9:
+                self.ui.label_10.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 10:
+                self.ui.label_11.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 11:
+                self.ui.label_12.setHidden(True)
+                
+                
+            
+        

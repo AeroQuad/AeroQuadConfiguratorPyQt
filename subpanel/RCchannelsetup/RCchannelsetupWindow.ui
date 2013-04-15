@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>580</x>
-     <y>560</y>
+     <y>500</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -37,7 +37,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -51,14 +51,14 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>70</y>
+     <y>50</y>
      <width>271</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -72,14 +72,14 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>130</y>
+     <y>90</y>
      <width>271</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -93,14 +93,14 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>190</y>
+     <y>130</y>
      <width>271</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -114,14 +114,14 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>250</y>
+     <y>170</y>
      <width>271</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -135,14 +135,14 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>310</y>
+     <y>210</y>
      <width>271</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -156,14 +156,14 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>370</y>
+     <y>250</y>
      <width>271</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -177,14 +177,14 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>430</y>
+     <y>290</y>
      <width>271</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>20</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -211,7 +211,7 @@
    <property name="geometry">
     <rect>
      <x>470</x>
-     <y>560</y>
+     <y>500</y>
      <width>100</width>
      <height>31</height>
     </rect>
@@ -224,13 +224,97 @@
    <property name="geometry">
     <rect>
      <x>690</x>
-     <y>560</y>
+     <y>500</y>
      <width>101</width>
      <height>31</height>
     </rect>
    </property>
    <property name="text">
     <string>Next</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>330</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Aux4</string>
+   </property>
+   <property name="scaledContents">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>370</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Aux5</string>
+   </property>
+   <property name="scaledContents">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>410</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Aux6</string>
+   </property>
+   <property name="scaledContents">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_12">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>450</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Aux7</string>
+   </property>
+   <property name="scaledContents">
+    <bool>false</bool>
    </property>
   </widget>
  </widget>
