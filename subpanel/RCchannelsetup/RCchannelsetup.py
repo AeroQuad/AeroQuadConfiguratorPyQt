@@ -20,11 +20,11 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         self.ui.cancel.setEnabled(False)
         self.ui.cancel.clicked.connect(self.cancel_RC)
         self.ui.start.clicked.connect(self.start_RCsetup)
-        self.amount_channels = 5                                        #The amount of channels
-        self.last_RCvalue = [0, 0, 0, 0, 0, 0, 0, 0]                    #We store the last RC value in this array
-        self.first_loop = 80                                            #We use this to have a stable reading, the first 10 readings we do nothing with the RC values
-        self.channel_order = [100, 100, 100, 100, 100, 100, 100, 100]   #This array has the channel order the user wants, we never have a RC with 100 channels
-        self.channel_detecting = 0                                      #Here we are going to save on what channel number we are searching at the moment
+        self.amount_channels = 5                                                            #The amount of channels
+        self.last_RCvalue = [0, 0, 0, 0, 0, 0, 0, 0]                                        #We store the last RC value in this array
+        self.first_loop = 80                                                                #We use this to have a stable reading, the first 10 readings we do nothing with the RC values
+        self.channelOrderMap = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]   #This array has the channel order the user wants, we never have a RC with 100 channels
+        self.channel_detecting = 0                                                          #Here we are going to save on what channel number we are searching at the moment
         self.running = False
         self.channel_offset = 200
         self.max_amount_channels = 12
@@ -34,7 +34,7 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         self.boardConfiguration = boardConfiguration
         
         try:
-            self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
+            self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
         except:
             logging.warning("Can't read amount of channels from boardconfiguration!")
         
@@ -60,29 +60,29 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
     def stop_RCsetup(self): #We are stopping the setup procedure, reset values send stop command to the quad etc.
         self.comm.write("x")
         self.comm.flushResponse()
-        print("Roll, Pitch, Yaw, throttle, Mode, Aux1, Aux2, Aux3")
-        print(self.channel_order)
+#        print("Roll, Pitch, Yaw, throttle, Mode, Aux1, Aux2, Aux3")
+#        print(self.channelOrderMap)
         self.channel_detecting = 0;
         self.running = False
         self.change_label(self.channel_detecting)
-        self.channel_order = [100, 100, 100, 100, 100, 100, 100, 100]
+#        self.channelOrderMap = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
         self.ui.start.setEnabled(True)
         self.ui.cancel.setEnabled(False)
         self.first_loop = 80
-        print('stopped')
+        self.sendMappedChannel()
         #return
     
-    def save_channel(self, channel_number):                                 #Save the channel id to the channel_order array need it later to send it to the quad
+    def save_channel(self, channel_number):                                 #Save the channel id to the channelOrderMap array need it later to send it to the quad
         exist = False
         for i in range(0,self.amount_channels):
-            if int(self.channel_order[i]) == int(channel_number):               #Look if we want to save a channel number that already has been saved
-                print('Already saved')
+            if int(self.channelOrderMap[i]) == int(channel_number):               #Look if we want to save a channel number that already has been saved
+#                print('Already saved')
                 exist = True
 
         if not exist:                                                          
-            self.channel_order[self.channel_detecting] = channel_number               #If the channel number has not been saved yet save it
+            self.channelOrderMap[self.channel_detecting] = channel_number               #If the channel number has not been saved yet save it
             self.channel_detecting += 1
-            print('Channel saved')
+#            print('Channel saved')
             
         #return
     
@@ -185,7 +185,24 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
                 self.ui.label_11.setHidden(True)
             elif i > (self.amount_channels - 1) and i == 11:
                 self.ui.label_12.setHidden(True)
+              
+    def sendMappedChannel(self):
+        command = "R "
+        for i in range(0, self.amount_channels):
+            command += str(self.channelOrderMap[i])
+            command += ";"
+
+        print(command)
+        self.comm.write(command)
                 
-                
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
         
