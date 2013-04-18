@@ -187,6 +187,7 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
                 self.ui.label_12.setHidden(True)
               
     def sendMappedChannel(self):
+        self.comm.write("X");
         command = "R "
         for i in range(0, self.amount_channels):
             command += str(self.channelOrderMap[i])
