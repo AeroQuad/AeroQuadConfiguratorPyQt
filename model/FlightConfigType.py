@@ -6,16 +6,16 @@ Created on Apr 10, 2013
 
 class FlightConfigType:
   
-    quadXConfig = '0'
-    quadPlusConfig = '1'
-    hexPlusConfig = '2'
-    hexXConfig = '3'
-    triConfig = '4'
-    quadY4Config = '5'
-    hexY6Config = '6'
-    octoX8Config = '7'
-    octoPlusConfig = '8'
-    octoXConfig = '9'
+    QUAD_X = '0'
+    QUAD_PLUS = '1'
+    HEX_PLUS = '2'
+    HEX_X = '3'
+    TRI = '4'
+    QUAD_Y4 = '5'
+    HEX_Y6 = '6'
+    OCTO_X8 = '7'
+    OCTO_PLUS = '8'
+    OCTO_X = '9'
 
 
 

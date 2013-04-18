@@ -17,9 +17,9 @@ class VehicleModel():
         if self.INSTANCE is not None:
             raise ValueError("An instantiation already exists!")
          
-        self._flightConfigType = FlightConfigType.quadXConfig
-        self._receiverType = ReceiverConfigType.receiver_PWM
-        self._reversedYaw = '1'
+        self._flight_config_type = FlightConfigType.QUAD_X
+        self._receiver_type = ReceiverConfigType.RECEIVER_PWM
+        self._reversed_yaw = '1'
      
     @classmethod     
     def getInstance(cls):

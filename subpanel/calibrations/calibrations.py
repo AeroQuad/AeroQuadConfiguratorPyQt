@@ -10,11 +10,7 @@ from subpanel.calibrations.calibrationWindow import Ui_CalibrationWizard
 from subpanel.calibrations.sensorCalibration import SensorWizard
 
 class Calibrations(QtGui.QWidget, SubPanel):
-    '''This will show a wizard interface to the user to perform required AeroQuad calibrations
-    '''
     def __init__(self):
-        '''This initializes the calibration subpanel
-        '''
         QtGui.QWidget.__init__(self)
         SubPanel.__init__(self)
         self.ui = Ui_CalibrationWizard()
@@ -26,4 +22,3 @@ class Calibrations(QtGui.QWidget, SubPanel):
         self.wiz.show()
         self.wiz.exec_()
         
-#>>>>>>> Changed rcchannelsetup added rccalibration

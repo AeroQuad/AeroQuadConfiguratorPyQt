@@ -21,5 +21,3 @@ class Ui_CalibrationWizard(object):
     def retranslateUi(self, CalibrationWizard):
         CalibrationWizard.setWindowTitle(QtGui.QApplication.translate("CalibrationWizard", "Calibration Wizard", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("CalibrationWizard", "Sensor Calibration", None, QtGui.QApplication.UnicodeUTF8))
-
-#>>>>>>> Changed rcchannelsetup added rccalibration

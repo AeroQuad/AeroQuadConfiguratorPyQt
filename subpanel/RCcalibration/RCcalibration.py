@@ -20,7 +20,6 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         self.ui.start.setEnabled(True)
         self.ui.cancel.setEnabled(False)
         
-        # Setup left transmitter stick
         leftStickScene = QtGui.QGraphicsScene()
         leftStickBackground = QtGui.QPixmap("./resources/TxDial.png")
         leftStickItem = QtGui.QGraphicsPixmapItem(leftStickBackground)
@@ -31,7 +30,6 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         leftStickScene.addItem(self.leftStick)
         self.ui.leftTransmitter.setScene(leftStickScene)
         
-        # Setup right transmitter stick
         rightStickScene = QtGui.QGraphicsScene()
         rightStickBackground = QtGui.QPixmap("./resources/TxDial.png")
         rightStickItem = QtGui.QGraphicsPixmapItem(rightStickBackground)
@@ -43,9 +41,7 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         self.ui.rightTransmitter.setScene(rightStickScene)   
         
         self.running = False
-        
         self.amount_channels = 12
-        
         self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
         self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
         
@@ -55,23 +51,17 @@ class RCcalibration(QtGui.QWidget, SubPanel):
     def start(self, xmlSubPanel, boardConfiguration):
         self.xmlSubPanel = xmlSubPanel
         self.boardConfiguration = boardConfiguration
-        
         try:
             self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
         except:
             logging.warning("Can't read amount of channels from boardconfiguration!")
-        
 
     def start_RCcalibration(self):
-        if self.running:    #we are already running and the user want to finish the calibration
-                
-                self.ui.start.setText("Start")
-                #do some math to calculate the offset and slope
-                self.cancel_RCcalibration() #we can stop the calibration it's done
-                
-                self.timer.stop()
-                
-                self.sendCalibrationValue()
+        if self.running:    
+            self.ui.start.setText("Start")
+            self.cancel_RCcalibration() #we can stop the calibration it's done
+            self.timer.stop()
+            self.send_calibration_value()
         
         elif not self.running:
             if self.comm.isConnected() == True:
@@ -83,46 +73,34 @@ class RCcalibration(QtGui.QWidget, SubPanel):
                 self.startCommThread()
                 self.running = True
                 
-                #self.ui.start.setEnabled(False)
                 self.ui.cancel.setEnabled(True)
                 self.ui.next.setEnabled(False)
                 
                 self.ui.start.setText("Finish")
                 
-                #    pitch, roll, yaw, throttle, mode, aux1, aux2, aux3
                 self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
                 self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
-            
-                
                 
     def cancel_RCcalibration(self):
         self.comm.write("x")
         self.comm.flushResponse()
         self.running = False
-        #self.ui.start.setEnabled(True)
         self.ui.cancel.setEnabled(False)
         self.ui.next.setEnabled(True)
-                
         
     def readContinuousData(self):
-        '''This method continually reads telemetry from the AeroQuad'''
         isConnected = self.comm.isConnected()
         if isConnected and not self.commData.empty():
-            
             string = self.commData.get()
             string_out = string.split(',')
-            
             if self.running:
                 for i in range(0, self.amount_channels):
-                    if int(string_out[i]) < self.RCmin[i]:  #lets look if the channel is lower then we have saved and if save it
+                    if int(string_out[i]) < self.RCmin[i]:  
                         self.RCmin[i] = int(string_out[i])
-                        print('Channel id lower: ' + str(i))
-                        
-                    if int(string_out[i]) > self.RCmax[i]:  #lets look if the channel is higher then we have saved and if save it
+                    if int(string_out[i]) > self.RCmax[i]:  
                         self.RCmax[i] = int(string_out[i])
-                        print('Channel id higher: ' + str(i))
+                    self.update_gui(i, string_out[i])                      
                     
-                    self.update_gui(i, string_out[i])                      #we want the gui to update send the channel number we are working on
             self.updateLeftStick(int(string_out[3]), int(string_out[2]))
             self.updateRightStick(int(string_out[0]), int(string_out[1]))
                                        
@@ -149,13 +127,7 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         pitchPosition = self.scale(pitch, (1000.0, 2000.0), (58.0, -57.0))
         self.rightStick.setPos(rollPosition, pitchPosition)
         
-    def scale(self, val, src, dst):
-        '''Scale the given value from the scale of src to the scale of dst.'''
-        return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
-        
-        
-    def sendCalibrationValue(self):
-        
+    def send_calibration_value(self):
         self.comm.write("X");
         command = "G "
         for i in range(0, self.amount_channels):
@@ -165,19 +137,4 @@ class RCcalibration(QtGui.QWidget, SubPanel):
             command += ";"
             
         self.comm.write(command)    
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
