@@ -44,12 +44,10 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         
         self.running = False
         
-        self.amount_channels = 10
+        self.amount_channels = 12
         
-        self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
-        self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
-        self.RCOffset = [0,0,0,0,0,0,0,0]
-        self.RCSlope = [0,0,0,0,0,0,0,0]
+        self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
+        self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
         
         self.ui.start.clicked.connect(self.start_RCcalibration)
         self.ui.cancel.clicked.connect(self.cancel_RCcalibration)
@@ -59,28 +57,25 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         self.boardConfiguration = boardConfiguration
         
         try:
-            self.amount_channels = int(self.boardConfiguration["Receiver Channels"])
+            self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
         except:
             logging.warning("Can't read amount of channels from boardconfiguration!")
         
 
     def start_RCcalibration(self):
         if self.running:    #we are already running and the user want to finish the calibration
-                print("Finish")
-                
-                for i in range(0, self.amount_channels):
-                    self.RCOffset[i] = ((2000*self.RCmin[i]) - (1000*self.RCmax[i]))/(self.RCmin[i]-self.RCmax[i])
-                    self.RCSlope[i] = ((1000-self.RCOffset[i])/self.RCmin[i])
-                
-                print("Offset: " + str(self.RCOffset))
-                print("Slope: " + str(self.RCSlope))
                 
                 self.ui.start.setText("Start")
                 #do some math to calculate the offset and slope
                 self.cancel_RCcalibration() #we can stop the calibration it's done
+                
+                self.timer.stop()
+                
+                self.sendCalibrationValue()
         
         elif not self.running:
             if self.comm.isConnected() == True:
+                self.comm.write("H")
                 self.comm.write("t")
                 self.timer = QtCore.QTimer()
                 self.timer.timeout.connect(self.readContinuousData)
@@ -157,5 +152,32 @@ class RCcalibration(QtGui.QWidget, SubPanel):
     def scale(self, val, src, dst):
         '''Scale the given value from the scale of src to the scale of dst.'''
         return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
+        
+        
+    def sendCalibrationValue(self):
+        
+        self.comm.write("X");
+        command = "G "
+        for i in range(0, self.amount_channels):
+            command += str(self.RCmin[i])
+            command += ";"
+            command += str(self.RCmax[i])
+            command += ";"
+            
+        self.comm.write(command)    
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
