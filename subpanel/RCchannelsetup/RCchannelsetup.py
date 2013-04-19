@@ -94,10 +94,7 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
                             if (int(string_out[i]) - int(self.last_RCvalue[i])) < -self.channel_offset:    
                                 self.save_channel(i)
                             
-                        self.last_RCvalue[i] = string_out[i]                                                   
-                         
-                self.ui.commLog.append(self.timeStamp() + " <- " + self.commData.get())
-                self.ui.commLog.ensureCursorVisible()
+                        self.last_RCvalue[i] = string_out[i]
 
     def change_label(self, label_number): 
         if self.running:                                            

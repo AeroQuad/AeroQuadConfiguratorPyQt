@@ -1,7 +1,7 @@
 <Configurator>
 
     <Settings>
-        <DefaultComPort>COM6</DefaultComPort>
+        <DefaultComPort>COM1</DefaultComPort>
         <BootUpDelay>5.0</BootUpDelay>
         <CommTimeOut>1.0</CommTimeOut>
         <DefaultBaudRate>115200</DefaultBaudRate>
@@ -14,7 +14,7 @@
     
     <Subpanels>
     
-        <Subpanel Name="RC channel assigment">
+        <Subpanel Name="RC channel assignment">
           <Requirement>All</Requirement>
           <Path>RCchannelsetup.RCchannelsetup</Path>
           <Class>RCchannelsetup</Class>

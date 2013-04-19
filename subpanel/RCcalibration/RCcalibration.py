@@ -44,6 +44,7 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         self.amount_channels = 12
         self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
         self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
+        self.max_amount_channels = 12
         
         self.ui.start.clicked.connect(self.start_RCcalibration)
         self.ui.cancel.clicked.connect(self.cancel_RCcalibration)
@@ -55,6 +56,7 @@ class RCcalibration(QtGui.QWidget, SubPanel):
             self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
         except:
             logging.warning("Can't read amount of channels from boardconfiguration!")
+        self.enable_gui_attribute()
 
     def start_RCcalibration(self):
         if self.running:    
@@ -103,19 +105,24 @@ class RCcalibration(QtGui.QWidget, SubPanel):
                     
             self.updateLeftStick(int(string_out[3]), int(string_out[2]))
             self.updateRightStick(int(string_out[0]), int(string_out[1]))
-                                       
-            self.ui.commLog.append(self.timeStamp() + " <- " + self.commData.get())
-            self.ui.commLog.ensureCursorVisible()
             
     def update_gui(self, channel_number, value):
-        if channel_number == 0:
+        if channel_number == 4:
             self.ui.progressBar_RCmode.setValue(int(value))
-        if channel_number == 1:
+        if channel_number == 5:
             self.ui.progressBar_RCAux1.setValue(int(value))
-        if channel_number == 2:
+        if channel_number == 6:
             self.ui.progressBar_RCAux2.setValue(int(value))
-        if channel_number == 3:
+        if channel_number == 7:
             self.ui.progressBar_RCAux3.setValue(int(value))
+        if channel_number == 8:
+            self.ui.progressBar_RCAux4.setValue(int(value))
+        if channel_number == 9:
+            self.ui.progressBar_RCAux5.setValue(int(value))
+        if channel_number == 10:
+            self.ui.progressBar_RCAux6.setValue(int(value))
+        if channel_number == 11:
+            self.ui.progressBar_RCAux7.setValue(int(value))
     
     def updateLeftStick(self, throttle, yaw):
         throttlePosition = self.scale(throttle, (1000.0, 2000.0), (58.0, -57.0))
@@ -126,7 +133,31 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         rollPosition = self.scale(roll, (1000.0, 2000.0), (-57.0, 55.0))
         pitchPosition = self.scale(pitch, (1000.0, 2000.0), (58.0, -57.0))
         self.rightStick.setPos(rollPosition, pitchPosition)
-        
+    
+    def enable_gui_attribute(self):
+        for i in range(0, self.max_amount_channels):
+            if i > (self.amount_channels - 1) and i == 5:
+                self.ui.label_aux1.setHidden(True)
+                self.ui.progressBar_RCAux1.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 6:
+                self.ui.label_aux2.setHidden(True)
+                self.ui.progressBar_RCAux2.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 7:
+                self.ui.label_aux3.setHidden(True)
+                self.ui.progressBar_RCAux3.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 8:
+                self.ui.label_aux4.setHidden(True)
+                self.ui.progressBar_RCAux4.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 9:
+                self.ui.label_aux5.setHidden(True)
+                self.ui.progressBar_RCAux5.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 10:
+                self.ui.label_aux6.setHidden(True)
+                self.ui.progressBar_RCAux6.setHidden(True)
+            elif i > (self.amount_channels - 1) and i == 11:
+                self.ui.label_aux7.setHidden(True)
+                self.ui.progressBar_RCAux7.setHidden(True)
+    
     def send_calibration_value(self):
         self.comm.write("X");
         command = "G "
