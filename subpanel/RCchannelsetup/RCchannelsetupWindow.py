@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'RCchannelsetupWindow.ui'
 #
-# Created: Mon Apr 15 18:02:45 2013
+# Created: Fri Apr 19 13:06:58 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -139,6 +139,15 @@ class Ui_Form(object):
         self.label_6.setText(_translate("Form", "Aux1", None))
         self.label_7.setText(_translate("Form", "Aux2", None))
         self.label_8.setText(_translate("Form", "Aux3", None))
+        self.commLog.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">1) Press start to start the RC channel assignment.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">2) When detecting a channel move </span><span style=\" font-size:12pt; font-weight:600; text-decoration: underline;\">one</span><span style=\" font-size:12pt;\"> channel at the time the program automaticly moves to the next channel.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">3) When all channels are assigned the procedure automaticly stops.</span></p></body></html>", None))
         self.start.setText(_translate("Form", "Start", None))
         self.next.setText(_translate("Form", "Next", None))
         self.label_9.setText(_translate("Form", "Aux4", None))
