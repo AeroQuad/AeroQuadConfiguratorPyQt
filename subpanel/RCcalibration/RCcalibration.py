@@ -134,6 +134,9 @@ class RCcalibration(QtGui.QWidget, SubPanel):
         pitchPosition = self.scale(pitch, (1000.0, 2000.0), (58.0, -57.0))
         self.rightStick.setPos(rollPosition, pitchPosition)
     
+    def scale(self, val, src, dst):
+        return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
+    
     def enable_gui_attribute(self):
         for i in range(0, self.max_amount_channels):
             if i > (self.amount_channels - 1) and i == 5:
