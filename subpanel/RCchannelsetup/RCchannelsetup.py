@@ -170,7 +170,7 @@ class RCchannelsetup(QtGui.QWidget, SubPanel):
         self.comm.write("X");
         command = "R "
         for i in range(0, self.amount_channels):
-            command += self.channel_order_map[i]
+            command += str(self.channel_order_map[i])
             command += ";"
 
         self.comm.write(command)
