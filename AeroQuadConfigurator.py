@@ -30,7 +30,7 @@ class AQMain(QtGui.QMainWindow):
         
         #logging
         logging.basicConfig(filename='logfile.log',level=logging.DEBUG)
-        logging.basicConfig(format='%(asctime)s %(message)s')
+        logging.basicConfig(format='%(asctime)s %(filename)s %(lineno)d %(message)s')
         
         # TODO: figure out way to configure for different comm types (TCP, MAVLINK, etc) 
         self.comm = AQSerial()

@@ -13,6 +13,11 @@
     </Settings>
     
     <Subpanels>
+    	<Subpanel Name="Accel calibration">
+          <Requirement>All</Requirement>
+          <Path>accel.accel</Path>
+          <Class>accel</Class>
+        </Subpanel>
     
         <Subpanel Name="RC channel assignment">
           <Requirement>All</Requirement>
