@@ -5,16 +5,16 @@ Created on Feb 24, 2013
 '''
    
 from PyQt4 import QtGui, QtCore
-from subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from subpanel.menu.menuWindow import Ui_Menu
 from utilities.specialwidgets.PictureButton import PictureButton
 
 
-class menu(QtGui.QWidget, SubPanel):
+class menu(QtGui.QWidget, BasePanelController):
     
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
         self.ui = Ui_Menu()
         self.ui.setupUi(self)
         self.buttonList = []

@@ -5,7 +5,7 @@ Created on Dec 6, 2012
 '''
 
 from PyQt4 import QtCore, QtGui
-from subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 
 from utilities.specialwidgets.BarGauge import BarGauge
 import math
@@ -15,10 +15,10 @@ from ui.subpanel.vehicleoverallstatus.VehicleOverallStatusPanel import VehicleOv
 
 
 
-class VehicleOverallStatusController(QtGui.QWidget, SubPanel):
+class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
         self.ui = VehicleOverallStatusPanel()
         self.ui.setupUi(self)
         self.channelCount = 0

@@ -6,13 +6,13 @@ Created on Nov 28, 2012
 
 from PyQt4 import QtCore, QtGui
 import time
-from subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.pidparametersupdater.PIDParametersUpdaterPanel import PIDParametersUpdaterPanel
 
-class PIDParametersUpdaterController(QtGui.QWidget, SubPanel):
+class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
         self.ui = PIDParametersUpdaterPanel()
         self.ui.setupUi(self)
         self.ui.parameterTable.verticalHeader().setVisible(False)
