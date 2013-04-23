@@ -6,17 +6,17 @@ Created on Mar 27, 2013
 
 import logging
 from PyQt4 import QtCore, QtGui
-from subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from model.VehicleModel import VehicleModel
 from model.FlightConfigType import FlightConfigType
 from model.ReceiverConfigType import ReceiverConfigType
 from ui.subpanel.vehicledynamicconfig.VehicleDynamicConfigPanel import VehicleDynamicConfigPanel
 
-class VehicleDynamicConfigController(QtGui.QWidget, SubPanel):
+class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
     
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
         self.ui = VehicleDynamicConfigPanel()
         self.ui.setupUi(self)
         self.ui._updateAQButton.clicked.connect(self.sendMiniConfig)

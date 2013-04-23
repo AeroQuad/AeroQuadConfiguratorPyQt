@@ -5,14 +5,14 @@ Created on Dec 5, 2012
 '''
 
 from PyQt4 import QtCore, QtGui
-from subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.vehicleconfiguration.VehicleConfigurationPanel import VehicleConfigurationPanel
 
 
-class VehicleConfigurationController(QtGui.QWidget, SubPanel):
+class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
         self.ui = VehicleConfigurationPanel()
         self.ui.setupUi(self)
         self.image = QtGui.QPixmap("./resources/Quad+.png")

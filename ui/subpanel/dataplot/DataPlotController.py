@@ -6,15 +6,15 @@ Created on Nov 21, 2012
 
 from PyQt4 import QtGui, QtCore
 
-from subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from pyqtgraph.graphicsItems.PlotCurveItem import PlotCurveItem
 from ui.subpanel.dataplot.DataPlotPanel import DataPlotPanel
 
 
-class DataPlotController(QtGui.QWidget, SubPanel):
+class DataPlotController(QtGui.QWidget, BasePanelController):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
 
         self.ui = DataPlotPanel()
         self.ui.setupUi(self)

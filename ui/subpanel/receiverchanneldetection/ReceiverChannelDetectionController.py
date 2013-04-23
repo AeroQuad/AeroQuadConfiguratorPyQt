@@ -6,15 +6,15 @@ Created on 25 mrt. 2013
 
 import logging
 from PyQt4 import QtCore, QtGui
-from ui.subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.receiverchanneldetection.ReceiverChannelDetectionPanel import ReceiverChannelDetectionPanel
 
 
-class ReceiverChannelDetectionController(QtGui.QWidget, SubPanel):
+class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
 
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
         self.ui = ReceiverChannelDetectionPanel()
         self.ui.setupUi(self)
         self.ui.start.setEnabled(True)

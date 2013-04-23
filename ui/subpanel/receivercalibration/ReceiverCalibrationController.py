@@ -6,15 +6,15 @@ Created on 27 mrt. 2013
 
 import logging
 from PyQt4 import QtCore, QtGui
-from subpanel.SubPanel import SubPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.receivercalibration.ReceiverCalibrationPanel import ReceiverCalibrationPanel
 
 
-class ReceiverCalibrationController(QtGui.QWidget, SubPanel):
+class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
 
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        SubPanel.__init__(self)
+        BasePanelController.__init__(self)
         self.ui = ReceiverCalibrationPanel()
         self.ui.setupUi(self)
         self.ui.start.setEnabled(True)
