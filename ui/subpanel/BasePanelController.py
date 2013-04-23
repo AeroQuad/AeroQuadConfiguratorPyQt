@@ -15,7 +15,6 @@ class BasePanelController(object):
     '''
 
     def __init__(self):
-        self.connected = False
         self.commState = False
         self.timer = None
         self.xml = None

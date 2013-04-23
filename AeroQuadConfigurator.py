@@ -10,7 +10,7 @@ import logging
 from PyQt4 import QtCore, QtGui
 from serial import SerialException
 from ui.MainWindow import MainWindow
-from communication.serialCom import AQSerial
+from communication.SerialCommunicator import SerialCommunicator
 from ui.SplashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
@@ -33,7 +33,7 @@ class AQMain(QtGui.QMainWindow):
         logging.basicConfig(format='%(asctime)s %(filename)s %(lineno)d %(message)s')
         
         # TODO: figure out way to configure for different comm types (TCP, MAVLINK, etc) 
-        self.comm = AQSerial()
+        self.comm = SerialCommunicator()
                 
         # Default main window conditions
         self.ui.buttonDisconnect.setEnabled(False)

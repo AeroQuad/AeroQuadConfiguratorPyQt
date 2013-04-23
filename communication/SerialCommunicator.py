@@ -8,7 +8,7 @@ import serial
 import time
 from serial.tools import list_ports
 
-class AQSerial(object):
+class SerialCommunicator(object):
     '''
     This handles all serial communication to the AeroQuad board
     '''
