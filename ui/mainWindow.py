@@ -14,7 +14,7 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class Ui_MainWindow(object):
+class MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(800, 400)
@@ -137,4 +137,3 @@ class Ui_MainWindow(object):
         self.actionBootUpDelay.setText(QtGui.QApplication.translate("MainWindow", "Boot Up Delay...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionCommTimeout.setText(QtGui.QApplication.translate("MainWindow", "Comm Timeout...", None, QtGui.QApplication.UnicodeUTF8))
 
-import AQresources_rc

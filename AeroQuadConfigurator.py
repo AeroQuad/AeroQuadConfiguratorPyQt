@@ -9,9 +9,9 @@ import logging
 
 from PyQt4 import QtCore, QtGui
 from serial import SerialException
-from ui.mainWindow import Ui_MainWindow
+from ui.MainWindow import MainWindow
 from communication.serialCom import AQSerial
-from ui.splashScreen import Ui_splashScreen
+from ui.SplashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
@@ -23,7 +23,7 @@ except AttributeError:
 class AQMain(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
-        self.ui = Ui_MainWindow()
+        self.ui = MainWindow()
         self.ui.setupUi(self)
         background = xml.find("./Settings/Background").text
         self.ui.subPanel.setStyleSheet("QStackedWidget{background-image: url(" + background + ");}")
@@ -55,7 +55,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.setCurrentIndex(commIndex)
         
         # Load splash screen
-        splash = Ui_splashScreen()
+        splash = SplashScreen()
         splash.setupUi(splash)
         self.ui.subPanel.addWidget(splash)
         

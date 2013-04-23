@@ -14,7 +14,7 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class Ui_splashScreen(QtGui.QWidget):
+class SplashScreen(QtGui.QWidget):
     def setupUi(self, splashScreen):
         splashScreen.setObjectName(_fromUtf8("splashScreen"))
         splashScreen.resize(818, 600)
@@ -35,4 +35,3 @@ class Ui_splashScreen(QtGui.QWidget):
     def retranslateUi(self, splashScreen):
         splashScreen.setWindowTitle(QtGui.QApplication.translate("splashScreen", "Form", None, QtGui.QApplication.UnicodeUTF8))
 
-import AQresources_rc
