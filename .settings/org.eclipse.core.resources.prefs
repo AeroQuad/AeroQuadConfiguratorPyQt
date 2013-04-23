@@ -6,6 +6,7 @@ encoding//documentation/conf.py=utf-8
 encoding//ui/AQresources_rc.py=utf-8
 encoding//ui/MainWindow.py=utf-8
 encoding//ui/SplashScreen.py=utf-8
+encoding//ui/mainWindow.py=utf-8
 encoding//ui/subpanel/commmonitor/CommMonitorController.py=utf-8
 encoding//ui/subpanel/commmonitor/CommMonitorPanel.py=utf-8
 encoding//ui/subpanel/dataplot/DataPlotController.py=utf-8

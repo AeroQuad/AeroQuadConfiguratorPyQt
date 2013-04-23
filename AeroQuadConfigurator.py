@@ -9,9 +9,9 @@ import logging
 
 from PyQt4 import QtCore, QtGui
 from serial import SerialException
-from ui.MainWindow import MainWindow
+from ui.mainWindow import MainWindow
 from communication.SerialCommunicator import SerialCommunicator
-from ui.SplashScreen import SplashScreen
+from ui.splashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
