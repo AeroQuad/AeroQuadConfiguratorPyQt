@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'vehicleConfigurationWindow.ui'
+# Form implementation generated from reading ui file 'VehicleConfigurationPanel.ui'
 #
-# Created: Sun Mar 03 23:27:20 2013
-#      by: PyQt4 UI code generator 4.9.5
+# Created: Wed Apr 24 17:30:10 2013
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,16 +12,25 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
 
-class VehicleConfigurationPanel(object):
-    def setupUi(self, vehicleConfiguration):
-        vehicleConfiguration.setObjectName(_fromUtf8("VehicleConfigurationPanel"))
-        vehicleConfiguration.resize(589, 304)
-        vehicleConfiguration.setStyleSheet(_fromUtf8(""))
-        self.gridLayout = QtGui.QGridLayout(vehicleConfiguration)
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+class Ui_VehicleConfigurationPanel(object):
+    def setupUi(self, VehicleConfigurationPanel):
+        VehicleConfigurationPanel.setObjectName(_fromUtf8("VehicleConfigurationPanel"))
+        VehicleConfigurationPanel.resize(589, 304)
+        VehicleConfigurationPanel.setStyleSheet(_fromUtf8(""))
+        self.gridLayout = QtGui.QGridLayout(VehicleConfigurationPanel)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.configView = QtGui.QLabel(vehicleConfiguration)
+        self.configView = QtGui.QLabel(VehicleConfigurationPanel)
         self.configView.setMinimumSize(QtCore.QSize(0, 0))
         self.configView.setStyleSheet(_fromUtf8("color: rgba(255, 255, 255, 0);"))
         self.configView.setText(_fromUtf8(""))
@@ -29,7 +38,7 @@ class VehicleConfigurationPanel(object):
         self.gridLayout.addWidget(self.configView, 0, 0, 1, 3)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 1, 0, 1, 1)
-        self.updateButton = QtGui.QPushButton(vehicleConfiguration)
+        self.updateButton = QtGui.QPushButton(VehicleConfigurationPanel)
         self.updateButton.setObjectName(_fromUtf8("updateButton"))
         self.gridLayout.addWidget(self.updateButton, 1, 4, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -38,7 +47,7 @@ class VehicleConfigurationPanel(object):
         self.gridLayout.addItem(spacerItem2, 1, 2, 1, 1)
         spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem3, 1, 3, 1, 1)
-        self.configSpecs = QtGui.QTableWidget(vehicleConfiguration)
+        self.configSpecs = QtGui.QTableWidget(VehicleConfigurationPanel)
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -66,10 +75,10 @@ class VehicleConfigurationPanel(object):
         self.configSpecs.verticalHeader().setStretchLastSection(False)
         self.gridLayout.addWidget(self.configSpecs, 0, 3, 1, 2)
 
-        self.retranslateUi(vehicleConfiguration)
-        QtCore.QMetaObject.connectSlotsByName(vehicleConfiguration)
+        self.retranslateUi(VehicleConfigurationPanel)
+        QtCore.QMetaObject.connectSlotsByName(VehicleConfigurationPanel)
 
-    def retranslateUi(self, vehicleConfiguration):
-        vehicleConfiguration.setWindowTitle(QtGui.QApplication.translate("vehicleConfiguration", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.updateButton.setText(QtGui.QApplication.translate("vehicleConfiguration", "Update", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, VehicleConfigurationPanel):
+        VehicleConfigurationPanel.setWindowTitle(_translate("VehicleConfigurationPanel", "Form", None))
+        self.updateButton.setText(_translate("VehicleConfigurationPanel", "Update", None))
 

@@ -1,14 +1,32 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'VehicleDynamicConfigPanel.ui'
+#
+# Created: Wed Apr 24 17:56:37 2013
+#      by: PyQt4 UI code generator 4.9.6
+#
+# WARNING! All changes made in this file will be lost!
+
 from PyQt4 import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
 
-class VehicleDynamicConfigPanel(object):
-    def setupUi(self, DynamicConfig):
-        DynamicConfig.setObjectName(_fromUtf8("DynamicConfig"))
-        DynamicConfig.resize(565, 413)
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+class Ui_VehicleDynamicConfigPanel(object):
+    def setupUi(self, VehicleDynamicConfigPanel):
+        VehicleDynamicConfigPanel.setObjectName(_fromUtf8("VehicleDynamicConfigPanel"))
+        VehicleDynamicConfigPanel.resize(614, 413)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -19,8 +37,8 @@ class VehicleDynamicConfigPanel(object):
         brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
-        DynamicConfig.setPalette(palette)
-        self.gridLayout = QtGui.QGridLayout(DynamicConfig)
+        VehicleDynamicConfigPanel.setPalette(palette)
+        self.gridLayout = QtGui.QGridLayout(VehicleDynamicConfigPanel)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem, 3, 2, 1, 1)
@@ -30,32 +48,41 @@ class VehicleDynamicConfigPanel(object):
         self.gridLayout.addItem(spacerItem2, 4, 2, 1, 3)
         spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem3, 3, 4, 1, 1)
-        self.frame = QtGui.QFrame(DynamicConfig)
+        self.frame = QtGui.QFrame(VehicleDynamicConfigPanel)
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName(_fromUtf8("frame"))
         self.gridLayout_4 = QtGui.QGridLayout(self.frame)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
+        self.receiverTitle = QtGui.QLabel(self.frame)
+        self.receiverTitle.setObjectName(_fromUtf8("receiverTitle"))
+        self.gridLayout_4.addWidget(self.receiverTitle, 1, 0, 1, 1)
+        self.motorTitle = QtGui.QLabel(self.frame)
+        self.motorTitle.setObjectName(_fromUtf8("motorTitle"))
+        self.gridLayout_4.addWidget(self.motorTitle, 3, 0, 1, 1)
+        spacerItem4 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_4.addItem(spacerItem4, 7, 0, 1, 1)
+        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridLayout_4.addItem(spacerItem5, 6, 0, 1, 1)
+        self.updateButton = QtGui.QPushButton(self.frame)
+        self.updateButton.setObjectName(_fromUtf8("updateButton"))
+        self.gridLayout_4.addWidget(self.updateButton, 6, 1, 1, 1)
+        spacerItem6 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_4.addItem(spacerItem6, 0, 0, 1, 1)
         self.receiverFrame = QtGui.QFrame(self.frame)
         self.receiverFrame.setFrameShape(QtGui.QFrame.Box)
         self.receiverFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.receiverFrame.setObjectName(_fromUtf8("receiverFrame"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.receiverFrame)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        
-        self._ppmRecv = QtGui.QCheckBox(self.receiverFrame)
-        self._ppmRecv.setObjectName(_fromUtf8("_ppmRecv"))
-        self.horizontalLayout.addWidget(self._ppmRecv)
-        self._normalRecv = QtGui.QCheckBox(self.receiverFrame)
-        self._normalRecv.setObjectName(_fromUtf8("_normalRecv"))
-        self.horizontalLayout.addWidget(self._normalRecv)
-       
-        self.receiverConfigGroup = QtGui.QButtonGroup()
-        self.receiverConfigGroup.addButton(self._ppmRecv)
-        self.receiverConfigGroup.addButton(self._normalRecv)
-        
-        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem4)
+        self.ppmRecv = QtGui.QCheckBox(self.receiverFrame)
+        self.ppmRecv.setObjectName(_fromUtf8("ppmRecv"))
+        self.horizontalLayout.addWidget(self.ppmRecv)
+        self.normalRecv = QtGui.QCheckBox(self.receiverFrame)
+        self.normalRecv.setObjectName(_fromUtf8("normalRecv"))
+        self.horizontalLayout.addWidget(self.normalRecv)
+        spacerItem7 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem7)
         self.channelCount = QtGui.QComboBox(self.receiverFrame)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
@@ -70,70 +97,42 @@ class VehicleDynamicConfigPanel(object):
         self.channelCount.setPalette(palette)
         self.channelCount.setObjectName(_fromUtf8("channelCount"))
         self.channelCount.addItem(_fromUtf8(""))
-        self.channelCount.addItem(_fromUtf8(""))
-        self.channelCount.setEnabled(False)
         self.horizontalLayout.addWidget(self.channelCount)
         self.channelCount_2 = QtGui.QLabel(self.receiverFrame)
         self.channelCount_2.setObjectName(_fromUtf8("channelCount_2"))
         self.horizontalLayout.addWidget(self.channelCount_2)
         self.gridLayout_4.addWidget(self.receiverFrame, 2, 0, 1, 2)
-        self.receiverTitle = QtGui.QLabel(self.frame)
-        self.receiverTitle.setObjectName(_fromUtf8("receiverTitle"))
-        self.gridLayout_4.addWidget(self.receiverTitle, 1, 0, 1, 1)
-        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_4.addItem(spacerItem5, 6, 0, 1, 1)
-        self.motorTitle = QtGui.QLabel(self.frame)
-        self.motorTitle.setObjectName(_fromUtf8("motorTitle"))
-        self.gridLayout_4.addWidget(self.motorTitle, 3, 0, 1, 1)
-        self._updateAQButton = QtGui.QPushButton(self.frame)
-        self._updateAQButton.setObjectName(_fromUtf8("_updateAQButton"))
-        self.gridLayout_4.addWidget(self._updateAQButton, 6, 1, 1, 1)
-        spacerItem6 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_4.addItem(spacerItem6, 0, 0, 1, 1)
-        
-        self.motorConfigGroup = QtGui.QButtonGroup()
         self.motorConfigFrame = QtGui.QFrame(self.frame)
         self.motorConfigFrame.setFrameShape(QtGui.QFrame.Box)
         self.motorConfigFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.motorConfigFrame.setObjectName(_fromUtf8("motorConfigFrame"))
         self.gridLayout_2 = QtGui.QGridLayout(self.motorConfigFrame)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self._triBox = QtGui.QCheckBox(self.motorConfigFrame)
-        self._triBox.setObjectName(_fromUtf8("_triBox"))
-        self.gridLayout_2.addWidget(self._triBox, 0, 0, 1, 1)
-        self._quadBox = QtGui.QCheckBox(self.motorConfigFrame)
-        self._quadBox.setObjectName(_fromUtf8("_quadBox"))
-        self.gridLayout_2.addWidget(self._quadBox, 0, 1, 1, 1)
-        self._quadPlusBox = QtGui.QCheckBox(self.motorConfigFrame)
-        self._quadPlusBox.setObjectName(_fromUtf8("_quadPlusBox"))
-        self.gridLayout_2.addWidget(self._quadPlusBox, 0, 2, 1, 1)
-        self._quadY4Box = QtGui.QCheckBox(self.motorConfigFrame)
-        self._quadY4Box.setObjectName(_fromUtf8("_quadY4Box"))
-        self.gridLayout_2.addWidget(self._quadY4Box, 0, 3, 1, 1)
-        self._y6Box = QtGui.QCheckBox(self.motorConfigFrame)
-        self._y6Box.setObjectName(_fromUtf8("_y6Box"))
-        self.gridLayout_2.addWidget(self._y6Box, 0, 4, 1, 1)
-        self._hexaXBox = QtGui.QCheckBox(self.motorConfigFrame)
-        self._hexaXBox.setObjectName(_fromUtf8("_hexaXBox"))
-        self.gridLayout_2.addWidget(self._hexaXBox, 0, 5, 1, 1)
-        self._hexaPlusBox = QtGui.QCheckBox(self.motorConfigFrame)
-        self._hexaPlusBox.setObjectName(_fromUtf8("_hexaPlusBox"))
-        
-        self.motorConfigGroup.addButton(self._triBox)
-        self.motorConfigGroup.addButton(self._quadBox)
-        self.motorConfigGroup.addButton(self._quadPlusBox)
-        self.motorConfigGroup.addButton(self._quadY4Box)
-        self.motorConfigGroup.addButton(self._y6Box)
-        self.motorConfigGroup.addButton(self._hexaXBox)
-        self.motorConfigGroup.addButton(self._hexaPlusBox)
-        
-        self.gridLayout_2.addWidget(self._hexaPlusBox, 0, 6, 1, 1)
-        self._reverseRotation = QtGui.QCheckBox(self.motorConfigFrame)
-        self._reverseRotation.setObjectName(_fromUtf8("_reverseRotation"))
-        self.gridLayout_2.addWidget(self._reverseRotation, 1, 0, 1, 3)
+        self.triBox = QtGui.QCheckBox(self.motorConfigFrame)
+        self.triBox.setObjectName(_fromUtf8("triBox"))
+        self.gridLayout_2.addWidget(self.triBox, 0, 0, 1, 1)
+        self.quadBox = QtGui.QCheckBox(self.motorConfigFrame)
+        self.quadBox.setObjectName(_fromUtf8("quadBox"))
+        self.gridLayout_2.addWidget(self.quadBox, 0, 1, 1, 1)
+        self.y6Box = QtGui.QCheckBox(self.motorConfigFrame)
+        self.y6Box.setObjectName(_fromUtf8("y6Box"))
+        self.gridLayout_2.addWidget(self.y6Box, 0, 4, 1, 1)
+        self.hexaPlusBox = QtGui.QCheckBox(self.motorConfigFrame)
+        self.hexaPlusBox.setObjectName(_fromUtf8("hexaPlusBox"))
+        self.gridLayout_2.addWidget(self.hexaPlusBox, 0, 7, 1, 1)
+        self.hexaXBox = QtGui.QCheckBox(self.motorConfigFrame)
+        self.hexaXBox.setObjectName(_fromUtf8("hexaXBox"))
+        self.gridLayout_2.addWidget(self.hexaXBox, 0, 6, 1, 1)
+        self.quadPlusBox = QtGui.QCheckBox(self.motorConfigFrame)
+        self.quadPlusBox.setObjectName(_fromUtf8("quadPlusBox"))
+        self.gridLayout_2.addWidget(self.quadPlusBox, 0, 2, 1, 1)
+        self.quadY4Box = QtGui.QCheckBox(self.motorConfigFrame)
+        self.quadY4Box.setObjectName(_fromUtf8("quadY4Box"))
+        self.gridLayout_2.addWidget(self.quadY4Box, 0, 3, 1, 1)
+        self.reverseRotation = QtGui.QCheckBox(self.motorConfigFrame)
+        self.reverseRotation.setObjectName(_fromUtf8("reverseRotation"))
+        self.gridLayout_2.addWidget(self.reverseRotation, 1, 0, 1, 3)
         self.gridLayout_4.addWidget(self.motorConfigFrame, 4, 0, 1, 2)
-        spacerItem7 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_4.addItem(spacerItem7, 7, 0, 1, 1)
         self.gridLayout.addWidget(self.frame, 3, 3, 1, 1)
         spacerItem8 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem8, 3, 5, 1, 1)
@@ -152,31 +151,24 @@ class VehicleDynamicConfigPanel(object):
         spacerItem15 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem15, 6, 2, 1, 3)
 
-        self.retranslateUi(DynamicConfig)
-        QtCore.QMetaObject.connectSlotsByName(DynamicConfig)
+        self.retranslateUi(VehicleDynamicConfigPanel)
+        QtCore.QMetaObject.connectSlotsByName(VehicleDynamicConfigPanel)
 
-    def retranslateUi(self, DynamicConfig):
-        DynamicConfig.setWindowTitle(QtGui.QApplication.translate("DynamicConfig", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.channelCount.setItemText(0, QtGui.QApplication.translate("DynamicConfig", "5", None, QtGui.QApplication.UnicodeUTF8))
-        self.channelCount_2.setText(QtGui.QApplication.translate("DynamicConfig", "Channel Count", None, QtGui.QApplication.UnicodeUTF8))
-        self.receiverTitle.setText(QtGui.QApplication.translate("DynamicConfig", "Receiver", None, QtGui.QApplication.UnicodeUTF8))
-        self.motorTitle.setText(QtGui.QApplication.translate("DynamicConfig", "Motor Configuration", None, QtGui.QApplication.UnicodeUTF8))
-        self._ppmRecv.setText(QtGui.QApplication.translate("DynamicConfig", "PPM", None, QtGui.QApplication.UnicodeUTF8))
-        self._normalRecv.setText(QtGui.QApplication.translate("DynamicConfig", "Normal", None, QtGui.QApplication.UnicodeUTF8))
-        self._updateAQButton.setText(QtGui.QApplication.translate("DynamicConfig", "Update", None, QtGui.QApplication.UnicodeUTF8))
-        self._triBox.setText(QtGui.QApplication.translate("DynamicConfig", "Tri", None, QtGui.QApplication.UnicodeUTF8))
-        self._quadBox.setText(QtGui.QApplication.translate("DynamicConfig", "Quad", None, QtGui.QApplication.UnicodeUTF8))
-        self._quadPlusBox.setText(QtGui.QApplication.translate("DynamicConfig", "Quad +", None, QtGui.QApplication.UnicodeUTF8))
-        self._quadY4Box.setText(QtGui.QApplication.translate("DynamicConfig", "Quad Y4", None, QtGui.QApplication.UnicodeUTF8))
-        self._y6Box.setText(QtGui.QApplication.translate("DynamicConfig", "Y6", None, QtGui.QApplication.UnicodeUTF8))
-        self._hexaXBox.setText(QtGui.QApplication.translate("DynamicConfig", "Hexa X", None, QtGui.QApplication.UnicodeUTF8))
-        self._hexaPlusBox.setText(QtGui.QApplication.translate("DynamicConfig", "Hexa +", None, QtGui.QApplication.UnicodeUTF8))
-        self._reverseRotation.setText(QtGui.QApplication.translate("DynamicConfig", "Reverse Yaw Rotation", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, VehicleDynamicConfigPanel):
+        VehicleDynamicConfigPanel.setWindowTitle(_translate("VehicleDynamicConfigPanel", "Form", None))
+        self.receiverTitle.setText(_translate("VehicleDynamicConfigPanel", "Receiver", None))
+        self.motorTitle.setText(_translate("VehicleDynamicConfigPanel", "Motor Configuration", None))
+        self.updateButton.setText(_translate("VehicleDynamicConfigPanel", "Update", None))
+        self.ppmRecv.setText(_translate("VehicleDynamicConfigPanel", "PPM", None))
+        self.normalRecv.setText(_translate("VehicleDynamicConfigPanel", "Normal", None))
+        self.channelCount.setItemText(0, _translate("VehicleDynamicConfigPanel", "5", None))
+        self.channelCount_2.setText(_translate("VehicleDynamicConfigPanel", "Channel Count", None))
+        self.triBox.setText(_translate("VehicleDynamicConfigPanel", "Tri", None))
+        self.quadBox.setText(_translate("VehicleDynamicConfigPanel", "Quad", None))
+        self.y6Box.setText(_translate("VehicleDynamicConfigPanel", "Y6", None))
+        self.hexaPlusBox.setText(_translate("VehicleDynamicConfigPanel", "Hexa +", None))
+        self.hexaXBox.setText(_translate("VehicleDynamicConfigPanel", "Hexa X", None))
+        self.quadPlusBox.setText(_translate("VehicleDynamicConfigPanel", "Quad +", None))
+        self.quadY4Box.setText(_translate("VehicleDynamicConfigPanel", "Quad Y4", None))
+        self.reverseRotation.setText(_translate("VehicleDynamicConfigPanel", "Reverse Motor Rotation", None))
 
-        
-        
-        
-        
-        
-        
-        

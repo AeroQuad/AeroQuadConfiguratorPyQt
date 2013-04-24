@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'SensorsCalibrationPanel.ui'
 #
-# Created: Wed Apr 24 14:57:35 2013
-#      by: PyQt4 UI code generator 4.10
+# Created: Wed Apr 24 17:27:48 2013
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -23,7 +23,7 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class SensorsCalibrationPanel(object):
+class Ui_SensorsCalibrationPanel(object):
     def setupUi(self, SensorsCalibrationPanel):
         SensorsCalibrationPanel.setObjectName(_fromUtf8("SensorsCalibrationPanel"))
         SensorsCalibrationPanel.resize(800, 600)
