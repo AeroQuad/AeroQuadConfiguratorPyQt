@@ -10,37 +10,37 @@ from ui.subpanel.BasePanelController import BasePanelController
 from model.VehicleModel import VehicleModel
 from model.FlightConfigType import FlightConfigType
 from model.ReceiverConfigType import ReceiverConfigType
-from ui.subpanel.vehicledynamicconfig.VehicleDynamicConfigPanel import VehicleDynamicConfigPanel
+from ui.subpanel.vehicledynamicconfig.VehicleDynamicConfigPanel import Ui_VehicleDynamicConfigPanel
 
 class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
     
     def __init__(self):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        self.ui = VehicleDynamicConfigPanel()
+        self.ui = Ui_VehicleDynamicConfigPanel()
         self.ui.setupUi(self)
-        self.ui._updateAQButton.clicked.connect(self.sendMiniConfig)
+        self.ui.updateButton.clicked.connect(self.sendMiniConfig)
         
         palette = QtGui.QPalette()
         palette.setColor(QtGui.QPalette.Foreground, QtCore.Qt.white)
         self.ui.receiverTitle.setPalette(palette)
         self.ui.motorTitle.setPalette(palette)
         
-        self.ui._triBox.clicked.connect(self.triCheckBoxPressed)
-        self.ui._quadBox.clicked.connect(self.quadCheckBoxPressed)
-        self.ui._quadPlusBox.clicked.connect(self.quadPlusCheckBoxPressed)
-        self.ui._quadY4Box.clicked.connect(self.y4CheckBoxPressed)
-        self.ui._y6Box.clicked.connect(self.y6CheckBoxPressed)
-        self.ui._hexaPlusBox.clicked.connect(self.hexPlusCheckBoxPressed)
-        self.ui._hexaXBox.clicked.connect(self.hexXCheckBoxPressed)
-        self.ui._reverseRotation.clicked.connect(self.reverseRotationCheckBoxPressed)
+        self.ui.triBox.clicked.connect(self.triCheckBoxPressed)
+        self.ui.quadBox.clicked.connect(self.quadCheckBoxPressed)
+        self.ui.quadPlusBox.clicked.connect(self.quadPlusCheckBoxPressed)
+        self.ui.quadY4Box.clicked.connect(self.y4CheckBoxPressed)
+        self.ui.y6Box.clicked.connect(self.y6CheckBoxPressed)
+        self.ui.hexaPlusBox.clicked.connect(self.hexPlusCheckBoxPressed)
+        self.ui.hexaXBox.clicked.connect(self.hexXCheckBoxPressed)
+        self.ui.reverseRotation.clicked.connect(self.reverseRotationCheckBoxPressed)
         
-        self.ui._ppmRecv.clicked.connect(self.ppmReceiverCheckBoxPressed)
-        self.ui._normalRecv.clicked.connect(self.normalReceiverCheckBoxPressed)
+        self.ui.ppmRecv.clicked.connect(self.ppmReceiverCheckBoxPressed)
+        self.ui.normalRecv.clicked.connect(self.normalReceiverCheckBoxPressed)
         
-        self._selectedVehicleConfig = FlightConfigType.QUAD_X
-        self._selectedReceiverConfig = ReceiverConfigType.RECEIVER_PWM
-        self._selectedInvertedYawRotation = '1'
+        self.selectedVehicleConfig = FlightConfigType.QUAD_X
+        self.selectedReceiverConfig = ReceiverConfigType.RECEIVER_PWM
+        self.selectedInvertedYawRotation = '1'
         self.updatePanelComponent()
             
     def start(self, xmlSubPanel, boardConfiguration):
@@ -55,27 +55,27 @@ class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
         
         
         if (VehicleModel.getInstance()._flight_config_type == '0') :
-            self.ui._quadBox.setChecked(True)
+            self.ui.quadBox.setChecked(True)
         elif (VehicleModel.getInstance()._flight_config_type == '1') :
-            self.ui._quadPlusBox.setChecked(True)
+            self.ui.quadPlusBox.setChecked(True)
         elif (VehicleModel.getInstance()._flight_config_type == '2') :
-            self.ui._hexaPlusBox.setChecked(True)
+            self.ui.hexaPlusBox.setChecked(True)
         elif (VehicleModel.getInstance()._flight_config_type == '3') :
-            self.ui._hexaXBox.setChecked(True)
+            self.ui.hexaXBox.setChecked(True)
         elif (VehicleModel.getInstance()._flight_config_type == '4') :
-            self.ui._triBox.setChecked(True)
+            self.ui.triBox.setChecked(True)
         elif (VehicleModel.getInstance()._flight_config_type == '5') :
-            self.ui._quadY4Box.setChecked(True)
+            self.ui.quadY4Box.setChecked(True)
         elif (VehicleModel.getInstance()._flight_config_type == '6') :
-            self.ui._Y6Box.setChecked(True)
+            self.ui.y6Box.setChecked(True)
             
         if (VehicleModel.getInstance()._reversed_yaw == '-1') :
-            self.ui._reverseRotation.setChecked(True)
+            self.ui.reverseRotation.setChecked(True)
 
         if (VehicleModel.getInstance()._receiver_type == '0') :
-            self.ui._ppmRecv.setChecked(True)
+            self.ui.ppmRecv.setChecked(True)
         elif (VehicleModel.getInstance()._receiver_type == '1') :
-            self.ui._normalRecv.setChecked(True)
+            self.ui.normalRecv.setChecked(True)
             
         self._selectedInvertedYawRotation = VehicleModel.getInstance()._reversed_yaw
         self._selectedReceiverConfig = VehicleModel.getInstance()._receiver_type
@@ -126,19 +126,19 @@ class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
 
     def updatePanelComponent(self):
         
-        if (self._selectedInvertedYawRotation != VehicleModel.getInstance()._reversed_yaw) :
-            self.ui._updateAQButton.setEnabled(True)
+        if (self.selectedInvertedYawRotation != VehicleModel.getInstance()._reversed_yaw) :
+            self.ui.updateButton.setEnabled(True)
             return
         
-        if (self._selectedReceiverConfig != VehicleModel.getInstance()._receiver_type) :
-            self.ui._updateAQButton.setEnabled(True)
+        if (self.selectedReceiverConfig != VehicleModel.getInstance()._receiver_type) :
+            self.ui.updateButton.setEnabled(True)
             return
         
-        if (self._selectedVehicleConfig != VehicleModel.getInstance()._flight_config_type) :
-            self.ui._updateAQButton.setEnabled(True)
+        if (self.selectedVehicleConfig != VehicleModel.getInstance()._flight_config_type) :
+            self.ui.updateButton.setEnabled(True)
             return
         
-        self.ui._updateAQButton.setEnabled(False)
+        self.ui.updateButton.setEnabled(False)
         
     def sendMiniConfig(self):
         command = "Q "

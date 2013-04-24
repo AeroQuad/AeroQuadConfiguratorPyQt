@@ -11,7 +11,7 @@ from utilities.specialwidgets.BarGauge import BarGauge
 import math
 import ast
 import time
-from ui.subpanel.vehicleoverallstatus.VehicleOverallStatusPanel import VehicleOverallStatusPanel
+from ui.subpanel.vehicleoverallstatus.VehicleOverallStatusPanel import Ui_VehicleOverallStatusPanel
 
 
 
@@ -19,7 +19,7 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        self.ui = VehicleOverallStatusPanel()
+        self.ui = Ui_VehicleOverallStatusPanel()
         self.ui.setupUi(self)
         self.channelCount = 0
         self.rawData = ""

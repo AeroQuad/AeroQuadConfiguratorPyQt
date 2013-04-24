@@ -8,7 +8,7 @@ from PyQt4 import QtGui, QtCore
 
 from ui.subpanel.BasePanelController import BasePanelController
 from pyqtgraph.graphicsItems.PlotCurveItem import PlotCurveItem
-from ui.subpanel.dataplot.DataPlotPanel import DataPlotPanel
+from ui.subpanel.dataplot.DataPlotPanel import Ui_DataPlotPanel
 
 
 class DataPlotController(QtGui.QWidget, BasePanelController):
@@ -16,7 +16,7 @@ class DataPlotController(QtGui.QWidget, BasePanelController):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
 
-        self.ui = DataPlotPanel()
+        self.ui = Ui_DataPlotPanel()
         self.ui.setupUi(self)
 
     def start(self, xmlSubPanel, boardConfiguration):
