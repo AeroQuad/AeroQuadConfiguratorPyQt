@@ -6,7 +6,7 @@ Created on 22 apr. 2013
 
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
-from ui.subpanel.sensorscalibration.SensorsCalibrationPanel import SensorsCalibrationPanel
+from ui.subpanel.sensorscalibration.SensorsCalibrationPanel import Ui_SensorsCalibrationPanel
 
 class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
 
@@ -14,7 +14,7 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        self.ui = SensorsCalibrationPanel()
+        self.ui = Ui_SensorsCalibrationPanel()
         self.ui.setupUi(self)
         self.ui.start.clicked.connect(self.StartCalibration)
         self.ui.cancel.clicked.connect(self.CancelCalibration)

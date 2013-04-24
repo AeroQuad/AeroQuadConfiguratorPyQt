@@ -1,14 +1,14 @@
 import time
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
-from ui.subpanel.commmonitor.CommMonitorPanel import CommMonitorPanel
+from ui.subpanel.commmonitor.CommMonitorPanel import Ui_CommMonitorPanel
 
 
 class CommMonitorController(QtGui.QWidget, BasePanelController):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        self.ui = CommMonitorPanel()
+        self.ui = Ui_CommMonitorPanel()
         self.ui.setupUi(self)
         self.ui.sendButton.setEnabled(False)
         self.ui.clearButton.setEnabled(False)

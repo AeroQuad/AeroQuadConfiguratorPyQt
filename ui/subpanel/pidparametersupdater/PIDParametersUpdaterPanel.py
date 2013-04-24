@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'updateParametersWindow.ui'
+# Form implementation generated from reading ui file 'PIDParametersUpdaterPanel.ui'
 #
-# Created: Thu Dec 27 01:32:47 2012
-#      by: PyQt4 UI code generator 4.9.5
+# Created: Wed Apr 24 17:20:14 2013
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,18 +12,27 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
 
-class PIDParametersUpdaterPanel(object):
-    def setupUi(self, parameterUpdate):
-        parameterUpdate.setObjectName(_fromUtf8("PIDParametersUpdaterPanel"))
-        parameterUpdate.resize(588, 374)
-        self.gridLayout = QtGui.QGridLayout(parameterUpdate)
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+class Ui_PIDParametersUpdaterPanel(object):
+    def setupUi(self, PIDParametersUpdaterPanel):
+        PIDParametersUpdaterPanel.setObjectName(_fromUtf8("PIDParametersUpdaterPanel"))
+        PIDParametersUpdaterPanel.resize(588, 374)
+        self.gridLayout = QtGui.QGridLayout(PIDParametersUpdaterPanel)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.buttonUpload = QtGui.QPushButton(parameterUpdate)
+        self.buttonUpload = QtGui.QPushButton(PIDParametersUpdaterPanel)
         self.buttonUpload.setObjectName(_fromUtf8("buttonUpload"))
         self.gridLayout.addWidget(self.buttonUpload, 2, 5, 1, 1)
-        self.listParameterType = QtGui.QListWidget(parameterUpdate)
+        self.listParameterType = QtGui.QListWidget(PIDParametersUpdaterPanel)
         self.listParameterType.setMaximumSize(QtCore.QSize(200, 16777215))
         self.listParameterType.setAlternatingRowColors(False)
         self.listParameterType.setResizeMode(QtGui.QListView.Adjust)
@@ -31,7 +40,7 @@ class PIDParametersUpdaterPanel(object):
         self.gridLayout.addWidget(self.listParameterType, 0, 0, 1, 1)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 2, 0, 1, 2)
-        self.parameterTable = QtGui.QTableWidget(parameterUpdate)
+        self.parameterTable = QtGui.QTableWidget(PIDParametersUpdaterPanel)
         self.parameterTable.setStyleSheet(_fromUtf8(""))
         self.parameterTable.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.parameterTable.setAlternatingRowColors(True)
@@ -47,27 +56,27 @@ class PIDParametersUpdaterPanel(object):
         item = QtGui.QTableWidgetItem()
         self.parameterTable.setHorizontalHeaderItem(2, item)
         self.gridLayout.addWidget(self.parameterTable, 0, 1, 1, 5)
-        self.buttonSave = QtGui.QPushButton(parameterUpdate)
+        self.buttonSave = QtGui.QPushButton(PIDParametersUpdaterPanel)
         self.buttonSave.setObjectName(_fromUtf8("buttonSave"))
         self.gridLayout.addWidget(self.buttonSave, 2, 4, 1, 1)
-        self.buttonLoad = QtGui.QPushButton(parameterUpdate)
+        self.buttonLoad = QtGui.QPushButton(PIDParametersUpdaterPanel)
         self.buttonLoad.setObjectName(_fromUtf8("buttonLoad"))
         self.gridLayout.addWidget(self.buttonLoad, 2, 3, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem1, 2, 2, 1, 1)
 
-        self.retranslateUi(parameterUpdate)
-        QtCore.QMetaObject.connectSlotsByName(parameterUpdate)
+        self.retranslateUi(PIDParametersUpdaterPanel)
+        QtCore.QMetaObject.connectSlotsByName(PIDParametersUpdaterPanel)
 
-    def retranslateUi(self, parameterUpdate):
-        parameterUpdate.setWindowTitle(QtGui.QApplication.translate("parameterUpdate", "Update Parameter", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonUpload.setText(QtGui.QApplication.translate("parameterUpdate", "Upload", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, PIDParametersUpdaterPanel):
+        PIDParametersUpdaterPanel.setWindowTitle(_translate("PIDParametersUpdaterPanel", "Update Parameter", None))
+        self.buttonUpload.setText(_translate("PIDParametersUpdaterPanel", "Upload", None))
         item = self.parameterTable.horizontalHeaderItem(0)
-        item.setText(QtGui.QApplication.translate("parameterUpdate", "Parameter", None, QtGui.QApplication.UnicodeUTF8))
+        item.setText(_translate("PIDParametersUpdaterPanel", "Parameter", None))
         item = self.parameterTable.horizontalHeaderItem(1)
-        item.setText(QtGui.QApplication.translate("parameterUpdate", "Value", None, QtGui.QApplication.UnicodeUTF8))
+        item.setText(_translate("PIDParametersUpdaterPanel", "Value", None))
         item = self.parameterTable.horizontalHeaderItem(2)
-        item.setText(QtGui.QApplication.translate("parameterUpdate", "Description", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonSave.setText(QtGui.QApplication.translate("parameterUpdate", "Save", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonLoad.setText(QtGui.QApplication.translate("parameterUpdate", "Load", None, QtGui.QApplication.UnicodeUTF8))
+        item.setText(_translate("PIDParametersUpdaterPanel", "Description", None))
+        self.buttonSave.setText(_translate("PIDParametersUpdaterPanel", "Save", None))
+        self.buttonLoad.setText(_translate("PIDParametersUpdaterPanel", "Load", None))
 
