@@ -13,6 +13,8 @@ from ui.MainWindow import MainWindow
 from communication.SerialCommunicator import SerialCommunicator
 from ui.SplashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
+from model.VehicleModel import VehicleModel
+from communication.communicationprotocolhandler.CommunicationProtocolHandler import CommunicationProtocolHandler
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
 try:
@@ -32,8 +34,12 @@ class AQMain(QtGui.QMainWindow):
         logging.basicConfig(filename='logfile.log',level=logging.DEBUG)
         logging.basicConfig(format='%(asctime)s %(filename)s %(lineno)d %(message)s')
         
-        # TODO: figure out way to configure for different comm types (TCP, MAVLINK, etc) 
+        # TODO: figure out way to configure for different comm types (TCP, MAVLINK, etc)
+        # Kenny answer: use a different communicator if not serial, protocol handler will be responsible to feed the model correcly 
         self.comm = SerialCommunicator()
+        
+#        self.model = VehicleModel.getInstance()
+#        self.communication_protocol_handler = CommunicationProtocolHandler(self.comm,self.model)
                 
         # Default main window conditions
         self.ui.buttonDisconnect.setEnabled(False)
