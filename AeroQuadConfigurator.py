@@ -14,7 +14,7 @@ from communication.SerialCommunicator import SerialCommunicator
 from ui.SplashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
 from model.VehicleModel import VehicleModel
-from communication.communicationprotocolhandler.CommunicationProtocolHandler import CommunicationProtocolHandler
+from communication.aqv4protocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
 try:
@@ -39,7 +39,7 @@ class AQMain(QtGui.QMainWindow):
         self.comm = SerialCommunicator()
         
 #        self.model = VehicleModel.getInstance()
-#        self.communication_protocol_handler = CommunicationProtocolHandler(self.comm,self.model)
+#        self.communication_protocol_handler = AQV4ProtocolHandler(self.comm,self.model)
                 
         # Default main window conditions
         self.ui.buttonDisconnect.setEnabled(False)
