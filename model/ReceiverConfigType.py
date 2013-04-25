@@ -6,7 +6,7 @@ Created on Apr 10, 2013
 
 class ReceiverConfigType:
     
-    RECEIBER_PPM = '0'
+    RECEIVER_PPM = '0'
     RECEIVER_PWM = '1'
     RECEIVER_SBUS = '2'
     RECEIVER_HWPPM = '3'

@@ -117,7 +117,7 @@ class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
         self.updatePanelComponent()
 
     def ppmReceiverCheckBoxPressed(self):
-        self._selectedReceiverConfig = ReceiverConfigType.RECEIBER_PPM
+        self._selectedReceiverConfig = ReceiverConfigType.RECEIVER_PPM
         self.updatePanelComponent()
         
     def normalReceiverCheckBoxPressed(self):
