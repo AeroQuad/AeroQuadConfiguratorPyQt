@@ -56,6 +56,7 @@ class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
     
     def stop_RCsetup(self): 
         self.comm.write("x")
+        self.timer.stop()
         self.comm.flushResponse()
         self.channel_detecting = 0;
         self.running = False

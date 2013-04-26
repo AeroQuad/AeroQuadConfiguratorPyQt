@@ -85,10 +85,12 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
                 
     def cancel_RCcalibration(self):
         self.comm.write("x")
+        self.timer.stop()
         self.comm.flushResponse()
         self.running = False
         self.ui.cancel.setEnabled(False)
         self.ui.next.setEnabled(True)
+        self.ui.start.setText("Start")
         
     def readContinuousData(self):
         isConnected = self.comm.isConnected()
