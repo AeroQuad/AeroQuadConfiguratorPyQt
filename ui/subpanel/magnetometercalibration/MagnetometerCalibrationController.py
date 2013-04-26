@@ -1,0 +1,97 @@
+'''
+Created on 26 apr. 2013
+
+@author: Erik
+'''
+
+import logging
+from PyQt4 import QtCore, QtGui
+from ui.subpanel.BasePanelController import BasePanelController
+from ui.subpanel.magnetometercalibration.MagnetometerCalibrationPanel import Ui_MagnetometerCalibrationPanel
+
+class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
+
+    def __init__(self):
+        QtGui.QWidget.__init__(self)
+        BasePanelController.__init__(self)
+        self.ui = Ui_MagnetometerCalibrationPanel()
+        self.ui.setupUi(self)
+        
+        self.running = False
+        self.amount_axis = 3
+        self.axix_max = [0, 0, 0] # x y z
+        self.axis_min = [0, 0, 0] # x y z
+        
+        self.axix_x = '0'
+        self.axix_y = '1'
+        self.axix_z = '2'
+        
+        self.ui.start.clicked.connect(self.start_MagnetometerCalibration)
+        self.ui.cancel.clicked.connect(self.cancel_MagnetometerCalibration)
+    
+    def start_MagnetometerCalibration(self):
+        if self.running:    
+            self.ui.start.setText("Start")
+            self.cancel_MagnetometerCalibration() #we can stop the calibration it's done
+            self.timer.stop()
+            self.send_calibration_value()
+        
+        elif not self.running:
+            if self.comm.isConnected() == True:
+                self.comm.write("m")
+                self.comm.write("j")
+                self.timer = QtCore.QTimer()
+                self.timer.timeout.connect(self.readContinuousData)
+                self.timer.start(50)
+                self.startCommThread()
+                self.running = True
+                
+                self.ui.cancel.setEnabled(True)
+                self.ui.next.setEnabled(False)
+                
+                self.ui.start.setText("Finish")
+                
+                self.axix_max = [0, 0, 0]
+                self.axis_min = [0, 0, 0]
+                
+    def cancel_MagnetometerCalibration(self):
+        self.comm.write("x")
+        self.timer.stop()
+        self.comm.flushResponse()
+        self.running = False
+        self.ui.cancel.setEnabled(False)
+        self.ui.next.setEnabled(True)
+        self.ui.start.setText("Start")
+    
+    def readContinuousData(self):
+        isConnected = self.comm.isConnected()
+        if isConnected and not self.commData.empty():
+            string = self.commData.get()
+            string_out = string.split(',')
+            if self.running:
+                for i in range(0, self.amount_axis):
+                    if int(string_out[i]) < self.axis_min[i]:  
+                        self.axis_min[i] = int(string_out[i])
+                    if int(string_out[i]) > self.axix_max[i]:  
+                        self.axix_max[i] = int(string_out[i])
+                    self.Update_Gui(i, int(string_out[i]))
+        self.ui.commLog.append(self.timeStamp() + " <- " + self.commData.get())
+        self.ui.commLog.ensureCursorVisible()                      
+       
+    def Update_Gui(self, axis, value):
+        if axis == int(self.axix_x):
+            self.ui.progressBar_Xaxis.setValue(value)
+            self.ui.label_x.setText(str(value))
+        if axis == int(self.axix_y):
+            self.ui.progressBar_Yaxis.setValue(value)
+            self.ui.label_y.setText(str(value))
+        if axis == int(self.axix_z):
+            self.ui.progressBar_Zaxis.setValue(value)
+            self.ui.label_z.setText(str(value))
+            
+    #def send_calibration_value(self):
+        #self.comm.write("X");
+        #command = "M "
+        #commands here
+            
+        #self.comm.write(command)

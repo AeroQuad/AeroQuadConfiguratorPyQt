@@ -25,6 +25,12 @@
           <Class>SensorsCalibrationController</Class>
         </Subpanel>
         
+        <Subpanel Name="Magnetometer calibration">
+          <Requirement>All</Requirement>
+          <Path>magnetometercalibration.MagnetometerCalibrationController</Path>
+          <Class>MagnetometerCalibrationController</Class>
+        </Subpanel>
+        
         <Subpanel Name="Receiver channels detection">
           <Requirement>All</Requirement>
           <Path>receiverchanneldetection.ReceiverChannelDetectionController</Path>
