@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>810</width>
     <height>400</height>
    </rect>
   </property>
@@ -124,10 +124,38 @@
     </item>
     <item row="0" column="0">
      <widget class="QToolBox" name="SideMenu">
+      <property name="minimumSize">
+       <size>
+        <width>180</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="SideMenuPage1" native="true">
+      <property name="tabSpacing">
+       <number>6</number>
+      </property>
+      <widget class="QWidget" name="SideMenuPage1">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>178</width>
+         <height>229</height>
+        </rect>
+       </property>
        <attribute name="icon">
         <iconset>
          <normaloff>../resources/info.png</normaloff>../resources/info.png</iconset>
@@ -135,25 +163,104 @@
        <attribute name="label">
         <string>Info</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="sidemenu_button_vehicle_status">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>3</x>
           <y>0</y>
-          <width>81</width>
+          <width>176</width>
           <height>23</height>
          </rect>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
         <property name="text">
-         <string>PushButton</string>
+         <string>Vehicle status</string>
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../resources/info.png</normaloff>../resources/info.png</iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_vehicle_configuration">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>20</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Vehicle configuration</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
       <widget class="QWidget" name="SideMenuPage2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>178</width>
+         <height>229</height>
+        </rect>
+       </property>
        <attribute name="icon">
         <iconset>
          <normaloff>../resources/settings.png</normaloff>../resources/settings.png</iconset>
@@ -161,8 +268,324 @@
        <attribute name="label">
         <string>Settings</string>
        </attribute>
+       <widget class="QPushButton" name="sidemenu_button_vehicle_setup">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>0</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Vehicle setup</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_sensors_calibration">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>20</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Sensors calibration</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_magnetometer_calibration">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>40</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Magnetometer calibration</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_RC_channels_detection">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>60</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>RC channels detection</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_RC_calibartion">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>80</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>RC calibration</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_motor_command">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>100</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Motor command</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_PID_update">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>120</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>PID update</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="SideMenuPage3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>178</width>
+         <height>229</height>
+        </rect>
+       </property>
        <attribute name="icon">
         <iconset>
          <normaloff>../resources/graphic.png</normaloff>../resources/graphic.png</iconset>
@@ -170,6 +593,358 @@
        <attribute name="label">
         <string>Data plot</string>
        </attribute>
+       <widget class="QPushButton" name="sidemenu_button_serial_monitor">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>0</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Serial monitor</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_sensor_data">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>20</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Sensor data</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_gyroscope_data">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>40</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Gyroscope data</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_accelerometer_data">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>60</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Accelerometer data</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_magnetometer_data">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>80</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Magnetometer data</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_attitude_data">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>100</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Attitude data</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_transmitter_data">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>120</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Transmitter data</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sidemenu_button_altitude_data">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>140</y>
+          <width>176</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>Altitude data</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../resources/arrow_right.png</normaloff>../resources/arrow_right.png</iconset>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -183,7 +958,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>810</width>
      <height>21</height>
     </rect>
    </property>
