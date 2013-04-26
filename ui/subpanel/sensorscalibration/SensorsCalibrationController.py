@@ -16,8 +16,8 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
         BasePanelController.__init__(self)
         self.ui = Ui_SensorsCalibrationPanel()
         self.ui.setupUi(self)
-        self.ui.start.clicked.connect(self.StartCalibration)
-        self.ui.cancel.clicked.connect(self.CancelCalibration)
+        self.ui.start.clicked.connect(self.start_calibration)
+        self.ui.cancel.clicked.connect(self.cancel_calibration)
         self.ui.cancel.setEnabled(False)
         
         self.state = 0
@@ -32,9 +32,9 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
         self.CalFront = '4'
         self.CalRear = '5'
         
-        self.ChangeUIPicture(self.state)
+        self.change_gui_picture(self.state)
     
-    def readContinuousData(self):
+    def read_continuousData(self):
         isConnected = self.comm.isConnected()
         if isConnected and not self.commData.empty():
             if not self.AmountReadings == self.ReadingNumber:
@@ -45,26 +45,26 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
                 self.StopData()
 
     
-    def StartCalibration(self):        
+    def start_calibration(self):        
         if (self.comm.isConnected()):
             self.ui.start.setEnabled(False)
             self.ui.next.setEnabled(False)
             self.ui.cancel.setEnabled(True)
             self.comm.write("l")
             self.timer = QtCore.QTimer()
-            self.timer.timeout.connect(self.readContinuousData)
+            self.timer.timeout.connect(self.read_continuousData)
             self.timer.start(50)
             self.startCommThread()
     
-    def CancelCalibration(self):
-        self.StopData()
+    def cancel_calibration(self):
+        self.stop_data()
         self.ui.start.setEnabled(True)
         self.ui.next.setEnabled(True)
         self.state = 0
-        self.ChangeUIPicture(self.state)
+        self.change_gui_picture(self.state)
         self.ui.progressBar.setValue(0)            
     
-    def StopData(self):
+    def stop_data(self):
         self.comm.write("x")
         self.timer.stop()
         self.comm.flushResponse()
@@ -74,11 +74,11 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
         
         if self.state == self.AmountStates:
             self.state = 0
-            self.SendCalibration()
+            self.send_calibration()
         
-        self.ChangeUIPicture(self.state)      
+        self.change_gui_picture(self.state)      
     
-    def ChangeUIPicture (self, state):
+    def change_gui_picture (self, state):
         pictureScene = QtGui.QGraphicsScene()
         
         if state == int(self.CalLevel):
@@ -104,7 +104,7 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
         pictureScene.addItem(pictureItem)
         self.ui.picture.setScene(pictureScene)
     
-    def SendCalibration(self):
+    def send_calibration(self):
         #calculate the values and send them to the quad
-        self.CancelCalibration()
+        self.cancel_calibration()
         

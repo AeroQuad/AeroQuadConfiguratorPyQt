@@ -70,7 +70,7 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
                 self.comm.write("H")
                 self.comm.write("t")
                 self.timer = QtCore.QTimer()
-                self.timer.timeout.connect(self.readContinuousData)
+                self.timer.timeout.connect(self.read_continuousData)
                 self.timer.start(50)
                 self.startCommThread()
                 self.running = True
@@ -92,7 +92,7 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.next.setEnabled(True)
         self.ui.start.setText("Start")
         
-    def readContinuousData(self):
+    def read_continuousData(self):
         isConnected = self.comm.isConnected()
         if isConnected and not self.commData.empty():
             string = self.commData.get()
@@ -105,8 +105,8 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
                         self.RCmax[i] = int(string_out[i])
                     self.update_gui(i, string_out[i])                      
                     
-            self.updateLeftStick(int(string_out[3]), int(string_out[2]))
-            self.updateRightStick(int(string_out[0]), int(string_out[1]))
+            self.update_left_stick(int(string_out[3]), int(string_out[2]))
+            self.update_right_stick(int(string_out[0]), int(string_out[1]))
             
     def update_gui(self, channel_number, value):
         if channel_number == 4:
@@ -126,12 +126,12 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         if channel_number == 11:
             self.ui.progressBar_RCAux7.setValue(int(value))
     
-    def updateLeftStick(self, throttle, yaw):
+    def update_left_stick(self, throttle, yaw):
         throttlePosition = self.scale(throttle, (1000.0, 2000.0), (58.0, -57.0))
         yawPosition = self.scale(yaw, (1000.0, 2000.0), (-57.0, 55.0))
         self.leftStick.setPos(yawPosition, throttlePosition)
         
-    def updateRightStick(self, roll, pitch):
+    def update_right_stick(self, roll, pitch):
         rollPosition = self.scale(roll, (1000.0, 2000.0), (-57.0, 55.0))
         pitchPosition = self.scale(pitch, (1000.0, 2000.0), (58.0, -57.0))
         self.rightStick.setPos(rollPosition, pitchPosition)
