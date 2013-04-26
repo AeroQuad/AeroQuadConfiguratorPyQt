@@ -79,6 +79,27 @@ class AQMain(QtGui.QMainWindow):
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
         self.ui.buttonMenu.clicked.connect(self.returnToMenu)
+        
+        #SideMenuButtons
+        self.ui.sidemenu_button_vehicle_status.clicked.connect(self.button_vehicle_status)
+        self.ui.sidemenu_button_vehicle_configuration.clicked.connect(self.button_vehicle_configuration)
+        
+        self.ui.sidemenu_button_vehicle_setup.clicked.connect(self.button_vehicle_setup)
+        self.ui.sidemenu_button_sensors_calibration.clicked.connect(self.button_sensors_calibration)
+        self.ui.sidemenu_button_magnetometer_calibration.clicked.connect(self.button_magnetometer_calibration)
+        self.ui.sidemenu_button_RC_channels_detection.clicked.connect(self.button_RC_channels_detection)
+        self.ui.sidemenu_button_RC_calibartion.clicked.connect(self.button_RC_calibration)
+        self.ui.sidemenu_button_motor_command.clicked.connect(self.button_motor_command)
+        self.ui.sidemenu_button_PID_update.clicked.connect(self.button_PID_update)
+        
+        self.ui.sidemenu_button_serial_monitor.clicked.connect(self.button_serial_monitor)
+        self.ui.sidemenu_button_sensor_data.clicked.connect(self.button_sensor_data)
+        self.ui.sidemenu_button_gyroscope_data.clicked.connect(self.button_gyroscope_data)
+        self.ui.sidemenu_button_accelerometer_data.clicked.connect(self.accelerometer_data)
+        self.ui.sidemenu_button_magnetometer_data.clicked.connect(self.magnetometer_data)
+        self.ui.sidemenu_button_attitude_data.clicked.connect(self.button_attitude_data)
+        self.ui.sidemenu_button_transmitter_data.clicked.connect(self.button_transmitter_data)
+        self.ui.sidemenu_button_altitude_data.clicked.connect(self.button_altitude_data)
             
     ####### Communication Methods #######       
     def connectBoard(self):
@@ -354,8 +375,56 @@ class AQMain(QtGui.QMainWindow):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
         
-    def load_subpanel(self):
+    def button_vehicle_status(self):
+        self.selectSubPanel("Vehicle Status") 
+    
+    def button_vehicle_configuration(self):
+        self.selectSubPanel("Vehicle Configuration")
+
+    def button_vehicle_setup(self):
+        self.selectSubPanel("Vehicle configuration")
+        
+    def button_sensors_calibration(self):
         self.selectSubPanel("Sensors calibration")
+        
+    def button_magnetometer_calibration(self):
+        self.selectSubPanel("Magnetometer calibration")
+        
+    def button_RC_channels_detection(self):
+        self.selectSubPanel("Receiver channels detection")
+        
+    def button_RC_calibration(self):
+        self.selectSubPanel("Receiver Calibration")
+        
+    def button_motor_command(self):
+        self.selectSubPanel("Motor Command")
+    
+    def button_PID_update(self):
+        self.selectSubPanel("PID Update")
+    
+    def button_serial_monitor(self):
+        self.selectSubPanel("Serial Monitor")
+    
+    def button_sensor_data(self):
+        self.selectSubPanel("Sensor Data")
+    
+    def button_gyroscope_data(self):
+        self.selectSubPanel("Gyroscope Data")
+        
+    def accelerometer_data(self):
+        self.selectSubPanel("Accelerometer Data")
+        
+    def magnetometer_data(self):
+        self.selectSubPanel("Magnetometer Data")
+        
+    def button_attitude_data(self):
+        self.selectSubPanel("Attitude Data")
+    
+    def button_transmitter_data(self):
+        self.selectSubPanel("Transmitter Data")
+    
+    def button_altitude_data(self):
+        self.selectSubPanel("Altitude Data")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
