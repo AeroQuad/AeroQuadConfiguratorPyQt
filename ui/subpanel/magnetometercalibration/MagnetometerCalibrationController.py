@@ -26,13 +26,13 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
         self.axix_y = '1'
         self.axix_z = '2'
         
-        self.ui.start.clicked.connect(self.start_MagnetometerCalibration)
-        self.ui.cancel.clicked.connect(self.cancel_MagnetometerCalibration)
+        self.ui.start.clicked.connect(self.start_magnetometer_calibration)
+        self.ui.cancel.clicked.connect(self.cancel_magnetometer_calibration)
     
-    def start_MagnetometerCalibration(self):
+    def start_magnetometer_calibration(self):
         if self.running:    
             self.ui.start.setText("Start")
-            self.cancel_MagnetometerCalibration() #we can stop the calibration it's done
+            self.cancel_magnetometer_calibration() #we can stop the calibration it's done
             self.timer.stop()
             self.send_calibration_value()
         
@@ -41,7 +41,7 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
                 self.comm.write("m")
                 self.comm.write("j")
                 self.timer = QtCore.QTimer()
-                self.timer.timeout.connect(self.readContinuousData)
+                self.timer.timeout.connect(self.read_continuousData)
                 self.timer.start(50)
                 self.startCommThread()
                 self.running = True
@@ -54,7 +54,7 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
                 self.axix_max = [0, 0, 0]
                 self.axis_min = [0, 0, 0]
                 
-    def cancel_MagnetometerCalibration(self):
+    def cancel_magnetometer_calibration(self):
         self.comm.write("x")
         self.timer.stop()
         self.comm.flushResponse()
@@ -63,7 +63,7 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.next.setEnabled(True)
         self.ui.start.setText("Start")
     
-    def readContinuousData(self):
+    def read_continuousData(self):
         isConnected = self.comm.isConnected()
         if isConnected and not self.commData.empty():
             string = self.commData.get()
@@ -74,11 +74,11 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
                         self.axis_min[i] = int(string_out[i])
                     if int(string_out[i]) > self.axix_max[i]:  
                         self.axix_max[i] = int(string_out[i])
-                    self.Update_Gui(i, int(string_out[i]))
+                    self.update_gui(i, int(string_out[i]))
         self.ui.commLog.append(self.timeStamp() + " <- " + self.commData.get())
         self.ui.commLog.ensureCursorVisible()                      
        
-    def Update_Gui(self, axis, value):
+    def update_gui(self, axis, value):
         if axis == int(self.axix_x):
             self.ui.progressBar_Xaxis.setValue(value)
             self.ui.label_x.setText(str(value))

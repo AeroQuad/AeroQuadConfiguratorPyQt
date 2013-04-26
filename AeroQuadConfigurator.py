@@ -9,7 +9,7 @@ import logging
 
 from PyQt4 import QtCore, QtGui
 from serial import SerialException
-from ui.MainWindow import MainWindow
+from ui.MainWindow import Ui_MainWindow
 from communication.SerialCommunicator import SerialCommunicator
 from ui.SplashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
@@ -25,7 +25,7 @@ except AttributeError:
 class AQMain(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
-        self.ui = MainWindow()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         background = xml.find("./Settings/Background").text
         self.ui.subPanel.setStyleSheet("QStackedWidget{background-image: url(" + background + ");}")
@@ -353,6 +353,9 @@ class AQMain(QtGui.QMainWindow):
         cp = QtGui.QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+        
+    def load_subpanel(self):
+        self.selectSubPanel("Sensors calibration")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

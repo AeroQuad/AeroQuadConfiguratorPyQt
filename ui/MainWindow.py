@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainWindow.ui'
+# Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Wed Mar 06 12:11:54 2013
-#      by: PyQt4 UI code generator 4.9.5
+# Created: Fri Apr 26 17:05:27 2013
+#      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,9 +12,18 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
 
-class MainWindow(object):
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(800, 400)
@@ -55,15 +64,37 @@ class MainWindow(object):
         self.buttonDisconnect = QtGui.QPushButton(self.centralwidget)
         self.buttonDisconnect.setObjectName(_fromUtf8("buttonDisconnect"))
         self.horizontalLayout.addWidget(self.buttonDisconnect)
-        self.gridLayout.addLayout(self.horizontalLayout, 2, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout, 2, 1, 1, 1)
         self.subPanel = QtGui.QStackedWidget(self.centralwidget)
         self.subPanel.setObjectName(_fromUtf8("subPanel"))
-        self.gridLayout.addWidget(self.subPanel, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.subPanel, 0, 1, 1, 1)
         self.line = QtGui.QFrame(self.centralwidget)
         self.line.setFrameShape(QtGui.QFrame.HLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName(_fromUtf8("line"))
-        self.gridLayout.addWidget(self.line, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.line, 1, 1, 1, 1)
+        self.SideMenu = QtGui.QToolBox(self.centralwidget)
+        self.SideMenu.setObjectName(_fromUtf8("SideMenu"))
+        self.SideMenuPage1 = QtGui.QWidget()
+        self.SideMenuPage1.setObjectName(_fromUtf8("SideMenuPage1"))
+        self.pushButton = QtGui.QPushButton(self.SideMenuPage1)
+        self.pushButton.setGeometry(QtCore.QRect(0, 0, 81, 23))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/info.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton.setIcon(icon1)
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.SideMenu.addItem(self.SideMenuPage1, icon1, _fromUtf8(""))
+        self.SideMenuPage2 = QtGui.QWidget()
+        self.SideMenuPage2.setObjectName(_fromUtf8("SideMenuPage2"))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.SideMenu.addItem(self.SideMenuPage2, icon2, _fromUtf8(""))
+        self.SideMenuPage3 = QtGui.QWidget()
+        self.SideMenuPage3.setObjectName(_fromUtf8("SideMenuPage3"))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/graphic.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.SideMenu.addItem(self.SideMenuPage3, icon3, _fromUtf8(""))
+        self.gridLayout.addWidget(self.SideMenu, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -114,26 +145,32 @@ class MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.SideMenu.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "AeroQuad Configurator", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonMenu.setText(QtGui.QApplication.translate("MainWindow", "Menu", None, QtGui.QApplication.UnicodeUTF8))
-        self.status.setText(QtGui.QApplication.translate("MainWindow", "Not connected to AeroQuad", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonConnect.setText(QtGui.QApplication.translate("MainWindow", "Connect", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonDisconnect.setText(QtGui.QApplication.translate("MainWindow", "Disconnect", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuSettings.setTitle(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuCalibrations.setTitle(QtGui.QApplication.translate("MainWindow", "Calibrations", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuPreferences.setTitle(QtGui.QApplication.translate("MainWindow", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "View", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpenSettings.setText(QtGui.QApplication.translate("MainWindow", "Open...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSaveSettings.setText(QtGui.QApplication.translate("MainWindow", "Save...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpenCalibrations.setText(QtGui.QApplication.translate("MainWindow", "Open...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSaveCalibrations.setText(QtGui.QApplication.translate("MainWindow", "Save....", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionBootUpDelay.setText(QtGui.QApplication.translate("MainWindow", "Boot Up Delay...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionCommTimeout.setText(QtGui.QApplication.translate("MainWindow", "Comm Timeout...", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(_translate("MainWindow", "AeroQuad Configurator", None))
+        self.buttonMenu.setText(_translate("MainWindow", "Menu", None))
+        self.status.setText(_translate("MainWindow", "Not connected to AeroQuad", None))
+        self.buttonConnect.setText(_translate("MainWindow", "Connect", None))
+        self.buttonDisconnect.setText(_translate("MainWindow", "Disconnect", None))
+        self.pushButton.setText(_translate("MainWindow", "PushButton", None))
+        self.SideMenu.setItemText(self.SideMenu.indexOf(self.SideMenuPage1), _translate("MainWindow", "Info", None))
+        self.SideMenu.setItemText(self.SideMenu.indexOf(self.SideMenuPage2), _translate("MainWindow", "Settings", None))
+        self.SideMenu.setItemText(self.SideMenu.indexOf(self.SideMenuPage3), _translate("MainWindow", "Data plot", None))
+        self.menuFile.setTitle(_translate("MainWindow", "File", None))
+        self.menuSettings.setTitle(_translate("MainWindow", "Settings", None))
+        self.menuCalibrations.setTitle(_translate("MainWindow", "Calibrations", None))
+        self.menuPreferences.setTitle(_translate("MainWindow", "Preferences", None))
+        self.menuView.setTitle(_translate("MainWindow", "View", None))
+        self.menuHelp.setTitle(_translate("MainWindow", "Help", None))
+        self.actionExit.setText(_translate("MainWindow", "Exit", None))
+        self.actionAbout.setText(_translate("MainWindow", "About", None))
+        self.actionOpenSettings.setText(_translate("MainWindow", "Open...", None))
+        self.actionSaveSettings.setText(_translate("MainWindow", "Save...", None))
+        self.actionOpenCalibrations.setText(_translate("MainWindow", "Open...", None))
+        self.actionSaveCalibrations.setText(_translate("MainWindow", "Save....", None))
+        self.actionBootUpDelay.setText(_translate("MainWindow", "Boot Up Delay...", None))
+        self.actionCommTimeout.setText(_translate("MainWindow", "Comm Timeout...", None))
 
+import AQresources_rc
