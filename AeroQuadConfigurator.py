@@ -78,8 +78,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
-        self.ui.buttonMenu.clicked.connect(self.returnToMenu)
-        
+       
         #SideMenuButtons
         self.ui.sidemenu_button_vehicle_status.clicked.connect(self.button_vehicle_status)
         self.ui.sidemenu_button_vehicle_configuration.clicked.connect(self.button_vehicle_configuration)
@@ -254,8 +253,9 @@ class AQMain(QtGui.QMainWindow):
         self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))
         
     def autoSetup(self):
+        pass
         # Load menu and autoconnect to board by default
-        self.selectSubPanel("Menu")
+#        self.selectSubPanel("Menu")
 #        if self.connectBoard():
 #            self.ui.status.setText("Successfully autoconnected to AeroQuad")
 #        else:
@@ -362,8 +362,6 @@ class AQMain(QtGui.QMainWindow):
 
 
     ####### Housekeeping Functions #######
-    def returnToMenu(self):
-        self.selectSubPanel("Menu")
         
     def exit(self):
         self.comm.disconnect()

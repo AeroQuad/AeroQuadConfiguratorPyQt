@@ -75,18 +75,19 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
                     if int(string_out[i]) > self.axix_max[i]:  
                         self.axix_max[i] = int(string_out[i])
                     self.update_gui(i, int(string_out[i]))
+                    
         self.ui.commLog.append(self.timeStamp() + " <- " + self.commData.get())
         self.ui.commLog.ensureCursorVisible()                      
        
     def update_gui(self, axis, value):
         if axis == int(self.axix_x):
-            self.ui.progressBar_Xaxis.setValue(value)
+            self.ui.x_axis_progress_bar.setValue(value)
             self.ui.label_x.setText(str(value))
         if axis == int(self.axix_y):
-            self.ui.progressBar_Yaxis.setValue(value)
+            self.ui.x_axis_progress_bar.setValue(value)
             self.ui.label_y.setText(str(value))
         if axis == int(self.axix_z):
-            self.ui.progressBar_Zaxis.setValue(value)
+            self.ui.x_axis_progress_bar.setValue(value)
             self.ui.label_z.setText(str(value))
             
     #def send_calibration_value(self):

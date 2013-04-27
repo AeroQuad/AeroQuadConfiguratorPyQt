@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
+    <width>811</width>
     <height>400</height>
    </rect>
   </property>
@@ -21,13 +21,6 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="2" column="1">
      <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="buttonMenu">
-        <property name="text">
-         <string>Menu</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
@@ -152,7 +145,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>178</width>
+         <width>179</width>
          <height>229</height>
         </rect>
        </property>
@@ -257,8 +250,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>178</width>
-         <height>229</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
        <attribute name="icon">
@@ -582,8 +575,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>178</width>
-         <height>229</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
        <attribute name="icon">
@@ -958,7 +951,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>810</width>
+     <width>811</width>
      <height>21</height>
     </rect>
    </property>

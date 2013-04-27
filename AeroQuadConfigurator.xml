@@ -43,23 +43,6 @@
           <Class>ReceiverCalibrationController</Class>
         </Subpanel>
         
-        <Subpanel Name="Menu">
-            <Requirement>All</Requirement>
-            <Path>menu.menu</Path>
-            <Class>menu</Class>
-            <MenuItems>
-            	<Menu Name="Vehicle Status">./ui/subpanel/menu/buttonVehicleStatus.png</Menu>
-            	<Menu Name="Calibrations">./ui/subpanel/menu/buttonCalibrations.png</Menu>
-				<Menu Name="Firmware Upload">./ui/subpanel/menu/buttonFirmwareUpload.png</Menu>
-            	<Menu Name="Update Settings">./ui/subpanel/menu/buttonUpdateSettings.png</Menu>
-            	<Menu Name="Mission Planner">./ui/subpanel/menu/buttonMissionPlanner.png</Menu>
-            	<Menu Name="Motor Command">./ui/subpanel/menu/buttonMotorCommand.png</Menu>
-            	<Menu Name="Vehicle Configuration">./ui/subpanel/menu/buttonVehicleConfiguration.png</Menu>
-            	<Menu Name="Sensor Data">./ui/subpanel/menu/buttonSensorPlots.png</Menu>
-            	<Menu Name="Serial Monitor">./ui/subpanel/menu/buttonSerialMonitor.png</Menu>
-            </MenuItems>
-        </Subpanel>
-        
         <Subpanel Name="Serial Monitor">
             <Requirement>All</Requirement>
             <Path>commmonitor.CommMonitorController</Path>

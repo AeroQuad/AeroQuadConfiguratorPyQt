@@ -76,7 +76,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;3) When done press finish to save the calibration.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_Xaxis">
+  <widget class="QProgressBar" name="x_axis_progress_bar">
    <property name="geometry">
     <rect>
      <x>70</x>
@@ -98,7 +98,7 @@ p, li { white-space: pre-wrap; }
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
    <property name="textVisible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Vertical</enum>
@@ -107,13 +107,13 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="textDirection">
-    <enum>QProgressBar::TopToBottom</enum>
+    <enum>QProgressBar::BottomToTop</enum>
    </property>
    <property name="format">
     <string>%p%</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_Yaxis">
+  <widget class="QProgressBar" name="y_axis_progress_bar">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -135,7 +135,7 @@ p, li { white-space: pre-wrap; }
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
    <property name="textVisible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Vertical</enum>
@@ -144,13 +144,13 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="textDirection">
-    <enum>QProgressBar::TopToBottom</enum>
+    <enum>QProgressBar::BottomToTop</enum>
    </property>
    <property name="format">
     <string>%p%</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_Zaxis">
+  <widget class="QProgressBar" name="z_axis_progress_bar">
    <property name="geometry">
     <rect>
      <x>330</x>
@@ -172,7 +172,7 @@ p, li { white-space: pre-wrap; }
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
    <property name="textVisible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="orientation">
     <enum>Qt::Vertical</enum>
@@ -181,7 +181,7 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="textDirection">
-    <enum>QProgressBar::TopToBottom</enum>
+    <enum>QProgressBar::BottomToTop</enum>
    </property>
    <property name="format">
     <string>%p%</string>
