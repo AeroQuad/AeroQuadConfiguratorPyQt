@@ -260,9 +260,8 @@ class AQMain(QtGui.QMainWindow):
         self.ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))
         
     def autoSetup(self):
-        pass
         # Load menu and autoconnect to board by default
-#        self.selectSubPanel("Menu")
+        self.selectSubPanel("Home")
 #        if self.connectBoard():
 #            self.ui.status.setText("Successfully autoconnected to AeroQuad")
 #        else:
