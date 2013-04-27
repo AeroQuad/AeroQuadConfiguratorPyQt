@@ -14,7 +14,8 @@ from communication.SerialCommunicator import SerialCommunicator
 from ui.SplashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
 from model.VehicleModel import VehicleModel
-from communication.aqv4protocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
+from communication.aqprotocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
+from communication.aqprotocolhandler.AQV4MessageSender import AQV4MessageSender
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
 try:
@@ -38,8 +39,13 @@ class AQMain(QtGui.QMainWindow):
         # Kenny answer: use a different communicator if not serial, protocol handler will be responsible to feed the model correcly 
         self.comm = SerialCommunicator()
         
-#        self.model = VehicleModel.getInstance()
-#        self.communication_protocol_handler = AQV4ProtocolHandler(self.comm,self.model)
+
+        self.vehicle_model = VehicleModel()
+        # Kenny, that can be instantiated differently when the version number is read at connection time!
+        self.communication_protocol_handler = AQV4ProtocolHandler(self.comm,self.vehicle_model)
+        self.message_sender = AQV4MessageSender(self.comm)
+
+        
                 
         # Default main window conditions
         self.ui.buttonDisconnect.setEnabled(False)
@@ -281,7 +287,7 @@ class AQMain(QtGui.QMainWindow):
             for package in packageList[1:]: # In case the module is buried into a deep package folder, loop until module is reached
                 module = getattr(module, package)
             module = getattr(module, className)
-            tempSubPanel = module()          
+            tempSubPanel = module(self.vehicle_model,self.message_sender)          
             tempSubPanel.initialize(self.comm, xml, self.ui, self)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)

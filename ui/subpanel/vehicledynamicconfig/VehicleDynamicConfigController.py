@@ -14,9 +14,14 @@ from ui.subpanel.vehicledynamicconfig.VehicleDynamicConfigPanel import Ui_Vehicl
 
 class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self):
+    def __init__(self, vehicle_model, message_sender):
+        
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
+        
+        self.vehicle_model = vehicle_model
+        self.message_sender = message_sender
+        
         self.ui = Ui_VehicleDynamicConfigPanel()
         self.ui.setupUi(self)
         self.ui.updateButton.clicked.connect(self.sendMiniConfig)

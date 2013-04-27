@@ -21,7 +21,7 @@ class AQV4ProtocolHandler(object):
         
         self.updateStatus = QtCore.QTimer()
         self.updateStatus.timeout.connect(self.reading_thread_call_back)
-        self.updateStatus.start(20)
+#        self.updateStatus.start(20)
         
     def process_new_connection(self):
         self.model.set_is_connected(True)
