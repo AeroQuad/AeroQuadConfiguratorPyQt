@@ -84,6 +84,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self.updateDetectedPorts)
         self.ui.actionBootUpDelay.triggered.connect(self.updateBootUpDelay)
         self.ui.actionCommTimeout.triggered.connect(self.updateCommTimeOut)
+        self.ui.button_home.clicked.connect(self.return_home)
        
         #SideMenuButtons
         self.ui.sidemenu_button_vehicle_status.clicked.connect(self.button_vehicle_status)
@@ -378,6 +379,9 @@ class AQMain(QtGui.QMainWindow):
         cp = QtGui.QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+        
+    def return_home(self):
+        self.selectSubPanel("Home") 
         
     def button_vehicle_status(self):
         self.selectSubPanel("Vehicle Status") 
