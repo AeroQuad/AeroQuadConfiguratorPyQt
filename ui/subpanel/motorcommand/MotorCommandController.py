@@ -8,6 +8,7 @@ from ui.subpanel.motorcommand.MotorCommandPanel import MotorCommandPanel
 
 
 class MotorSlider(QtGui.QWidget):
+    
     def __init__(self, motor_number, parent=None):
         super(MotorSlider, self).__init__(parent)
         
@@ -38,9 +39,14 @@ class MotorSlider(QtGui.QWidget):
         self.speed.setText(str(value))
 
 class MotorCommandController(QtGui.QWidget, BasePanelController):
-    def __init__(self, parent=None):
+    
+    def __init__(self, vehicle_model, message_sender, parent=None):
         super(MotorCommandController, self).__init__(parent)
         BasePanelController.__init__(self)
+        
+        self.vehicle_model = vehicle_model
+        self.message_sender = message_sender
+        
         self.started = False
 
         self.ui = MotorCommandPanel()

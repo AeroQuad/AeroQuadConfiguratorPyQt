@@ -5,9 +5,15 @@ from ui.subpanel.commmonitor.CommMonitorPanel import Ui_CommMonitorPanel
 
 
 class CommMonitorController(QtGui.QWidget, BasePanelController):
-    def __init__(self):
+    
+    def __init__(self, vehicle_model, message_sender):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
+        
+        self.vehicle_model = vehicle_model
+        self.message_sender = message_sender
+
+        
         self.ui = Ui_CommMonitorPanel()
         self.ui.setupUi(self)
         self.ui.sendButton.setEnabled(False)
