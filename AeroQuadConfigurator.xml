@@ -13,6 +13,12 @@
     </Settings>
     
     <Subpanels>
+    	<Subpanel Name="Home">
+          <Requirement>All</Requirement>
+          <Path>home.HomeController</Path>
+          <Class>HomeController</Class>
+        </Subpanel>
+    
     	<Subpanel Name="Vehicle configuration">
           <Requirement>All</Requirement>
           <Path>vehicledynamicconfig.VehicleDynamicConfigController</Path>
