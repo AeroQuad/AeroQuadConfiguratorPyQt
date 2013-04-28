@@ -51,7 +51,7 @@ class VehicleModel(Observable):
     def get_flight_config_type(self):
         return self._flight_config_type
         
-    def setBoadConfigurationProperty(self, key, value):
+    def set_boad_configuration_property(self, key, value):
         self._board_onfiguration_properties[key] = value;
         self.dispatch( key, value)
         
