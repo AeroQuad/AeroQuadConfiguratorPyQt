@@ -51,48 +51,50 @@ class BasePanelController(object):
         self.xmlSubPanel = xmlSubPanel
         self.boardConfiguration = boardConfiguration
         if self.comm.isConnected():
-            try:
-                telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
-                self.comm.write(telemetry)
-                self.startCommThread()
-                self.timer = QtCore.QTimer()
-                self.timer.timeout.connect(self.readContinuousData)
-                self.timer.start(50)
-            except:
-                pass
+            pass
+#            try:
+#                telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
+#                self.comm.write(telemetry)
+#                self.startCommThread()
+#                self.timer = QtCore.QTimer()
+#                self.timer.timeout.connect(self.readContinuousData)
+#                self.timer.start(50)
+#            except:
+#                pass
                 # No background comm processes are started if a telemetry value is not defined
 
     def readContinuousData(self):
-        '''This method continually reads telemetry from the AeroQuad'''
-        if self.comm.isConnected() and not self.commData.empty:           
-            rawData = self.commData.get() # self.data is updated in commThread()
-            # Replace lines below with desired functionality
-            data = rawData.split(",")
-            for i in data:
-                print(i)
+        pass
+#        '''This method continually reads telemetry from the AeroQuad'''
+#        if self.comm.isConnected() and not self.commData.empty:           
+#            rawData = self.commData.get() # self.data is updated in commThread()
+#            # Replace lines below with desired functionality
+#            data = rawData.split(",")
+#            for i in data:
+#                print(i)
                 
-    def startCommThread(self):
-        self.commState = True
-        self.communicationThread = threading.Thread(target=self.commThread, args=[])
-        self.communicationThread.start()
+#    def startCommThread(self):
+#        self.commState = True
+#        self.communicationThread = threading.Thread(target=self.commThread, args=[])
+#        self.communicationThread.start()
             
-    def commThread(self):
-        '''This runs an independent thread dedicated to reading the comminucations port
-        The data is written to the class variable self.data
-        To exit this thread, set self.commState = False
-        '''
-        while(self.commState):
-            try:
-                if self.comm.dataAvailable():
-                    self.commData.put(self.comm.read())
-                else:
-                    time.sleep(0.100)
-            except:
-                self.commState = False
-        # Thread halted, flush out comm port
-        if (self.comm.isConnected()):
-            self.comm.write(self.xml.find("./Settings/StopTelemetry").text)
-            self.comm.flushResponse()
+#    def commThread(self):
+#        '''This runs an independent thread dedicated to reading the comminucations port
+#        The data is written to the class variable self.data
+#        To exit this thread, set self.commState = False
+#        '''
+#        while(self.commState):
+#            try:
+#                if self.comm.dataAvailable():
+#                    self.commData.put(self.comm.read())
+#                else:
+#                    time.sleep(0.100)
+#            except:
+#                self.commState = False
+#        # Thread halted, flush out comm port
+#        if (self.comm.isConnected()):
+#            self.comm.write(self.xml.find("./Settings/StopTelemetry").text)
+#            self.comm.flushResponse()
 
     def stop(self):
         '''This method enables a flag which closes the continuous serial read thread'''

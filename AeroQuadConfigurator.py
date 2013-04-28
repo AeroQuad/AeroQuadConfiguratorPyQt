@@ -41,7 +41,7 @@ class AQMain(QtGui.QMainWindow):
         
 
         self.vehicle_model = VehicleModel()
-        # Kenny, that can be instantiated differently when the version number is read at connection time!
+        # @todo Kenny, remove this!
         self.communication_protocol_handler = AQV4ProtocolHandler(self.comm,self.vehicle_model)
         self.message_sender = AQV4MessageSender(self.comm)
 
@@ -136,22 +136,22 @@ class AQMain(QtGui.QMainWindow):
             if version != "":
                 self.storeComPortSelection()
                 self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
-                # Read board configuration
-                config = xml.find("./Settings/BoardConfiguration").text
-                self.comm.write(config)
-                size = int(self.comm.waitForRead())
-                for index in range(size):
-                    response = self.comm.waitForRead()
-                    configuration = response.split(':')
-                    self.boardConfiguration[configuration[0]] = configuration[1].strip()
-            
-                # Hide menu items that don't match board configuration
-                for index in range(len(self.subPanelMenu)):
-                    hide = self.checkRequirementsMatch(self.subPanelList[index])
-                    self.subPanelMenu[index].setVisible(hide)
+                
+                if version == "4.0" :
+                    pass
+                    # this do nothign really for now, but, should be like this, currently, panels need it instantiated before!
+#                    self.communication_protocol_handler = AQV4ProtocolHandler(self.comm,self.vehicle_model)
+#                    self.message_sender = AQV4MessageSender(self.comm)
+                elif version == "3.2" :
+                    pass
+#                    self.communication_protocol_handler = AQV32ProtocolHandler(self.comm,self.vehicle_model)
+#                    self.message_sender = AQV32MessageSender(self.comm)
 
-#                self.selectSubPanel("Vehicle Status")
-#                self.restartSubPanel()
+                else :
+                    logging.error("Flight software version " + version + " unsuported")
+                    self.disconnectBoard()
+                    self.ui.status.setText("Not connected to the AeroQuad")
+                
                 return True
             else:
                 self.disconnectBoard()
@@ -262,10 +262,6 @@ class AQMain(QtGui.QMainWindow):
     def autoSetup(self):
         # Load menu and autoconnect to board by default
         self.selectSubPanel("Home")
-#        if self.connectBoard():
-#            self.ui.status.setText("Successfully autoconnected to AeroQuad")
-#        else:
-#            self.autoConnect()
 
 
     ####### SubPanel Methods #######

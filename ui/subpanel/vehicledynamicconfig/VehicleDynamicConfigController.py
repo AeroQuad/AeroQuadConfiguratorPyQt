@@ -19,12 +19,12 @@ class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         
-        self.vehicle_model = vehicle_model
-        self.message_sender = message_sender
+        self._vehicle_model = vehicle_model
+        self._message_sender = message_sender
         
         self.ui = Ui_VehicleDynamicConfigPanel()
         self.ui.setupUi(self)
-        self.ui.updateButton.clicked.connect(self.sendMiniConfig)
+        self.ui.updateButton.clicked.connect(self._send_mini_config)
         
         palette = QtGui.QPalette()
         palette.setColor(QtGui.QPalette.Foreground, QtCore.Qt.white)
@@ -43,126 +43,131 @@ class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
         self.ui.ppmRecv.clicked.connect(self.ppmReceiverCheckBoxPressed)
         self.ui.normalRecv.clicked.connect(self.normalReceiverCheckBoxPressed)
         
-        self.selectedVehicleConfig = FlightConfigType.QUAD_X
-        self.selectedReceiverConfig = ReceiverConfigType.RECEIVER_PWM
-        self.selectedInvertedYawRotation = '1'
-        self.updatePanelComponent()
-            
-    def start(self, xmlSubPanel, boardConfiguration):
-        self.boardConfiguration = boardConfiguration
         
-        try:
-            VehicleModel.getInstance()._flight_config_type = self.boardConfiguration["Flight Config"]
-            VehicleModel.getInstance()._receiver_type = self.boardConfiguration["Receiver Type"]
-            VehicleModel.getInstance()._reversed_yaw = self.boardConfiguration["Yaw Config"]
-        except:
-            logging.error("Can't read vehicle config, probably not connected to current Aeroquad")
+        self._flight_config_type = FlightConfigType.QUAD_X
+        self._receiver_type = ReceiverConfigType.RECEIVER_PWM
+        self._reversed_yaw = '1'
+
+        self._selected_flight_config = FlightConfigType.QUAD_X
+        self._selected_receiver_config = ReceiverConfigType.RECEIVER_PWM
+        self._selected_reversed_yaw_rotation = '1'
+        self._update_panel_component()
+        
+        self._vehicle_model.register(self._flight_config_updated, VehicleModel.FLIGHT_CONFIG_EVENT)
+        self._vehicle_model.register(self._yaw_direction_updated, VehicleModel.YAW_DIRECTION_CONFIG_EVENT)
+        self._vehicle_model.register(self._receiver_type_updated, VehicleModel.RECEIVER_TYPE_EVENT)
         
         
-        if (VehicleModel.getInstance()._flight_config_type == '0') :
+    def _flight_config_updated(self, sender, event, msg = None):
+        self._flight_config_type = msg
+        
+        if (self._flight_config_type == '0') :
             self.ui.quadBox.setChecked(True)
-        elif (VehicleModel.getInstance()._flight_config_type == '1') :
+        elif (self._flight_config_type == '1') :
             self.ui.quadPlusBox.setChecked(True)
-        elif (VehicleModel.getInstance()._flight_config_type == '2') :
+        elif (self._flight_config_type == '2') :
             self.ui.hexaPlusBox.setChecked(True)
-        elif (VehicleModel.getInstance()._flight_config_type == '3') :
+        elif (self._flight_config_type == '3') :
             self.ui.hexaXBox.setChecked(True)
-        elif (VehicleModel.getInstance()._flight_config_type == '4') :
+        elif (self._flight_config_type == '4') :
             self.ui.triBox.setChecked(True)
-        elif (VehicleModel.getInstance()._flight_config_type == '5') :
+        elif (self._flight_config_type == '5') :
             self.ui.quadY4Box.setChecked(True)
-        elif (VehicleModel.getInstance()._flight_config_type == '6') :
+        elif (self._flight_config_type == '6') :
             self.ui.y6Box.setChecked(True)
             
-        if (VehicleModel.getInstance()._reversed_yaw == '-1') :
+        self._update_panel_component()
+                
+    def _yaw_direction_updated(self, sender, event, msg = None):
+        self._reversed_yaw = msg
+        
+        if (self._reversed_yaw == '-1') :
             self.ui.reverseRotation.setChecked(True)
+        else :
+            self.ui.reverseRotation.setChecked(False)
+            
+        self._update_panel_component()
 
-        if (VehicleModel.getInstance()._receiver_type == '0') :
+    def _receiver_type_updated(self, sender, event, msg = None):
+
+        self._receiver_type = msg
+                
+        if (self._receiver_type == '0') :
             self.ui.ppmRecv.setChecked(True)
-        elif (VehicleModel.getInstance()._receiver_type == '1') :
+        elif (self._receiver_type == '1') :
             self.ui.normalRecv.setChecked(True)
             
-        self._selectedInvertedYawRotation = VehicleModel.getInstance()._reversed_yaw
-        self._selectedReceiverConfig = VehicleModel.getInstance()._receiver_type
-        self._selectedVehicleConfig = VehicleModel.getInstance()._flight_config_type
+        self._update_panel_component()          
+        print("receiver type updated!")  
             
+    def start(self, xmlSubPanel, boardConfiguration):
+        pass
+
     def triCheckBoxPressed(self):
-        self._selectedVehicleConfig = FlightConfigType.TRI
-        self.updatePanelComponent()
+        self._selected_flight_config = FlightConfigType.TRI
+        self._update_panel_component()
 
     def quadCheckBoxPressed(self):
-        self._selectedVehicleConfig = FlightConfigType.QUAD_X
-        self.updatePanelComponent()
+        self._selected_flight_config = FlightConfigType.QUAD_X
+        self._update_panel_component()
         
     def quadPlusCheckBoxPressed(self):
-        self._selectedVehicleConfig = FlightConfigType.QUAD_PLUS
-        self.updatePanelComponent()
+        self._selected_flight_config = FlightConfigType.QUAD_PLUS
+        self._update_panel_component()
         
     def y4CheckBoxPressed(self):
-        self._selectedVehicleConfig = FlightConfigType.QUAD_Y4
-        self.updatePanelComponent()
+        self._selected_flight_config = FlightConfigType.QUAD_Y4
+        self._update_panel_component()
 
     def y6CheckBoxPressed(self):
-        self._selectedVehicleConfig = FlightConfigType.HEX_Y6
-        self.updatePanelComponent()
+        self._selected_flight_config = FlightConfigType.HEX_Y6
+        self._update_panel_component()
 
     def hexPlusCheckBoxPressed(self):
-        self._selectedVehicleConfig = FlightConfigType.HEX_PLUS
-        self.updatePanelComponent()
+        self._selected_flight_config = FlightConfigType.HEX_PLUS
+        self._update_panel_component()
 
     def hexXCheckBoxPressed(self):
-        self._selectedVehicleConfig = FlightConfigType.HEX_X
-        self.updatePanelComponent()
+        self._selected_flight_config = FlightConfigType.HEX_X
+        self._update_panel_component()
         
     def reverseRotationCheckBoxPressed(self):
-        if (self.ui._reverseRotation.isChecked()) :
-            self._selectedInvertedYawRotation = '-1'
+        if (self.ui.reverseRotation.isChecked()) :
+            self._selected_reversed_yaw_rotation = '-1'
         else :
-            self._selectedInvertedYawRotation = '1'
-        self.updatePanelComponent()
+            self._selected_reversed_yaw_rotation = '1'
+        self._update_panel_component()
 
     def ppmReceiverCheckBoxPressed(self):
-        self._selectedReceiverConfig = ReceiverConfigType.RECEIVER_PPM
-        self.updatePanelComponent()
+        self._selected_receiver_config = ReceiverConfigType.RECEIVER_PPM
+        self._update_panel_component()
         
     def normalReceiverCheckBoxPressed(self):
-        self._selectedReceiverConfig = ReceiverConfigType.RECEIVER_PWM
-        self.updatePanelComponent()
+        self._selected_receiver_config = ReceiverConfigType.RECEIVER_PWM
+        self._update_panel_component()
 
-    def updatePanelComponent(self):
+    def _update_panel_component(self):
         
-        if (self.selectedInvertedYawRotation != VehicleModel.getInstance()._reversed_yaw) :
+        if (self._selected_reversed_yaw_rotation != self._reversed_yaw) :
             self.ui.updateButton.setEnabled(True)
             return
         
-        if (self.selectedReceiverConfig != VehicleModel.getInstance()._receiver_type) :
+        if (self._selected_receiver_config != self._receiver_type) :
             self.ui.updateButton.setEnabled(True)
             return
         
-        if (self.selectedVehicleConfig != VehicleModel.getInstance()._flight_config_type) :
+        if (self._selected_flight_config != self._flight_config_type) :
             self.ui.updateButton.setEnabled(True)
             return
         
         self.ui.updateButton.setEnabled(False)
         
-    def sendMiniConfig(self):
-        command = "Q "
-        command += self._selectedVehicleConfig
-        command += ";"
-        command += self._selectedReceiverConfig
-        command += ";"
-        command += self._selectedInvertedYawRotation
-        command += ";"
-        command += "5"
-        self.comm.write(command)
-        
-        # In fact here, we should request back the vehicle config to make sure the 
-        # vehicle have been updated with the selection from the user
-        VehicleModel.getInstance()._reversed_yaw = self._selectedInvertedYawRotation 
-        VehicleModel.getInstance()._receiver_type = self._selectedReceiverConfig
-        VehicleModel.getInstance()._flight_config_type = self._selectedVehicleConfig
+    def _send_mini_config(self):
+        self._message_sender.send_mini_config(self._selected_flight_config,
+                                              self._selected_receiver_config,
+                                              self._selected_reversed_yaw_rotation)
 
-        self.updatePanelComponent()
+        self._message_sender.send_request('#')
 
 
 
