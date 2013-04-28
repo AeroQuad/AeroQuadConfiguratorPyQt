@@ -8,16 +8,16 @@ import types
 
 class Observable(object):
     def __init__(self):
-        self.listeners = {}
+        self._listeners = {}
          
-    def register(self,listener,events=None):
+    def register(self, listener, events=None):
         if events is not None and type(events) not in (types.TupleType,types.ListType):
             events = (events,)
               
-        self.listeners[listener] = events
+        self._listeners[listener] = events
          
-    def dispatch(self,event=None, msg=None):
-        for listener,events in self.listeners.items():
+    def dispatch(self, event=None, msg=None):
+        for listener,events in self._listeners.items():
             if events is None or event is None or event in events:
                 try:
                     listener(self,event,msg)
@@ -27,6 +27,6 @@ class Observable(object):
                     logging.exception(errmsg)
              
     def unregister(self,listener):
-        del self.listeners[listener]
+        del self._listeners[listener]
 
 
