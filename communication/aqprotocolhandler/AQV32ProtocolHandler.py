@@ -5,6 +5,7 @@ Created on Apr 23, 2013
 '''
 
 from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
+from model.Vector3D import Vector3D
 
 
 
@@ -118,13 +119,14 @@ class AQV32ProtocolHandler(ProtocolHandler):
 #
 #    def unsubscribe_sensors(self):
 #        self.unsubscribe_command(self.COMMANDS['UnsubscribeSensor'])
-#
-#    def subscribe_raw_magnetometer(self, callback):
-#        def unpack_data(data):
-#            args = [t(s) for t,s in zip((int,)*3,data.split(','))]
-#            return callback(*args)
-#        self.subscribe_command(self.COMMANDS['SubscribeRawMagnetometer'], unpack_data)
-#
+
+
+    def subscribe_raw_magnetometer(self):
+        def unpack_data(data):
+            values = data.split(',')
+            self._vehicle_model.set_magnetometer_raw_data(values[0], values[1], values[2])
+        self.subscribe_command(self.COMMANDS['SubscribeRawMagnetometer'], unpack_data)
+
 #    def unsubscribe_raw_magnetometer(self):
 #        self.unsubscribe_command(self.COMMANDS['UnsubscribeRawMagnetometer'])
 #
@@ -142,5 +144,5 @@ class AQV32ProtocolHandler(ProtocolHandler):
         number_of_lines = int(self.receive_command_data())
         for i in range(number_of_lines):
             board_properties = self.receive_command_data().split(':')
-            self.vehicle_model.set_boad_configuration_property(board_properties[0],board_properties[1].strip())
+            self._vehicle_model.set_boad_configuration_property(board_properties[0],board_properties[1].strip())
             

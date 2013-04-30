@@ -1,8 +1,8 @@
 <Configurator>
 
     <Settings>
-        <DefaultComPort>COM6</DefaultComPort>
-        <BootUpDelay>5.0</BootUpDelay>
+        <DefaultComPort>COM5</DefaultComPort>
+        <BootUpDelay>10.0</BootUpDelay>
         <CommTimeOut>1.0</CommTimeOut>
         <DefaultBaudRate>115200</DefaultBaudRate>
         <AvailableBaudRates>1200,9600,38400,19200,57600,111111,115200</AvailableBaudRates>

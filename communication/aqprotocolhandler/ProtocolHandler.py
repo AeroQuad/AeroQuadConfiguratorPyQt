@@ -28,7 +28,7 @@ class ProtocolHandler(object):
     def __init__(self, communicator, vehicle_model):
         self._communicator = communicator
         self._is_subscribed = False
-        self.vehicle_model = vehicle_model
+        self._vehicle_model = vehicle_model
 
     def send_command(self, command):
         if self._is_subscribed:
@@ -45,19 +45,19 @@ class ProtocolHandler(object):
         data = self._communicator.read(self._communicator.data_available())
         return len(data)
 
-#    def subscribe_command(self, command, callback):
-#        self.send_Command(command)
-#        self.start_subscription_thread(callback)
+    def subscribe_command(self, command, callback):
+        self.send_command(command)
+        self.start_subscription_thread(callback)
 
     def unsubscribe_command(self, command = None):
         self.stop_subscription_thread()
         self.send_command(command or self.BASE_COMMANDS['UnsubscribeAll'])
         self.flush_command_data()
 
-#    def start_subscription_thread(self, callback):
-#        self._is_subscribed = True
-#        self.subscription_thread_object = threading.Thread(target=self.subscriptionThread, args=(callback,))
-#        self.subscription_thread_object.start()
+    def start_subscription_thread(self, callback):
+        self._is_subscribed = True
+        self.subscription_thread_object = threading.Thread(target=self.subscription_thread, args=(callback,))
+        self.subscription_thread_object.start()
 
     def join_subscription_thread(self):
         if self._is_subscribed:
@@ -67,12 +67,12 @@ class ProtocolHandler(object):
         self._is_subscribed = False
         self.join_subscription_thread()
 
-#    def subscription_thread(self, callback):
-#        while(self._is_subscribed):
-#            data = self.receive_command_data()
-#            if callback(data):  
-#                break
-#
+    def subscription_thread(self, callback):
+        while(self._is_subscribed):
+            data = self.receive_command_data()
+            if callback(data):  
+                break
+
     def get_flight_software_version(self):
         self.send_command(self.BASE_COMMANDS['GetSoftwareVersion'])
         return self.receive_command_data()

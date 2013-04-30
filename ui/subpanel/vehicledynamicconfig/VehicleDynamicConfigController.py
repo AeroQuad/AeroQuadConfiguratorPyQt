@@ -14,13 +14,13 @@ from ui.subpanel.vehicledynamicconfig.VehicleDynamicConfigPanel import Ui_Vehicl
 
 class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, message_sender):
+    def __init__(self, vehicle_model, protocol_handler):
         
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         
         self._vehicle_model = vehicle_model
-        self._message_sender = message_sender
+        self._protocol_handler = protocol_handler
         
         self.ui = Ui_VehicleDynamicConfigPanel()
         self.ui.setupUi(self)

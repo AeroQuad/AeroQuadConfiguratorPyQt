@@ -3,16 +3,18 @@ Created on Nov 19, 2012
 
 @author: Ted Carancho
 '''
-import time
-import threading
+#import time
+#import threading
 import Queue
 from PyQt4 import QtCore
 
+from abc import abstractmethod
+from abc import ABCMeta
+
+
 class BasePanelController(object):
-    '''This is a class that contains the methods required to add new subpanels to the Configurator
-    You can override any of these functions by making new ones in the subpanel they will be used.
-    Look at commMonitor.py for an example of how to add this subclass to your subpanel.
-    '''
+    
+#    __metaclass__ = ABCMeta
 
     def __init__(self):
         self.commState = False
@@ -33,25 +35,28 @@ class BasePanelController(object):
         self.configurator = mainApp
                 
     def sendCommand(self, command):
+        pass
         '''Send a serial command'''
-        self.comm.write(command)
-        time.sleep(0.150)
+#        self.comm.write(command)
+#        time.sleep(0.150)
         
     def readData(self):
         '''This method reads a single response from the AeroQuad'''
         response = self.comm.read()
         return response
                 
-    def start(self, xmlSubPanel, boardConfiguration):
-        '''This method starts a dedicated communications thread and a timer to read data
-        commThread() will read telemetry data and insert it into a queue
-        readContinousData() can be used in each subpanel to empty out the queue
-        If you need to view data smoothly, create another timer that will process data that is retrieved from readContinuousData()
-        Use vehicleStatus.py as an example.'''
-        self.xmlSubPanel = xmlSubPanel
-        self.boardConfiguration = boardConfiguration
-        if self.comm.is_connected():
-            pass
+    @abstractmethod                
+    def start(self):
+        pass
+#        '''This method starts a dedicated communications thread and a timer to read data
+#        commThread() will read telemetry data and insert it into a queue
+#        readContinousData() can be used in each subpanel to empty out the queue
+#        If you need to view data smoothly, create another timer that will process data that is retrieved from readContinuousData()
+#        Use vehicleStatus.py as an example.'''
+#        self.xmlSubPanel = xmlSubPanel
+#        self.boardConfiguration = boardConfiguration
+#        if self.comm.is_connected():
+#            pass
 #            try:
 #                telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
 #                self.comm.write(telemetry)
@@ -97,20 +102,21 @@ class BasePanelController(object):
 #            self.comm.flushResponse()
 
     def stop(self):
-        '''This method enables a flag which closes the continuous serial read thread'''
-        self.commState = False # Halt comm thread
-        time.sleep(0.250)
-        if self.comm.isConnected() == True:
-            if self.timer != None:
-                self.timer.timeout.disconnect(self.readContinuousData)
-                self.timer.stop()
+        pass
+#        self.commState = False # Halt comm thread
+#        time.sleep(0.250)
+#        if self.comm.is_connected() == True:
+#            if self.timer != None:
+#                self.timer.timeout.disconnect(self.readContinuousData)
+#                self.timer.stop()
 
     def timeStamp(self):
-        '''Records a timestamp for AeroQuad communication'''
-        now = time.time()
-        localtime = time.localtime(now)
-        milliseconds = '%03d' % int((now - int(now)) * 1000)
-        return time.strftime('%H:%M:%S.', localtime) + milliseconds
+        pass
+#        '''Records a timestamp for AeroQuad communication'''
+#        now = time.time()
+#        localtime = time.localtime(now)
+#        milliseconds = '%03d' % int((now - int(now)) * 1000)
+#        return time.strftime('%H:%M:%S.', localtime) + milliseconds
 
     def status(self, message):
         '''Send a message to the status bar on the main window'''
