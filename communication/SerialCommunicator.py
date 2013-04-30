@@ -46,11 +46,9 @@ class SerialCommunicator(object):
     def read_line(self, size=None):
         return self.comm.readline(size)        
         
-#    def disconnect(self):
-#        ''' Close the serial port and disable the "connected" flag
-#        '''
-#        self.comm.close()
-#        self.connected = False
+    def disconnect(self):
+        self.comm.close()
+        self.connected = False
         
     def write(self, data):
         self.comm.write(bytes(data.encode('utf-8')))

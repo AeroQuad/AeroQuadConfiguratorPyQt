@@ -11,13 +11,13 @@ from ui.subpanel.sensorscalibration.SensorsCalibrationPanel import Ui_SensorsCal
 class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
 
 
-    def __init__(self, vehicle_model, message_sender):
+    def __init__(self, vehicle_model, protocol_handler):
         
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         
         self.vehicle_model = vehicle_model
-        self.message_sender = message_sender
+        self._protocol_handler = protocol_handler
         
         self.ui = Ui_SensorsCalibrationPanel()
         self.ui.setupUi(self)

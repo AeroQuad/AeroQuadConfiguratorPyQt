@@ -40,12 +40,12 @@ class MotorSlider(QtGui.QWidget):
 
 class MotorCommandController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, message_sender, parent=None):
+    def __init__(self, vehicle_model, protocol_handler, parent=None):
         super(MotorCommandController, self).__init__(parent)
         BasePanelController.__init__(self)
         
-        self.vehicle_model = vehicle_model
-        self.message_sender = message_sender
+        self._vehicle_model = vehicle_model
+        self._message_sender = protocol_handler
         
         self.started = False
 

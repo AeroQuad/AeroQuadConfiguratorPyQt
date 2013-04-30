@@ -31,6 +31,10 @@ class VehicleModel(Observable):
     ALTITUDE_HOLD_ENABLED_EVENT = "Altitude Hold"
     BATTERY_MONITOR_ENABLED_EVENT = "Battery Monitor"
     
+    MAGNETOMETER_X_RAW_DATA_EVENT = "MAGNETOMETER_X_RAW_DATA_EVENT"
+    MAGNETOMETER_Y_RAW_DATA_EVENT = "MAGNETOMETER_Y_RAW_DATA_EVENT"
+    MAGNETOMETER_Z_RAW_DATA_EVENT = "MAGNETOMETER_Z_RAW_DATA_EVENT"
+    
     def __init__(self):
         Observable.__init__(self)
         
@@ -40,6 +44,10 @@ class VehicleModel(Observable):
         self._reversed_yaw = '1'
         
         self._board_onfiguration_properties = {}
+        
+        self._magnetometer_x_raw_data = '0'
+        self._magnetometer_y_raw_data = '0'
+        self._magnetometer_z_raw_data = '0'
         
 
     def get_reversed_yaw(self):
@@ -59,4 +67,17 @@ class VehicleModel(Observable):
         self._is_connected = is_connected
         self.dispatch( VehicleModel.CONNECTION_STATE_CHANGED_EVENT, self._is_connected)
         
+    def set_magnetometer_raw_data(self, x, y, z):
+        if self._magnetometer_x_raw_data != x :
+            self._magnetometer_x_raw_data = x
+            self.dispatch( VehicleModel.MAGNETOMETER_X_RAW_DATA_EVENT, self._magnetometer_x_raw_data)
+            
+        if self._magnetometer_y_raw_data != y :
+            self._magnetometer_y_raw_data = y
+            self.dispatch( VehicleModel.MAGNETOMETER_Y_RAW_DATA_EVENT, self._magnetometer_y_raw_data)
+            
+        if self._magnetometer_z_raw_data != z :
+            self._magnetometer_z_raw_data = z
+            self.dispatch( VehicleModel.MAGNETOMETER_Z_RAW_DATA_EVENT, self._magnetometer_z_raw_data)
+
         

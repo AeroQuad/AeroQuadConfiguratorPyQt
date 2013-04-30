@@ -15,7 +15,6 @@ from ui.SplashScreen import SplashScreen
 import xml.etree.ElementTree as xmlParser
 from model.VehicleModel import VehicleModel
 from communication.aqprotocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
-from communication.aqprotocolhandler.AQV4MessageSender import AQV4MessageSender
 from communication.aqprotocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
 from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
@@ -311,7 +310,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.subPanel.setCurrentIndex(selected+1) # index 0 is splash screen
         self.activeSubPanel = self.subPanelClasses[selected]
         self.activeSubPanelName = "./Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
-        self.activeSubPanel.start(self.activeSubPanelName, self.boardConfiguration)
+        self.activeSubPanel.start()
         if subPanelName == "Menu":
             self.ui.status.setText("Choose Configurator Function")
         else:
@@ -326,7 +325,7 @@ class AQMain(QtGui.QMainWindow):
     def restartSubPanel(self):
         if self.activeSubPanel != None: # Restart any running subpanels
             self.activeSubPanel.stop()
-            self.activeSubPanel.start(self.activeSubPanelName, self.boardConfiguration)
+            self.activeSubPanel.start()
             app.processEvents()
             
     def checkRequirementsMatch(self, subPanelName):
