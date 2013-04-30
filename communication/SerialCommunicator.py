@@ -33,57 +33,58 @@ class SerialCommunicator(object):
         time.sleep(delay)
         self.connected = True
         
-    def flushResponse(self):
-        ''' Keep reading the serial port until no data is detected
-        '''
-        while self.dataAvailable():
-            time.sleep(0.100)
-            self.read()
+#    def flushResponse(self):
+#        ''' Keep reading the serial port until no data is detected
+#        '''
+#        while self.dataAvailable():
+#            time.sleep(0.100)
+#            self.read()
+            
+    def flush(self):
+        self.comm.flush();
         
-    def disconnect(self):
-        ''' Close the serial port and disable the "connected" flag
-        '''
-        self.comm.close()
-        self.connected = False
+    def read_line(self, size=None):
+        return self.comm.readline(size)        
+        
+#    def disconnect(self):
+#        ''' Close the serial port and disable the "connected" flag
+#        '''
+#        self.comm.close()
+#        self.connected = False
         
     def write(self, data):
-        ''' Write a text string to the serial port
-        '''
         self.comm.write(bytes(data.encode('utf-8')))
         
-    def read(self):
-        ''' Read a text string from the serial port and remove the newline character if it exists
-        '''
-        response = self.comm.readline().decode('utf-8')
-        return response.rstrip('\r\n')
+    def read(self, size=1):
+        return self.comm.read(size)
+#        response = self.comm.readline().decode('utf-8')
+#        return response.rstrip('\r\n')
     
-    def waitForRead(self):
-        ''' Wait for data to be available at the port and return the resulting string.  If the timeout value is reached, stop waiting.
-        '''
-        timeout = 0.0
-        while not self.dataAvailable():
-            time.sleep(0.100)
-            timeout += 0.100
-            if (timeout >= self.timeout):
-                break
-        response = self.comm.readline().decode('utf-8')
-        return response.rstrip('\r\n')
-    
-    def waitForLine(self):
-        while(self.comm.inWaiting()):
-            self.bufferData += self.comm.read(self.comm.inWaiting())
-            if '\n' in buffer:
-                lineData = self.bufferData.split('\n')
-                self.lineDataReceived = lineData[-2]
-                self.bufferData = lineData[-1]
-        return self.lineDataReceived
+#    def waitForRead(self):
+#        ''' Wait for data to be available at the port and return the resulting string.  If the timeout value is reached, stop waiting.
+#        '''
+#        timeout = 0.0
+#        while not self.dataAvailable():
+#            time.sleep(0.100)
+#            timeout += 0.100
+#            if (timeout >= self.timeout):
+#                break
+#        response = self.comm.readline().decode('utf-8')
+#        return response.rstrip('\r\n')
+#    
+#    def waitForLine(self):
+#        while(self.comm.inWaiting()):
+#            self.bufferData += self.comm.read(self.comm.inWaiting())
+#            if '\n' in buffer:
+#                lineData = self.bufferData.split('\n')
+#                self.lineDataReceived = lineData[-2]
+#                self.bufferData = lineData[-1]
+#        return self.lineDataReceived
                  
-    def dataAvailable(self):
-        ''' Wait for data to be available at the serial port
-        '''
+    def data_available(self):
         return self.comm.inWaiting()
         
-    def detectPorts(self):
+    def detect_ports(self):
         ''' Detect available serial ports
         '''
         if os.name == 'nt':
@@ -100,7 +101,7 @@ class SerialCommunicator(object):
         
         return self.availablePorts
 
-    def isConnected(self):
+    def is_connected(self):
         ''' Returns if "connected" flag is enabled or disabled
         '''
         return self.connected

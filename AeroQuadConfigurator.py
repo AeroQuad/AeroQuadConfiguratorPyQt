@@ -16,6 +16,8 @@ import xml.etree.ElementTree as xmlParser
 from model.VehicleModel import VehicleModel
 from communication.aqprotocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
 from communication.aqprotocolhandler.AQV4MessageSender import AQV4MessageSender
+from communication.aqprotocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
+from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
 try:
@@ -40,10 +42,10 @@ class AQMain(QtGui.QMainWindow):
         self.comm = SerialCommunicator()
         
 
-        self.vehicle_model = VehicleModel()
+        self._vehicle_model = VehicleModel()
         # @todo Kenny, remove this!
-        self.communication_protocol_handler = AQV4ProtocolHandler(self.comm,self.vehicle_model)
-        self.message_sender = AQV4MessageSender(self.comm)
+        self._protocol_handler = AQV32ProtocolHandler(self.comm,self._vehicle_model)
+#        self.message_sender = AQV4MessageSender(self.comm)
 
         
                 
@@ -124,25 +126,22 @@ class AQMain(QtGui.QMainWindow):
         commTimeOut = float(xml.find("./Settings/CommTimeOut").text)
         try:
             self.comm.connect(str(self.ui.comPort.currentText()), int(self.ui.baudRate.currentText()), bootupDelay, commTimeOut)
-            # Stop and flush any previous telemetry being streamed
-            stopTelemetry = xml.find("./Settings/StopTelemetry").text
-            self.comm.write(stopTelemetry)
-            self.comm.flushResponse()
-            # Request version number to identify AeroQuad board
-            versionRequest = xml.find("./Settings/SoftwareVersion").text
-            self.comm.write(versionRequest)
-            version = self.comm.waitForRead()
+
+            self._protocol_handler.unsubscribe_command()
+            version = self._protocol_handler.get_flight_software_version()
 
             if version != "":
                 self.storeComPortSelection()
                 self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
                 
-                if version == "4.0" :
+                if version == '4.0' :
+                    self._protocol_handler.request_board_configuration()
                     pass
                     # this do nothign really for now, but, should be like this, currently, panels need it instantiated before!
 #                    self.communication_protocol_handler = AQV4ProtocolHandler(self.comm,self.vehicle_model)
 #                    self.message_sender = AQV4MessageSender(self.comm)
-                elif version == "3.2" :
+                elif version == '3.2' :
+                    self._protocol_handler.request_board_configuration()
                     pass
 #                    self.communication_protocol_handler = AQV32ProtocolHandler(self.comm,self.vehicle_model)
 #                    self.message_sender = AQV32MessageSender(self.comm)
@@ -236,7 +235,7 @@ class AQMain(QtGui.QMainWindow):
     def updateComPortSelection(self):
         '''Look for available comm ports and updates combo box'''
         self.ui.comPort.clear()
-        for n in self.comm.detectPorts():
+        for n in self.comm.detect_ports():
             self.ui.comPort.addItem(n)
         self.ui.comPort.insertSeparator(self.ui.comPort.count())
         self.ui.comPort.addItem("Autoconnect")
@@ -283,7 +282,7 @@ class AQMain(QtGui.QMainWindow):
             for package in packageList[1:]: # In case the module is buried into a deep package folder, loop until module is reached
                 module = getattr(module, package)
             module = getattr(module, className)
-            tempSubPanel = module(self.vehicle_model,self.message_sender)          
+            tempSubPanel = module(self._vehicle_model,self._protocol_handler)          
             tempSubPanel.initialize(self.comm, xml, self.ui, self)
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)

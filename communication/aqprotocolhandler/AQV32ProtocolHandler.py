@@ -1,59 +1,146 @@
 '''
-Created on Apr 24, 2013
+Created on Apr 23, 2013
 
-@author: Kenny
+@author: David Lobato <dav.lobato [at] gmail.com>
 '''
 
-import time
-import threading
-import Queue
-from PyQt4 import QtCore
-
-class AQV32ProtocolHandler(object):
+from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
 
 
-    def __init__(self,communicator,model):
-        
-        self.communicator = communicator
-        self.model = model
-        
-        self.is_connected = False
-        
-        self.updateStatus = QtCore.QTimer()
-        self.updateStatus.timeout.connect(self.reading_thread_call_back)
-#        self.updateStatus.start(20)
-        
-    def process_new_connection(self):
-        self.model.set_is_connected(True)
-        
-        self.communicator.write('X')
-        self.communicator.flushResponse()
-        # Request version number to identify AeroQuad board
-        
-        self.communicator.write('#')
-        size = int(self.communicator.waitForRead())
-        for index in range(size):
-            response = self.communicator.waitForRead()
-            configuration = response.split(':')
-            self.model.setBoadConfigurationProperty(configuration[0],configuration[1].strip())
-            
-            
-            
-        
-    def process_deconnection(self):
-        self.model.set_is_connected(False)
-        
-    def reading_thread_call_back(self):
 
-        if self.communicator.isConnected() :
-            if not self.is_connected :
-                self.process_new_connection()
-                self.is_connected = True
-            # read data
-        else :
-            if self.is_connected :
-                self.process_deconnection()
-        
-        
+class AQV32ProtocolHandler(ProtocolHandler):
+
+    COMMANDS = {'GetBoardConfiguration' : '#',
+                'GetRatePID'         : 'a', 
+                'SetRatePID'         : 'A',
+                'GetAttitudePID'     : 'b',
+                'SetAttitudePID'     : 'B',
+                'GetYawHeadingHoldPID':'c',
+                'SetYawHeadingHoldPID':'C',
+                'GetAltitudeHoldPID' : 'd',
+                'SetAltitudeHoldPID' : 'D',
+                'GetMiscConfig': 'e',
+                'SetMiscConfig': 'E',
+                'GetTransmitterSmoothing' : 'f',
+                'SetTransmitterSmoothing' : 'F',
+                'GetTransmitterCalibration' : 'g',
+                'SetTransmitterCalibration' : 'G',
+                'GetTransmitterOffset' : 'h',
+                'SetTransmitterOffset' : 'H',                 
+                'SubscribeSensor'  : 'i',
+                'UnsubscribeSensor'  : 'X',
+                'SubscribeRawMagnetometer' : 'j',
+                'UnsubscribeRawMagnetometer' : 'X',
+                'GetAccelCalibration' : 'k',
+                'SetAccelCalibration' : 'K',
+                'SubscribeRawAccel' : 'l',
+                'UnsubscribeRawAccel' : 'X',
+                'GetMagnetometerCalibration' : 'm',
+                'SetMagnetometerCalibration' : 'M',
+                'GetBatteryMonitor' : 'n',
+                'SetBatteryMonitor' : 'N',
+                'GetWaypoints' : 'o',
+                'SetWaypoints' : 'O',
+                'GetCameraStabilization' : 'p',
+                'SetCameraStabilization' : 'P',
+                'GetVehicleStateVariables' : 'q',
+                'SubscribeVehicleAttitude' : 'r',
+                'UnsubscribeVehicleAttitude' : 'X',
+                'SubscribeAllFlight' : 's',
+                'UnsubscribeAllFlight' : 'X',
+                'SubscribeProcessedTransmitter' : 't',
+                'UnsubscribeProcessedTransmitter' : 'X',
+                'GetRangeFinder' : 'u',
+                'SetRangeFinder' : 'U',
+                'GetGPSPID' : 'v',
+                'SetGPSPID' : 'V',
+                'GetGPSStatus' : 'y',
+                'SubscribeAltitude' : 'z',
+                'UnsubscribeAltitude' : 'X',
+                'SubscribeVoltageCurrent' : '$',
+                'UnsubscribeVoltageCurrent' : 'X',
+                'SubscribeRSSI' : '%',
+                'UnsubscribeRSSI' : 'X',
+                'InitializeEEPROM' : 'I',
+                'WriteUserValuesEEPROM' : 'W',
+                'CalibrateGyro': 'J',
+                'GenerateAccelBias' : 'L',
+                'CalibrateESCHigh' : '1',
+                'CalibrateESCLow' : '2',
+                'ESCCalibrationOn' : '3',
+                'ESCCalibrationOff' : '4',
+                'SetMotorCommands' : '5',
+                'GetMotorCommands' : '6' }
     
+    def __init__(self, communicator, vehicle_model):
+        ProtocolHandler.__init__(self, communicator, vehicle_model)
         
+#    def get_rate_PID(self):
+#        self.send_command(self.COMMANDS['GetRatePID'])
+#        return [float(i) for i in self.receiveCommandData().rstrip(',').split(',')]
+#
+#    def set_rate_PID(self, rollP, rollI, rollD, pitchP, pitchI, pitchD, rotSpeedFactor):
+#        command_data = ('{:.4f};'*7).format(rollP, rollI, rollD,pitchP, pitchI, pitchD,rotSpeedFactor)
+#        self.send_command(self.COMMANDS['SetRatePID'] + command_data)
+#        self.flush_command_data()
+#
+#    def get_attitude_PID(self):
+#        self.send_command(self.COMMANDS['GetAttitudePID'])
+#        return [float(i) for i in self.receive_command_data().rstrip(',').split(',')]
+#
+#    def set_attitude_PID(self, rollAccelP, rollAccelI, rollAccelD, pitchAccelP, pitchAccelI, pitchAccelD, rollP, rollI, rollD, pitchP, pitchI, pitchD, windupGuard):
+#        command_data = ('{:.4f};'*13).format(rollAccelP, rollAccelI, rollAccelD, pitchAccelP, pitchAccelI, pitchAccelD, rollP, rollI, rollD, pitchP, pitchI, pitchD, windupGuard)
+#        self.send_command(self.COMMANDS['SetAttitudePID']+command_data)
+#        self.flush_command_data()
+#
+#    def get_accel_calibration(self):
+#        self.send_command(self.COMMANDS['GetAccelCalibration'])
+#        return [float(i) for i in self.receiveCommandData().rstrip(',').split(',')]
+#
+#    def set_accel_calibration(self, scaleX, biasX, scaleY, biasY, scaleZ, biasZ):
+#        command_data = ('{:.4f};'*6).format(scaleX, biasX, scaleY, biasY, scaleZ, biasZ)
+#        self.send_command(self.COMMANDS['SetAccelCalibration']+command_data)
+#        self.flush_command_data()
+#
+#    def initialize_EEPROM(self):
+#        self.send_command(self.COMMANDS['InitializeEEPROM'])
+#        self.flush_command_data()
+#
+#    def generate_accel_bias(self):
+#        self.send_command(self.COMMANDS['GenerateAccelBias'])
+#        self.flush_command_data()
+#
+#    def subscribe_sensors(self, callback):
+#        def unpack_data(data):
+#            args = [t(s) for t,s in zip((float,)*7+(int,)*2,data.split(','))]
+#            return callback(*args)
+#        self.subscribe_command(self.COMMANDS['SubscribeSensor'], unpack_data)
+#
+#    def unsubscribe_sensors(self):
+#        self.unsubscribe_command(self.COMMANDS['UnsubscribeSensor'])
+#
+#    def subscribe_raw_magnetometer(self, callback):
+#        def unpack_data(data):
+#            args = [t(s) for t,s in zip((int,)*3,data.split(','))]
+#            return callback(*args)
+#        self.subscribe_command(self.COMMANDS['SubscribeRawMagnetometer'], unpack_data)
+#
+#    def unsubscribe_raw_magnetometer(self):
+#        self.unsubscribe_command(self.COMMANDS['UnsubscribeRawMagnetometer'])
+#
+#    def subscribe_raw_accelerometer(self, callback):
+#        def unpack_data(data):
+#            args = [t(s) for t,s in zip((int,)*3,data.split(','))]
+#            return callback(*args)
+#        self.subscribe_command(self.COMMANDS['SubscribeRawAccel'], unpack_data)
+#
+#    def unsubscribe_raw_accelerometer(self):
+#        self.unsubscribe_command(self.COMMANDS['UnsubscribeRawAccel'])
+
+    def request_board_configuration(self):
+        self.send_command(self.COMMANDS['GetBoardConfiguration'])
+        number_of_lines = int(self.receive_command_data())
+        for i in range(number_of_lines):
+            board_properties = self.receive_command_data().split(':')
+            self.vehicle_model.set_boad_configuration_property(board_properties[0],board_properties[1].strip())
+            
