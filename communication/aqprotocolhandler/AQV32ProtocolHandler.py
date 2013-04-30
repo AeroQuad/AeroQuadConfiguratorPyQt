@@ -5,7 +5,6 @@ Created on Apr 23, 2013
 '''
 
 from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
-from model.Vector3D import Vector3D
 
 
 
