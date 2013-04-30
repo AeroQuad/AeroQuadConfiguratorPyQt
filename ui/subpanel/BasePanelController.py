@@ -50,7 +50,7 @@ class BasePanelController(object):
         Use vehicleStatus.py as an example.'''
         self.xmlSubPanel = xmlSubPanel
         self.boardConfiguration = boardConfiguration
-        if self.comm.isConnected():
+        if self.comm.is_connected():
             pass
 #            try:
 #                telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
