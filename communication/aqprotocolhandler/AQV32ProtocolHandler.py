@@ -5,7 +5,7 @@ Created on Apr 23, 2013
 '''
 
 from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
-
+from model.Vector3D import Vector3D
 
 
 class AQV32ProtocolHandler(ProtocolHandler):
@@ -121,9 +121,16 @@ class AQV32ProtocolHandler(ProtocolHandler):
 
 
     def subscribe_raw_magnetometer(self):
-        def unpack_data(data):
-            values = data.split(',')
-            self._vehicle_model.set_magnetometer_raw_data(values[0], values[1], values[2])
+        def unpack_data():
+            if not self._date_output_queue.empty():
+                try :
+                    serial_data = self._date_output_queue.get()
+                    values = serial_data.split(',')
+                    magnetometer_raw_vector = Vector3D(values[0], values[1], values[2])
+                    self._vehicle_model.set_magnetometer_raw_data(magnetometer_raw_vector)
+                except:
+                    pass
+
         self.subscribe_command(self.COMMANDS['SubscribeRawMagnetometer'], unpack_data)
 
 #    def unsubscribe_raw_magnetometer(self):

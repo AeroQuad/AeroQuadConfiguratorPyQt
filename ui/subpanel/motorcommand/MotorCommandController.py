@@ -58,30 +58,30 @@ class MotorCommandController(QtGui.QWidget, BasePanelController):
         self.ui.sendButton.clicked.connect(self.sendCommand)
         self.ui.clearButton.clicked.connect(self.clearCommand)
 
-    def start(self, xmlSubPanel, boardConfiguration):
+    def start(self):
         '''This method starts a timer used for any long running loops in a subpanel'''
-        self.xmlSubPanel     = xmlSubPanel
-        self.validateCommand = self.xml.find(self.xmlSubPanel + 'ValidateCommand').text
-        self.command_motor   = self.xml.find(self.xmlSubPanel + 'CommandMotor').text
-        self.boardConfiguration = boardConfiguration
-
-        if self.comm.isConnected() == True:
-            self.ui.sendButton.setEnabled(True)
-            self.ui.clearButton.setEnabled(True)
-
-            if not self.started:
-                motor_count  = int(self.boardConfiguration['Motors'])
-                motor_layout = self.ui.motor_slider_widget.layout()
-
-                self.ui.motor_sliders = [MotorSlider(motor_number=(i + 1)) for i in xrange(motor_count)]
-                for motor in self.ui.motor_sliders:
-                    motor_layout.addWidget(motor)
-
-                self.started = True
-
-            self.timer = QtCore.QTimer()
-            self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(50)
+#        self.xmlSubPanel     = xmlSubPanel
+#        self.validateCommand = self.xml.find(self.xmlSubPanel + 'ValidateCommand').text
+#        self.command_motor   = self.xml.find(self.xmlSubPanel + 'CommandMotor').text
+#        self.boardConfiguration = boardConfiguration
+#
+#        if self.comm.isConnected() == True:
+#            self.ui.sendButton.setEnabled(True)
+#            self.ui.clearButton.setEnabled(True)
+#
+#            if not self.started:
+#                motor_count  = int(self.boardConfiguration['Motors'])
+#                motor_layout = self.ui.motor_slider_widget.layout()
+#
+#                self.ui.motor_sliders = [MotorSlider(motor_number=(i + 1)) for i in xrange(motor_count)]
+#                for motor in self.ui.motor_sliders:
+#                    motor_layout.addWidget(motor)
+#
+#                self.started = True
+#
+#            self.timer = QtCore.QTimer()
+#            self.timer.timeout.connect(self.readContinuousData)
+#            self.timer.start(50)
 
     def sendCommand(self):
         serial_string   = self.validateCommand + ';' + ';'.join([

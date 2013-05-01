@@ -35,26 +35,27 @@ class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
         self.ui.configView.setPixmap(scaledImage)
         self.ui.configView.setAlignment(QtCore.Qt.AlignCenter)
         
-    def start(self, xmlSubPanel, boardConfiguration):
-        self.boardConfiguration = boardConfiguration
-        if self.comm.isConnected():
-            vehicle = self.boardConfiguration["Flight Config"]
-            vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
-            self.image = QtGui.QPixmap(vehicleFile.text)
-            self.displayVehicle()            
-            self.updateConfiguration()
-        else:
-            self.ui.configSpecs.clear()
-            self.ui.configSpecs.setRowCount(2)
-            self.ui.configSpecs.setColumnCount(1)
-            messageList = ["Connect AeroQuad to Retrieve", "Vehicle Configuration..."]
-            for row in range(len(messageList)):
-                message = QtGui.QTableWidgetItem(messageList[row])                           
-                message.setTextColor(QtCore.Qt.white)
-                message.setTextAlignment(QtCore.Qt.AlignCenter)
-                message.setFlags(QtCore.Qt.ItemIsTristate)
-                self.ui.configSpecs.setItem(row, 0, message)
-                self.ui.configSpecs.resizeColumnToContents(0)
+    def start(self):
+        pass
+#        self.boardConfiguration = boardConfiguration
+#        if self.comm.isConnected():
+#            vehicle = self.boardConfiguration["Flight Config"]
+#            vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
+#            self.image = QtGui.QPixmap(vehicleFile.text)
+#            self.displayVehicle()            
+#            self.updateConfiguration()
+#        else:
+#            self.ui.configSpecs.clear()
+#            self.ui.configSpecs.setRowCount(2)
+#            self.ui.configSpecs.setColumnCount(1)
+#            messageList = ["Connect AeroQuad to Retrieve", "Vehicle Configuration..."]
+#            for row in range(len(messageList)):
+#                message = QtGui.QTableWidgetItem(messageList[row])                           
+#                message.setTextColor(QtCore.Qt.white)
+#                message.setTextAlignment(QtCore.Qt.AlignCenter)
+#                message.setFlags(QtCore.Qt.ItemIsTristate)
+#                self.ui.configSpecs.setItem(row, 0, message)
+#                self.ui.configSpecs.resizeColumnToContents(0)
         
     def updateConfiguration(self):
         if self.comm.isConnected():

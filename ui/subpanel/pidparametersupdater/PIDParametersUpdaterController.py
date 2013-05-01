@@ -30,25 +30,26 @@ class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
         self.ui.buttonSave.clicked.connect(self.underConstruction)
         self.ui.buttonLoad.clicked.connect(self.underConstruction)
         
-    def start(self, xmlSubPanel, boardConfiguration):
-        self.subPanelName = xmlSubPanel
-        self.boardConfiguration = boardConfiguration
-        parameterTypes = self.xml.findall(self.subPanelName + "/ParameterType")
-        self.ui.listParameterType.clear()
-        # Load parameter types
-        for parameterType in parameterTypes:
-            typeName = parameterType.get("Name")
-            if self.checkRequirementsMatch(self.subPanelName + "/ParameterType/[@Name='" + typeName + "']/Requirement"):
-                self.ui.listParameterType.addItem(typeName)
-        self.ui.listParameterType.setCurrentRow(0)
-        self.ui.listParameterType.setFocus()
-        descriptionHeader = QtGui.QTableWidgetItem("   Description")
-        descriptionHeader.setTextAlignment(QtCore.Qt.AlignVCenter|QtCore.Qt.AlignLeft)
-        self.ui.parameterTable.setHorizontalHeaderItem(2, descriptionHeader)
-        self.updateSelection()
-        self.ui.buttonLoad.setEnabled(self.comm.isConnected())
-        self.ui.buttonSave.setEnabled(self.comm.isConnected())
-        self.ui.buttonUpload.setEnabled(self.comm.isConnected())        
+    def start(self):
+        pass
+#        self.subPanelName = xmlSubPanel
+#        self.boardConfiguration = boardConfiguration
+#        parameterTypes = self.xml.findall(self.subPanelName + "/ParameterType")
+#        self.ui.listParameterType.clear()
+#        # Load parameter types
+#        for parameterType in parameterTypes:
+#            typeName = parameterType.get("Name")
+#            if self.checkRequirementsMatch(self.subPanelName + "/ParameterType/[@Name='" + typeName + "']/Requirement"):
+#                self.ui.listParameterType.addItem(typeName)
+#        self.ui.listParameterType.setCurrentRow(0)
+#        self.ui.listParameterType.setFocus()
+#        descriptionHeader = QtGui.QTableWidgetItem("   Description")
+#        descriptionHeader.setTextAlignment(QtCore.Qt.AlignVCenter|QtCore.Qt.AlignLeft)
+#        self.ui.parameterTable.setHorizontalHeaderItem(2, descriptionHeader)
+#        self.updateSelection()
+#        self.ui.buttonLoad.setEnabled(self.comm.isConnected())
+#        self.ui.buttonSave.setEnabled(self.comm.isConnected())
+#        self.ui.buttonUpload.setEnabled(self.comm.isConnected())        
         
     def getXmlLocation(self, value):
         selectedType = str(self.ui.listParameterType.currentItem().text())
