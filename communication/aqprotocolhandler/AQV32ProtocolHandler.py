@@ -6,6 +6,8 @@ Created on Apr 23, 2013
 
 from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
 from model.Vector3D import Vector3D
+from model.VehicleModel import VehicleModel
+import logging
 
 
 class AQV32ProtocolHandler(ProtocolHandler):
@@ -127,9 +129,9 @@ class AQV32ProtocolHandler(ProtocolHandler):
                     serial_data = self._date_output_queue.get()
                     values = serial_data.split(',')
                     magnetometer_raw_vector = Vector3D(values[0], values[1], values[2])
-                    self._vehicle_model.set_magnetometer_raw_data(magnetometer_raw_vector)
+                    self._vehicle_model.update_property_from_the_board(VehicleModel.MAGNETOMETER_RAW_DATA_EVENT,magnetometer_raw_vector)
                 except:
-                    pass
+                    logging.error("Protocol Handler: Failed to notify update magnetometer raw data")
 
         self.subscribe_command(self.COMMANDS['SubscribeRawMagnetometer'], unpack_data)
 
@@ -150,5 +152,5 @@ class AQV32ProtocolHandler(ProtocolHandler):
         number_of_lines = int(self.receive_command_data())
         for i in range(number_of_lines):
             board_properties = self.receive_command_data().split(':')
-            self._vehicle_model.set_boad_configuration_property(board_properties[0],board_properties[1].strip())
+            self._vehicle_model.update_property_from_the_board(board_properties[0],board_properties[1].strip())
             

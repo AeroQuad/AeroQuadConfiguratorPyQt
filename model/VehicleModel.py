@@ -37,37 +37,7 @@ class VehicleModel(Observable):
     def __init__(self):
         Observable.__init__(self)
         
-        self._is_connected = False
-        self._flight_config_type = FlightConfigType.QUAD_X
-        self._receiver_type = ReceiverConfigType.RECEIVER_PWM
-        self._reversed_yaw = '1'
+    def update_property_from_the_board(self, property_name, value):
+        self.dispatch(property_name, value)
         
-        self._board_onfiguration_properties = {}
-        
-        self._magnetometer_raw_vector = Vector3D('0','0','0')
-        
-
-    def get_reversed_yaw(self):
-        return self._reversed_yaw
-
-    def get_receiver_type(self):
-        return self._receiver_type
-    
-    def get_flight_config_type(self):
-        return self._flight_config_type
-        
-    def set_boad_configuration_property(self, key, value):
-        self._board_onfiguration_properties[key] = value;
-        self.dispatch( key, value)
-        
-    def set_is_connected(self, is_connected):
-        self._is_connected = is_connected
-        self.dispatch( VehicleModel.CONNECTION_STATE_CHANGED_EVENT, self._is_connected)
-        
-    def set_magnetometer_raw_data(self, magnetometer_raw_vector):
-        self._magnetometer_raw_vector = magnetometer_raw_vector
-        self.dispatch( VehicleModel.MAGNETOMETER_RAW_DATA_EVENT, self._magnetometer_raw_vector)
-            
-        
-
         

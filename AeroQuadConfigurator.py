@@ -130,7 +130,7 @@ class AQMain(QtGui.QMainWindow):
             if version != "":
                 self.storeComPortSelection()
                 self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
-                self._vehicle_model.set_is_connected(True)
+                self._vehicle_model.update_property_from_the_board(VehicleModel.CONNECTION_STATE_CHANGED_EVENT, True)
                 
                 if version == '4.0' :
                     self._protocol_handler.request_board_configuration()
@@ -177,7 +177,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.status.setText("Disconnected from the AeroQuad")
         self.boardConfiguration = {}
         self.restartSubPanel()
-        self._vehicle_model.set_is_connected(False)
+        self._vehicle_model.update_property_from_the_board(VehicleModel.CONNECTION_STATE_CHANGED_EVENT, False)
 
     def updateDetectedPorts(self):
         '''Cycles through 256 ports and checks if there is a response from them.'''
