@@ -24,13 +24,13 @@ class CommMonitorController(QtGui.QWidget, BasePanelController):
         self.ui.sendButton.clicked.connect(self.sendCommand)
         self.ui.clearButton.clicked.connect(self.clearComm)
         
-    def start(self, xmlSubPanel, boardConfiguration):
+    def start(self):
         '''This method starts a timer used for any long running loops in a subpanel'''
-        if self.comm.isConnected() == True:
-            self.timer = QtCore.QTimer()
-            self.timer.timeout.connect(self.readContinuousData)
-            self.timer.start(50)
-            self.startCommThread()
+#        if self.comm.isConnected() == True:
+#            self.timer = QtCore.QTimer()
+#            self.timer.timeout.connect(self.readContinuousData)
+#            self.timer.start(50)
+#            self.startCommThread()
             
     def sendCommand(self):
         command = str(self.ui.lineEdit.text())

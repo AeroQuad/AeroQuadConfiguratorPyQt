@@ -55,14 +55,15 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.start.clicked.connect(self.start_RCcalibration)
         self.ui.cancel.clicked.connect(self.cancel_RCcalibration)
 
-    def start(self, xmlSubPanel, boardConfiguration):
-        self.xmlSubPanel = xmlSubPanel
-        self.boardConfiguration = boardConfiguration
-        try:
-            self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
-        except:
-            logging.warning("Can't read amount of channels from boardconfiguration!")
-        self.enable_gui_attribute()
+    def start(self):
+        pass
+#        self.xmlSubPanel = xmlSubPanel
+#        self.boardConfiguration = boardConfiguration
+#        try:
+#            self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
+#        except:
+#            logging.warning("Can't read amount of channels from boardconfiguration!")
+#        self.enable_gui_attribute()
 
     def start_RCcalibration(self):
         if self.running:    

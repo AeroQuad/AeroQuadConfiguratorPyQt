@@ -124,123 +124,124 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
 
-    def start(self, xmlSubPanel, boardConfiguration):
-        '''This method starts a timer used for any long running loops in a subpanel'''
-        self.xmlSubPanel = xmlSubPanel
-        self.boardConfiguration = boardConfiguration
-        if self.comm.isConnected():
-            telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
-            if telemetry != None:
-                self.comm.write(telemetry)
-                self.startCommThread()
-                # This timer keeps telemetry queue empty
-                self.timer = QtCore.QTimer()
-                self.timer.timeout.connect(self.readContinuousData)
-                self.timer.start(50)
-                # Wait a little to give time for self.timer to start
-                time.sleep(0.200)
-                # This timer updates front screen a eye pleasing rate
-                self.updateStatus = QtCore.QTimer()
-                self.updateStatus.timeout.connect(self.updateVehicleStatus)
-                self.updateStatus.start(100)
-            
-        self.receiverChannels = 10 
-        try:
-            self.receiverChannels = int(self.boardConfiguration["Receiver Nb Channels"])
-        except:
-            print("Can't read nb receiver channels from vehicle config")
-        # Do we need these?
-        #self.altitudeDetect = self.boardConfiguration["Barometer"] == "Detected"
-        #self.batteryMonitorDetect = self.boardConfiguration["Battery Monitor"] == "Enabled"
-        
-        # Setup plots to display rest of transmitter channels
-        transmitterScene = QtGui.QGraphicsScene()
-        self.channelCount = self.receiverChannels - 4
-        self.barGaugeWidth = 25.0
-        self.xmitChannel = []
-        self.xmitLabel = []
-        if (self.channelCount == 1) :
-            self.xmitLabels = ["Mode"]
-        elif (self.channelCount == 2) :
-            self.xmitLabels = ["Mode", "Aux1"]
-        elif (self.channelCount == 3) :
-            self.xmitLabels = ["Mode", "Aux1", "Aux2"]
-        elif (self.channelCount == 4) :
-            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3"]
-        elif (self.channelCount == 5) :
-            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4"]
-        else :
-            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4", "Aux5"]
-        
-        self.labelHeight = 25
-
-        for channel in range(self.channelCount):
-            barGauge = QtGui.QGraphicsRectItem()
-            barGauge.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
-            self.xmitChannel.append(barGauge)
-            transmitterScene.addItem(self.xmitChannel[channel])
-            label = transmitterScene.addText(self.xmitLabels[channel])
-            label.setDefaultTextColor(QtCore.Qt.white)
-            label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
-            self.xmitLabel.append(label)
-        self.ui.transmitterOutput.setScene(transmitterScene)
-        
-        for channel in range(self.channelCount):
-            self.updateBarGauge(channel, 1000)
-            self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
-            
-        # Center transmitter output window
-        self.ui.transmitterOutput.centerOn(0.0, 0.0)
-        
-        # Setup background for motor view
-        motorScene = QtGui.QGraphicsScene()
-        vehicle = '0'
-        try:
-            vehicle = self.boardConfiguration["Flight Config"]
-        except:
-            print("can't read vehicle config")
-            
-        if vehicle == "0" :
-            vehicle = "Quad X"
-        elif vehicle == '1' :
-            vehicle = "Quad +"
-        elif vehicle == '2' :
-            vehicle = "Hex +"
-        elif vehicle == '3' :
-            vehicle = "Hex X"
-        elif vehicle == '4' :
-            vehicle = "Tri"
-        elif vehicle == '5' :
-            vehicle = "Quad Y4"
-        elif vehicle == '6' :
-            vehicle = "Hex Y6"
-        elif vehicle == '7' :
-            vehicle = "Octo X8"
-        elif vehicle == '8' :
-            vehicle = "Octo +"
-        elif vehicle == '9' :
-            vehicle = "Octo X"
-            
-            
-        vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
-        vehicleImage = QtGui.QPixmap(vehicleFile.text)
-        vehicleHeight = int(vehicleFile.attrib["Height"])
-        vehicleWidth = int(vehicleFile.attrib["Width"])
-        scaledImage = vehicleImage.scaled(vehicleWidth, vehicleHeight, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-        motorScene.addPixmap(scaledImage)
-        
-        # Setup motor view
-        try:
-            self.motorCount = int(self.boardConfiguration["Motors"])
-        except:
-            self.motorCount = 4
-        self.motor = []
-        motorLocation = ast.literal_eval(vehicleFile.attrib["Motors"]) # read in motor locations from XML
-        for motorIndex in range(self.motorCount):
-            self.motor.append(BarGauge("Motor " + str(motorIndex+1)))
-            self.motor[motorIndex].setPos(motorLocation[motorIndex][0], motorLocation[motorIndex][1])
-            motorScene.addItem(self.motor[motorIndex])
-        self.ui.motorView.setScene(motorScene)
+    def start(self):
+        pass
+#        '''This method starts a timer used for any long running loops in a subpanel'''
+#        self.xmlSubPanel = xmlSubPanel
+#        self.boardConfiguration = boardConfiguration
+#        if self.comm.isConnected():
+#            telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
+#            if telemetry != None:
+#                self.comm.write(telemetry)
+#                self.startCommThread()
+#                # This timer keeps telemetry queue empty
+#                self.timer = QtCore.QTimer()
+#                self.timer.timeout.connect(self.readContinuousData)
+#                self.timer.start(50)
+#                # Wait a little to give time for self.timer to start
+#                time.sleep(0.200)
+#                # This timer updates front screen a eye pleasing rate
+#                self.updateStatus = QtCore.QTimer()
+#                self.updateStatus.timeout.connect(self.updateVehicleStatus)
+#                self.updateStatus.start(100)
+#            
+#        self.receiverChannels = 10 
+#        try:
+#            self.receiverChannels = int(self.boardConfiguration["Receiver Nb Channels"])
+#        except:
+#            print("Can't read nb receiver channels from vehicle config")
+#        # Do we need these?
+#        #self.altitudeDetect = self.boardConfiguration["Barometer"] == "Detected"
+#        #self.batteryMonitorDetect = self.boardConfiguration["Battery Monitor"] == "Enabled"
+#        
+#        # Setup plots to display rest of transmitter channels
+#        transmitterScene = QtGui.QGraphicsScene()
+#        self.channelCount = self.receiverChannels - 4
+#        self.barGaugeWidth = 25.0
+#        self.xmitChannel = []
+#        self.xmitLabel = []
+#        if (self.channelCount == 1) :
+#            self.xmitLabels = ["Mode"]
+#        elif (self.channelCount == 2) :
+#            self.xmitLabels = ["Mode", "Aux1"]
+#        elif (self.channelCount == 3) :
+#            self.xmitLabels = ["Mode", "Aux1", "Aux2"]
+#        elif (self.channelCount == 4) :
+#            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3"]
+#        elif (self.channelCount == 5) :
+#            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4"]
+#        else :
+#            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4", "Aux5"]
+#        
+#        self.labelHeight = 25
+#
+#        for channel in range(self.channelCount):
+#            barGauge = QtGui.QGraphicsRectItem()
+#            barGauge.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
+#            self.xmitChannel.append(barGauge)
+#            transmitterScene.addItem(self.xmitChannel[channel])
+#            label = transmitterScene.addText(self.xmitLabels[channel])
+#            label.setDefaultTextColor(QtCore.Qt.white)
+#            label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
+#            self.xmitLabel.append(label)
+#        self.ui.transmitterOutput.setScene(transmitterScene)
+#        
+#        for channel in range(self.channelCount):
+#            self.updateBarGauge(channel, 1000)
+#            self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
+#            
+#        # Center transmitter output window
+#        self.ui.transmitterOutput.centerOn(0.0, 0.0)
+#        
+#        # Setup background for motor view
+#        motorScene = QtGui.QGraphicsScene()
+#        vehicle = '0'
+#        try:
+#            vehicle = self.boardConfiguration["Flight Config"]
+#        except:
+#            print("can't read vehicle config")
+#            
+#        if vehicle == "0" :
+#            vehicle = "Quad X"
+#        elif vehicle == '1' :
+#            vehicle = "Quad +"
+#        elif vehicle == '2' :
+#            vehicle = "Hex +"
+#        elif vehicle == '3' :
+#            vehicle = "Hex X"
+#        elif vehicle == '4' :
+#            vehicle = "Tri"
+#        elif vehicle == '5' :
+#            vehicle = "Quad Y4"
+#        elif vehicle == '6' :
+#            vehicle = "Hex Y6"
+#        elif vehicle == '7' :
+#            vehicle = "Octo X8"
+#        elif vehicle == '8' :
+#            vehicle = "Octo +"
+#        elif vehicle == '9' :
+#            vehicle = "Octo X"
+#            
+#            
+#        vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
+#        vehicleImage = QtGui.QPixmap(vehicleFile.text)
+#        vehicleHeight = int(vehicleFile.attrib["Height"])
+#        vehicleWidth = int(vehicleFile.attrib["Width"])
+#        scaledImage = vehicleImage.scaled(vehicleWidth, vehicleHeight, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+#        motorScene.addPixmap(scaledImage)
+#        
+#        # Setup motor view
+#        try:
+#            self.motorCount = int(self.boardConfiguration["Motors"])
+#        except:
+#            self.motorCount = 4
+#        self.motor = []
+#        motorLocation = ast.literal_eval(vehicleFile.attrib["Motors"]) # read in motor locations from XML
+#        for motorIndex in range(self.motorCount):
+#            self.motor.append(BarGauge("Motor " + str(motorIndex+1)))
+#            self.motor[motorIndex].setPos(motorLocation[motorIndex][0], motorLocation[motorIndex][1])
+#            motorScene.addItem(self.motor[motorIndex])
+#        self.ui.motorView.setScene(motorScene)
     
     def updateBarGauge(self, channel, value):
         #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight

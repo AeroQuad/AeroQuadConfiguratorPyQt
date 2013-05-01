@@ -35,14 +35,15 @@ class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
         self.channel_offset = 200
         self.max_amount_channels = 12
     
-    def start(self, xmlSubPanel, boardConfiguration):
-        self.xmlSubPanel = xmlSubPanel
-        self.boardConfiguration = boardConfiguration
-        try:
-            self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
-        except:
-            logging.warning("Can't read amount of channels from boardconfiguration!")
-        self.enable_gui_attribute()
+    def start(self):
+        pass
+#        self.xmlSubPanel = xmlSubPanel
+#        self.boardConfiguration = boardConfiguration
+#        try:
+#            self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
+#        except:
+#            logging.warning("Can't read amount of channels from boardconfiguration!")
+#        self.enable_gui_attribute()
     
     def cancel_RC(self):
         self.stop_RCsetup()

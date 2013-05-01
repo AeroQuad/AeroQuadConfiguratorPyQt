@@ -44,8 +44,6 @@ class AQMain(QtGui.QMainWindow):
         self._vehicle_model = VehicleModel()
         # @todo Kenny, remove this!
         self._protocol_handler = AQV32ProtocolHandler(self.comm,self._vehicle_model)
-#        self.message_sender = AQV4MessageSender(self.comm)
-
         
                 
         # Default main window conditions
@@ -132,6 +130,7 @@ class AQMain(QtGui.QMainWindow):
             if version != "":
                 self.storeComPortSelection()
                 self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
+                self._vehicle_model.set_is_connected(True)
                 
                 if version == '4.0' :
                     self._protocol_handler.request_board_configuration()
@@ -178,6 +177,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.status.setText("Disconnected from the AeroQuad")
         self.boardConfiguration = {}
         self.restartSubPanel()
+        self._vehicle_model.set_is_connected(False)
 
     def updateDetectedPorts(self):
         '''Cycles through 256 ports and checks if there is a response from them.'''
@@ -282,7 +282,7 @@ class AQMain(QtGui.QMainWindow):
                 module = getattr(module, package)
             module = getattr(module, className)
             tempSubPanel = module(self._vehicle_model,self._protocol_handler)          
-            tempSubPanel.initialize(self.comm, xml, self.ui, self)
+            tempSubPanel.initialize()
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
             subPanelCount += 1

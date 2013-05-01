@@ -100,7 +100,7 @@ class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
         self._update_panel_component()          
         print("receiver type updated!")  
             
-    def start(self, xmlSubPanel, boardConfiguration):
+    def start(self):
         pass
 
     def triCheckBoxPressed(self):

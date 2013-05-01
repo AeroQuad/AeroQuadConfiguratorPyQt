@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MagnetometerCalibrationPanel.ui'
 #
-# Created: Tue Apr 30 05:23:28 2013
+# Created: Tue Apr 30 18:33:26 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -85,27 +85,6 @@ class Ui_MagnetometerCalibrationPanel(object):
         self.label_z.setGeometry(QtCore.QRect(330, 480, 46, 13))
         self.label_z.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_z.setObjectName(_fromUtf8("label_z"))
-        self._x_vertical_slider = QtGui.QSlider(MagnetometerCalibrationPanel)
-        self._x_vertical_slider.setGeometry(QtCore.QRect(120, 19, 22, 451))
-        self._x_vertical_slider.setMinimum(-800)
-        self._x_vertical_slider.setMaximum(800)
-        self._x_vertical_slider.setPageStep(1)
-        self._x_vertical_slider.setOrientation(QtCore.Qt.Vertical)
-        self._x_vertical_slider.setObjectName(_fromUtf8("_x_vertical_slider"))
-        self._y_vertical_slider_2 = QtGui.QSlider(MagnetometerCalibrationPanel)
-        self._y_vertical_slider_2.setGeometry(QtCore.QRect(250, 20, 22, 451))
-        self._y_vertical_slider_2.setMinimum(-800)
-        self._y_vertical_slider_2.setMaximum(800)
-        self._y_vertical_slider_2.setPageStep(1)
-        self._y_vertical_slider_2.setOrientation(QtCore.Qt.Vertical)
-        self._y_vertical_slider_2.setObjectName(_fromUtf8("_y_vertical_slider_2"))
-        self._z_vertical_slider_3 = QtGui.QSlider(MagnetometerCalibrationPanel)
-        self._z_vertical_slider_3.setGeometry(QtCore.QRect(380, 20, 22, 451))
-        self._z_vertical_slider_3.setMinimum(-800)
-        self._z_vertical_slider_3.setMaximum(800)
-        self._z_vertical_slider_3.setPageStep(1)
-        self._z_vertical_slider_3.setOrientation(QtCore.Qt.Vertical)
-        self._z_vertical_slider_3.setObjectName(_fromUtf8("_z_vertical_slider_3"))
 
         self.retranslateUi(MagnetometerCalibrationPanel)
         QtCore.QMetaObject.connectSlotsByName(MagnetometerCalibrationPanel)
