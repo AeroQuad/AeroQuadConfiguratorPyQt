@@ -1,18 +1,10 @@
-'''
-Created on Apr 10, 2013
 
-@author: Kenny
-'''
-from model.FlightConfigType import FlightConfigType
-from model.ReceiverConfigType import ReceiverConfigType
 from utilities.observers.Observable import Observable
-from model.Vector3D import Vector3D
-
 
 #
 # Not a fan of singleton pattern, but, that will fit my need for now
 # 
-class VehicleModel(Observable):
+class EventDispatcher(Observable):
     
     CONNECTION_STATE_CHANGED_EVENT = "CONNECTION_STATE_CHANGED_EVENT"
     
@@ -37,7 +29,7 @@ class VehicleModel(Observable):
     def __init__(self):
         Observable.__init__(self)
         
-    def update_property_from_the_board(self, property_name, value):
+    def dispatch_event(self, property_name, value):
         self.dispatch(property_name, value)
         
         

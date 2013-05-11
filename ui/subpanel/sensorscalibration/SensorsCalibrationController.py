@@ -1,8 +1,3 @@
-'''
-Created on 22 apr. 2013
-
-@author: Erik
-'''
 
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
@@ -11,13 +6,9 @@ from ui.subpanel.sensorscalibration.SensorsCalibrationPanel import Ui_SensorsCal
 class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
 
 
-    def __init__(self, vehicle_model, protocol_handler):
-        
+    def __init__(self, event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self.vehicle_model = vehicle_model
-        self._protocol_handler = protocol_handler
         
         self.ui = Ui_SensorsCalibrationPanel()
         self.ui.setupUi(self)

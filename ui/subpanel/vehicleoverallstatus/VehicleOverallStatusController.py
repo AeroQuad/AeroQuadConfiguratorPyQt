@@ -1,29 +1,15 @@
-'''
-Created on Dec 6, 2012
-
-@author: Ted Carancho
-'''
 
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
-
-from utilities.specialwidgets.BarGauge import BarGauge
-import math
-import ast
-import time
+#from utilities.specialwidgets.BarGauge import BarGauge
 from ui.subpanel.vehicleoverallstatus.VehicleOverallStatusPanel import Ui_VehicleOverallStatusPanel
-
-
+import math
 
 class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, protocol_handler):
+    def __init__(self, event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._protocol_handler = protocol_handler
-        
         self.ui = Ui_VehicleOverallStatusPanel()
         self.ui.setupUi(self)
         self.channelCount = 0

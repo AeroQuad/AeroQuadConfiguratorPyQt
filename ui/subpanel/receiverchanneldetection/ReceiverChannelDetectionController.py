@@ -1,25 +1,13 @@
-'''
-Created on 25 mrt. 2013
 
-@author: Lithium
-'''
-
-import logging
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.receiverchanneldetection.ReceiverChannelDetectionPanel import Ui_ReceiverChannelDetectionPanel
 
-
 class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
 
-    def __init__(self, vehicle_model, protocol_handler):
-        
+    def __init__(self, event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._message_sender = protocol_handler
-        
         self.ui = Ui_ReceiverChannelDetectionPanel()
         self.ui.setupUi(self)
         self.ui.start.setEnabled(True)

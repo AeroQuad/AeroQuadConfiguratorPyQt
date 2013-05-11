@@ -1,12 +1,7 @@
-'''
-Created on Apr 23, 2013
-
-@author: David Lobato <dav.lobato [at] gmail.com>
-'''
 
 from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
 from model.Vector3D import Vector3D
-from model.VehicleModel import VehicleModel
+from model.EventDispatcher import EventDispatcher
 import logging
 
 
@@ -74,8 +69,8 @@ class AQV32ProtocolHandler(ProtocolHandler):
                 'SetMotorCommands' : '5',
                 'GetMotorCommands' : '6' }
     
-    def __init__(self, communicator, vehicle_model):
-        ProtocolHandler.__init__(self, communicator, vehicle_model)
+    def __init__(self, communicator, event_dispatcher):
+        ProtocolHandler.__init__(self, communicator, event_dispatcher)
         
 #    def get_rate_PID(self):
 #        self.send_command(self.COMMANDS['GetRatePID'])
@@ -129,7 +124,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
                     serial_data = self._date_output_queue.get()
                     values = serial_data.split(',')
                     magnetometer_raw_vector = Vector3D(values[0], values[1], values[2])
-                    self._vehicle_model.update_property_from_the_board(VehicleModel.MAGNETOMETER_RAW_DATA_EVENT,magnetometer_raw_vector)
+                    self._event_dispatcher.dispatch_event(EventDispatcher.MAGNETOMETER_RAW_DATA_EVENT,magnetometer_raw_vector)
                 except:
                     logging.error("Protocol Handler: Failed to notify update magnetometer raw data")
 
@@ -152,5 +147,5 @@ class AQV32ProtocolHandler(ProtocolHandler):
         number_of_lines = int(self.receive_command_data())
         for i in range(number_of_lines):
             board_properties = self.receive_command_data().split(':')
-            self._vehicle_model.update_property_from_the_board(board_properties[0],board_properties[1].strip())
+            self._event_dispatcher.dispatch_event(board_properties[0],board_properties[1].strip())
             

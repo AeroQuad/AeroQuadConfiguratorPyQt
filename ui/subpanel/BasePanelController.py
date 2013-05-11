@@ -1,14 +1,5 @@
-'''
-Created on Nov 19, 2012
-
-@author: Ted Carancho
-'''
-#import time
-#import threading
 
 from abc import abstractmethod
-#from abc import ABCMeta
-
 
 class BasePanelController(object):
     
