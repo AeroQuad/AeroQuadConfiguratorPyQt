@@ -1,33 +1,21 @@
-'''
-Created on 26 apr. 2013
 
-@author: Erik
-'''
-
-import logging
 from PyQt4 import QtGui
-import time
-
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.magnetometercalibration.MagnetometerCalibrationPanel import Ui_MagnetometerCalibrationPanel
-from model.VehicleModel import VehicleModel
+from model.EventDispatcher import EventDispatcher
 
 class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
 
-    def __init__(self, vehicle_model, protocol_handler):
+    def __init__(self, event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._protocol_handler = protocol_handler
-        
         self.ui = Ui_MagnetometerCalibrationPanel()
         self.ui.setupUi(self)
         
         self._is_running = False
         self._amount_axis = 3
-        self._axix_max = [0, 0, 0] # x y z
-        self._axis_min = [0, 0, 0] # x y z
+        self._axix_max = [0, 0, 0] 
+        self._axis_min = [0, 0, 0] 
         
         self._axix_x = '0'
         self._axix_y = '1'
@@ -38,8 +26,8 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.start.clicked.connect(self.start_magnetometer_calibration)
         self.ui.cancel.clicked.connect(self.cancel_magnetometer_calibration)
         
-        self._vehicle_model.register(self._magnetometer_raw_data_updated, VehicleModel.MAGNETOMETER_RAW_DATA_EVENT)
-        self._vehicle_model.register(self._connection_state_changed, VehicleModel.CONNECTION_STATE_CHANGED_EVENT)
+        event_dispatcher.register(self._magnetometer_raw_data_updated, EventDispatcher.MAGNETOMETER_RAW_DATA_EVENT)
+        event_dispatcher.register(self._connection_state_changed, EventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
         
     
     def start_magnetometer_calibration(self):
@@ -86,10 +74,10 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
 #        self.ui.commLog.append(self.timeStamp() + " <- " + self.commData.get())
 #        self.ui.commLog.ensureCursorVisible() 
 
-    def _connection_state_changed(self, sender, event, is_connected = None):
+    def _connection_state_changed(self, event, is_connected):
         self._is_connected = is_connected
 
-    def _magnetometer_raw_data_updated(self, sender, event, vector = None):
+    def _magnetometer_raw_data_updated(self, event, vector):
         self.ui.x_axis_progress_bar.setValue(int(vector.get_x()))
         self.ui.label_x.setText(vector.get_x())
         self.ui.y_axis_progress_bar.setValue(int(vector.get_y()))

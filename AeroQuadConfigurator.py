@@ -1,22 +1,16 @@
-'''
-AeroQuad Configurator v4.0
-Created on Nov 6, 2012
 
-@author: Ted Carancho
-'''
 import sys
 import logging
+import xml.etree.ElementTree as xmlParser
 
 from PyQt4 import QtCore, QtGui
 from serial import SerialException
 from ui.MainWindow import Ui_MainWindow
 from communication.SerialCommunicator import SerialCommunicator
 from ui.SplashScreen import SplashScreen
-import xml.etree.ElementTree as xmlParser
-from model.VehicleModel import VehicleModel
-from communication.aqprotocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
+from model.EventDispatcher import EventDispatcher
 from communication.aqprotocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
-from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
+
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
 try:
@@ -41,9 +35,9 @@ class AQMain(QtGui.QMainWindow):
         self.comm = SerialCommunicator()
         
 
-        self._vehicle_model = VehicleModel()
+        self._event_dispatcher = EventDispatcher()
         # @todo Kenny, remove this!
-        self._protocol_handler = AQV32ProtocolHandler(self.comm,self._vehicle_model)
+        self._protocol_handler = AQV32ProtocolHandler(self.comm,self._event_dispatcher)
         
                 
         # Default main window conditions
@@ -130,7 +124,7 @@ class AQMain(QtGui.QMainWindow):
             if version != "":
                 self.storeComPortSelection()
                 self.ui.status.setText("Connected to AeroQuad Flight Software v" + version)
-                self._vehicle_model.update_property_from_the_board(VehicleModel.CONNECTION_STATE_CHANGED_EVENT, True)
+                self._event_dispatcher.dispatch_event(EventDispatcher.CONNECTION_STATE_CHANGED_EVENT, True)
                 
                 if version == '4.0' :
                     self._protocol_handler.request_board_configuration()
@@ -177,7 +171,7 @@ class AQMain(QtGui.QMainWindow):
         self.ui.status.setText("Disconnected from the AeroQuad")
         self.boardConfiguration = {}
         self.restartSubPanel()
-        self._vehicle_model.update_property_from_the_board(VehicleModel.CONNECTION_STATE_CHANGED_EVENT, False)
+        self._event_dispatcher.dispatch_event(EventDispatcher.CONNECTION_STATE_CHANGED_EVENT, False)
 
     def updateDetectedPorts(self):
         '''Cycles through 256 ports and checks if there is a response from them.'''
@@ -281,7 +275,7 @@ class AQMain(QtGui.QMainWindow):
             for package in packageList[1:]: # In case the module is buried into a deep package folder, loop until module is reached
                 module = getattr(module, package)
             module = getattr(module, className)
-            tempSubPanel = module(self._vehicle_model,self._protocol_handler)          
+            tempSubPanel = module(self._event_dispatcher)          
             tempSubPanel.initialize()
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)

@@ -1,27 +1,16 @@
-'''
-Created on Mar 27, 2013
 
-@author: Ted Carancho
-'''
-
-import logging
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
-from model.VehicleModel import VehicleModel
+from model.EventDispatcher import EventDispatcher
 from model.FlightConfigType import FlightConfigType
 from model.ReceiverConfigType import ReceiverConfigType
 from ui.subpanel.vehicledynamicconfig.VehicleDynamicConfigPanel import Ui_VehicleDynamicConfigPanel
 
 class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, protocol_handler):
-        
+    def __init__(self, event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._protocol_handler = protocol_handler
-        
         self.ui = Ui_VehicleDynamicConfigPanel()
         self.ui.setupUi(self)
         self.ui.updateButton.clicked.connect(self._send_mini_config)
@@ -53,9 +42,9 @@ class VehicleDynamicConfigController(QtGui.QWidget, BasePanelController):
         self._selected_reversed_yaw_rotation = '1'
         self._update_panel_component()
         
-        self._vehicle_model.register(self._flight_config_updated, VehicleModel.FLIGHT_CONFIG_EVENT)
-        self._vehicle_model.register(self._yaw_direction_updated, VehicleModel.YAW_DIRECTION_CONFIG_EVENT)
-        self._vehicle_model.register(self._receiver_type_updated, VehicleModel.RECEIVER_TYPE_EVENT)
+        event_dispatcher.register(self._flight_config_updated, EventDispatcher.FLIGHT_CONFIG_EVENT)
+        event_dispatcher.register(self._yaw_direction_updated, EventDispatcher.YAW_DIRECTION_CONFIG_EVENT)
+        event_dispatcher.register(self._receiver_type_updated, EventDispatcher.RECEIVER_TYPE_EVENT)
         
         
     def _flight_config_updated(self, sender, event, msg = None):

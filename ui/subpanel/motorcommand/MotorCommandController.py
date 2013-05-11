@@ -40,19 +40,16 @@ class MotorSlider(QtGui.QWidget):
 
 class MotorCommandController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, protocol_handler, parent=None):
+    def __init__(self, event_dispatcher, parent=None):
         super(MotorCommandController, self).__init__(parent)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._message_sender = protocol_handler
-        
-        self.started = False
-
         self.ui = MotorCommandPanel()
         self.ui.setupUi(self)
         self.ui.sendButton.setEnabled(False)
         self.ui.clearButton.setEnabled(False)
+       
+        self.started = False
+
 
         # Connect GUI slots and signals
         self.ui.sendButton.clicked.connect(self.sendCommand)

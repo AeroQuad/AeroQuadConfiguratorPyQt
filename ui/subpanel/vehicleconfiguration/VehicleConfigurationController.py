@@ -1,78 +1,76 @@
-'''
-Created on Dec 5, 2012
-
-@author: Ted Carancho
-'''
 
 from PyQt4 import QtCore, QtGui
+from model.EventDispatcher import EventDispatcher
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.vehicleconfiguration.VehicleConfigurationPanel import Ui_VehicleConfigurationPanel
 
-
 class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, protocol_handler):
-        
+    VEHICLE_CONFIG_FILE_MAP = {'Quad +'     : './resources/Quad+.png',
+                               'Quad X'     : './resources/QuadX.png',
+                               'Quad Y4'    : './resources/QuadY4 v2.png',
+                               'Tri'        : './resources/Tri v2.png',
+                               'Hex +'      : './resources/Hexa+.png',
+                               'Hex X'      : './resources/HexaX.png',
+                               'Hex Y6'     : './resources/HexaX.png',
+                               'Octo X8'    : './resources/QuadX.png',
+                               'Octo X'     : './resources/OctoX.png',
+                               'Octo X+'    : './resources/Octo+.png' }
+    
+    
+    def __init__(self, event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._message_sender = protocol_handler
-        
         self.ui = Ui_VehicleConfigurationPanel()
         self.ui.setupUi(self)
-        self.image = QtGui.QPixmap("./resources/Quad+.png")
         
-        self.ui.updateButton.clicked.connect(self.updateConfiguration)
+        self.ui.configSpecs.setRowCount(15)
+        self.ui.configSpecs.setColumnCount(1)
+        self._reset_panel()
+        
+        event_dispatcher.register(self._connection_state_changed, EventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+        event_dispatcher.register(self._flight_config_received, EventDispatcher.FLIGHT_CONFIG_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.BOAR_TYPE_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.RECEIVER_TYPE_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.NUMBER_MOTORS_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.GYROSCOPE_DETECTED_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.ACCELEROMETER_DETECTED_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.BAROMETER_DETECTED_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.MAGNETOMETER_DETECTED_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.HEADING_HOLD_ENABLED_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.ALTITUDE_HOLD_ENABLED_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.BATTERY_MONITOR_ENABLED_EVENT)
+
+    def _reset_panel(self):
+        self.ui.configSpecs.clear()
+        self._row = 0
+        self._vehicle_config_image = QtGui.QPixmap(VehicleConfigurationController.VEHICLE_CONFIG_FILE_MAP['Quad +'])
+        self._display_vehicle_config()
+
+    def _connection_state_changed(self, event, is_connected):
+        self._reset_panel()
+        
+    def _flight_config_received(self, header, information):
+        self._board_config_received(header,information)
+        self._vehicle_config_image = QtGui.QPixmap(VehicleConfigurationController.VEHICLE_CONFIG_FILE_MAP[information])
+        self._display_vehicle_config()            
+    
+    def _board_config_received(self, header, information):
+        information_cellule = QtGui.QTableWidgetItem()                           
+        information_cellule.setTextColor(QtCore.Qt.white)
+        information_cellule.setTextAlignment(QtCore.Qt.AlignCenter)
+        information_cellule.setFlags(QtCore.Qt.ItemIsTristate)
+        information_cellule.setText(str(header + ' ' + information))
+        self.ui.configSpecs.setItem(self._row, 0, information_cellule)
+        self.ui.configSpecs.resizeColumnToContents(0)
+        self._row += 1
 
     def resizeEvent(self, event):
-        self.displayVehicle()
+        self._display_vehicle_config()
         
-    def displayVehicle(self):
+    def _display_vehicle_config(self):
         width = self.ui.configView.width() - 50
         height = self.ui.configView.height() - 50
-        scaledImage = self.image.scaled(width, height, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        scaledImage = self._vehicle_config_image.scaled(width, height, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
         self.ui.configView.setPixmap(scaledImage)
         self.ui.configView.setAlignment(QtCore.Qt.AlignCenter)
-        
-    def start(self):
-        pass
-#        self.boardConfiguration = boardConfiguration
-#        if self.comm.isConnected():
-#            vehicle = self.boardConfiguration["Flight Config"]
-#            vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
-#            self.image = QtGui.QPixmap(vehicleFile.text)
-#            self.displayVehicle()            
-#            self.updateConfiguration()
-#        else:
-#            self.ui.configSpecs.clear()
-#            self.ui.configSpecs.setRowCount(2)
-#            self.ui.configSpecs.setColumnCount(1)
-#            messageList = ["Connect AeroQuad to Retrieve", "Vehicle Configuration..."]
-#            for row in range(len(messageList)):
-#                message = QtGui.QTableWidgetItem(messageList[row])                           
-#                message.setTextColor(QtCore.Qt.white)
-#                message.setTextAlignment(QtCore.Qt.AlignCenter)
-#                message.setFlags(QtCore.Qt.ItemIsTristate)
-#                self.ui.configSpecs.setItem(row, 0, message)
-#                self.ui.configSpecs.resizeColumnToContents(0)
-        
-    def updateConfiguration(self):
-        if self.comm.isConnected():
-            self.status("Updating Vehicle Status...")
-            configCommand = self.xml.find(".Settings/BoardConfiguration").text
-            self.comm.write(configCommand)
-            rowCount = int(self.comm.waitForRead())
-            self.ui.configSpecs.clear()
-            self.ui.configSpecs.setRowCount(rowCount)
-            self.ui.configSpecs.setColumnCount(1)
-            for currentRow in range(rowCount):
-                config = self.comm.waitForRead()
-                spec = QtGui.QTableWidgetItem("   " + config)
-                spec.setTextColor(QtCore.Qt.white)
-                spec.setFlags(QtCore.Qt.ItemIsTristate)
-                self.ui.configSpecs.setItem(currentRow, 0, spec)
-            self.ui.configSpecs.resizeColumnToContents(0)
-            self.status("Vehicle Status Updated")
-        else:
-            self.status("Connect to the AeroQuad first to update status.")

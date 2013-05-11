@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'VehicleConfigurationPanel.ui'
 #
-# Created: Wed Apr 24 17:30:10 2013
+# Created: Sat May 11 18:22:06 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,9 +38,6 @@ class Ui_VehicleConfigurationPanel(object):
         self.gridLayout.addWidget(self.configView, 0, 0, 1, 3)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 1, 0, 1, 1)
-        self.updateButton = QtGui.QPushButton(VehicleConfigurationPanel)
-        self.updateButton.setObjectName(_fromUtf8("updateButton"))
-        self.gridLayout.addWidget(self.updateButton, 1, 4, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem1, 1, 1, 1, 1)
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -80,5 +77,4 @@ class Ui_VehicleConfigurationPanel(object):
 
     def retranslateUi(self, VehicleConfigurationPanel):
         VehicleConfigurationPanel.setWindowTitle(_translate("VehicleConfigurationPanel", "Form", None))
-        self.updateButton.setText(_translate("VehicleConfigurationPanel", "Update", None))
 

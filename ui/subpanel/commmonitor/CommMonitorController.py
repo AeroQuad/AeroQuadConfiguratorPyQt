@@ -1,19 +1,16 @@
+
 import time
-from PyQt4 import QtCore, QtGui
+
+from PyQt4 import QtGui
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.commmonitor.CommMonitorPanel import Ui_CommMonitorPanel
 
 
 class CommMonitorController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, protocol_handler):
+    def __init__(self, _event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._protocol_handler = protocol_handler
-
-        
         self.ui = Ui_CommMonitorPanel()
         self.ui.setupUi(self)
         self.ui.sendButton.setEnabled(False)

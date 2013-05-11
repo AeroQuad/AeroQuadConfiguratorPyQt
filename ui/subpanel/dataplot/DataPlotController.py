@@ -13,13 +13,9 @@ from ui.subpanel.dataplot.DataPlotPanel import Ui_DataPlotPanel
 
 class DataPlotController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_model, protocol_handler):
+    def __init__(self, event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        
-        self._vehicle_model = vehicle_model
-        self._protocol_handler = protocol_handler
-
         self.ui = Ui_DataPlotPanel()
         self.ui.setupUi(self)
 
