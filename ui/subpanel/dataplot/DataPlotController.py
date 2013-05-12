@@ -1,19 +1,12 @@
-'''
-Created on Nov 21, 2012
 
-@author: Ted Carancho
-'''
-
-from PyQt4 import QtGui, QtCore
-
-from ui.subpanel.BasePanelController import BasePanelController
-from pyqtgraph.graphicsItems.PlotCurveItem import PlotCurveItem
+from PyQt4 import QtGui
+#from pyqtgraph.graphicsItems.PlotCurveItem import PlotCurveItem
 from ui.subpanel.dataplot.DataPlotPanel import Ui_DataPlotPanel
-
+from ui.subpanel.BasePanelController import BasePanelController
 
 class DataPlotController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, event_dispatcher):
+    def __init__(self, event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_DataPlotPanel()

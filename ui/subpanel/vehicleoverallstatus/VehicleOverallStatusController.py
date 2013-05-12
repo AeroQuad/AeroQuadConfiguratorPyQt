@@ -1,96 +1,126 @@
 
 from PyQt4 import QtCore, QtGui
+from model.EventDispatcher import EventDispatcher
+from model.VehicleConfigImageMap import VEHICLE_CONFIG_FILE_MAP
 from ui.subpanel.BasePanelController import BasePanelController
-#from utilities.specialwidgets.BarGauge import BarGauge
+from utilities.specialwidgets.BarGauge import BarGauge
 from ui.subpanel.vehicleoverallstatus.VehicleOverallStatusPanel import Ui_VehicleOverallStatusPanel
 import math
 
 class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, event_dispatcher):
+    MOTORS_GAUGE_POSITION = {'Quad +'     : ((182,22), (300,140), (182,255), (62,140)),
+                             'Quad X'     : ((80,35), (280,35), (80,240), (280,240)),
+                             'Quad Y4'    : ((66,23), (222,23), (145,260), (300,260)),
+                             'Tri'        : ((330,240), (80,35), (285,35), (182,240)),
+                             'Hex +'      : ((235,30), (390,100), (390,275),(235,350), (75,275), (75,100)),
+                             'Hex X'      : ((150,30), (320,30), (390,190), (320,350), (150,350), (75,190)),
+                             'Hex Y6'     : ((50,45), (170,45), (170,340), (295,45), (420,45), (300,340)),
+                             'Octo X8'    : ((192,27), (325,190), (192,350), (55,190),(275,27), (410,190), (275,350), (140,190)),
+                             'Octo X'     : ((165,25), (295,25), (385,130), (385,260), (295,350), (165,350), (70,260), (70,130)),
+                             'Octo X+'    : ((235,30), (360,65), (395,185), (360,315), (235,350), (110,315), (75,185), (110,65)) }
+
+    
+    def __init__(self, event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_VehicleOverallStatusPanel()
         self.ui.setupUi(self)
-        self.channelCount = 0
-        self.rawData = ""
         
-        # Setup artificial horizon    
-        horizon = QtGui.QPixmap("./resources/artificialHorizonBackGround.svg")
-        self.horizonItem = QtGui.QGraphicsPixmapItem(horizon)
+        self._protocol_handler = protocol_handler
+        self._channel_count = 0
+        self._flight_config = 'Quad +'
+        self._channel_bar_gauge_array = []
+        self._channels_label_array_text = ['Mode']
+        self._channels_label_array_object = []
+        self._motor_gauge_pixel_width = 25.0
+        self._label_pixel_height = 25
+        self._window_height = 400
         
-        horizonDial = QtGui.QPixmap("./resources/artificialHorizonDial.svg")
-        horizonDialItem = QtGui.QGraphicsPixmapItem(horizonDial)
-        horizonDialItem.setPos(QtCore.QPointF(100.0, 390.0))
-             
-        horizonCompassBackground = QtGui.QPixmap("./resources/artificialHorizonCompassBackGround.svg")
-        horizonCompassBackGroundItem = QtGui.QGraphicsPixmapItem(horizonCompassBackground)
-        horizonCompassBackGroundItem.setPos(QtCore.QPointF(100.0, 390.0))
-                       
-        horizonCompass = QtGui.QPixmap("./resources/artificialHorizonCompass.svg")
-        self.horizonCompassItem = QtGui.QGraphicsPixmapItem(horizonCompass)
-        self.horizonCompassItem.setPos(QtCore.QPointF(100.0, 390.0)) 
+        self._motors_count = 4
+        self._vehicle_roll = 0.0
+        self._vehicle_pitch = 0.0
         
-        horizonScene = QtGui.QGraphicsScene()
-        horizonScene.addItem(self.horizonItem)
-        horizonScene.addItem(horizonDialItem)
-        horizonScene.addItem(horizonCompassBackGroundItem)
-        horizonScene.addItem(self.horizonCompassItem)
+        self._receiver_roll = 0
+        self._receiver_pitch = 0
+        self._receiver_yaw = 0
+        self._receiver_throttle = 0
 
-        # Setup text info in artificial horizon
-        rollLabel = horizonScene.addText("Roll:")
+        horizon_background_image = QtGui.QPixmap('./resources/artificialHorizonBackGround.svg')
+        self._horizon_background_image = QtGui.QGraphicsPixmapItem(horizon_background_image)
+        
+        horizon_dial_image = QtGui.QPixmap('./resources/artificialHorizonDial.svg')
+        horizon_dial_item = QtGui.QGraphicsPixmapItem(horizon_dial_image)
+        horizon_dial_item.setPos(QtCore.QPointF(100.0, 390.0))
+             
+        horizon_compass_background = QtGui.QPixmap('./resources/artificialHorizonCompassBackGround.svg')
+        horizon_compass_background_item = QtGui.QGraphicsPixmapItem(horizon_compass_background)
+        horizon_compass_background_item.setPos(QtCore.QPointF(100.0, 390.0))
+                       
+        horizon_compass = QtGui.QPixmap('./resources/artificialHorizonCompass.svg')
+        self._horizon_compass_item = QtGui.QGraphicsPixmapItem(horizon_compass)
+        self._horizon_compass_item.setPos(QtCore.QPointF(100.0, 390.0)) 
+        
+        horizon_scene = QtGui.QGraphicsScene()
+        horizon_scene.addItem(self._horizon_background_image)
+        horizon_scene.addItem(horizon_dial_item)
+        horizon_scene.addItem(horizon_compass_background_item)
+        horizon_scene.addItem(self._horizon_compass_item)
+
+        # Setup text info in artificial horizon_background_image
+        rollLabel = horizon_scene.addText('Roll:')
         rollLabel.setDefaultTextColor(QtCore.Qt.white)
         rollLabel.setPos(102, 420)
-        self.roll = horizonScene.addText("0.0")
+        self.roll = horizon_scene.addText('0.0')
         self.roll.setDefaultTextColor(QtCore.Qt.white)
         self.roll.setPos(125, 420)
-        pitchLabel = horizonScene.addText("Pitch:")
+        pitchLabel = horizon_scene.addText('Pitch:')
         pitchLabel.setDefaultTextColor(QtCore.Qt.white)
         pitchLabel.setPos(102, 405)
-        self.pitch = horizonScene.addText("0.0")
+        self.pitch = horizon_scene.addText('0.0')
         self.pitch.setDefaultTextColor(QtCore.Qt.white)
         self.pitch.setPos(132, 405)
-        headingLabel = horizonScene.addText("Heading:")
+        headingLabel = horizon_scene.addText('Heading:')
         headingLabel.setDefaultTextColor(QtCore.Qt.white)
         headingLabel.setPos(102, 390)
-        self.heading = horizonScene.addText("0.0")
+        self.heading = horizon_scene.addText('0.0')
         self.heading.setDefaultTextColor(QtCore.Qt.white)
         self.heading.setPos(147, 390)
-        altitudeLabel = horizonScene.addText("Altitude:")
+        altitudeLabel = horizon_scene.addText('Altitude:')
         altitudeLabel.setDefaultTextColor(QtCore.Qt.white)
         altitudeLabel.setPos(320, 390)
-        self.altitude = horizonScene.addText("000.0")
+        self.altitude = horizon_scene.addText('000.0')
         self.altitude.setDefaultTextColor(QtCore.Qt.white)
         self.altitude.setPos(363, 390)
-        altHoldLabel = horizonScene.addText("Alt Hold:")
+        altHoldLabel = horizon_scene.addText('Alt Hold:')
         altHoldLabel.setDefaultTextColor(QtCore.Qt.white)
         altHoldLabel.setPos(331, 405)
-        self.altitudeHold = horizonScene.addText("Off")
+        self.altitudeHold = horizon_scene.addText('Off')
         self.altitudeHold.setDefaultTextColor(QtCore.Qt.red)
         self.altitudeHold.setPos(374, 405)
-        armLabel = horizonScene.addText("Motors:")
+        armLabel = horizon_scene.addText('Motors:')
         armLabel.setDefaultTextColor(QtCore.Qt.white)
         armLabel.setPos(102, 653)
-        self.motorArm = horizonScene.addText("Not Armed")
+        self.motorArm = horizon_scene.addText('Not Armed')
         self.motorArm.setDefaultTextColor(QtCore.Qt.red)
         self.motorArm.setPos(102, 668)
-        battLabel = horizonScene.addText("Batt:")
+        battLabel = horizon_scene.addText('Batt:')
         battLabel.setDefaultTextColor(QtCore.Qt.white)
         battLabel.setPos(330, 653)
-        self.batteryPower = horizonScene.addText("0.000")
+        self.batteryPower = horizon_scene.addText('0.000')
         self.batteryPower.setDefaultTextColor(QtCore.Qt.white)
         self.batteryPower.setPos(357, 653)
-        modeLabel = horizonScene.addText("Mode:")
+        modeLabel = horizon_scene.addText('Mode:')
         modeLabel.setDefaultTextColor(QtCore.Qt.white)
         modeLabel.setPos(330, 668)
-        self.flightMode = horizonScene.addText("Acro")
+        self.flightMode = horizon_scene.addText('Acro')
         self.flightMode.setDefaultTextColor(QtCore.Qt.yellow)
         self.flightMode.setPos(362, 668)
-        self.ui.artificialHorizon.setScene(horizonScene)
+        self.ui.artificialHorizon.setScene(horizon_scene)
         
         # Setup left transmitter stick
         leftStickScene = QtGui.QGraphicsScene()
-        leftStickBackground = QtGui.QPixmap("./resources/TxDial.png")
+        leftStickBackground = QtGui.QPixmap('./resources/TxDial.png')
         leftStickItem = QtGui.QGraphicsPixmapItem(leftStickBackground)
         leftStickScene.addItem(leftStickItem)
         self.leftStick = QtGui.QGraphicsEllipseItem(QtCore.QRectF(75, 75, 30, 30))
@@ -101,7 +131,7 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         
         # Setup right transmitter stick
         rightStickScene = QtGui.QGraphicsScene()
-        rightStickBackground = QtGui.QPixmap("./resources/TxDial.png")
+        rightStickBackground = QtGui.QPixmap('./resources/TxDial.png')
         rightStickItem = QtGui.QGraphicsPixmapItem(rightStickBackground)
         rightStickScene.addItem(rightStickItem)
         self.rightStick = QtGui.QGraphicsEllipseItem(QtCore.QRectF(75, 75, 30, 30))
@@ -109,216 +139,255 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         self.rightStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
+        
+        event_dispatcher.register(self._flight_config_received, EventDispatcher.FLIGHT_CONFIG_EVENT)
+        event_dispatcher.register(self._receiver_channel_count_received, EventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
+        event_dispatcher.register(self._motors_count_received, EventDispatcher.NUMBER_MOTORS_EVENT)
+        event_dispatcher.register(self._motor_armed_event, EventDispatcher.MOTOR_ARMED_PROPERTY_EVENT)
+        event_dispatcher.register(self._vehicle_roll_event, EventDispatcher.VEHICLE_ROLL_PROPERTY_EVENT)
+        event_dispatcher.register(self._vehicle_pitch_event, EventDispatcher.VEHICLE_PITCH_PROPERTY_EVENT)
+        event_dispatcher.register(self._vehicle_heading_event, EventDispatcher.VEHICLE_HEADING_PROPERTY_EVENT)
+        event_dispatcher.register(self._vehicle_altitude_hold_state_event, EventDispatcher.ALTITUDE_HOLD_STATE_PROPERTY_EVENT)
+        event_dispatcher.register(self._vehicle_altitude_event, EventDispatcher.VEHICLE_ALTITUDE_PROPERTY_EVENT)
+        
+        event_dispatcher.register(self._receiver_roll_event, EventDispatcher.RECEIVER_ROLL_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_pitch_event, EventDispatcher.RECEIVER_PITCH_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_yaw_event, EventDispatcher.RECEIVER_YAW_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_throttle_event, EventDispatcher.RECEIVER_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_mode_event, EventDispatcher.RECEIVER_MODE_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_aux1_event, EventDispatcher.RECEIVER_AUX1_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_aux2_event, EventDispatcher.RECEIVER_AUX2_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_aux3_event, EventDispatcher.RECEIVER_AUX3_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_aux4_event, EventDispatcher.RECEIVER_AUX4_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_aux5_event, EventDispatcher.RECEIVER_AUX5_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_aux6_event, EventDispatcher.RECEIVER_AUX6_PROPERTY_EVENT)
+        event_dispatcher.register(self._receiver_aux7_event, EventDispatcher.RECEIVER_AUX7_PROPERTY_EVENT)
+        
+        event_dispatcher.register(self._motor1_throttle_event, EventDispatcher.MOTOR1_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._motor2_throttle_event, EventDispatcher.MOTOR2_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._motor3_throttle_event, EventDispatcher.MOTOR3_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._motor4_throttle_event, EventDispatcher.MOTOR4_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._motor5_throttle_event, EventDispatcher.MOTOR5_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._motor6_throttle_event, EventDispatcher.MOTOR6_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._motor7_throttle_event, EventDispatcher.MOTOR7_THROTTLE_PROPERTY_EVENT)
+        event_dispatcher.register(self._motor8_throttle_event, EventDispatcher.MOTOR8_THROTTLE_PROPERTY_EVENT)
+        
+        event_dispatcher.register(self._flight_mode_event, EventDispatcher.FLIGHT_MODE_PROPERTY_EVENT)
+        event_dispatcher.register(self._battery_voltage_received, EventDispatcher.BATTERY_VOLTAGE_PROPERTY_EVENT)
+        
+    def _flight_config_received(self, event, flight_config):
+        self._flight_config = flight_config
+        
+    def _receiver_channel_count_received(self, event, channel_count):
+        self._channel_count = int(channel_count)
+        if (self._channel_count == 5) :
+            self._channels_label_array_text = ['Mode']
+        elif (self._channel_count == 6) :
+            self._channels_label_array_text = ['Mode', 'Aux1']
+        elif (self._channel_count == 7) :
+            self._channels_label_array_text = ['Mode', 'Aux1', 'Aux2']
+        elif (self._channel_count == 8) :
+            self._channels_label_array_text = ['Mode', 'Aux1', 'Aux2', 'Aux3']
+        elif (self._channel_count == 9) :
+            self._channels_label_array_text = ['Mode', 'Aux1', 'Aux2', 'Aux3', 'Aux4']
+        else :
+            self._channels_label_array_text = ['Mode', 'Aux1', 'Aux2', 'Aux3', 'Aux4', 'Aux5']
+        
+        transmitterScene = QtGui.QGraphicsScene()
+        for channel in range(self._channel_count-4):
+            barGauge = QtGui.QGraphicsRectItem()
+            barGauge.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
+            self._channel_bar_gauge_array.append(barGauge)
+            transmitterScene.addItem(self._channel_bar_gauge_array[channel])
+            label = transmitterScene.addText(self._channels_label_array_text[channel])
+            label.setDefaultTextColor(QtCore.Qt.white)
+            label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
+            self._channels_label_array_object.append(label)
+        self.ui.transmitterOutput.setScene(transmitterScene)     
+        
+        for channel in range(self._channel_count-4):
+            self._update_receiver_bar_widget(channel, 1000)
+            self._channels_label_array_object[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
+            
+        self.ui.transmitterOutput.centerOn(0.0, 0.0)
+   
+    def _motors_count_received(self, event, motors_count):
+        self._motors_count = int(motors_count)
+        motorScene = QtGui.QGraphicsScene()
+        self.motor = []
+        motorLocation = VehicleOverallStatusController.MOTORS_GAUGE_POSITION[self._flight_config]
+        for motorIndex in range(int(motors_count)):
+            self.motor.append(BarGauge('Motor ' + str(motorIndex+1)))
+            self.motor[motorIndex].setPos(motorLocation[motorIndex][0], motorLocation[motorIndex][1])
+            motorScene.addItem(self.motor[motorIndex])
+        self.ui.motorView.setScene(motorScene)
+        vehicleImage = QtGui.QPixmap(VEHICLE_CONFIG_FILE_MAP[self._flight_config])
+        scaledImage = vehicleImage.scaled(400, 400, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        motorScene.addPixmap(scaledImage)
+        
+    def _motor_armed_event(self, event, are_motor_armed):
+        if are_motor_armed :
+            self.motorArm.setPlainText('Armed')
+            self.motorArm.setDefaultTextColor(QtCore.Qt.green)
+        else :
+            self.motorArm.setPlainText('Not Armed')
+            self.motorArm.setDefaultTextColor(QtCore.Qt.red)
+            
+    def _vehicle_roll_event(self, event, vehicle_roll):
+        self._vehicle_roll = math.degrees(vehicle_roll)
+        self.roll.setPlainText('{:.1f}'.format(self._vehicle_roll))
+        self._update_pitch_poll_widget(self._vehicle_roll,self._vehicle_pitch)
+        
+    def _vehicle_pitch_event(self, event, vehicle_pitch):
+        self._vehicle_pitch = math.degrees(vehicle_pitch)
+        self.pitch.setPlainText('{:.1f}'.format(self._vehicle_pitch))
+        self._update_pitch_poll_widget(self._vehicle_roll,self._vehicle_pitch)        
 
-    def start(self):
-        pass
-#        '''This method starts a timer used for any long running loops in a subpanel'''
-#        self.xmlSubPanel = xmlSubPanel
-#        self.boardConfiguration = boardConfiguration
-#        if self.comm.isConnected():
-#            telemetry = self.xml.find(xmlSubPanel + "/Telemetry").text
-#            if telemetry != None:
-#                self.comm.write(telemetry)
-#                self.startCommThread()
-#                # This timer keeps telemetry queue empty
-#                self.timer = QtCore.QTimer()
-#                self.timer.timeout.connect(self.readContinuousData)
-#                self.timer.start(50)
-#                # Wait a little to give time for self.timer to start
-#                time.sleep(0.200)
-#                # This timer updates front screen a eye pleasing rate
-#                self.updateStatus = QtCore.QTimer()
-#                self.updateStatus.timeout.connect(self.updateVehicleStatus)
-#                self.updateStatus.start(100)
-#            
-#        self.receiverChannels = 10 
-#        try:
-#            self.receiverChannels = int(self.boardConfiguration["Receiver Nb Channels"])
-#        except:
-#            print("Can't read nb receiver channels from vehicle config")
-#        # Do we need these?
-#        #self.altitudeDetect = self.boardConfiguration["Barometer"] == "Detected"
-#        #self.batteryMonitorDetect = self.boardConfiguration["Battery Monitor"] == "Enabled"
-#        
-#        # Setup plots to display rest of transmitter channels
-#        transmitterScene = QtGui.QGraphicsScene()
-#        self.channelCount = self.receiverChannels - 4
-#        self.barGaugeWidth = 25.0
-#        self.xmitChannel = []
-#        self.xmitLabel = []
-#        if (self.channelCount == 1) :
-#            self.xmitLabels = ["Mode"]
-#        elif (self.channelCount == 2) :
-#            self.xmitLabels = ["Mode", "Aux1"]
-#        elif (self.channelCount == 3) :
-#            self.xmitLabels = ["Mode", "Aux1", "Aux2"]
-#        elif (self.channelCount == 4) :
-#            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3"]
-#        elif (self.channelCount == 5) :
-#            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4"]
-#        else :
-#            self.xmitLabels = ["Mode", "Aux1", "Aux2", "Aux3", "Aux4", "Aux5"]
-#        
-#        self.labelHeight = 25
-#
-#        for channel in range(self.channelCount):
-#            barGauge = QtGui.QGraphicsRectItem()
-#            barGauge.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
-#            self.xmitChannel.append(barGauge)
-#            transmitterScene.addItem(self.xmitChannel[channel])
-#            label = transmitterScene.addText(self.xmitLabels[channel])
-#            label.setDefaultTextColor(QtCore.Qt.white)
-#            label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
-#            self.xmitLabel.append(label)
-#        self.ui.transmitterOutput.setScene(transmitterScene)
-#        
-#        for channel in range(self.channelCount):
-#            self.updateBarGauge(channel, 1000)
-#            self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
-#            
-#        # Center transmitter output window
-#        self.ui.transmitterOutput.centerOn(0.0, 0.0)
-#        
-#        # Setup background for motor view
-#        motorScene = QtGui.QGraphicsScene()
-#        vehicle = '0'
-#        try:
-#            vehicle = self.boardConfiguration["Flight Config"]
-#        except:
-#            print("can't read vehicle config")
-#            
-#        if vehicle == "0" :
-#            vehicle = "Quad X"
-#        elif vehicle == '1' :
-#            vehicle = "Quad +"
-#        elif vehicle == '2' :
-#            vehicle = "Hex +"
-#        elif vehicle == '3' :
-#            vehicle = "Hex X"
-#        elif vehicle == '4' :
-#            vehicle = "Tri"
-#        elif vehicle == '5' :
-#            vehicle = "Quad Y4"
-#        elif vehicle == '6' :
-#            vehicle = "Hex Y6"
-#        elif vehicle == '7' :
-#            vehicle = "Octo X8"
-#        elif vehicle == '8' :
-#            vehicle = "Octo +"
-#        elif vehicle == '9' :
-#            vehicle = "Octo X"
-#            
-#            
-#        vehicleFile = self.xml.find(xmlSubPanel + "/VehicleGraphics/Vehicle/[@Name='" + vehicle + "']")
-#        vehicleImage = QtGui.QPixmap(vehicleFile.text)
-#        vehicleHeight = int(vehicleFile.attrib["Height"])
-#        vehicleWidth = int(vehicleFile.attrib["Width"])
-#        scaledImage = vehicleImage.scaled(vehicleWidth, vehicleHeight, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-#        motorScene.addPixmap(scaledImage)
-#        
-#        # Setup motor view
-#        try:
-#            self.motorCount = int(self.boardConfiguration["Motors"])
-#        except:
-#            self.motorCount = 4
-#        self.motor = []
-#        motorLocation = ast.literal_eval(vehicleFile.attrib["Motors"]) # read in motor locations from XML
-#        for motorIndex in range(self.motorCount):
-#            self.motor.append(BarGauge("Motor " + str(motorIndex+1)))
-#            self.motor[motorIndex].setPos(motorLocation[motorIndex][0], motorLocation[motorIndex][1])
-#            motorScene.addItem(self.motor[motorIndex])
-#        self.ui.motorView.setScene(motorScene)
+    def _update_pitch_poll_widget(self, rollAngle, pitchAngle):
+        pitchPosition = self._scale_receiver_channel_to_widget(-pitchAngle, (-135.0, 135.0), (540.0, -540.0))
+        rollCenter = self._scale_receiver_channel_to_widget(-pitchAngle, (-135.0, 135.0), (0, 1080.0))
+        self._horizon_background_image.setPos(0, pitchPosition)
+        self._horizon_background_image.setTransformOriginPoint(250.0, rollCenter)
+        self._horizon_background_image.setRotation(-rollAngle)
+
+    def _vehicle_heading_event(self, event, vehicle_heading):            
+        heading = math.degrees(vehicle_heading)
+        self.heading.setPlainText('{:.1f}'.format(heading).zfill(5))
+        self._horizon_compass_item.setTransformOriginPoint(150.0, 150.0)
+        self._horizon_compass_item.setRotation(-heading)
+        
+    def _vehicle_altitude_hold_state_event(self, event, vehicle_altitude):
+        if vehicle_altitude == '1':
+            self.altitudeHold.setPlainText('On')
+            self.altitudeHold.setDefaultTextColor(QtCore.Qt.green)
+        else:
+            self.altitudeHold.setPlainText('Off')
+            self.altitudeHold.setDefaultTextColor(QtCore.Qt.red)
+        
+    def _vehicle_altitude_event(self, event, vehicle_altitude):
+        self.altitude.setPlainText('{:.1f}'.format(vehicle_altitude).zfill(5))
+        
+    def _receiver_roll_event(self, event, roll):
+        self._receiver_roll = roll
+        self._update_right_stick_widget(self._receiver_roll, self._receiver_pitch)
     
-    def updateBarGauge(self, channel, value):
-        #output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 25.0)) - self.labelHeight
-        output = self.scale(value, (1000.0, 2000.0), (25.0, self.windowHeight - 10)) - self.labelHeight
-        self.xmitChannel[channel].setRect(self.xmitChannelLocation(channel), self.windowHeight-(output + self.labelHeight), self.barGaugeWidth, output)
+    def _receiver_pitch_event(self, event, pitch):
+        self._receiver_pitch = pitch
+        self._update_right_stick_widget(self._receiver_roll, self._receiver_pitch)
+        
+    def _update_right_stick_widget(self, roll, pitch):
+        rollPosition = self._scale_receiver_channel_to_widget(roll, (1000.0, 2000.0), (-57.0, 55.0))
+        pitchPosition = self._scale_receiver_channel_to_widget(pitch, (1000.0, 2000.0), (58.0, -57.0))
+        self.rightStick.setPos(rollPosition, pitchPosition)        
+    
+    def _receiver_yaw_event(self, event, yaw):
+        self._receiver_yaw = yaw
+        self._update_left_stick_widget(self._receiver_throttle, self._receiver_yaw)
+    
+    def _receiver_throttle_event(self, event, throttle):
+        self._receiver_throttle = throttle
+        self._update_left_stick_widget(self._receiver_throttle, self._receiver_yaw)
+    
+    def _update_left_stick_widget(self, throttle, yaw):
+        throttlePosition = self._scale_receiver_channel_to_widget(throttle, (1000.0, 2000.0), (58.0, -57.0))
+        yawPosition = self._scale_receiver_channel_to_widget(yaw, (1000.0, 2000.0), (-57.0, 55.0))
+        self.leftStick.setPos(yawPosition, throttlePosition)
+        
+    def _scale_receiver_channel_to_widget(self, val, src, dst):
+        return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
+    
+    def _receiver_mode_event(self, event, mode):
+        self._update_receiver_bar_widget(0, mode)
+    
+    def _receiver_aux1_event(self, event, aux1):
+        if self._channel_count >= 6 :
+            self._update_receiver_bar_widget(1, aux1)
+    
+    def _receiver_aux2_event(self, event, aux2):
+        if self._channel_count >= 7 :
+            self._update_receiver_bar_widget(2, aux2)
+    
+    def _receiver_aux3_event(self, event, aux3):
+        if self._channel_count >= 8 :
+            self._update_receiver_bar_widget(3, aux3)
+    
+    def _receiver_aux4_event(self, event, aux4):
+        if self._channel_count >= 9 :
+            self._update_receiver_bar_widget(4, aux4)
+    
+    def _receiver_aux5_event(self, event, aux5):
+        if self._channel_count >= 10 :
+            self._update_receiver_bar_widget(5, aux5)
+    
+    def _receiver_aux6_event(self, event, aux6):
+        if self._channel_count >= 11 :
+            self._update_receiver_bar_widget(6, aux6)
+    
+    def _receiver_aux7_event(self, event, aux7):
+        if self._channel_count >= 12 :
+            self._update_receiver_bar_widget(7, aux7)
+            
+    def _motor1_throttle_event(self, event, motor1_throttle):
+        self.motor[0].setValue(motor1_throttle)
+
+    def _motor2_throttle_event(self, event, motor2_throttle):
+        self.motor[1].setValue(motor2_throttle)
+
+    def _motor3_throttle_event(self, event, motor3_throttle):
+        self.motor[2].setValue(motor3_throttle)
+
+    def _motor4_throttle_event(self, event, motor4_throttle):
+        self.motor[3].setValue(motor4_throttle)
+
+    def _motor5_throttle_event(self, event, motor5_throttle):
+        if self._motors_count >= 6 :
+            self.motor[4].setValue(motor5_throttle)
+
+    def _motor6_throttle_event(self, event, motor6_throttle):
+        if self._motors_count >= 6 :
+            self.motor[5].setValue(motor6_throttle)
+
+    def _motor7_throttle_event(self, event, motor7_throttle):
+        if self._motors_count >= 8 :
+            self.motor[6].setValue(motor7_throttle)
+
+    def _motor8_throttle_event(self, event, motor8_throttle):
+        if self._motors_count >= 8 :
+            self.motor[7].setValue(motor8_throttle)
+            
+    def _flight_mode_event(self, event, flight_mode):
+        self.flightMode.setPlainText(flight_mode)
+        if flight_mode == 'Accro':
+            self.flightMode.setDefaultTextColor(QtCore.Qt.yellow)
+        else:
+            self.flightMode.setDefaultTextColor(QtCore.Qt.green)
+    
+    def _battery_voltage_received(self, event, battery_voltage):
+        self.batteryPower.setPlainText('{:.3f}'.format(battery_voltage))
+        
+    def start(self):
+        self._protocol_handler.unsubscribe_command()
+        self._protocol_handler.subscribe_vehicle_status()
+    
+    def stop(self):
+        self._protocol_handler.unsubscribe_command()
+    
+    def _update_receiver_bar_widget(self, channel, value):
+        output = self._scale_receiver_channel_to_widget(value, (1000.0, 2000.0), (25.0, self._window_height - 10)) - self._label_pixel_height
+        self._channel_bar_gauge_array[channel].setRect(self.xmitChannelLocation(channel), self._window_height-(output + self._label_pixel_height), self._motor_gauge_pixel_width, output)
 
     def xmitChannelLocation(self, channel):
-        barPosition = (self.ui.transmitterOutput.width() - (self.barGaugeWidth * self.channelCount)) / (self.channelCount + 1)
-        location = ((channel + 1) * barPosition) + (channel * self.barGaugeWidth)
+        barPosition = (self.ui.transmitterOutput.width() - (self._motor_gauge_pixel_width * self._channel_count)) / (self._channel_count + 1)
+        location = ((channel + 1) * barPosition) + (channel * self._motor_gauge_pixel_width)
         return location
 
     def resizeEvent(self, event):
         #size = event.size()
-        self.windowHeight = self.ui.transmitterOutput.height()
+        self._window_height = self.ui.transmitterOutput.height()
         self.windowWidth = self.ui.transmitterOutput.width()
-        self.ui.transmitterOutput.setSceneRect(0, 0, self.windowWidth*2, self.windowHeight*2)
+        self.ui.transmitterOutput.setSceneRect(0, 0, self.windowWidth*2, self._window_height*2)
         self.ui.transmitterOutput.centerOn(0,0)
-        for channel in range(self.channelCount):
-            self.updateBarGauge(channel, 1000)
-            self.xmitLabel[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self.labelHeight)
+        for channel in range(self._channel_count-4):
+            self._update_receiver_bar_widget(channel, 1000)
+            self._channels_label_array_object[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
 
-    def updatePitchRoll(self, rollAngle, pitchAngle):
-        pitchPosition = self.scale(-pitchAngle, (-135.0, 135.0), (540.0, -540.0))
-        rollCenter = self.scale(-pitchAngle, (-135.0, 135.0), (0, 1080.0))
-        self.horizonItem.setPos(0, pitchPosition)
-        self.horizonItem.setTransformOriginPoint(250.0, rollCenter)
-        self.horizonItem.setRotation(-rollAngle)
-        
-    def updateLeftStick(self, throttle, yaw):
-        throttlePosition = self.scale(throttle, (1000.0, 2000.0), (58.0, -57.0))
-        yawPosition = self.scale(yaw, (1000.0, 2000.0), (-57.0, 55.0))
-        self.leftStick.setPos(yawPosition, throttlePosition)
-        
-    def updateRightStick(self, roll, pitch):
-        rollPosition = self.scale(roll, (1000.0, 2000.0), (-57.0, 55.0))
-        pitchPosition = self.scale(pitch, (1000.0, 2000.0), (58.0, -57.0))
-        self.rightStick.setPos(rollPosition, pitchPosition)
-        
-    def updateHeading(self, heading):
-        self.horizonCompassItem.setTransformOriginPoint(150.0, 150.0)
-        self.horizonCompassItem.setRotation(-heading)
-        
-    def scale(self, val, src, dst):
-        '''Scale the given value from the scale of src to the scale of dst.'''
-        return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
-
-    def readContinuousData(self):
-        '''This method continually emptys the telemetry queue from the AeroQuad'''
-        if self.comm.isConnected() and not self.commData.empty():           
-            self.rawData = self.commData.get()
-                
-    def updateVehicleStatus(self):
-        '''This method continually reads the last telemetry value from the AeroQuad'''
-        if self.comm.isConnected():
-            data = self.rawData.split(",")
-            motorArmed = int(data[0])
-            if motorArmed:
-                self.motorArm.setPlainText("Armed")
-                self.motorArm.setDefaultTextColor(QtCore.Qt.green)
-            else:
-                self.motorArm.setPlainText("Not Armed")
-                self.motorArm.setDefaultTextColor(QtCore.Qt.red)
-            roll = math.degrees(float(data[1]))
-            self.roll.setPlainText("{:.1f}".format(roll))
-            pitch = math.degrees(float(data[2]))
-            self.pitch.setPlainText("{:.1f}".format(pitch))
-            heading = math.degrees(float(data[3]))
-            self.heading.setPlainText("{:.1f}".format(heading).zfill(5))
-            self.updatePitchRoll(roll, pitch)
-            self.updateHeading(heading)
-            altitude = float(data[4])
-            self.altitude.setPlainText("{:.1f}".format(altitude).zfill(5))
-            altitudeHold = int(data[5])
-            if altitudeHold:
-                self.altitudeHold.setPlainText("On")
-                self.altitudeHold.setDefaultTextColor(QtCore.Qt.green)
-            else:
-                self.altitudeHold.setPlainText("Off")
-                self.altitudeHold.setDefaultTextColor(QtCore.Qt.red)
-            self.updateRightStick(int(data[6]), int(data[7]))
-            self.updateLeftStick(int(data[9]), int(data[8]))
-            for receiverIndex in range(self.channelCount):
-                self.updateBarGauge(receiverIndex, int(data[receiverIndex+10]))
-            for motorIndex in range(self.motorCount):
-                self.motor[motorIndex].setValue(int(data[motorIndex+14]))
-            batteryPower = float(data[22])
-            self.batteryPower.setPlainText("{:.3f}".format(batteryPower))
-            flightMode = int(data[23])
-            if flightMode:
-                self.flightMode.setPlainText("Stable")
-                self.flightMode.setDefaultTextColor(QtCore.Qt.green)
-            else:
-                self.flightMode.setPlainText("Acro")
-                self.flightMode.setDefaultTextColor(QtCore.Qt.yellow)

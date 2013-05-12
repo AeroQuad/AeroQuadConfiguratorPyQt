@@ -1,24 +1,13 @@
 
 from PyQt4 import QtCore, QtGui
 from model.EventDispatcher import EventDispatcher
+from model.VehicleConfigImageMap import VEHICLE_CONFIG_FILE_MAP
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.vehicleconfiguration.VehicleConfigurationPanel import Ui_VehicleConfigurationPanel
 
 class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
     
-    VEHICLE_CONFIG_FILE_MAP = {'Quad +'     : './resources/Quad+.png',
-                               'Quad X'     : './resources/QuadX.png',
-                               'Quad Y4'    : './resources/QuadY4 v2.png',
-                               'Tri'        : './resources/Tri v2.png',
-                               'Hex +'      : './resources/Hexa+.png',
-                               'Hex X'      : './resources/HexaX.png',
-                               'Hex Y6'     : './resources/HexaX.png',
-                               'Octo X8'    : './resources/QuadX.png',
-                               'Octo X'     : './resources/OctoX.png',
-                               'Octo X+'    : './resources/Octo+.png' }
-    
-    
-    def __init__(self, event_dispatcher):
+    def __init__(self, event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_VehicleConfigurationPanel()
@@ -32,6 +21,7 @@ class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
         event_dispatcher.register(self._flight_config_received, EventDispatcher.FLIGHT_CONFIG_EVENT)
         event_dispatcher.register(self._board_config_received, EventDispatcher.BOAR_TYPE_EVENT)
         event_dispatcher.register(self._board_config_received, EventDispatcher.RECEIVER_TYPE_EVENT)
+        event_dispatcher.register(self._board_config_received, EventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
         event_dispatcher.register(self._board_config_received, EventDispatcher.NUMBER_MOTORS_EVENT)
         event_dispatcher.register(self._board_config_received, EventDispatcher.GYROSCOPE_DETECTED_EVENT)
         event_dispatcher.register(self._board_config_received, EventDispatcher.ACCELEROMETER_DETECTED_EVENT)
@@ -44,7 +34,7 @@ class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
     def _reset_panel(self):
         self.ui.configSpecs.clear()
         self._row = 0
-        self._vehicle_config_image = QtGui.QPixmap(VehicleConfigurationController.VEHICLE_CONFIG_FILE_MAP['Quad +'])
+        self._vehicle_config_image = QtGui.QPixmap(VEHICLE_CONFIG_FILE_MAP['Quad +'])
         self._display_vehicle_config()
 
     def _connection_state_changed(self, event, is_connected):
@@ -52,7 +42,7 @@ class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
         
     def _flight_config_received(self, header, information):
         self._board_config_received(header,information)
-        self._vehicle_config_image = QtGui.QPixmap(VehicleConfigurationController.VEHICLE_CONFIG_FILE_MAP[information])
+        self._vehicle_config_image = QtGui.QPixmap(VEHICLE_CONFIG_FILE_MAP[information])
         self._display_vehicle_config()            
     
     def _board_config_received(self, header, information):
@@ -60,7 +50,7 @@ class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
         information_cellule.setTextColor(QtCore.Qt.white)
         information_cellule.setTextAlignment(QtCore.Qt.AlignCenter)
         information_cellule.setFlags(QtCore.Qt.ItemIsTristate)
-        information_cellule.setText(str(header + ' ' + information))
+        information_cellule.setText(str(header + ' : ' + information))
         self.ui.configSpecs.setItem(self._row, 0, information_cellule)
         self.ui.configSpecs.resizeColumnToContents(0)
         self._row += 1

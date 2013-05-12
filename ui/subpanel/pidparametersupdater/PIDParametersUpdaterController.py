@@ -1,17 +1,12 @@
-'''
-Created on Nov 28, 2012
 
-@author: Ted Carancho
-'''
-
-from PyQt4 import QtCore, QtGui
 import time
+from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.pidparametersupdater.PIDParametersUpdaterPanel import Ui_PIDParametersUpdaterPanel
 
 class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, event_dispatcher):
+    def __init__(self, event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         

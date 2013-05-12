@@ -9,7 +9,7 @@ from ui.MainWindow import Ui_MainWindow
 from communication.SerialCommunicator import SerialCommunicator
 from ui.SplashScreen import SplashScreen
 from model.EventDispatcher import EventDispatcher
-from communication.aqprotocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
+from communication.v32protocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
 
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
@@ -275,7 +275,7 @@ class AQMain(QtGui.QMainWindow):
             for package in packageList[1:]: # In case the module is buried into a deep package folder, loop until module is reached
                 module = getattr(module, package)
             module = getattr(module, className)
-            tempSubPanel = module(self._event_dispatcher)          
+            tempSubPanel = module(self._event_dispatcher, self._protocol_handler)          
             tempSubPanel.initialize()
             self.ui.subPanel.addWidget(tempSubPanel)
             self.subPanelClasses.append(tempSubPanel)
