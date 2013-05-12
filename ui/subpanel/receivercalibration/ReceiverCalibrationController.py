@@ -5,7 +5,7 @@ from ui.subpanel.receivercalibration.ReceiverCalibrationPanel import Ui_Receiver
 
 class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
 
-    def __init__(self, event_dispatcher):
+    def __init__(self, event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_ReceiverCalibrationPanel()

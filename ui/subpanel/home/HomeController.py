@@ -5,7 +5,7 @@ from ui.subpanel.home.HomePanel import Ui_HomePanel
 
 class HomeController(QtGui.QWidget, BasePanelController):
 
-    def __init__(self, event_dispatcher):
+    def __init__(self, event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_HomePanel()

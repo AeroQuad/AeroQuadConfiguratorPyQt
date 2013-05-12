@@ -1,10 +1,4 @@
-'''
-Created on Apr 21, 2013
 
-@author: David Lobato <dav.lobato [at] gmail.com>
-'''
-
-import sys
 import time
 import threading
 import Queue
@@ -12,7 +6,6 @@ import Queue
 from PyQt4 import QtCore
 from abc import abstractmethod
 from abc import ABCMeta
-
 
 class AlreadySubscribedException(Exception):
     def __init__(self, msg):

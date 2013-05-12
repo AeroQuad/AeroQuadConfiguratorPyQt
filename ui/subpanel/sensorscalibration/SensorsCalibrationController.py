@@ -6,7 +6,7 @@ from ui.subpanel.sensorscalibration.SensorsCalibrationPanel import Ui_SensorsCal
 class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
 
 
-    def __init__(self, event_dispatcher):
+    def __init__(self, event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         

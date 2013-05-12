@@ -1,9 +1,9 @@
 
-from communication.aqprotocolhandler.ProtocolHandler import ProtocolHandler
+import logging
+from communication.ProtocolHandler import ProtocolHandler
 from model.Vector3D import Vector3D
 from model.EventDispatcher import EventDispatcher
-import logging
-
+from communication.v32protocolhandler.V32VehicleStatusTranslator import V32VehicleStatusTranslator
 
 class AQV32ProtocolHandler(ProtocolHandler):
 
@@ -116,6 +116,17 @@ class AQV32ProtocolHandler(ProtocolHandler):
 #    def unsubscribe_sensors(self):
 #        self.unsubscribe_command(self.COMMANDS['UnsubscribeSensor'])
 
+    def subscribe_vehicle_status(self):
+        def unpack_data():
+            if not self._date_output_queue.empty():
+                try :
+                    serial_data = self._date_output_queue.get()
+                    V32VehicleStatusTranslator(serial_data, self._event_dispatcher)
+                except:
+                    logging.error("Protocol Handler: Failed to notify update vehicle raw data")
+                    print "Protocol Handler: Failed to notify update vehicle raw data"
+                    
+        self.subscribe_command(self.COMMANDS['SubscribeAllFlight'], unpack_data)
 
     def subscribe_raw_magnetometer(self):
         def unpack_data():
