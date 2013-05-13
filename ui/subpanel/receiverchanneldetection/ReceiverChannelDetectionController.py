@@ -38,20 +38,20 @@ class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
         
     def start_RCsetup(self):
         if not self.running:
-            if (self.comm.isConnected()):
+            if (self._communicator.isConnected()):
                 self.running = True
                 self.ui.start.setEnabled(False)
                 self.ui.cancel.setEnabled(True)
-                self.comm.write("t")
+                self._communicator.write("t")
                 self.timer = QtCore.QTimer()
                 self.timer.timeout.connect(self.readContinuousData)
                 self.timer.start(50)
                 self.startCommThread()
     
     def stop_RCsetup(self): 
-        self.comm.write("x")
+        self._communicator.write("x")
         self.timer.stop()
-        self.comm.flushResponse()
+        self._communicator.flushResponse()
         self.channel_detecting = 0;
         self.running = False
         self.change_label(self.channel_detecting)
@@ -71,7 +71,7 @@ class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
 
     
     def readContinuousData(self):
-        isConnected = self.comm.isConnected()
+        isConnected = self._communicator.isConnected()
         if isConnected and not self.commData.empty():
             string = self.commData.get()
             string_out = string.split(',')
@@ -163,10 +163,10 @@ class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
                 self.ui.label_12.setHidden(True)
               
     def sendMappedChannel(self):
-        self.comm.write("X");
+        self._communicator.write("X");
         command = "R "
         for i in range(0, self.amount_channels):
             command += str(self.channel_order_map[i])
             command += ";"
 
-        self.comm.write(command)
+        self._communicator.write(command)

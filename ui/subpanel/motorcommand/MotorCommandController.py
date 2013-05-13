@@ -62,7 +62,7 @@ class MotorCommandController(QtGui.QWidget, BasePanelController):
 #        self.command_motor   = self.xml.find(self.xmlSubPanel + 'CommandMotor').text
 #        self.boardConfiguration = boardConfiguration
 #
-#        if self.comm.isConnected() == True:
+#        if self._communicator.isConnected() == True:
 #            self.ui.sendButton.setEnabled(True)
 #            self.ui.clearButton.setEnabled(True)
 #
@@ -85,12 +85,12 @@ class MotorCommandController(QtGui.QWidget, BasePanelController):
             str(float(motor_slider.slider.value()))
             for motor_slider in self.ui.motor_sliders
         ])
-        self.comm.write(self.command_motor)
-        self.comm.write(serial_string)
+        self._communicator.write(self.command_motor)
+        self._communicator.write(serial_string)
         sleep(0.150)
 
     def readContinuousData(self):
-        isConnected = self.comm.isConnected()
+        isConnected = self._communicator.isConnected()
         self.ui.sendButton.setEnabled(isConnected)
         self.ui.clearButton.setEnabled(isConnected)
 
@@ -98,8 +98,8 @@ class MotorCommandController(QtGui.QWidget, BasePanelController):
         serial_string   = self.validateCommand + ';' + ';'.join([
             '1000.0' for motor_slider in self.ui.motor_sliders
         ])
-        self.comm.write(self.command_motor)
-        self.comm.write(serial_string)
+        self._communicator.write(self.command_motor)
+        self._communicator.write(serial_string)
         for motor_slider in self.ui.motor_sliders:
             motor_slider.slider.setValue(1000)
         sleep(0.150)

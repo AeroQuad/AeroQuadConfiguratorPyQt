@@ -39,9 +39,9 @@ class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
 #        descriptionHeader.setTextAlignment(QtCore.Qt.AlignVCenter|QtCore.Qt.AlignLeft)
 #        self.ui.parameterTable.setHorizontalHeaderItem(2, descriptionHeader)
 #        self.updateSelection()
-#        self.ui.buttonLoad.setEnabled(self.comm.isConnected())
-#        self.ui.buttonSave.setEnabled(self.comm.isConnected())
-#        self.ui.buttonUpload.setEnabled(self.comm.isConnected())        
+#        self.ui.buttonLoad.setEnabled(self._communicator.isConnected())
+#        self.ui.buttonSave.setEnabled(self._communicator.isConnected())
+#        self.ui.buttonUpload.setEnabled(self._communicator.isConnected())        
         
     def getXmlLocation(self, value):
         selectedType = str(self.ui.listParameterType.currentItem().text())
@@ -53,11 +53,11 @@ class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
         parameterNames = self.xml.findall(self.getXmlLocation("Parameter"))
         
         # If connected, query AeroQuad for parameter values        
-        if self.comm.isConnected():
+        if self._communicator.isConnected():
             telemetry = self.xml.find(self.getXmlLocation("Telemetry")).text
-            self.comm.write(telemetry)
+            self._communicator.write(telemetry)
             time.sleep(0.100)
-            response = self.comm.waitForRead()
+            response = self._communicator.waitForRead()
             telemetryData = response.split(",")
         
         # Fill in each row of parameter table
@@ -72,7 +72,7 @@ class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
             data.setDecimals(2)
             data.setAlignment(QtCore.Qt.AlignVCenter|QtCore.Qt.AlignRight)
             # If connected, fill in with telemetry response, otherwise fill in from XML file
-            if self.comm.isConnected():
+            if self._communicator.isConnected():
                 data.setValue(float(telemetryData[currentRow]))
             else:
                 data.setValue(float(parameterNames[currentRow].text))
@@ -94,12 +94,12 @@ class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
             parameterData.append(data)
         command = self.xml.find(self.getXmlLocation("Command")).text
         commandMessage = command + ";".join(parameterData) + ";"
-        self.comm.write(commandMessage)
+        self._communicator.write(commandMessage)
         time.sleep(0.100)
         telemetry = self.xml.find(self.getXmlLocation("Telemetry")).text
-        self.comm.write(telemetry)
+        self._communicator.write(telemetry)
         time.sleep(0.100)
-        response = self.comm.waitForRead()
+        response = self._communicator.waitForRead()
         if response[-1] == ",":
             response = response[:-1]
         telemetryData = response.split(",")
@@ -107,7 +107,7 @@ class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
         telemetrys = [float(x) for x in telemetryData]
         if parameters == telemetrys:
             updateEEPROM = self.xml.find(self.getXmlLocation("UpdateEEPROM")).text
-            self.comm.write(updateEEPROM)
+            self._communicator.write(updateEEPROM)
             self.status("Parameter values successfully stored to the AeroQuad")
         else:
             parameterString = ", ".join(map(str, parameters))

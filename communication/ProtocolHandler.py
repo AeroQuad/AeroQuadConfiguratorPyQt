@@ -16,7 +16,7 @@ class AlreadySubscribedException(Exception):
 
 class ProtocolHandler(object):
     
-    __metaclass__ = ABCMeta
+#    __metaclass__ = ABCMeta
 
     BASE_COMMANDS = { 'GetSoftwareVersion'    : '!',
                       'UnsubscribeAll'        : 'X', }

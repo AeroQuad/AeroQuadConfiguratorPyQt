@@ -3,9 +3,6 @@ import time
 import threading
 import Queue
 #from PyQt4 import QtCore
-#import logging
-from communication.aqprotocolhandler.translators.AQV4VehicleInfoTranslator import AQV4VehicleInfoTranslator
-from communication.aqprotocolhandler.translators.LoggingTranslator import LoggingTraslator
 
 class AQV4ProtocolHandler(object):
 
@@ -27,8 +24,8 @@ class AQV4ProtocolHandler(object):
 #        self._reading_timer.start(50)
 
         self._translators = {}
-        self._translators['logging'] = LoggingTraslator(event_dispatcher)
-        self._translators['#'] = AQV4VehicleInfoTranslator(event_dispatcher)
+#        self._translators['logging'] = LoggingTraslator(event_dispatcher)
+#        self._translators['#'] = AQV4VehicleInfoTranslator(event_dispatcher)
         
         self._current_translator = self._translators['logging'] 
 

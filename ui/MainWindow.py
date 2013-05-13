@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Apr 27 18:25:53 2013
-#      by: PyQt4 UI code generator 4.10
+# Created: Mon May 13 17:11:40 2013
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -36,6 +36,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.SideMenu = QtGui.QToolBox(self.centralwidget)
         self.SideMenu.setMinimumSize(QtCore.QSize(180, 0))
+        self.SideMenu.setMaximumSize(QtCore.QSize(180, 16777215))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.SideMenu.setFont(font)
@@ -43,7 +44,7 @@ class Ui_MainWindow(object):
         self.SideMenu.setFrameShadow(QtGui.QFrame.Plain)
         self.SideMenu.setObjectName(_fromUtf8("SideMenu"))
         self.SideMenuPage1 = QtGui.QWidget()
-        self.SideMenuPage1.setGeometry(QtCore.QRect(0, 0, 179, 229))
+        self.SideMenuPage1.setGeometry(QtCore.QRect(0, 0, 178, 229))
         self.SideMenuPage1.setObjectName(_fromUtf8("SideMenuPage1"))
         self.sidemenu_button_vehicle_status = QtGui.QPushButton(self.SideMenuPage1)
         self.sidemenu_button_vehicle_status.setGeometry(QtCore.QRect(3, 0, 176, 23))
@@ -56,7 +57,7 @@ class Ui_MainWindow(object):
         self.sidemenu_button_vehicle_status.setAutoFillBackground(False)
         self.sidemenu_button_vehicle_status.setStyleSheet(_fromUtf8("text-align: left"))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/arrow_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../resources/arrow_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.sidemenu_button_vehicle_status.setIcon(icon1)
         self.sidemenu_button_vehicle_status.setDefault(False)
         self.sidemenu_button_vehicle_status.setFlat(True)
@@ -76,10 +77,10 @@ class Ui_MainWindow(object):
         self.sidemenu_button_vehicle_configuration.setFlat(True)
         self.sidemenu_button_vehicle_configuration.setObjectName(_fromUtf8("sidemenu_button_vehicle_configuration"))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/info.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("../resources/info.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.SideMenu.addItem(self.SideMenuPage1, icon2, _fromUtf8(""))
         self.SideMenuPage2 = QtGui.QWidget()
-        self.SideMenuPage2.setGeometry(QtCore.QRect(0, 0, 179, 229))
+        self.SideMenuPage2.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.SideMenuPage2.setObjectName(_fromUtf8("SideMenuPage2"))
         self.sidemenu_button_vehicle_setup = QtGui.QPushButton(self.SideMenuPage2)
         self.sidemenu_button_vehicle_setup.setGeometry(QtCore.QRect(3, 0, 176, 23))
@@ -180,10 +181,10 @@ class Ui_MainWindow(object):
         self.sidemenu_button_PID_update.setFlat(True)
         self.sidemenu_button_PID_update.setObjectName(_fromUtf8("sidemenu_button_PID_update"))
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("../resources/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.SideMenu.addItem(self.SideMenuPage2, icon3, _fromUtf8(""))
         self.SideMenuPage3 = QtGui.QWidget()
-        self.SideMenuPage3.setGeometry(QtCore.QRect(0, 0, 179, 229))
+        self.SideMenuPage3.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.SideMenuPage3.setObjectName(_fromUtf8("SideMenuPage3"))
         self.sidemenu_button_serial_monitor = QtGui.QPushButton(self.SideMenuPage3)
         self.sidemenu_button_serial_monitor.setGeometry(QtCore.QRect(3, 0, 176, 23))
@@ -298,7 +299,7 @@ class Ui_MainWindow(object):
         self.sidemenu_button_altitude_data.setFlat(True)
         self.sidemenu_button_altitude_data.setObjectName(_fromUtf8("sidemenu_button_altitude_data"))
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/graphic.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8("../resources/graphic.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.SideMenu.addItem(self.SideMenuPage3, icon4, _fromUtf8(""))
         self.gridLayout.addWidget(self.SideMenu, 0, 0, 1, 1)
         self.subPanel = QtGui.QStackedWidget(self.centralwidget)
@@ -339,7 +340,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.horizontalLayout, 2, 1, 1, 1)
         self.button_home = QtGui.QPushButton(self.centralwidget)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8("./resources/home.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8("../resources/home.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.button_home.setIcon(icon5)
         self.button_home.setObjectName(_fromUtf8("button_home"))
         self.gridLayout.addWidget(self.button_home, 2, 0, 1, 1)

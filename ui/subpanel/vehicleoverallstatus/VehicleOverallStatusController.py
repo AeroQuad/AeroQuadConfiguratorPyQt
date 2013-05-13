@@ -201,13 +201,13 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
             transmitterScene.addItem(self._channel_bar_gauge_array[channel])
             label = transmitterScene.addText(self._channels_label_array_text[channel])
             label.setDefaultTextColor(QtCore.Qt.white)
-            label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
+            label.setPos(self.compute_channel_bar_location(channel), self.ui.transmitterOutput.height())
             self._channels_label_array_object.append(label)
         self.ui.transmitterOutput.setScene(transmitterScene)     
         
         for channel in range(self._channel_count-4):
             self._update_receiver_bar_widget(channel, 1000)
-            self._channels_label_array_object[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
+            self._channels_label_array_object[channel].setPos(self.compute_channel_bar_location(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
             
         self.ui.transmitterOutput.centerOn(0.0, 0.0)
    
@@ -374,20 +374,19 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     
     def _update_receiver_bar_widget(self, channel, value):
         output = self._scale_receiver_channel_to_widget(value, (1000.0, 2000.0), (25.0, self._window_height - 10)) - self._label_pixel_height
-        self._channel_bar_gauge_array[channel].setRect(self.xmitChannelLocation(channel), self._window_height-(output + self._label_pixel_height), self._motor_gauge_pixel_width, output)
+        self._channel_bar_gauge_array[channel].setRect(self.compute_channel_bar_location(channel), self._window_height-(output + self._label_pixel_height), self._motor_gauge_pixel_width, output)
 
-    def xmitChannelLocation(self, channel):
+    def compute_channel_bar_location(self, channel):
         barPosition = (self.ui.transmitterOutput.width() - (self._motor_gauge_pixel_width * self._channel_count)) / (self._channel_count + 1)
         location = ((channel + 1) * barPosition) + (channel * self._motor_gauge_pixel_width)
         return location
 
     def resizeEvent(self, event):
-        #size = event.size()
         self._window_height = self.ui.transmitterOutput.height()
         self.windowWidth = self.ui.transmitterOutput.width()
         self.ui.transmitterOutput.setSceneRect(0, 0, self.windowWidth*2, self._window_height*2)
         self.ui.transmitterOutput.centerOn(0,0)
         for channel in range(self._channel_count-4):
             self._update_receiver_bar_widget(channel, 1000)
-            self._channels_label_array_object[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
+            self._channels_label_array_object[channel].setPos(self.compute_channel_bar_location(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
 

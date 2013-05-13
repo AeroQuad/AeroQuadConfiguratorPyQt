@@ -27,6 +27,12 @@
         <height>0</height>
        </size>
       </property>
+      <property name="maximumSize">
+       <size>
+        <width>180</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
@@ -49,7 +55,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>179</width>
+         <width>178</width>
          <height>229</height>
         </rect>
        </property>
@@ -154,8 +160,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>179</width>
-         <height>229</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
        <attribute name="icon">
@@ -479,8 +485,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>179</width>
-         <height>229</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
        <attribute name="icon">

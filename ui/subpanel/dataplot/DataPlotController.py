@@ -57,10 +57,10 @@ class DataPlotController(QtGui.QWidget, BasePanelController):
 #        self.ui.treeWidget.resizeColumnToContents(1)
 #        self.legend = self.ui.treeWidget.invisibleRootItem()
 #
-#        if self.comm.isConnected() == True:
+#        if self._communicator.isConnected() == True:
 #            telemetry = self.xml.find(self.xmlSubPanel + '/Telemetry').text
 #            if telemetry != '':
-#                self.comm.write(telemetry)
+#                self._communicator.write(telemetry)
 #            self.timer = QtCore.QTimer()
 #            self.timer.timeout.connect(self.readContinuousData)
 #            self.timer.start(50)
@@ -72,7 +72,7 @@ class DataPlotController(QtGui.QWidget, BasePanelController):
 
     def readContinuousData(self):
         '''This method continually reads telemetry from the AeroQuad'''
-        if self.comm.isConnected() and not self.commData.empty():
+        if self._communicator.isConnected() and not self.commData.empty():
             rawData = self.commData.get()
             data = rawData.split(',')
 
@@ -85,7 +85,7 @@ class DataPlotController(QtGui.QWidget, BasePanelController):
                         self.data[i].pop()
                         legendRow.setText(2, dataValue)
                     except:
-                        pass # Do not update output data if invalid number detected from comm read
+                        pass # Do not update output data if invalid number detected from _communicator read
 
     def update_plot(self):
         for i in xrange(self.plotCount):
