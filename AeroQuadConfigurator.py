@@ -5,12 +5,13 @@ import xml.etree.ElementTree as xmlParser
 
 from PyQt4 import QtCore, QtGui
 
-from ui.MainWindow import Ui_MainWindow
+
 from communication.SerialCommunicator import SerialCommunicator
-from ui.SplashScreen import SplashScreen
 from model.EventDispatcher import EventDispatcher
-from communication.v32protocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
 from connectionmanager.ConnectionManager import ConnectionManager
+from ui.SplashScreen import SplashScreen
+from ui.MainWindow import Ui_MainWindow
+from ui.SideMenuContextualBuilder import SideMenuContextualBuilder
 
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
@@ -37,6 +38,13 @@ class AQMain(QtGui.QMainWindow):
         self._communicator = SerialCommunicator()
         self._event_dispatcher = EventDispatcher()
         self._connection_manager = ConnectionManager(app, self.ui, xml, self._communicator, self._event_dispatcher)
+        
+        self._side_menu_contextual_builder = SideMenuContextualBuilder(self._event_dispatcher,
+                                                                       self.ui.side_menu_info_page,
+                                                                       self.ui.side_menu_setting_page,
+                                                                       self.ui.side_menu_troubleshooting_page,
+                                                                       self.ui.side_menu_mission_planer_page)
+
                 
         # Default main window conditions
         self.ui.buttonDisconnect.setEnabled(False)
@@ -68,28 +76,28 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self._connection_manager.search_for_available_COM_port)
         self.ui.actionBootUpDelay.triggered.connect(self._connection_manager.save_boot_delay)
         self.ui.actionCommTimeout.triggered.connect(self._connection_manager.save_connection_timeout_delay)
-        self.ui.button_home.clicked.connect(self.return_home)
+#        self.ui.button_home.clicked.connect(self.return_home)
        
         #SideMenuButtons
-        self.ui.sidemenu_button_vehicle_status.clicked.connect(self.button_vehicle_status)
-        self.ui.sidemenu_button_vehicle_configuration.clicked.connect(self.button_vehicle_configuration)
-        
-        self.ui.sidemenu_button_vehicle_setup.clicked.connect(self.button_vehicle_setup)
-        self.ui.sidemenu_button_sensors_calibration.clicked.connect(self.button_sensors_calibration)
-        self.ui.sidemenu_button_magnetometer_calibration.clicked.connect(self.button_magnetometer_calibration)
-        self.ui.sidemenu_button_RC_channels_detection.clicked.connect(self.button_RC_channels_detection)
-        self.ui.sidemenu_button_RC_calibartion.clicked.connect(self.button_RC_calibration)
-        self.ui.sidemenu_button_motor_command.clicked.connect(self.button_motor_command)
-        self.ui.sidemenu_button_PID_update.clicked.connect(self.button_PID_update)
-        
-        self.ui.sidemenu_button_serial_monitor.clicked.connect(self.button_serial_monitor)
-        self.ui.sidemenu_button_sensor_data.clicked.connect(self.button_sensor_data)
-        self.ui.sidemenu_button_gyroscope_data.clicked.connect(self.button_gyroscope_data)
-        self.ui.sidemenu_button_accelerometer_data.clicked.connect(self.accelerometer_data)
-        self.ui.sidemenu_button_magnetometer_data.clicked.connect(self.magnetometer_data)
-        self.ui.sidemenu_button_attitude_data.clicked.connect(self.button_attitude_data)
-        self.ui.sidemenu_button_transmitter_data.clicked.connect(self.button_transmitter_data)
-        self.ui.sidemenu_button_altitude_data.clicked.connect(self.button_altitude_data)
+#        self.ui.sidemenu_button_vehicle_status.clicked.connect(self.button_vehicle_status)
+#        self.ui.sidemenu_button_vehicle_configuration.clicked.connect(self.button_vehicle_configuration)
+#        
+#        self.ui.sidemenu_button_vehicle_setup.clicked.connect(self.button_vehicle_setup)
+#        self.ui.sidemenu_button_sensors_calibration.clicked.connect(self.button_sensors_calibration)
+#        self.ui.sidemenu_button_magnetometer_calibration.clicked.connect(self.button_magnetometer_calibration)
+#        self.ui.sidemenu_button_RC_channels_detection.clicked.connect(self.button_RC_channels_detection)
+#        self.ui.sidemenu_button_RC_calibartion.clicked.connect(self.button_RC_calibration)
+#        self.ui.sidemenu_button_motor_command.clicked.connect(self.button_motor_command)
+#        self.ui.sidemenu_button_PID_update.clicked.connect(self.button_PID_update)
+#        
+#        self.ui.sidemenu_button_serial_monitor.clicked.connect(self.button_serial_monitor)
+#        self.ui.sidemenu_button_sensor_data.clicked.connect(self.button_sensor_data)
+#        self.ui.sidemenu_button_gyroscope_data.clicked.connect(self.button_gyroscope_data)
+#        self.ui.sidemenu_button_accelerometer_data.clicked.connect(self.accelerometer_data)
+#        self.ui.sidemenu_button_magnetometer_data.clicked.connect(self.magnetometer_data)
+#        self.ui.sidemenu_button_attitude_data.clicked.connect(self.button_attitude_data)
+#        self.ui.sidemenu_button_transmitter_data.clicked.connect(self.button_transmitter_data)
+#        self.ui.sidemenu_button_altitude_data.clicked.connect(self.button_altitude_data)
         
         self.selectSubPanel("Home")
 
@@ -164,59 +172,59 @@ class AQMain(QtGui.QMainWindow):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
         
-    def return_home(self):
-        self.selectSubPanel("Home") 
-        
-    def button_vehicle_status(self):
-        self.selectSubPanel("Vehicle Status") 
-    
-    def button_vehicle_configuration(self):
-        self.selectSubPanel("Vehicle Configuration")
-
-    def button_vehicle_setup(self):
-        self.selectSubPanel("Vehicle configuration")
-        
-    def button_sensors_calibration(self):
-        self.selectSubPanel("Sensors calibration")
-        
-    def button_magnetometer_calibration(self):
-        self.selectSubPanel("Magnetometer calibration")
-        
-    def button_RC_channels_detection(self):
-        self.selectSubPanel("Receiver channels detection")
-        
-    def button_RC_calibration(self):
-        self.selectSubPanel("Receiver Calibration")
-        
-    def button_motor_command(self):
-        self.selectSubPanel("Motor Command")
-    
-    def button_PID_update(self):
-        self.selectSubPanel("PID Update")
-    
-    def button_serial_monitor(self):
-        self.selectSubPanel("Serial Monitor")
-    
-    def button_sensor_data(self):
-        self.selectSubPanel("Sensor Data")
-    
-    def button_gyroscope_data(self):
-        self.selectSubPanel("Gyroscope Data")
-        
-    def accelerometer_data(self):
-        self.selectSubPanel("Accelerometer Data")
-        
-    def magnetometer_data(self):
-        self.selectSubPanel("Magnetometer Data")
-        
-    def button_attitude_data(self):
-        self.selectSubPanel("Attitude Data")
-    
-    def button_transmitter_data(self):
-        self.selectSubPanel("Transmitter Data")
-    
-    def button_altitude_data(self):
-        self.selectSubPanel("Altitude Data")
+#    def return_home(self):
+#        self.selectSubPanel("Home") 
+#        
+#    def button_vehicle_status(self):
+#        self.selectSubPanel("Vehicle Status") 
+#    
+#    def button_vehicle_configuration(self):
+#        self.selectSubPanel("Vehicle Configuration")
+#
+#    def button_vehicle_setup(self):
+#        self.selectSubPanel("Vehicle configuration")
+#        
+#    def button_sensors_calibration(self):
+#        self.selectSubPanel("Sensors calibration")
+#        
+#    def button_magnetometer_calibration(self):
+#        self.selectSubPanel("Magnetometer calibration")
+#        
+#    def button_RC_channels_detection(self):
+#        self.selectSubPanel("Receiver channels detection")
+#        
+#    def button_RC_calibration(self):
+#        self.selectSubPanel("Receiver Calibration")
+#        
+#    def button_motor_command(self):
+#        self.selectSubPanel("Motor Command")
+#    
+#    def button_PID_update(self):
+#        self.selectSubPanel("PID Update")
+#    
+#    def button_serial_monitor(self):
+#        self.selectSubPanel("Serial Monitor")
+#    
+#    def button_sensor_data(self):
+#        self.selectSubPanel("Sensor Data")
+#    
+#    def button_gyroscope_data(self):
+#        self.selectSubPanel("Gyroscope Data")
+#        
+#    def accelerometer_data(self):
+#        self.selectSubPanel("Accelerometer Data")
+#        
+#    def magnetometer_data(self):
+#        self.selectSubPanel("Magnetometer Data")
+#        
+#    def button_attitude_data(self):
+#        self.selectSubPanel("Attitude Data")
+#    
+#    def button_transmitter_data(self):
+#        self.selectSubPanel("Transmitter Data")
+#    
+#    def button_altitude_data(self):
+#        self.selectSubPanel("Altitude Data")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
