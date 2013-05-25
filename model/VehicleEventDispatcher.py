@@ -3,8 +3,6 @@ from utilities.observers.Observable import Observable
 
 class VehicleEventDispatcher(Observable):
     
-    CONNECTION_STATE_CHANGED_EVENT = "CONNECTION_STATE_CHANGED_EVENT"
-    
     SOFTWARE_VERSION_EVENT = "Software Version"
     BOAR_TYPE_EVENT = "Board Type"
     FLIGHT_CONFIG_EVENT = "Flight Config"

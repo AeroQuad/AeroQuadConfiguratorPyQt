@@ -21,10 +21,10 @@ class ProtocolHandler(object):
     BASE_COMMANDS = { 'GetSoftwareVersion'    : '!',
                       'UnsubscribeAll'        : 'X', }
     
-    def __init__(self, communicator, event_dispatcher):
+    def __init__(self, communicator, vehicle_event_dispatcher):
         self._communicator = communicator
         self._is_subscribed = False
-        self._event_dispatcher = event_dispatcher
+        self._vehicle_event_dispatcher = vehicle_event_dispatcher
         
         self._date_output_queue = Queue.Queue()
         self._timer = QtCore.QTimer()

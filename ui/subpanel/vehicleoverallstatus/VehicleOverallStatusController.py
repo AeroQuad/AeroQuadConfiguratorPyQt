@@ -1,11 +1,12 @@
 
 from PyQt4 import QtCore, QtGui
-from model.EventDispatcher import EventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 from model.VehicleConfigImageMap import VEHICLE_CONFIG_FILE_MAP
 from ui.subpanel.BasePanelController import BasePanelController
 from utilities.specialwidgets.BarGauge import BarGauge
 from ui.subpanel.vehicleoverallstatus.VehicleOverallStatusPanel import Ui_VehicleOverallStatusPanel
 import math
+from ui.UIEventDispatcher import UIEventDispatcher
 
 class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     
@@ -21,13 +22,12 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
                              'Octo X+'    : ((235,30), (360,65), (395,185), (360,315), (235,350), (110,315), (75,185), (110,65)) }
 
     
-    def __init__(self, event_dispatcher, protocol_handler):
+    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_VehicleOverallStatusPanel()
         self.ui.setupUi(self)
         
-        self._protocol_handler = protocol_handler
         self._channel_count = 0
         self._flight_config = 'Quad +'
         self._channel_bar_gauge_array = []
@@ -140,40 +140,45 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
         
-        event_dispatcher.register(self._flight_config_received, EventDispatcher.FLIGHT_CONFIG_EVENT)
-        event_dispatcher.register(self._receiver_channel_count_received, EventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
-        event_dispatcher.register(self._motors_count_received, EventDispatcher.NUMBER_MOTORS_EVENT)
-        event_dispatcher.register(self._motor_armed_event, EventDispatcher.MOTOR_ARMED_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_roll_event, EventDispatcher.VEHICLE_ROLL_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_pitch_event, EventDispatcher.VEHICLE_PITCH_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_heading_event, EventDispatcher.VEHICLE_HEADING_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_altitude_hold_state_event, EventDispatcher.ALTITUDE_HOLD_STATE_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_altitude_event, EventDispatcher.VEHICLE_ALTITUDE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._flight_config_received, VehicleEventDispatcher.FLIGHT_CONFIG_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_channel_count_received, VehicleEventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
+        vehicle_event_dispatcher.register(self._motors_count_received, VehicleEventDispatcher.NUMBER_MOTORS_EVENT)
+        vehicle_event_dispatcher.register(self._motor_armed_event, VehicleEventDispatcher.MOTOR_ARMED_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_roll_event, VehicleEventDispatcher.VEHICLE_ROLL_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_pitch_event, VehicleEventDispatcher.VEHICLE_PITCH_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_heading_event, VehicleEventDispatcher.VEHICLE_HEADING_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_altitude_hold_state_event, VehicleEventDispatcher.ALTITUDE_HOLD_STATE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_altitude_event, VehicleEventDispatcher.VEHICLE_ALTITUDE_PROPERTY_EVENT)
         
-        event_dispatcher.register(self._receiver_roll_event, EventDispatcher.RECEIVER_ROLL_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_pitch_event, EventDispatcher.RECEIVER_PITCH_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_yaw_event, EventDispatcher.RECEIVER_YAW_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_throttle_event, EventDispatcher.RECEIVER_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_mode_event, EventDispatcher.RECEIVER_MODE_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux1_event, EventDispatcher.RECEIVER_AUX1_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux2_event, EventDispatcher.RECEIVER_AUX2_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux3_event, EventDispatcher.RECEIVER_AUX3_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux4_event, EventDispatcher.RECEIVER_AUX4_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux5_event, EventDispatcher.RECEIVER_AUX5_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux6_event, EventDispatcher.RECEIVER_AUX6_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux7_event, EventDispatcher.RECEIVER_AUX7_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_roll_event, VehicleEventDispatcher.RECEIVER_ROLL_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_pitch_event, VehicleEventDispatcher.RECEIVER_PITCH_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_yaw_event, VehicleEventDispatcher.RECEIVER_YAW_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_throttle_event, VehicleEventDispatcher.RECEIVER_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_mode_event, VehicleEventDispatcher.RECEIVER_MODE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux1_event, VehicleEventDispatcher.RECEIVER_AUX1_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux2_event, VehicleEventDispatcher.RECEIVER_AUX2_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux3_event, VehicleEventDispatcher.RECEIVER_AUX3_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux4_event, VehicleEventDispatcher.RECEIVER_AUX4_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux5_event, VehicleEventDispatcher.RECEIVER_AUX5_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux6_event, VehicleEventDispatcher.RECEIVER_AUX6_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux7_event, VehicleEventDispatcher.RECEIVER_AUX7_PROPERTY_EVENT)
         
-        event_dispatcher.register(self._motor1_throttle_event, EventDispatcher.MOTOR1_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor2_throttle_event, EventDispatcher.MOTOR2_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor3_throttle_event, EventDispatcher.MOTOR3_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor4_throttle_event, EventDispatcher.MOTOR4_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor5_throttle_event, EventDispatcher.MOTOR5_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor6_throttle_event, EventDispatcher.MOTOR6_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor7_throttle_event, EventDispatcher.MOTOR7_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor8_throttle_event, EventDispatcher.MOTOR8_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor1_throttle_event, VehicleEventDispatcher.MOTOR1_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor2_throttle_event, VehicleEventDispatcher.MOTOR2_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor3_throttle_event, VehicleEventDispatcher.MOTOR3_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor4_throttle_event, VehicleEventDispatcher.MOTOR4_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor5_throttle_event, VehicleEventDispatcher.MOTOR5_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor6_throttle_event, VehicleEventDispatcher.MOTOR6_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor7_throttle_event, VehicleEventDispatcher.MOTOR7_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor8_throttle_event, VehicleEventDispatcher.MOTOR8_THROTTLE_PROPERTY_EVENT)
         
-        event_dispatcher.register(self._flight_mode_event, EventDispatcher.FLIGHT_MODE_PROPERTY_EVENT)
-        event_dispatcher.register(self._battery_voltage_received, EventDispatcher.BATTERY_VOLTAGE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._flight_mode_event, VehicleEventDispatcher.FLIGHT_MODE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._battery_voltage_received, VehicleEventDispatcher.BATTERY_VOLTAGE_PROPERTY_EVENT)
+        
+        ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
+        
+    def _protocol_handler_changed_event(self, event, protocol_handler):
+        self._protocol_handler = protocol_handler;
         
     def _flight_config_received(self, event, flight_config):
         self._flight_config = flight_config

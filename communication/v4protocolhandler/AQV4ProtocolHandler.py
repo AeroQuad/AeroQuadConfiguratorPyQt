@@ -7,10 +7,10 @@ import Queue
 class AQV4ProtocolHandler(object):
 
 
-    def __init__(self,communicator,event_dispatcher):
+    def __init__(self,communicator,vehicle_event_dispatcher):
         
         self._communicator = communicator
-        self._event_dispatcher = event_dispatcher
+        self._vehicle_event_dispatcher = vehicle_event_dispatcher
         
         self._is_connected = False
         self._is_locked = False

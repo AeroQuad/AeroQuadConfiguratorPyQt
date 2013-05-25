@@ -7,23 +7,27 @@ from PyQt4 import QtGui
 from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v4protocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
 from communication.v32protocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
+from communication.ProtocolHandler import ProtocolHandler
+from ui.UIEventDispatcher import UIEventDispatcher
+from ui.PanelsContextBuilder import PanelsContextBuilder
 
 class ConnectionManager(object):
 
 #     too much argument mean... too much responsability
-    def __init__(self, app, ui, xml, communicator, event_dispatcher):
+    def __init__(self, app, ui, xml, communicator, ui_event_dispatcher, vehicle_event_dispatcher):
         self._app = app
         self._ui = ui
         self._xml = xml
         self._communicator = communicator
-        self._event_dispatcher = event_dispatcher 
+        self._ui_event_dispatcher = ui_event_dispatcher 
+        self._vehicle_event_dispatcher = vehicle_event_dispatcher
         
         self._setup_default_COM_port()
         self.update_COM_port_selection()
         self.update_baud_rate()
         
 #        self.protocol_handler = ProtocolHandler(communicator, event_dispatcher)
-        self.protocol_handler = AQV32ProtocolHandler(communicator, event_dispatcher)
+#        self.protocol_handler = AQV32ProtocolHandler(communicator, event_dispatcher)
         
 
     def _setup_default_COM_port(self):
@@ -36,7 +40,6 @@ class ConnectionManager(object):
     
     
     def connect_to_aeroquad(self):
-
         self._ui.status.setText("Connecting...")
         self._ui.buttonDisconnect.setEnabled(True)
         self._ui.buttonConnect.setEnabled(False)
@@ -49,35 +52,36 @@ class ConnectionManager(object):
         commTimeOut = float(self._xml.find("./Settings/CommTimeOut").text)
         try:
             self._communicator.connect(str(self._ui.comPort.currentText()), int(self._ui.baudRate.currentText()), bootupDelay, commTimeOut)
-
-            self.protocol_handler.unsubscribe_command()
-            version = self.protocol_handler.get_flight_software_version()
+            
+            protocol_handler = ProtocolHandler(self._communicator, self._vehicle_event_dispatcher)
+            version = protocol_handler.get_flight_software_version()
 
             if version != "":
                 self.save_COM_port_selection()
                 self._ui.status.setText("Connected to AeroQuad Flight Software v" + version)
-                self._event_dispatcher.dispatch_event(EventDispatcher.CONNECTION_STATE_CHANGED_EVENT, True)
-                
-                if version == '4.0' :
-                    self.protocol_handler = AQV4ProtocolHandler(self._communicator, self._event_dispatcher) 
-                    self.protocol_handler.request_board_configuration()
 
-                elif version == '3.2' :
-                    self.protocol_handler = AQV32ProtocolHandler(self._communicator, self._event_dispatcher)
-                    self.protocol_handler.request_board_configuration()
-
+                if version == '3.2' :
+                    self._protocol_handler = AQV32ProtocolHandler(self._communicator, self._vehicle_event_dispatcher)
+                elif version == '4.0' :
+                    self._protocol_handler = AQV4ProtocolHandler(self._communicator, self._vehicle_event_dispatcher) 
                 else :
                     logging.error("Flight software version " + version + " unsuported")
                     self.disconnectBoard()
                     self._ui.status.setText("Not connected to the AeroQuad")
+                    return False
                 
-                
+                self._ui_event_dispatcher.dispatch_event(UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT, True)
+                self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.SOFTWARE_VERSION_EVENT, version)
+                self._protocol_handler.request_board_configuration()
+                self._ui_event_dispatcher.dispatch_event(UIEventDispatcher.PROTOCOL_HANDLER_EVENT,self._protocol_handler)
+                self._ui_event_dispatcher.dispatch_event(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.VEHICLE_CONFIGURATIONS_PANEL_ID)
                 return True
+            
             else:
                 self.disconnect_from_aeroquad()
                 self._ui.status.setText("Not connected to the AeroQuad")
-                if self.manualConnect:
-                    QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Verify the board is plugged in.\n\nIf it is, try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
+#                if self.manualConnect:
+                QtGui.QMessageBox.information(self, "Connection Error", "Unable to connect to the AeroQuad.  Verify the board is plugged in.\n\nIf it is, try increasing the Boot Up Delay.\nThis is found under File->Preferences->Boot Up Delay.")
                 return False
             
         except SerialException:
@@ -96,7 +100,7 @@ class ConnectionManager(object):
         self._ui.comPort.setEnabled(True)
         self._ui.baudRate.setEnabled(True)
         self._ui.status.setText("Disconnected from the AeroQuad")
-        self._event_dispatcher.dispatch_event(EventDispatcher.CONNECTION_STATE_CHANGED_EVENT, False)
+        self._ui_event_dispatcher.dispatch_event(UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT, False)
 
     def search_for_available_COM_port(self):
         selection = self._ui.comPort.currentText()

@@ -18,15 +18,16 @@ except AttributeError:
 
 class SideMenuContextualBuilder(object):
 
-    def __init__(self, vehicle_event_dispatcher, 
-                       ui_event_dispatcher,
+    def __init__(self, ui_event_dispatcher,
+                       vehicle_event_dispatcher,
                        side_menu_info_page, 
                        side_menu_setting_page, 
                        side_menu_troubleshooting_page, 
                        side_menu_mission_planer_page):
         
-        self._vehicle_event_dispatcher = vehicle_event_dispatcher
+        
         self._ui_event_dispatcher = ui_event_dispatcher
+        self._vehicle_event_dispatcher = vehicle_event_dispatcher
         
         self._side_menu_info_page = side_menu_info_page
         self._side_menu_setting_page = side_menu_setting_page

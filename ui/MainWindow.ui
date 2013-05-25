@@ -20,7 +20,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QToolBox" name="SideMenu">
+     <widget class="QToolBox" name="side_menu">
       <property name="minimumSize">
        <size>
         <width>180</width>
@@ -45,7 +45,7 @@
        <enum>QFrame::Plain</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="tabSpacing">
        <number>6</number>
@@ -237,7 +237,7 @@
     </item>
    </layout>
    <zorder>line</zorder>
-   <zorder>SideMenu</zorder>
+   <zorder>side_menu</zorder>
    <zorder>panel_container</zorder>
    <zorder>button_home</zorder>
   </widget>

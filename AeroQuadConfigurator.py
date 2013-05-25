@@ -5,7 +5,6 @@ import xml.etree.ElementTree as xmlParser
 
 from PyQt4 import QtCore, QtGui
 
-
 from communication.SerialCommunicator import SerialCommunicator
 from model.VehicleEventDispatcher import VehicleEventDispatcher
 from connectionmanager.ConnectionManager import ConnectionManager
@@ -13,6 +12,8 @@ from ui.SplashScreen import SplashScreen
 from ui.MainWindow import Ui_MainWindow
 from ui.SideMenuContextualBuilder import SideMenuContextualBuilder
 from ui.UIEventDispatcher import UIEventDispatcher
+from ui.PanelsContextBuilder import PanelsContextBuilder
+from ui.ViewMenuContextBuilder import ViewMenuContextBuilder
 
 xml = xmlParser.parse('AeroQuadConfigurator.xml')
 
@@ -33,12 +34,26 @@ class AQMain(QtGui.QMainWindow):
         #logging
         logging.basicConfig(filename='logfile.log',level=logging.DEBUG)
         logging.basicConfig(format='%(asctime)s %(filename)s %(lineno)d %(message)s')
-        
-        # TODO: figure out way to configure for different _communicator types (TCP, MAVLINK, etc)
-        # Kenny answer: use a different communicator if not serial, protocol handler will be responsible to feed the model correcly 
+                
+        self._ui_event_dispatcher = UIEventDispatcher() 
         self._communicator = SerialCommunicator()
         self._vehicle_event_dispatcher = VehicleEventDispatcher()
-        self._connection_manager = ConnectionManager(app, self.ui, xml, self._communicator, self._vehicle_event_dispatcher)
+        self._connection_manager = ConnectionManager(app, 
+                                                     self.ui, 
+                                                     xml, 
+                                                     self._communicator, 
+                                                     self._ui_event_dispatcher, 
+                                                     self._vehicle_event_dispatcher)
+        self._panels_context_builder = PanelsContextBuilder(self._ui_event_dispatcher, self._vehicle_event_dispatcher)
+        self._view_menu_context_builder = ViewMenuContextBuilder(self.ui.menu_view,
+                                                                 self._ui_event_dispatcher,
+                                                                 self._ui_event_dispatcher) 
+        self._side_menu_contextual_builder = SideMenuContextualBuilder(self._ui_event_dispatcher,
+                                                                       self._ui_event_dispatcher,
+                                                                       self.ui.side_menu_info_page,
+                                                                       self.ui.side_menu_setting_page,
+                                                                       self.ui.side_menu_troubleshooting_page,
+                                                                       self.ui.side_menu_mission_planer_page)
         
         # Default main window conditions
         self.ui.buttonDisconnect.setEnabled(False)
@@ -50,26 +65,13 @@ class AQMain(QtGui.QMainWindow):
         self.boardConfiguration = {}
         self.manualConnect = True
         
-        self._ui_event_dispatcher = UIEventDispatcher()
-        
-        self._side_menu_contextual_builder = SideMenuContextualBuilder(self._vehicle_event_dispatcher,
-                                                                       self._ui_event_dispatcher,
-                                                                       self.ui.side_menu_info_page,
-                                                                       self.ui.side_menu_setting_page,
-                                                                       self.ui.side_menu_troubleshooting_page,
-                                                                       self.ui.side_menu_mission_planer_page)
-                
-        
-        
-        
-        # Load splash screen
-        splash = SplashScreen()
-        splash.setupUi(splash)
-        self.ui.panel_container.addWidget(splash)
+        # Load splash_screen screen
+        self._splash_screen = SplashScreen()
+        self._splash_screen.setupUi(self._splash_screen)
+        self.ui.panel_container.addWidget(self._splash_screen)
         
         # Dynamically configure board type menu and subPanel menu from XML configuration file
-        self.configureSubPanelMenu()
-        self.activeSubPanel = None
+        self._current_active_panel = None
         self.activeSubPanelName = ""
 
         # Connect GUI slots and signals
@@ -80,91 +82,28 @@ class AQMain(QtGui.QMainWindow):
         self.ui.comPort.currentIndexChanged.connect(self._connection_manager.search_for_available_COM_port)
         self.ui.action_bootup_delay.triggered.connect(self._connection_manager.save_boot_delay)
         self.ui.action_comm_timeout.triggered.connect(self._connection_manager.save_connection_timeout_delay)
-#        self.ui.button_home.clicked.connect(self.return_home)
-       
-        #SideMenuButtons
-#        self.ui.sidemenu_button_vehicle_status.clicked.connect(self.button_vehicle_status)
-#        self.ui.sidemenu_button_vehicle_configuration.clicked.connect(self.button_vehicle_configuration)
-#        
-#        self.ui.sidemenu_button_vehicle_setup.clicked.connect(self.button_vehicle_setup)
-#        self.ui.sidemenu_button_sensors_calibration.clicked.connect(self.button_sensors_calibration)
-#        self.ui.sidemenu_button_magnetometer_calibration.clicked.connect(self.button_magnetometer_calibration)
-#        self.ui.sidemenu_button_RC_channels_detection.clicked.connect(self.button_RC_channels_detection)
-#        self.ui.sidemenu_button_RC_calibartion.clicked.connect(self.button_RC_calibration)
-#        self.ui.sidemenu_button_motor_command.clicked.connect(self.button_motor_command)
-#        self.ui.sidemenu_button_PID_update.clicked.connect(self.button_PID_update)
-#        
-#        self.ui.sidemenu_button_serial_monitor.clicked.connect(self.button_serial_monitor)
-#        self.ui.sidemenu_button_sensor_data.clicked.connect(self.button_sensor_data)
-#        self.ui.sidemenu_button_gyroscope_data.clicked.connect(self.button_gyroscope_data)
-#        self.ui.sidemenu_button_accelerometer_data.clicked.connect(self.accelerometer_data)
-#        self.ui.sidemenu_button_magnetometer_data.clicked.connect(self.magnetometer_data)
-#        self.ui.sidemenu_button_attitude_data.clicked.connect(self.button_attitude_data)
-#        self.ui.sidemenu_button_transmitter_data.clicked.connect(self.button_transmitter_data)
-#        self.ui.sidemenu_button_altitude_data.clicked.connect(self.button_altitude_data)
         
-#        self.selectSubPanel("Home")
-
-
-
-    ####### SubPanel Methods #######
-    def configureSubPanelMenu(self):
-        pass
-#        '''Dynamically add subpanels to View menu based on XML file configuration
-#        This also adds the subpanel to a stacked widget and stores object instances so that they can run when selected'''
-#        subPanels = xml.findall("./Subpanels/Subpanel")
-#        subPanelCount = 1
-#        self.subPanelList = [] # Stores subpanel names
-#        self.subPanelClasses = [] # Stores subpanel object instances
-#        for subPanel in subPanels:
-#            self.subPanelList.append(subPanel.get("Name"))
-#            pathName = xml.find("./Subpanels/Subpanel/[@Name='" + subPanel.get("Name") +"']/Path").text
-#            className = xml.find("./Subpanels/Subpanel/[@Name='" + subPanel.get("Name") +"']/Class").text
-#            packageList = pathName.split('.')
-#            packageList.insert(0, 'subpanel')
-#            packageString = packageList[0] + '.' + packageList[1] + '.' + packageList[2]
-#            module = __import__(packageString)
-#            for package in packageList[1:]: 
-#                module = getattr(module, package)
-#            module = getattr(module, className)
-#            tempSubPanel = module(self._event_dispatcher, self._connection_manager.protocol_handler)          
-#            tempSubPanel.initialize()
-#            self.ui.subPanel.addWidget(tempSubPanel)
-#            self.subPanelClasses.append(tempSubPanel)
-#            subPanelCount += 1
-#        self.subPanelMapper = QtCore.QSignalMapper(self)
-#        self.subPanelMenu = []
-#        for subPanelName in self.subPanelList:
-#            subPanel = self.ui.menuView.addAction(subPanelName)
-#            self.subPanelMenu.append(subPanel) 
-#            self.subPanelMapper.setMapping(subPanel, subPanelName)
-#            subPanel.triggered.connect(self.subPanelMapper.map)
-#            subPanel.setCheckable(True)
-#        self.subPanelMapper.mapped[str].connect(self.selectSubPanel)       
-  
-    def selectSubPanel(self, subPanelName):
-        pass
-#        if self.activeSubPanel != None:
-#            self.activeSubPanel.stop()
-#        types = len(self.subPanelList)
-#        for index in range(types):
-#            self.subPanelMenu[index].setChecked(False)
-#        selected = self.subPanelList.index(subPanelName)
-#        self.subPanelMenu[selected].setChecked(True)
-#        self.ui.subPanel.setCurrentIndex(selected+1) # index 0 is splash screen
-#        self.activeSubPanel = self.subPanelClasses[selected]
-#        self.activeSubPanelName = "./Subpanels/Subpanel/[@Name='" + str(subPanelName) + "']" 
-#        self.activeSubPanel.start()
-#        if subPanelName == "Menu":
-#            self.ui.status.setText("Choose Configurator Function")
-#        else:
-#            self.ui.status.setText(subPanelName)
-#        app.processEvents()
-
-#    def clearSubPanelMenu(self):
-#        self.ui.menuView.clear()
-#        self.subPanelMapper.mapped[str].disconnect(self.selectSubPanel)
+        self._ui_event_dispatcher.register(self._display_panel_event, UIEventDispatcher.DISPLAY_PANEL_EVENT)
+        self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+       
+    def _display_panel_event(self, event, panel_id):
+        if self._current_active_panel != None:
+            self._current_active_panel.stop()
+            self.ui.panel_container.removeWidget(self._current_active_panel)
+        
+        self._current_active_panel = PanelsContextBuilder.PANELS_DICTIONNARY[panel_id]
+        self.ui.panel_container.addWidget(self._current_active_panel)
+        self.ui.panel_container.setCurrentWidget(self._current_active_panel)
+        self._current_active_panel.start();
+        
+    def _connection_state_changed(self, event, is_connected):
+        if not is_connected :
+            if self._current_active_panel != None:
+                self._current_active_panel.stop()
+                self.ui.panel_container.removeWidget(self._current_active_panel)
+                self._current_active_panel = None
             
+            self.ui.panel_container.setCurrentIndex(0)
 
     ####### Housekeeping Functions #######
     def exit(self):
@@ -176,68 +115,14 @@ class AQMain(QtGui.QMainWindow):
         cp = QtGui.QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-        
-#    def return_home(self):
-#        self.selectSubPanel("Home") 
-#        
-#    def button_vehicle_status(self):
-#        self.selectSubPanel("Vehicle Status") 
-#    
-#    def button_vehicle_configuration(self):
-#        self.selectSubPanel("Vehicle Configuration")
-#
-#    def button_vehicle_setup(self):
-#        self.selectSubPanel("Vehicle configuration")
-#        
-#    def button_sensors_calibration(self):
-#        self.selectSubPanel("Sensors calibration")
-#        
-#    def button_magnetometer_calibration(self):
-#        self.selectSubPanel("Magnetometer calibration")
-#        
-#    def button_RC_channels_detection(self):
-#        self.selectSubPanel("Receiver channels detection")
-#        
-#    def button_RC_calibration(self):
-#        self.selectSubPanel("Receiver Calibration")
-#        
-#    def button_motor_command(self):
-#        self.selectSubPanel("Motor Command")
-#    
-#    def button_PID_update(self):
-#        self.selectSubPanel("PID Update")
-#    
-#    def button_serial_monitor(self):
-#        self.selectSubPanel("Serial Monitor")
-#    
-#    def button_sensor_data(self):
-#        self.selectSubPanel("Sensor Data")
-#    
-#    def button_gyroscope_data(self):
-#        self.selectSubPanel("Gyroscope Data")
-#        
-#    def accelerometer_data(self):
-#        self.selectSubPanel("Accelerometer Data")
-#        
-#    def magnetometer_data(self):
-#        self.selectSubPanel("Magnetometer Data")
-#        
-#    def button_attitude_data(self):
-#        self.selectSubPanel("Attitude Data")
-#    
-#    def button_transmitter_data(self):
-#        self.selectSubPanel("Transmitter Data")
-#    
-#    def button_altitude_data(self):
-#        self.selectSubPanel("Altitude Data")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     
     splash_pix = QtGui.QPixmap('./resources/AQ.png')
-    splash = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
-    splash.setMask(splash_pix.mask())
-    splash.show()
+    splash_screen = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
+    splash_screen.setMask(splash_pix.mask())
+    splash_screen.show()
     app.processEvents()
     
     MainWindow = AQMain()
@@ -245,5 +130,5 @@ if __name__ == "__main__":
     MainWindow.center()
     if sys.platform == 'darwin':
         MainWindow.raise_()
-    splash.finish(MainWindow)
+    splash_screen.finish(MainWindow)
     sys.exit(app.exec_())
