@@ -4,7 +4,7 @@ import logging
 
 from serial import SerialException
 from PyQt4 import QtGui
-from model.EventDispatcher import EventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v4protocolhandler.AQV4ProtocolHandler import AQV4ProtocolHandler
 from communication.v32protocolhandler.AQV32ProtocolHandler import AQV32ProtocolHandler
 

@@ -1,5 +1,5 @@
 
-from model.EventDispatcher import EventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 
 class V32VehicleStatusTranslator(object):
 

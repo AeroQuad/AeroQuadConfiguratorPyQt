@@ -18,32 +18,40 @@ except AttributeError:
 
 class SideMenuContextualBuilder(object):
 
-    def __init__(self, event_dispatcher, side_menu_info_page, setting_page, troubleshooting_page, mission_planer_page):
+    def __init__(self, vehicle_event_dispatcher, 
+                       ui_event_dispatcher,
+                       side_menu_info_page, 
+                       side_menu_setting_page, 
+                       side_menu_troubleshooting_page, 
+                       side_menu_mission_planer_page):
         
-        self.side_menu_info_page = side_menu_info_page
-#        self._page2 = setting_page
-#        self._page3 = troubleshooting_page
-#        self._page4 = mission_planer_page
+        self._vehicle_event_dispatcher = vehicle_event_dispatcher
+        self._ui_event_dispatcher = ui_event_dispatcher
+        
+        self._side_menu_info_page = side_menu_info_page
+        self._side_menu_setting_page = side_menu_setting_page
+        self._side_menu_troubleshooting_page = side_menu_troubleshooting_page
+        self._side_menu_mission_planer_page = side_menu_mission_planer_page
 
-        self._event_dispatcher = event_dispatcher
         
-        self.sidemenu_button_vehicle_status = QtGui.QPushButton(self.side_menu_info_page)
-        self.sidemenu_button_vehicle_status.setGeometry(QtCore.QRect(3, 0, 176, 23))
-        self.sidemenu_button_vehicle_status.setMinimumSize(QtCore.QSize(0, 0))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        font.setUnderline(False)
-        self.sidemenu_button_vehicle_status.setFont(font)
-        self.sidemenu_button_vehicle_status.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.sidemenu_button_vehicle_status.setAutoFillBackground(False)
-        self.sidemenu_button_vehicle_status.setStyleSheet(_fromUtf8("text-align: left"))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../resources/arrow_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.sidemenu_button_vehicle_status.setIcon(icon1)
-        self.sidemenu_button_vehicle_status.setDefault(False)
-        self.sidemenu_button_vehicle_status.setFlat(True)
-        self.sidemenu_button_vehicle_status.setObjectName(_fromUtf8("sidemenu_button_vehicle_status"))
-        self.sidemenu_button_vehicle_status.setText(_translate("MainWindow", "Vehicle status", None))
+        
+#        self.sidemenu_button_vehicle_status = QtGui.QPushButton(self.side_menu_info_page)
+#        self.sidemenu_button_vehicle_status.setGeometry(QtCore.QRect(3, 0, 176, 23))
+#        self.sidemenu_button_vehicle_status.setMinimumSize(QtCore.QSize(0, 0))
+#        font = QtGui.QFont()
+#        font.setPointSize(10)
+#        font.setUnderline(False)
+#        self.sidemenu_button_vehicle_status.setFont(font)
+#        self.sidemenu_button_vehicle_status.setLayoutDirection(QtCore.Qt.LeftToRight)
+#        self.sidemenu_button_vehicle_status.setAutoFillBackground(False)
+#        self.sidemenu_button_vehicle_status.setStyleSheet(_fromUtf8("text-align: left"))
+#        icon1 = QtGui.QIcon()
+#        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("resources/arrow_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+#        self.sidemenu_button_vehicle_status.setIcon(icon1)
+#        self.sidemenu_button_vehicle_status.setDefault(False)
+#        self.sidemenu_button_vehicle_status.setFlat(True)
+#        self.sidemenu_button_vehicle_status.setObjectName(_fromUtf8("sidemenu_button_vehicle_status"))
+#        self.sidemenu_button_vehicle_status.setText(_translate("MainWindow", "Vehicle status", None))
         
 #        self.sidemenu_button_vehicle_configuration = QtGui.QPushButton(self.side_menu_info_page)
 #        self.sidemenu_button_vehicle_configuration.setGeometry(QtCore.QRect(3, 20, 176, 23))

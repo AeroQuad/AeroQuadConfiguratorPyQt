@@ -2,7 +2,7 @@
 import logging
 from communication.ProtocolHandler import ProtocolHandler
 from model.Vector3D import Vector3D
-from model.EventDispatcher import EventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v32protocolhandler.V32VehicleStatusTranslator import V32VehicleStatusTranslator
 
 class AQV32ProtocolHandler(ProtocolHandler):

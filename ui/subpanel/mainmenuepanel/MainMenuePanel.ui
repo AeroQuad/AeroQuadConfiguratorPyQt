@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HomePanel</class>
- <widget class="QWidget" name="HomePanel">
+ <class>MainMenuePanel</class>
+ <widget class="QWidget" name="MainMenuePanel">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,10 +19,10 @@
   <widget class="QToolButton" name="button_vehicle_setup">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>300</x>
      <y>70</y>
-     <width>200</width>
-     <height>200</height>
+     <width>131</width>
+     <height>131</height>
     </rect>
    </property>
    <property name="font">
@@ -40,97 +40,11 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Vehicle setup</string>
+    <string>Setup</string>
    </property>
    <property name="icon">
     <iconset>
      <normaloff>../../../resources/setup.png</normaloff>../../../resources/setup.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>150</width>
-     <height>150</height>
-    </size>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextUnderIcon</enum>
-   </property>
-   <property name="autoRaise">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QToolButton" name="button_serial_monitor">
-   <property name="geometry">
-    <rect>
-     <x>300</x>
-     <y>70</y>
-     <width>131</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-    </font>
-   </property>
-   <property name="toolTip">
-    <string>Serial monitor</string>
-   </property>
-   <property name="statusTip">
-    <string>Serial monitor</string>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Serial monitor</string>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>../../../resources/serial_monitor.png</normaloff>../../../resources/serial_monitor.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>100</width>
-     <height>100</height>
-    </size>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextUnderIcon</enum>
-   </property>
-   <property name="autoRaise">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QToolButton" name="button_firmware_download">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>70</y>
-     <width>131</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-    </font>
-   </property>
-   <property name="toolTip">
-    <string>Download firmware to the AeroQuad</string>
-   </property>
-   <property name="statusTip">
-    <string>Download firmware to the AeroQuad</string>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Download</string>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>../../../resources/download.png</normaloff>../../../resources/download.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -169,7 +83,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Vehicle config</string>
+    <string>Config</string>
    </property>
    <property name="icon">
     <iconset>
@@ -212,7 +126,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Vehicle status</string>
+    <string>Status</string>
    </property>
    <property name="icon">
     <iconset>
