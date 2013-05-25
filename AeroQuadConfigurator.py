@@ -35,6 +35,7 @@ class AQMain(QtGui.QMainWindow):
         logging.basicConfig(filename='logfile.log',level=logging.DEBUG)
         logging.basicConfig(format='%(asctime)s %(filename)s %(lineno)d %(message)s')
                 
+        # communicator and event dispatcher building                
         self._ui_event_dispatcher = UIEventDispatcher() 
         self._communicator = SerialCommunicator()
         self._vehicle_event_dispatcher = VehicleEventDispatcher()
@@ -105,7 +106,6 @@ class AQMain(QtGui.QMainWindow):
             
             self.ui.panel_container.setCurrentIndex(0)
 
-    ####### Housekeeping Functions #######
     def exit(self):
         self._communicator.disconnect()
         sys.exit(app.exec_())

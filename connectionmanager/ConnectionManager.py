@@ -25,10 +25,6 @@ class ConnectionManager(object):
         self._setup_default_COM_port()
         self.update_COM_port_selection()
         self.update_baud_rate()
-        
-#        self.protocol_handler = ProtocolHandler(communicator, event_dispatcher)
-#        self.protocol_handler = AQV32ProtocolHandler(communicator, event_dispatcher)
-        
 
     def _setup_default_COM_port(self):
         defaultComPort = self._xml.find("./Settings/DefaultComPort").text
@@ -74,7 +70,7 @@ class ConnectionManager(object):
                 self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.SOFTWARE_VERSION_EVENT, version)
                 self._protocol_handler.request_board_configuration()
                 self._ui_event_dispatcher.dispatch_event(UIEventDispatcher.PROTOCOL_HANDLER_EVENT,self._protocol_handler)
-                self._ui_event_dispatcher.dispatch_event(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.VEHICLE_CONFIGURATIONS_PANEL_ID)
+                self._ui_event_dispatcher.dispatch_event(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.VEHICLE_INFORMATION_PANEL_ID)
                 return True
             
             else:

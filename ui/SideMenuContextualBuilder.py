@@ -1,5 +1,7 @@
 
 from PyQt4 import QtCore, QtGui
+from UIEventDispatcher import UIEventDispatcher
+from PanelsContextBuilder import PanelsContextBuilder
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -35,26 +37,87 @@ class SideMenuContextualBuilder(object):
         self._side_menu_mission_planer_page = side_menu_mission_planer_page
 
         
+        self._pixel_button_height_counter = 0;
         
-#        self.sidemenu_button_vehicle_status = QtGui.QPushButton(self.side_menu_info_page)
-#        self.sidemenu_button_vehicle_status.setGeometry(QtCore.QRect(3, 0, 176, 23))
-#        self.sidemenu_button_vehicle_status.setMinimumSize(QtCore.QSize(0, 0))
-#        font = QtGui.QFont()
-#        font.setPointSize(10)
-#        font.setUnderline(False)
-#        self.sidemenu_button_vehicle_status.setFont(font)
-#        self.sidemenu_button_vehicle_status.setLayoutDirection(QtCore.Qt.LeftToRight)
-#        self.sidemenu_button_vehicle_status.setAutoFillBackground(False)
-#        self.sidemenu_button_vehicle_status.setStyleSheet(_fromUtf8("text-align: left"))
-#        icon1 = QtGui.QIcon()
-#        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("resources/arrow_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-#        self.sidemenu_button_vehicle_status.setIcon(icon1)
-#        self.sidemenu_button_vehicle_status.setDefault(False)
-#        self.sidemenu_button_vehicle_status.setFlat(True)
-#        self.sidemenu_button_vehicle_status.setObjectName(_fromUtf8("sidemenu_button_vehicle_status"))
-#        self.sidemenu_button_vehicle_status.setText(_translate("MainWindow", "Vehicle status", None))
         
-#        self.sidemenu_button_vehicle_configuration = QtGui.QPushButton(self.side_menu_info_page)
+        self._vehicle_info_button = self._create_side_menu_button(self._side_menu_info_page,
+                                                                  "Vehicle info",
+                                                                  self._pixel_button_height_counter)
+        self._vehicle_info_button.clicked.connect(self._vehicle_info_button_clicked);
+        self._pixel_button_height_counter += 20 
+        self._vehicle_status_button = self._create_side_menu_button(self._side_menu_info_page,
+                                                                  "Vehicle status",
+                                                                  self._pixel_button_height_counter)
+        self._vehicle_status_button.clicked.connect(self._vehicle_status_button_clicked);
+        
+        self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+
+        
+        
+    def _vehicle_info_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.VEHICLE_INFORMATION_PANEL_ID)
+
+    def _vehicle_status_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.VEHICLE_STATUS_PANEL_ID)
+        
+    def _connection_state_changed(self, event, is_connected):
+        self._side_menu_info_page.setEnabled(is_connected)
+        
+    def _create_side_menu_button(self, page_owner, name, starting_pixel):
+        button = QtGui.QPushButton(page_owner)
+        button.setGeometry(QtCore.QRect(3, starting_pixel, 176, 23))
+        button.setMinimumSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setUnderline(False)
+        button.setFont(font)
+        button.setLayoutDirection(QtCore.Qt.LeftToRight)
+        button.setAutoFillBackground(False)
+        button.setStyleSheet(_fromUtf8("text-align: left"))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("resources/arrow_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        button.setIcon(icon1)
+        button.setDefault(False)
+        button.setFlat(True)
+        button.setObjectName(_fromUtf8("_vehicle_info_button"))
+        button.setText(_translate("MainWindow", name, None))
+        return button
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+#        
+#        self.sidemenu_button_vehicle_configuration = QtGui.QPushButton(self._side_menu_info_page)
 #        self.sidemenu_button_vehicle_configuration.setGeometry(QtCore.QRect(3, 20, 176, 23))
 #        self.sidemenu_button_vehicle_configuration.setMinimumSize(QtCore.QSize(0, 0))
 #        font = QtGui.QFont()
@@ -68,7 +131,8 @@ class SideMenuContextualBuilder(object):
 #        self.sidemenu_button_vehicle_configuration.setDefault(False)
 #        self.sidemenu_button_vehicle_configuration.setFlat(True)
 #        self.sidemenu_button_vehicle_configuration.setObjectName(_fromUtf8("sidemenu_button_vehicle_configuration"))
-#        
+#        self.sidemenu_button_vehicle_configuration.setText(_translate("MainWindow", "Vehicle Configuration", None))
+        
 #        
 #        self.sidemenu_button_vehicle_setup = QtGui.QPushButton(setting_page)
 #        self.sidemenu_button_vehicle_setup.setGeometry(QtCore.QRect(3, 0, 176, 23))

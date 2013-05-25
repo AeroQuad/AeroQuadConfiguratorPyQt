@@ -371,6 +371,7 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         self.batteryPower.setPlainText('{:.3f}'.format(battery_voltage))
         
     def start(self):
+        print 'START'
         self._protocol_handler.unsubscribe_command()
         self._protocol_handler.subscribe_vehicle_status()
     
