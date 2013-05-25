@@ -1,11 +1,12 @@
 
 from PyQt4 import QtCore, QtGui
-from model.EventDispatcher import EventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 from model.VehicleConfigImageMap import VEHICLE_CONFIG_FILE_MAP
 from ui.subpanel.BasePanelController import BasePanelController
 from utilities.specialwidgets.BarGauge import BarGauge
 from ui.subpanel.vehicleoverallstatus.VehicleOverallStatusPanel import Ui_VehicleOverallStatusPanel
 import math
+from ui.UIEventDispatcher import UIEventDispatcher
 
 class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     
@@ -21,13 +22,12 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
                              'Octo X+'    : ((235,30), (360,65), (395,185), (360,315), (235,350), (110,315), (75,185), (110,65)) }
 
     
-    def __init__(self, event_dispatcher, protocol_handler):
+    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_VehicleOverallStatusPanel()
         self.ui.setupUi(self)
         
-        self._protocol_handler = protocol_handler
         self._channel_count = 0
         self._flight_config = 'Quad +'
         self._channel_bar_gauge_array = []
@@ -140,40 +140,45 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)
         
-        event_dispatcher.register(self._flight_config_received, EventDispatcher.FLIGHT_CONFIG_EVENT)
-        event_dispatcher.register(self._receiver_channel_count_received, EventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
-        event_dispatcher.register(self._motors_count_received, EventDispatcher.NUMBER_MOTORS_EVENT)
-        event_dispatcher.register(self._motor_armed_event, EventDispatcher.MOTOR_ARMED_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_roll_event, EventDispatcher.VEHICLE_ROLL_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_pitch_event, EventDispatcher.VEHICLE_PITCH_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_heading_event, EventDispatcher.VEHICLE_HEADING_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_altitude_hold_state_event, EventDispatcher.ALTITUDE_HOLD_STATE_PROPERTY_EVENT)
-        event_dispatcher.register(self._vehicle_altitude_event, EventDispatcher.VEHICLE_ALTITUDE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._flight_config_received, VehicleEventDispatcher.FLIGHT_CONFIG_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_channel_count_received, VehicleEventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
+        vehicle_event_dispatcher.register(self._motors_count_received, VehicleEventDispatcher.NUMBER_MOTORS_EVENT)
+        vehicle_event_dispatcher.register(self._motor_armed_event, VehicleEventDispatcher.MOTOR_ARMED_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_roll_event, VehicleEventDispatcher.VEHICLE_ROLL_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_pitch_event, VehicleEventDispatcher.VEHICLE_PITCH_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_heading_event, VehicleEventDispatcher.VEHICLE_HEADING_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_altitude_hold_state_event, VehicleEventDispatcher.ALTITUDE_HOLD_STATE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_altitude_event, VehicleEventDispatcher.VEHICLE_ALTITUDE_PROPERTY_EVENT)
         
-        event_dispatcher.register(self._receiver_roll_event, EventDispatcher.RECEIVER_ROLL_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_pitch_event, EventDispatcher.RECEIVER_PITCH_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_yaw_event, EventDispatcher.RECEIVER_YAW_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_throttle_event, EventDispatcher.RECEIVER_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_mode_event, EventDispatcher.RECEIVER_MODE_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux1_event, EventDispatcher.RECEIVER_AUX1_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux2_event, EventDispatcher.RECEIVER_AUX2_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux3_event, EventDispatcher.RECEIVER_AUX3_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux4_event, EventDispatcher.RECEIVER_AUX4_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux5_event, EventDispatcher.RECEIVER_AUX5_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux6_event, EventDispatcher.RECEIVER_AUX6_PROPERTY_EVENT)
-        event_dispatcher.register(self._receiver_aux7_event, EventDispatcher.RECEIVER_AUX7_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_roll_event, VehicleEventDispatcher.RECEIVER_ROLL_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_pitch_event, VehicleEventDispatcher.RECEIVER_PITCH_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_yaw_event, VehicleEventDispatcher.RECEIVER_YAW_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_throttle_event, VehicleEventDispatcher.RECEIVER_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_mode_event, VehicleEventDispatcher.RECEIVER_MODE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux1_event, VehicleEventDispatcher.RECEIVER_AUX1_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux2_event, VehicleEventDispatcher.RECEIVER_AUX2_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux3_event, VehicleEventDispatcher.RECEIVER_AUX3_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux4_event, VehicleEventDispatcher.RECEIVER_AUX4_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux5_event, VehicleEventDispatcher.RECEIVER_AUX5_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux6_event, VehicleEventDispatcher.RECEIVER_AUX6_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_aux7_event, VehicleEventDispatcher.RECEIVER_AUX7_PROPERTY_EVENT)
         
-        event_dispatcher.register(self._motor1_throttle_event, EventDispatcher.MOTOR1_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor2_throttle_event, EventDispatcher.MOTOR2_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor3_throttle_event, EventDispatcher.MOTOR3_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor4_throttle_event, EventDispatcher.MOTOR4_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor5_throttle_event, EventDispatcher.MOTOR5_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor6_throttle_event, EventDispatcher.MOTOR6_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor7_throttle_event, EventDispatcher.MOTOR7_THROTTLE_PROPERTY_EVENT)
-        event_dispatcher.register(self._motor8_throttle_event, EventDispatcher.MOTOR8_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor1_throttle_event, VehicleEventDispatcher.MOTOR1_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor2_throttle_event, VehicleEventDispatcher.MOTOR2_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor3_throttle_event, VehicleEventDispatcher.MOTOR3_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor4_throttle_event, VehicleEventDispatcher.MOTOR4_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor5_throttle_event, VehicleEventDispatcher.MOTOR5_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor6_throttle_event, VehicleEventDispatcher.MOTOR6_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor7_throttle_event, VehicleEventDispatcher.MOTOR7_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._motor8_throttle_event, VehicleEventDispatcher.MOTOR8_THROTTLE_PROPERTY_EVENT)
         
-        event_dispatcher.register(self._flight_mode_event, EventDispatcher.FLIGHT_MODE_PROPERTY_EVENT)
-        event_dispatcher.register(self._battery_voltage_received, EventDispatcher.BATTERY_VOLTAGE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._flight_mode_event, VehicleEventDispatcher.FLIGHT_MODE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._battery_voltage_received, VehicleEventDispatcher.BATTERY_VOLTAGE_PROPERTY_EVENT)
+        
+        ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
+        
+    def _protocol_handler_changed_event(self, event, protocol_handler):
+        self._protocol_handler = protocol_handler;
         
     def _flight_config_received(self, event, flight_config):
         self._flight_config = flight_config
@@ -201,13 +206,13 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
             transmitterScene.addItem(self._channel_bar_gauge_array[channel])
             label = transmitterScene.addText(self._channels_label_array_text[channel])
             label.setDefaultTextColor(QtCore.Qt.white)
-            label.setPos(self.xmitChannelLocation(channel), self.ui.transmitterOutput.height())
+            label.setPos(self.compute_channel_bar_location(channel), self.ui.transmitterOutput.height())
             self._channels_label_array_object.append(label)
         self.ui.transmitterOutput.setScene(transmitterScene)     
         
         for channel in range(self._channel_count-4):
             self._update_receiver_bar_widget(channel, 1000)
-            self._channels_label_array_object[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
+            self._channels_label_array_object[channel].setPos(self.compute_channel_bar_location(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
             
         self.ui.transmitterOutput.centerOn(0.0, 0.0)
    
@@ -366,6 +371,7 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         self.batteryPower.setPlainText('{:.3f}'.format(battery_voltage))
         
     def start(self):
+        print 'START'
         self._protocol_handler.unsubscribe_command()
         self._protocol_handler.subscribe_vehicle_status()
     
@@ -374,20 +380,19 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
     
     def _update_receiver_bar_widget(self, channel, value):
         output = self._scale_receiver_channel_to_widget(value, (1000.0, 2000.0), (25.0, self._window_height - 10)) - self._label_pixel_height
-        self._channel_bar_gauge_array[channel].setRect(self.xmitChannelLocation(channel), self._window_height-(output + self._label_pixel_height), self._motor_gauge_pixel_width, output)
+        self._channel_bar_gauge_array[channel].setRect(self.compute_channel_bar_location(channel), self._window_height-(output + self._label_pixel_height), self._motor_gauge_pixel_width, output)
 
-    def xmitChannelLocation(self, channel):
+    def compute_channel_bar_location(self, channel):
         barPosition = (self.ui.transmitterOutput.width() - (self._motor_gauge_pixel_width * self._channel_count)) / (self._channel_count + 1)
         location = ((channel + 1) * barPosition) + (channel * self._motor_gauge_pixel_width)
         return location
 
     def resizeEvent(self, event):
-        #size = event.size()
         self._window_height = self.ui.transmitterOutput.height()
         self.windowWidth = self.ui.transmitterOutput.width()
         self.ui.transmitterOutput.setSceneRect(0, 0, self.windowWidth*2, self._window_height*2)
         self.ui.transmitterOutput.centerOn(0,0)
         for channel in range(self._channel_count-4):
             self._update_receiver_bar_widget(channel, 1000)
-            self._channels_label_array_object[channel].setPos(self.xmitChannelLocation(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
+            self._channels_label_array_object[channel].setPos(self.compute_channel_bar_location(channel) - 3, self.ui.transmitterOutput.height() - self._label_pixel_height)
 

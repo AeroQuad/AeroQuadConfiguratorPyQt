@@ -14,7 +14,7 @@ class SerialCommunicator(object):
     '''
     
     def __init__(self):
-        self.comm = None
+        self._communicator = None
         self.availablePorts = []
         self.connected = False
         self.timeout = 0.0
@@ -23,13 +23,13 @@ class SerialCommunicator(object):
         self.lineDataReceived = ""
 
     def connect(self, port, baud, delay, commTimeout):
-        ''' Open a comm port enable the "conencted" flag and toggle the DTR line for Arduino boards
+        ''' Open a _communicator port enable the "conencted" flag and toggle the DTR line for Arduino boards
         '''
-        self.comm = serial.Serial(port, baud, timeout=commTimeout)
+        self._communicator = serial.Serial(port, baud, timeout=commTimeout)
         self.timeout = commTimeout
-        self.comm.setDTR(False)
+        self._communicator.setDTR(False)
         time.sleep(0.100)
-        self.comm.setDTR(True)
+        self._communicator.setDTR(True)
         time.sleep(delay)
         self.connected = True
         
@@ -41,21 +41,21 @@ class SerialCommunicator(object):
 #            self.read()
             
     def flush(self):
-        self.comm.flush();
+        self._communicator.flush();
         
     def read_line(self, size=None):
-        return self.comm.readline(size)        
+        return self._communicator.readline(size)        
         
     def disconnect(self):
-        self.comm.close()
+        self._communicator.close()
         self.connected = False
         
     def write(self, data):
-        self.comm.write(bytes(data.encode('utf-8')))
+        self._communicator.write(bytes(data.encode('utf-8')))
         
     def read(self, size=1):
-        return self.comm.read(size)
-#        response = self.comm.readline().decode('utf-8')
+        return self._communicator.read(size)
+#        response = self._communicator.readline().decode('utf-8')
 #        return response.rstrip('\r\n')
     
 #    def waitForRead(self):
@@ -67,12 +67,12 @@ class SerialCommunicator(object):
 #            timeout += 0.100
 #            if (timeout >= self.timeout):
 #                break
-#        response = self.comm.readline().decode('utf-8')
+#        response = self._communicator.readline().decode('utf-8')
 #        return response.rstrip('\r\n')
 #    
 #    def waitForLine(self):
-#        while(self.comm.inWaiting()):
-#            self.bufferData += self.comm.read(self.comm.inWaiting())
+#        while(self._communicator.inWaiting()):
+#            self.bufferData += self._communicator.read(self._communicator.inWaiting())
 #            if '\n' in buffer:
 #                lineData = self.bufferData.split('\n')
 #                self.lineDataReceived = lineData[-2]
@@ -80,7 +80,7 @@ class SerialCommunicator(object):
 #        return self.lineDataReceived
                  
     def data_available(self):
-        return self.comm.inWaiting()
+        return self._communicator.inWaiting()
         
     def detect_ports(self):
         ''' Detect available serial ports

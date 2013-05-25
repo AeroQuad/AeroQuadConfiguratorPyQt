@@ -2,7 +2,7 @@
 import logging
 from communication.ProtocolHandler import ProtocolHandler
 from model.Vector3D import Vector3D
-from model.EventDispatcher import EventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v32protocolhandler.V32VehicleStatusTranslator import V32VehicleStatusTranslator
 
 class AQV32ProtocolHandler(ProtocolHandler):
@@ -69,8 +69,8 @@ class AQV32ProtocolHandler(ProtocolHandler):
                 'SetMotorCommands' : '5',
                 'GetMotorCommands' : '6' }
     
-    def __init__(self, communicator, event_dispatcher):
-        ProtocolHandler.__init__(self, communicator, event_dispatcher)
+    def __init__(self, communicator, vehicle_event_dispatcher):
+        ProtocolHandler.__init__(self, communicator, vehicle_event_dispatcher)
         
 #    def get_rate_PID(self):
 #        self.send_command(self.COMMANDS['GetRatePID'])
@@ -135,7 +135,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
                     serial_data = self._date_output_queue.get()
                     values = serial_data.split(',')
                     magnetometer_raw_vector = Vector3D(values[0], values[1], values[2])
-                    self._event_dispatcher.dispatch_event(EventDispatcher.MAGNETOMETER_RAW_DATA_EVENT,magnetometer_raw_vector)
+                    self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.MAGNETOMETER_RAW_DATA_EVENT,magnetometer_raw_vector)
                 except:
                     logging.error("Protocol Handler: Failed to notify update magnetometer raw data")
 
@@ -158,5 +158,5 @@ class AQV32ProtocolHandler(ProtocolHandler):
         number_of_lines = int(self.receive_command_data())
         for i in range(number_of_lines):
             board_properties = self.receive_command_data().split(':')
-            self._event_dispatcher.dispatch_event(board_properties[0],board_properties[1].strip())
+            self._vehicle_event_dispatcher.dispatch_event(board_properties[0],board_properties[1].strip())
             

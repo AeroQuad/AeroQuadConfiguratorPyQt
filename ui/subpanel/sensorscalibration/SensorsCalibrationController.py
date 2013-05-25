@@ -31,7 +31,7 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
         self.change_gui_picture(self.state)
     
     def read_continuousData(self):
-        isConnected = self.comm.isConnected()
+        isConnected = self._communicator.isConnected()
         if isConnected and not self.commData.empty():
             if not self.AmountReadings == self.ReadingNumber:
                 self.ReadingNumber += 1
@@ -42,11 +42,11 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
 
     
     def start_calibration(self):        
-        if (self.comm.isConnected()):
+        if (self._communicator.isConnected()):
             self.ui.start.setEnabled(False)
             self.ui.next.setEnabled(False)
             self.ui.cancel.setEnabled(True)
-            self.comm.write("l")
+            self._communicator.write("l")
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.read_continuousData)
             self.timer.start(50)
@@ -61,9 +61,9 @@ class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.progressBar.setValue(0)            
     
     def stop_data(self):
-        self.comm.write("x")
+        self._communicator.write("x")
         self.timer.stop()
-        self.comm.flushResponse()
+        self._communicator.flushResponse()
         self.state += 1
         self.ReadingNumber = 0
         self.ui.start.setEnabled(True)

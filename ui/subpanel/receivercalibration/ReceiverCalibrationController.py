@@ -60,9 +60,9 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
             self.send_calibration_value()
         
         elif not self.running:
-            if self.comm.isConnected() == True:
-                self.comm.write("H")
-                self.comm.write("t")
+            if self._communicator.isConnected() == True:
+                self._communicator.write("H")
+                self._communicator.write("t")
                 self.timer = QtCore.QTimer()
                 self.timer.timeout.connect(self.read_continuousData)
                 self.timer.start(50)
@@ -78,16 +78,16 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
                 self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
                 
     def cancel_RCcalibration(self):
-        self.comm.write("x")
+        self._communicator.write("x")
         self.timer.stop()
-        self.comm.flushResponse()
+        self._communicator.flushResponse()
         self.running = False
         self.ui.cancel.setEnabled(False)
         self.ui.next.setEnabled(True)
         self.ui.start.setText("Start")
         
     def read_continuousData(self):
-        isConnected = self.comm.isConnected()
+        isConnected = self._communicator.isConnected()
         if isConnected and not self.commData.empty():
             string = self.commData.get()
             string_out = string.split(',')
@@ -158,7 +158,7 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
                 self.ui.progressBar_RCAux7.setHidden(True)
     
     def send_calibration_value(self):
-        self.comm.write("X");
+        self._communicator.write("X");
         command = "G "
         for i in range(0, self.amount_channels):
             command += str(self.RCmin[i])
@@ -166,5 +166,5 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
             command += str(self.RCmax[i])
             command += ";"
             
-        self.comm.write(command)    
+        self._communicator.write(command)    
         

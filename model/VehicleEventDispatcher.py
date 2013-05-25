@@ -1,9 +1,7 @@
 
 from utilities.observers.Observable import Observable
 
-class EventDispatcher(Observable):
-    
-    CONNECTION_STATE_CHANGED_EVENT = "CONNECTION_STATE_CHANGED_EVENT"
+class VehicleEventDispatcher(Observable):
     
     SOFTWARE_VERSION_EVENT = "Software Version"
     BOAR_TYPE_EVENT = "Board Type"
