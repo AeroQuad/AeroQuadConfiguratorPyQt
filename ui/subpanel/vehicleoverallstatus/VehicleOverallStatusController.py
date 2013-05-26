@@ -28,6 +28,7 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         self.ui = Ui_VehicleOverallStatusPanel()
         self.ui.setupUi(self)
         
+        self._protocol_handler = None
         self._channel_count = 0
         self._flight_config = 'Quad +'
         self._channel_bar_gauge_array = []
@@ -371,7 +372,6 @@ class VehicleOverallStatusController(QtGui.QWidget, BasePanelController):
         self.batteryPower.setPlainText('{:.3f}'.format(battery_voltage))
         
     def start(self):
-        print 'START'
         self._protocol_handler.unsubscribe_command()
         self._protocol_handler.subscribe_vehicle_status()
     
