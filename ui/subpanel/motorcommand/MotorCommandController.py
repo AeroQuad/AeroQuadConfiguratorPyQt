@@ -40,7 +40,7 @@ class MotorSlider(QtGui.QWidget):
 
 class MotorCommandController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, event_dispatcher, protocol_handler, parent=None):
+    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher, parent=None):
         super(MotorCommandController, self).__init__(parent)
         BasePanelController.__init__(self)
         self.ui = MotorCommandPanel()

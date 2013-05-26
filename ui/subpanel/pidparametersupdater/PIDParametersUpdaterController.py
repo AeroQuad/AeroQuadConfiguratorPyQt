@@ -6,7 +6,7 @@ from ui.subpanel.pidparametersupdater.PIDParametersUpdaterPanel import Ui_PIDPar
 
 class PIDParametersUpdaterController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, event_dispatcher, protocol_handler):
+    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         
