@@ -1,7 +1,9 @@
 
 from PyQt4 import QtCore, QtGui
-from UIEventDispatcher import UIEventDispatcher
-from PanelsContextBuilder import PanelsContextBuilder
+from ui.UIEventDispatcher import UIEventDispatcher
+from ui.PanelsContextBuilder import PanelsContextBuilder
+import Qt
+from numpy.lib.function_base import delete
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -35,34 +37,113 @@ class SideMenuContextualBuilder(object):
         self._side_menu_setting_page = side_menu_setting_page
         self._side_menu_troubleshooting_page = side_menu_troubleshooting_page
         self._side_menu_mission_planer_page = side_menu_mission_planer_page
-
         
+        self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+        
+    def _connection_state_changed(self, event, is_connected):
+        if is_connected :
+            self._create_menu_info_page()
+            self._create_settings_page()
+            self._create_trouble_shooting_page()
+        else :
+            self._vehicle_status_button.setParent(None)
+            self._vehicle_info_button.setParent(None)
+            
+            self._accel_calibration_button.setParent(None)
+            self._receiver_calibration_button.setParent(None)
+            self._pid_tuning_button.setParent(None)
+            self._motor_command_button.setParent(None)
+            
+            self._sensor_plot_button.setParent(None)
+            self._receiver_plot_button.setParent(None)
+            
+        self._side_menu_info_page.setEnabled(is_connected)
+        self._side_menu_setting_page.setEnabled(is_connected)
+        self._side_menu_troubleshooting_page.setEnabled(is_connected)
+            
+    def _create_menu_info_page(self):
         self._pixel_button_height_counter = 0;
-        
-        
         self._vehicle_info_button = self._create_side_menu_button(self._side_menu_info_page,
                                                                   "Vehicle info",
                                                                   self._pixel_button_height_counter)
         self._vehicle_info_button.clicked.connect(self._vehicle_info_button_clicked);
+        self._vehicle_info_button.show()
+        
         self._pixel_button_height_counter += 20 
         self._vehicle_status_button = self._create_side_menu_button(self._side_menu_info_page,
                                                                   "Vehicle status",
                                                                   self._pixel_button_height_counter)
         self._vehicle_status_button.clicked.connect(self._vehicle_status_button_clicked);
+        self._vehicle_status_button.show()
         
-        self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+    def _create_settings_page(self):
+        self._pixel_button_height_counter = 0;
+        self._accel_calibration_button = self._create_side_menu_button(self._side_menu_setting_page,
+                                                                  "Accelerometer Calibration",
+                                                                  self._pixel_button_height_counter)
+        self._accel_calibration_button.clicked.connect(self._accel_calibration_button_clicked);
+        self._accel_calibration_button.show()
+        
+        self._pixel_button_height_counter += 20
+        self._receiver_calibration_button = self._create_side_menu_button(self._side_menu_setting_page,
+                                                                  "Receiver Calibration",
+                                                                  self._pixel_button_height_counter)
+        self._receiver_calibration_button.clicked.connect(self._receiver_calibration_button_clicked);
+        self._receiver_calibration_button.show()
+        
+        self._pixel_button_height_counter += 20
+        self._pid_tuning_button = self._create_side_menu_button(self._side_menu_setting_page,
+                                                                  "PID's Tuning",
+                                                                  self._pixel_button_height_counter)
+        self._pid_tuning_button.clicked.connect(self._pid_tuning_button_clicked);
+        self._pid_tuning_button.show()
+        
+        self._pixel_button_height_counter += 20
+        self._motor_command_button = self._create_side_menu_button(self._side_menu_setting_page,
+                                                                  "Motor commands",
+                                                                  self._pixel_button_height_counter)
+        self._motor_command_button.clicked.connect(self._motor_command_button_clicked);
+        self._motor_command_button.show()   
+        
+    def _create_trouble_shooting_page(self):
+        self._pixel_button_height_counter = 0;
+        self._sensor_plot_button = self._create_side_menu_button(self._side_menu_troubleshooting_page,
+                                                                  "Sensors plotting",
+                                                                  self._pixel_button_height_counter)
+        self._sensor_plot_button.clicked.connect(self._sensor_plot_button_clicked);
+        self._sensor_plot_button.show()
+        
+        self._pixel_button_height_counter += 20
+        self._receiver_plot_button = self._create_side_menu_button(self._side_menu_troubleshooting_page,
+                                                                  "Receiver plotting",
+                                                                  self._pixel_button_height_counter)
+        self._receiver_plot_button.clicked.connect(self._receiver_plot_button_clicked);
+        self._receiver_plot_button.show()
 
-        
-        
     def _vehicle_info_button_clicked(self):
         self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.VEHICLE_INFORMATION_PANEL_ID)
 
     def _vehicle_status_button_clicked(self):
         self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.VEHICLE_STATUS_PANEL_ID)
         
-    def _connection_state_changed(self, event, is_connected):
-        self._side_menu_info_page.setEnabled(is_connected)
+    def _accel_calibration_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.ACCEL_CALIBRATION_PANEL_ID)        
+            
+    def _receiver_calibration_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.RECEIVER_CALIBRATION_PANEL_ID)
         
+    def _pid_tuning_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.PID_TUNING_PANEL_ID)
+        
+    def _motor_command_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.MOTOR_COMMAND_PANEL_ID)
+                
+    def _sensor_plot_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.SENSOR_PLOT_PANEL_ID)
+
+    def _receiver_plot_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.RECEIVER_PLOT_PANEL_ID)
+                
     def _create_side_menu_button(self, page_owner, name, starting_pixel):
         button = QtGui.QPushButton(page_owner)
         button.setGeometry(QtCore.QRect(3, starting_pixel, 176, 23))

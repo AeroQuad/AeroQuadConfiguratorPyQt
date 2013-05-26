@@ -91,11 +91,15 @@ class AQMain(QtGui.QMainWindow):
         if self._current_active_panel != None:
             self._current_active_panel.stop()
             self.ui.panel_container.removeWidget(self._current_active_panel)
-        
-        self._current_active_panel = PanelsContextBuilder.PANELS_DICTIONNARY[panel_id]
-        self.ui.panel_container.addWidget(self._current_active_panel)
-        self.ui.panel_container.setCurrentWidget(self._current_active_panel)
-        self._current_active_panel.start();
+        try :
+            self._current_active_panel = PanelsContextBuilder.PANELS_DICTIONNARY[panel_id]
+            self.ui.panel_container.addWidget(self._current_active_panel)
+            self.ui.panel_container.setCurrentWidget(self._current_active_panel)
+            self._current_active_panel.start();
+        except:
+            logging.error("Failed to load panel = " + panel_id)
+            print "Failed to load panel = " + panel_id
+            
         
     def _connection_state_changed(self, event, is_connected):
         if not is_connected :

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SensorsCalibrationPanel</class>
- <widget class="QWidget" name="SensorsCalibrationPanel">
+ <class>AccelCalibrationPanel</class>
+ <widget class="QWidget" name="AccelCalibrationPanel">
   <property name="geometry">
    <rect>
     <x>0</x>

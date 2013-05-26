@@ -1,16 +1,17 @@
 
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
-from ui.subpanel.sensorscalibration.SensorsCalibrationPanel import Ui_SensorsCalibrationPanel
-
-class SensorsCalibrationController(QtGui.QWidget, BasePanelController):
+from ui.subpanel.accelcalibration.AccelCalibrationPanel import Ui_AccelCalibrationPanel
 
 
-    def __init__(self, event_dispatcher, protocol_handler):
+class AccelCalibrationController(QtGui.QWidget, BasePanelController):
+
+
+    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         
-        self.ui = Ui_SensorsCalibrationPanel()
+        self.ui = Ui_AccelCalibrationPanel()
         self.ui.setupUi(self)
         self.ui.start.clicked.connect(self.start_calibration)
         self.ui.cancel.clicked.connect(self.cancel_calibration)

@@ -71,6 +71,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
     
     def __init__(self, communicator, vehicle_event_dispatcher):
         ProtocolHandler.__init__(self, communicator, vehicle_event_dispatcher)
+
         
 #    def get_rate_PID(self):
 #        self.send_command(self.COMMANDS['GetRatePID'])
@@ -121,7 +122,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
             if not self._date_output_queue.empty():
                 try :
                     serial_data = self._date_output_queue.get()
-                    V32VehicleStatusTranslator(serial_data, self._event_dispatcher)
+                    V32VehicleStatusTranslator(serial_data, self._vehicle_event_dispatcher)
                 except:
                     logging.error("Protocol Handler: Failed to notify update vehicle raw data")
                     print "Protocol Handler: Failed to notify update vehicle raw data"
