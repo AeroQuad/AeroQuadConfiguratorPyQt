@@ -5,7 +5,7 @@ from ui.subpanel.accelcalibration.AccelCalibrationController import AccelCalibra
 from ui.subpanel.receivercalibration.ReceiverCalibrationController import ReceiverCalibrationController
 from ui.subpanel.pidparametersupdater.PIDParametersUpdaterController import PIDParametersUpdaterController
 from ui.subpanel.motorcommand.MotorCommandController import MotorCommandController
-from subpanel.dataplot.DataPlotController import DataPlotController
+from ui.subpanel.dataplot.DataPlotController import DataPlotController
 
 
 class PanelsContextBuilder(object):

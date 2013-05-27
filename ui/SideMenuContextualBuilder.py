@@ -2,8 +2,6 @@
 from PyQt4 import QtCore, QtGui
 from ui.UIEventDispatcher import UIEventDispatcher
 from ui.PanelsContextBuilder import PanelsContextBuilder
-import Qt
-from numpy.lib.function_base import delete
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

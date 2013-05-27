@@ -66,6 +66,9 @@ class AQMain(QtGui.QMainWindow):
         self.boardConfiguration = {}
         self.manualConnect = True
         
+        self.ui.side_menu.hide()
+        self.ui.button_home.hide()
+        
         # Load splash_screen screen
         self._splash_screen = SplashScreen()
         self._splash_screen.setupUi(self._splash_screen)
@@ -109,6 +112,11 @@ class AQMain(QtGui.QMainWindow):
                 self._current_active_panel = None
             
             self.ui.panel_container.setCurrentIndex(0)
+            self.ui.side_menu.hide()
+            self.ui.button_home.hide()
+        else :
+            self.ui.side_menu.show()
+            self.ui.button_home.show()
 
     def exit(self):
         self._communicator.disconnect()
