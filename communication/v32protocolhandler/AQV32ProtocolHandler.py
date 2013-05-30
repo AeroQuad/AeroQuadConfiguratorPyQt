@@ -4,6 +4,7 @@ from communication.ProtocolHandler import ProtocolHandler
 from model.Vector3D import Vector3D
 from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v32protocolhandler.V32VehicleStatusTranslator import V32VehicleStatusTranslator
+from communication.v32protocolhandler.V32VehicleSensorsDataTranslator import V32VehicleSensorsDataTranslator
 
 class AQV32ProtocolHandler(ProtocolHandler):
 
@@ -108,12 +109,17 @@ class AQV32ProtocolHandler(ProtocolHandler):
 #        self.send_command(self.COMMANDS['GenerateAccelBias'])
 #        self.flush_command_data()
 #
-#    def subscribe_sensors(self, callback):
-#        def unpack_data(data):
-#            args = [t(s) for t,s in zip((float,)*7+(int,)*2,data.split(','))]
-#            return callback(*args)
-#        self.subscribe_command(self.COMMANDS['SubscribeSensor'], unpack_data)
-#
+    def subscribe_sensors_data(self):
+        def unpack_data():
+#            try :
+                serial_data = self._date_output_queue.get()
+                V32VehicleSensorsDataTranslator(serial_data, self._vehicle_event_dispatcher)
+#            except:
+#                logging.error("Protocol Handler: Failed to notify update vehicle raw sensors data")
+#                print "Protocol Handler: Failed to notify update vehicle raw sensors data"
+            
+        self.subscribe_command(self.COMMANDS['SubscribeSensor'], unpack_data)
+
 #    def unsubscribe_sensors(self):
 #        self.unsubscribe_command(self.COMMANDS['UnsubscribeSensor'])
 
@@ -124,7 +130,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
                     serial_data = self._date_output_queue.get()
                     V32VehicleStatusTranslator(serial_data, self._vehicle_event_dispatcher)
                 except:
-                    logging.error("Protocol Handler: Failed to notify update vehicle raw data")
+                    logging.error("Protocol Handler: Failed to notify update vehicle status data")
                     print "Protocol Handler: Failed to notify update vehicle raw data"
                     
         self.subscribe_command(self.COMMANDS['SubscribeAllFlight'], unpack_data)

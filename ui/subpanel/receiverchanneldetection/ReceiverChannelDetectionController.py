@@ -5,7 +5,7 @@ from ui.subpanel.receiverchanneldetection.ReceiverChannelDetectionPanel import U
 
 class ReceiverChannelDetectionController(QtGui.QWidget, BasePanelController):
 
-    def __init__(self, event_dispatcher, protocol_handler):
+    def __init__(self, vehicle_event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_ReceiverChannelDetectionPanel()

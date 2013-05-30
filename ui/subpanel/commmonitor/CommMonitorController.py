@@ -8,7 +8,7 @@ from ui.subpanel.commmonitor.CommMonitorPanel import Ui_CommMonitorPanel
 
 class CommMonitorController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, event_dispatcher, protocol_handler):
+    def __init__(self, vehicle_event_dispatcher, protocol_handler):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_CommMonitorPanel()

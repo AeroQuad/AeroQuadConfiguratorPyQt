@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'DataPlotPanel.ui'
 #
-# Created: Wed Apr 24 17:15:54 2013
+# Created: Wed May 29 18:17:05 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -30,30 +30,30 @@ class Ui_DataPlotPanel(object):
         DataPlotPanel.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.gridLayout = QtGui.QGridLayout(DataPlotPanel)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.graphicsView = PlotWidget(DataPlotPanel)
-        self.graphicsView.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.graphicsView.setFrameShadow(QtGui.QFrame.Plain)
-        self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
-        self.gridLayout.addWidget(self.graphicsView, 0, 1, 1, 1)
-        self.treeWidget = QtGui.QTreeWidget(DataPlotPanel)
-        self.treeWidget.setMaximumSize(QtCore.QSize(200, 16777215))
-        self.treeWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.treeWidget.setRootIsDecorated(False)
-        self.treeWidget.setItemsExpandable(False)
-        self.treeWidget.setExpandsOnDoubleClick(False)
-        self.treeWidget.setColumnCount(3)
-        self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
-        self.treeWidget.header().setVisible(True)
-        self.treeWidget.header().setDefaultSectionSize(80)
-        self.gridLayout.addWidget(self.treeWidget, 0, 0, 1, 1)
+        self.plot_view = PlotWidget(DataPlotPanel)
+        self.plot_view.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.plot_view.setFrameShadow(QtGui.QFrame.Plain)
+        self.plot_view.setObjectName(_fromUtf8("plot_view"))
+        self.gridLayout.addWidget(self.plot_view, 0, 1, 1, 1)
+        self.tree_widget = QtGui.QTreeWidget(DataPlotPanel)
+        self.tree_widget.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.tree_widget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.tree_widget.setRootIsDecorated(True)
+        self.tree_widget.setItemsExpandable(True)
+        self.tree_widget.setExpandsOnDoubleClick(False)
+        self.tree_widget.setColumnCount(3)
+        self.tree_widget.setObjectName(_fromUtf8("tree_widget"))
+        self.tree_widget.header().setVisible(True)
+        self.tree_widget.header().setDefaultSectionSize(80)
+        self.gridLayout.addWidget(self.tree_widget, 0, 0, 1, 1)
 
         self.retranslateUi(DataPlotPanel)
         QtCore.QMetaObject.connectSlotsByName(DataPlotPanel)
 
     def retranslateUi(self, DataPlotPanel):
         DataPlotPanel.setWindowTitle(_translate("DataPlotPanel", "Form", None))
-        self.treeWidget.headerItem().setText(0, _translate("DataPlotPanel", "Legend", None))
-        self.treeWidget.headerItem().setText(1, _translate("DataPlotPanel", "Name", None))
-        self.treeWidget.headerItem().setText(2, _translate("DataPlotPanel", "Value", None))
+        self.tree_widget.headerItem().setText(0, _translate("DataPlotPanel", "Legend", None))
+        self.tree_widget.headerItem().setText(1, _translate("DataPlotPanel", "Name", None))
+        self.tree_widget.headerItem().setText(2, _translate("DataPlotPanel", "Value", None))
 
 from pyqtgraph import PlotWidget
