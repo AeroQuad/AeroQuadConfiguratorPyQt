@@ -1,12 +1,11 @@
 
 from PyQt4 import QtGui
-#from pyqtgraph.graphicsItems.PlotCurveItem import PlotCurveItem
 from ui.subpanel.dataplot.DataPlotPanel import Ui_DataPlotPanel
 from ui.subpanel.BasePanelController import BasePanelController
 
 class DataPlotController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, event_dispatcher, protocol_handler):
+    def __init__(self):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_DataPlotPanel()
@@ -22,10 +21,10 @@ class DataPlotController(QtGui.QWidget, BasePanelController):
 #        plotNames = self.xml.findall(self.xmlSubPanel + '/PlotName')
 #        self.plotCount = len(plotNames)
 #
-#        self.ui.graphicsView.setRange(xRange=(0, plotSize), padding=0.0)
+#        self.ui.graphicsView.setRange(xRange=(0, 128), padding=0.0)
 #        self.ui.graphicsView.clear()
 #        self.ui.treeWidget.clear()
-#
+
 #        self.data, self.curves, colors = [], [], [
 #            QtGui.QColor('blue'),
 #            QtGui.QColor('red'),
@@ -36,9 +35,8 @@ class DataPlotController(QtGui.QWidget, BasePanelController):
 #            QtGui.QColor('orange'),
 #            QtGui.QColor('deepskyblue'),
 #            QtGui.QColor('firebrick'),
-#            QtGui.QColor('aqua')
-#        ]
-#        
+#            QtGui.QColor('aqua')]
+
 #        for i in xrange(self.plotCount):
 #            self.data.append([0.0] * plotSize)
 #            self.curves.append(
@@ -70,31 +68,31 @@ class DataPlotController(QtGui.QWidget, BasePanelController):
 #        self.plot_timer.timeout.connect(self.update_plot)
 #        self.plot_timer.start(100)
 
-    def readContinuousData(self):
-        '''This method continually reads telemetry from the AeroQuad'''
-        if self._communicator.isConnected() and not self.commData.empty():
-            rawData = self.commData.get()
-            data = rawData.split(',')
-
-            for i in xrange(self.plotCount):
-                legendRow = self.legend.child(i)
-                if legendRow.checkState(0) == 2:
-                    try:
-                        dataValue = data[i + self.plotIndex]
-                        self.data[i].insert(0, float(dataValue))
-                        self.data[i].pop()
-                        legendRow.setText(2, dataValue)
-                    except:
-                        pass # Do not update output data if invalid number detected from _communicator read
-
-    def update_plot(self):
-        for i in xrange(self.plotCount):
-            legendRow = self.legend.child(i)
-            if legendRow.checkState(0) == 2:
-                self.curves[i].setData(self.data[i])
-                if self.curves[i] not in self.ui.graphicsView.items():
-                    self.ui.graphicsView.addItem(self.curves[i])
-            else:
-                if self.curves[i] in self.ui.graphicsView.items():
-                    self.ui.graphicsView.removeItem(self.curves[i])
-        self.ui.graphicsView.autoRange()
+#    def readContinuousData(self):
+#        '''This method continually reads telemetry from the AeroQuad'''
+#        if self._communicator.isConnected() and not self.commData.empty():
+#            rawData = self.commData.get()
+#            data = rawData.split(',')
+#
+#            for i in xrange(self.plotCount):
+#                legendRow = self.legend.child(i)
+#                if legendRow.checkState(0) == 2:
+#                    try:
+#                        dataValue = data[i + self.plotIndex]
+#                        self.data[i].insert(0, float(dataValue))
+#                        self.data[i].pop()
+#                        legendRow.setText(2, dataValue)
+#                    except:
+#                        pass # Do not update output data if invalid number detected from _communicator read
+#
+#    def update_plot(self):
+#        for i in xrange(self.plotCount):
+#            legendRow = self.legend.child(i)
+#            if legendRow.checkState(0) == 2:
+#                self.curves[i].setData(self.data[i])
+#                if self.curves[i] not in self.ui.graphicsView.items():
+#                    self.ui.graphicsView.addItem(self.curves[i])
+#            else:
+#                if self.curves[i] in self.ui.graphicsView.items():
+#                    self.ui.graphicsView.removeItem(self.curves[i])
+#        self.ui.graphicsView.autoRange()

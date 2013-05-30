@@ -2,11 +2,12 @@
 from PyQt4 import QtGui
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.magnetometercalibration.MagnetometerCalibrationPanel import Ui_MagnetometerCalibrationPanel
-from model.EventDispatcher import EventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
+from ui.UIEventDispatcher import UIEventDispatcher
 
 class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
 
-    def __init__(self, event_dispatcher, protocol_handler):
+    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher):
         QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
         self.ui = Ui_MagnetometerCalibrationPanel()
@@ -26,8 +27,8 @@ class MagnetometerCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.start.clicked.connect(self.start_magnetometer_calibration)
         self.ui.cancel.clicked.connect(self.cancel_magnetometer_calibration)
         
-        event_dispatcher.register(self._magnetometer_raw_data_updated, EventDispatcher.MAGNETOMETER_RAW_DATA_EVENT)
-        event_dispatcher.register(self._connection_state_changed, EventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+        vehicle_event_dispatcher.register(self._magnetometer_raw_data_updated, VehicleEventDispatcher.MAGNETOMETER_RAW_DATA_EVENT)
+        ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
         
     
     def start_magnetometer_calibration(self):

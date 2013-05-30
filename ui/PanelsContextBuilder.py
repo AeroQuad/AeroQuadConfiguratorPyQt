@@ -5,7 +5,8 @@ from ui.subpanel.accelcalibration.AccelCalibrationController import AccelCalibra
 from ui.subpanel.receivercalibration.ReceiverCalibrationController import ReceiverCalibrationController
 from ui.subpanel.pidparametersupdater.PIDParametersUpdaterController import PIDParametersUpdaterController
 from ui.subpanel.motorcommand.MotorCommandController import MotorCommandController
-from ui.subpanel.dataplot.DataPlotController import DataPlotController
+from ui.subpanel.dataplot.SensorsDataPlotControler import SensorsDataPlotContoller
+from ui.subpanel.dataplot.ReceiverDataPlotController import ReceiverDataPlotContoller
 
 
 class PanelsContextBuilder(object):
@@ -38,7 +39,7 @@ class PanelsContextBuilder(object):
                         MotorCommandController(vehicle_event_dispatcher, ui_event_dispatcher)
         
         PanelsContextBuilder.PANELS_DICTIONNARY[PanelsContextBuilder.SENSOR_PLOT_PANEL_ID] = \
-                        DataPlotController(vehicle_event_dispatcher, ui_event_dispatcher)
+                        SensorsDataPlotContoller(vehicle_event_dispatcher, ui_event_dispatcher)
         PanelsContextBuilder.PANELS_DICTIONNARY[PanelsContextBuilder.RECEIVER_PLOT_PANEL_ID] = \
-                        DataPlotController(vehicle_event_dispatcher, ui_event_dispatcher)
+                        ReceiverDataPlotContoller(vehicle_event_dispatcher, ui_event_dispatcher)
         

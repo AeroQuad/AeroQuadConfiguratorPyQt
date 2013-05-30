@@ -12,6 +12,7 @@ encoding//ui/subpanel/commmonitor/CommMonitorPanel.py=utf-8
 encoding//ui/subpanel/dataplot/DataPlotController.py=utf-8
 encoding//ui/subpanel/dataplot/DataPlotPanel.py=utf-8
 encoding//ui/subpanel/magnetometercalibration/MagnetometerCalibrationPanel.py=utf-8
+encoding//ui/subpanel/mainmenuepanel/MainMenuePanel.py=utf-8
 encoding//ui/subpanel/motorcommand/MotorCommandController.py=utf-8
 encoding//ui/subpanel/motorcommand/MotorCommandPanel.py=utf-8
 encoding//ui/subpanel/pidparametersupdater/PIDParametersUpdaterPanel.py=utf-8

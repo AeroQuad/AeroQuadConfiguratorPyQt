@@ -110,7 +110,6 @@ class AQMain(QtGui.QMainWindow):
                 self._current_active_panel.stop()
                 self.ui.panel_container.removeWidget(self._current_active_panel)
                 self._current_active_panel = None
-            
             self.ui.panel_container.setCurrentIndex(0)
             self.ui.side_menu.hide()
             self.ui.button_home.hide()

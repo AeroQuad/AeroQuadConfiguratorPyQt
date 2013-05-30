@@ -21,7 +21,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1">
-    <widget class="PlotWidget" name="graphicsView">
+    <widget class="PlotWidget" name="plot_view">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QTreeWidget" name="treeWidget">
+    <widget class="QTreeWidget" name="tree_widget">
      <property name="maximumSize">
       <size>
        <width>200</width>
@@ -42,10 +42,10 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="rootIsDecorated">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="itemsExpandable">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="expandsOnDoubleClick">
       <bool>false</bool>
