@@ -111,12 +111,12 @@ class AQV32ProtocolHandler(ProtocolHandler):
 #
     def subscribe_sensors_data(self):
         def unpack_data():
-#            try :
+            try :
                 serial_data = self._date_output_queue.get()
                 V32VehicleSensorsDataTranslator(serial_data, self._vehicle_event_dispatcher)
-#            except:
-#                logging.error("Protocol Handler: Failed to notify update vehicle raw sensors data")
-#                print "Protocol Handler: Failed to notify update vehicle raw sensors data"
+            except:
+                logging.error("Protocol Handler: Failed to notify update vehicle raw sensors data")
+                print "Protocol Handler: Failed to notify update vehicle raw sensors data"
             
         self.subscribe_command(self.COMMANDS['SubscribeSensor'], unpack_data)
 

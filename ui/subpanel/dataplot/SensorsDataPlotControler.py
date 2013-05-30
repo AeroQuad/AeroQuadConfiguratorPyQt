@@ -1,9 +1,9 @@
 
 from PyQt4 import QtGui
 from ui.subpanel.dataplot.DataPlotController import DataPlotController
-from graphicsItems.PlotCurveItem import PlotCurveItem
 from ui.UIEventDispatcher import UIEventDispatcher
 from model.VehicleEventDispatcher import VehicleEventDispatcher
+from pyqtgraph.graphicsItems.PlotCurveItem import PlotCurveItem
 
 class SensorsDataPlotContoller(DataPlotController):
 
@@ -15,7 +15,7 @@ class SensorsDataPlotContoller(DataPlotController):
         self.ui.tree_widget.clear()
         self._plot_index = 0
         
-        self.data, self.curves, colors = [], [], [
+        self._plot_datas_arrays, self.curves, colors = [], [], [
             QtGui.QColor('blue'),
             QtGui.QColor('red'),
             QtGui.QColor('lime'),
@@ -49,9 +49,9 @@ class SensorsDataPlotContoller(DataPlotController):
         vehicle_event_dispatcher.register(self._mag_raw_data_receved, VehicleEventDispatcher.MAGNETOMETER_RAW_DATA_EVENT)
 
     def createPlotLine(self, idx, color, plotName):
-        self.data.append([0.0] * 128)
+        self._plot_datas_arrays.append([0.0] * 128)
         self.curves.append(
-            PlotCurveItem(self.data[idx], pen={'color':color, 'width': 2})
+            PlotCurveItem(self._plot_datas_arrays[idx], pen={'color':color, 'width': 2})
         )
         self.ui.plot_view.addItem(self.curves[idx])
 
@@ -76,8 +76,6 @@ class SensorsDataPlotContoller(DataPlotController):
         if self.gyro_parent.checkState(0) != 2:
             for i in range(0, 3):
                 if self.curves[i] in self.ui.plot_view.items():
-#                self.data[i].insert(0, 0.0)
-#                self.curves[i].setData(self.data[i])
                     self.ui.plot_view.removeItem(self.curves[i])
             return
         
@@ -85,15 +83,13 @@ class SensorsDataPlotContoller(DataPlotController):
         for i in range(0, 3):
             gyro_child_node = self.gyro_parent.child(i)
             if gyro_child_node.checkState(0) == 2:
-                self.data[i].insert(0, float(gyro_data_array[i]))
-                self.data[i].pop()
+                self._plot_datas_arrays[i].insert(0, float(gyro_data_array[i]))
+                self._plot_datas_arrays[i].pop()
                 gyro_child_node.setText(2, gyro_data_array[i])
-                self.curves[i].setData(self.data[i])
+                self.curves[i].setData(self._plot_datas_arrays[i])
                 if self.curves[i] not in self.ui.plot_view.items():
                     self.ui.plot_view.addItem(self.curves[i])
             elif self.curves[i] in self.ui.plot_view.items():
-#                self.data[i].insert(0, 0.0)
-#                self.curves[i].setData(self.data[i])
                 self.ui.plot_view.removeItem(self.curves[i])
         self.ui.plot_view.autoRange()
         
@@ -101,8 +97,6 @@ class SensorsDataPlotContoller(DataPlotController):
         if self.accel_parent.checkState(0) != 2:
             for i in range(0, 3):
                 if self.curves[i+3] in self.ui.plot_view.items():
-#                self.data[i].insert(0, 0.0)
-#                self.curves[i].setData(self.data[i])
                     self.ui.plot_view.removeItem(self.curves[i+3])
             return
 
@@ -110,86 +104,41 @@ class SensorsDataPlotContoller(DataPlotController):
         for i in range(0, 3):
             accel_child_node = self.accel_parent.child(i)
             if accel_child_node.checkState(0) == 2:
-                self.data[i+3].insert(0, float(accel_data_array[i]))
-                self.data[i+3].pop()
+                self._plot_datas_arrays[i+3].insert(0, float(accel_data_array[i]))
+                self._plot_datas_arrays[i+3].pop()
                 accel_child_node.setText(2, accel_data_array[i])
-                self.curves[i+3].setData(self.data[i])
+                self.curves[i+3].setData(self._plot_datas_arrays[i+3])
                 if self.curves[i+3] not in self.ui.plot_view.items():
                     self.ui.plot_view.addItem(self.curves[i+3])
-            elif self.curves[i] in self.ui.plot_view.items():
-#                self.data[i].insert(0, 0.0)
-#                self.curves[i].setData(self.data[i])
+            elif self.curves[i+3] in self.ui.plot_view.items():
                 self.ui.plot_view.removeItem(self.curves[i+3])
         self.ui.plot_view.autoRange()
 
         
     def _mag_raw_data_receved(self, event, mag_vector):
         return
-        if self.mag_parent.checkState(0) != 2:
-            for i in range(0, 3):
-                if self.curves[i+3] in self.ui.plot_view.items():
-#                self.data[i].insert(0, 0.0)
-#                self.curves[i].setData(self.data[i])
-                    self.ui.plot_view.removeItem(self.curves[i+3])
-            return
-
-        mag_data_array = [mag_vector.get_x(),mag_vector.get_y(),mag_vector.get_z()]
-        for i in range(0, 3):
-            accel_child_node = self.mag_parent.child(i)
-            if accel_child_node.checkState(0) == 2:
-                self.data[i+6].insert(0, float(mag_data_array[i]))
-                self.data[i+6].pop()
-                accel_child_node.setText(2, mag_data_array[i])
-                self.curves[i+6].setData(self.data[i])
-                if self.curves[i+6] not in self.ui.plot_view.items():
-                    self.ui.plot_view.addItem(self.curves[i+6])
-            elif self.curves[i] in self.ui.plot_view.items():
-#                self.data[i].insert(0, 0.0)
-#                self.curves[i].setData(self.data[i])
-                self.ui.plot_view.removeItem(self.curves[i+6])
-        self.ui.plot_view.autoRange()
-
-
+#        if self.mag_parent.checkState(0) != 2:
+#            for i in range(0, 3):
+#                if self.curves[i+3] in self.ui.plot_view.items():
+#                self._plot_datas_arrays[i].insert(0, 0.0)
+#                self.curves[i].setData(self._plot_datas_arrays[i])
+#                    self.ui.plot_view.removeItem(self.curves[i+3])
+#            return
+#
+#        mag_data_array = [mag_vector.get_x(),mag_vector.get_y(),mag_vector.get_z()]
+#        for i in range(0, 3):
+#            accel_child_node = self.mag_parent.child(i)
+#            if accel_child_node.checkState(0) == 2:
+#                self._plot_datas_arrays[i+6].insert(0, float(mag_data_array[i]))
+#                self._plot_datas_arrays[i+6].pop()
+#                accel_child_node.setText(2, mag_data_array[i])
+#                self.curves[i+6].setData(self._plot_datas_arrays[i])
+#                if self.curves[i+6] not in self.ui.plot_view.items():
+#                    self.ui.plot_view.addItem(self.curves[i+6])
+#            elif self.curves[i] in self.ui.plot_view.items():
+##                self._plot_datas_arrays[i].insert(0, 0.0)
+##                self.curves[i].setData(self._plot_datas_arrays[i])
+#                self.ui.plot_view.removeItem(self.curves[i+6])
+#        self.ui.plot_view.autoRange()
 
 
-
-
-
-
-
-
-#        self.treeWidget = QtGui.QTreeWidget(DataPlotPanel)
-#        self.treeWidget.setMaximumSize(QtCore.QSize(200, 16777215))
-#        self.treeWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-#        self.treeWidget.setRootIsDecorated(True)
-#        self.treeWidget.setItemsExpandable(True)
-#        self.treeWidget.setExpandsOnDoubleClick(False)
-#        self.treeWidget.setColumnCount(3)
-#        self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
-#        item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
-#        item_0.setCheckState(0, QtCore.Qt.Checked)
-#        item_0.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
-#        item_1 = QtGui.QTreeWidgetItem(item_0)
-#        item_1.setCheckState(0, QtCore.Qt.Checked)
-#        item_1.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
-#        item_1 = QtGui.QTreeWidgetItem(item_0)
-#        item_1.setCheckState(0, QtCore.Qt.Checked)
-#        item_1.setFlags(QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
-#        item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
-#        item_1 = QtGui.QTreeWidgetItem(item_0)
-#        item_1 = QtGui.QTreeWidgetItem(item_0)        
-
-
-#        DataPlotPanel.setWindowTitle(_translate("DataPlotPanel", "Form", None))
-#        self.treeWidget.headerItem().setText(0, _translate("DataPlotPanel", "Legend", None))
-#        self.treeWidget.headerItem().setText(1, _translate("DataPlotPanel", "Name", None))
-#        self.treeWidget.headerItem().setText(2, _translate("DataPlotPanel", "Value", None))
-#        __sortingEnabled = self.treeWidget.isSortingEnabled()
-#        self.treeWidget.setSortingEnabled(False)
-#        self.treeWidget.topLevelItem(0).setText(0, _translate("DataPlotPanel", "Gyro", None))
-#        self.treeWidget.topLevelItem(0).child(0).setText(0, _translate("DataPlotPanel", "Gyro X", None))
-#        self.treeWidget.topLevelItem(0).child(1).setText(0, _translate("DataPlotPanel", "Gyro Y", None))
-#        self.treeWidget.topLevelItem(1).setText(0, _translate("DataPlotPanel", "Accel", None))
-#        self.treeWidget.topLevelItem(1).child(0).setText(0, _translate("DataPlotPanel", "Accel X", None))
-#        self.treeWidget.topLevelItem(1).child(1).setText(0, _translate("DataPlotPanel", "Accel Y", None))
-#        self.treeWidget.setSortingEnabled(__sortingEnabled)
