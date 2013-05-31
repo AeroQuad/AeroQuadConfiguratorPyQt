@@ -1,21 +1,27 @@
 
 from PyQt4 import QtGui
-from ui.subpanel.dataplot.DataPlotController import DataPlotController
+from ui.subpanel.dataplot.DataPlotPanel import Ui_DataPlotPanel
+from ui.subpanel.BasePanelController import BasePanelController
 from ui.UIEventDispatcher import UIEventDispatcher
 from model.VehicleEventDispatcher import VehicleEventDispatcher
 from pyqtgraph.graphicsItems.PlotCurveItem import PlotCurveItem
 
-class SensorsDataPlotContoller(DataPlotController):
+class SensorsDataPlotContoller(QtGui.QWidget, BasePanelController):
 
     def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher):
-        DataPlotController.__init__(self)
+        QtGui.QWidget.__init__(self)
+        BasePanelController.__init__(self)
+        self.ui = Ui_DataPlotPanel()
+        self.ui.setupUi(self)
         
         self.ui.plot_view.setRange(xRange=(0, 128), padding=0.0)
         self.ui.plot_view.clear()
         self.ui.tree_widget.clear()
         self._plot_index = 0
         
-        self._plot_datas_arrays, self.curves, colors = [], [], [
+        self._plot_datas_arrays = []
+        self._curves = [] 
+        colors = [
             QtGui.QColor('blue'),
             QtGui.QColor('red'),
             QtGui.QColor('lime'),
@@ -50,10 +56,10 @@ class SensorsDataPlotContoller(DataPlotController):
 
     def createPlotLine(self, idx, color, plotName):
         self._plot_datas_arrays.append([0.0] * 128)
-        self.curves.append(
+        self._curves.append(
             PlotCurveItem(self._plot_datas_arrays[idx], pen={'color':color, 'width': 2})
         )
-        self.ui.plot_view.addItem(self.curves[idx])
+        self.ui.plot_view.addItem(self._curves[idx])
 
         newLine = QtGui.QTreeWidgetItem()
         newLine.setCheckState(0, 2)
@@ -66,7 +72,6 @@ class SensorsDataPlotContoller(DataPlotController):
         self._protocol_handler = protocol_handler;
                 
     def start(self):
-#        self.ui.plot_view.clear()
         self._protocol_handler.subscribe_sensors_data();
         
     def stop(self):
@@ -75,8 +80,8 @@ class SensorsDataPlotContoller(DataPlotController):
     def _gyro_raw_data_receved(self, event, gyro_vector):
         if self.gyro_parent.checkState(0) != 2:
             for i in range(0, 3):
-                if self.curves[i] in self.ui.plot_view.items():
-                    self.ui.plot_view.removeItem(self.curves[i])
+                if self._curves[i] in self.ui.plot_view.items():
+                    self.ui.plot_view.removeItem(self._curves[i])
             return
         
         gyro_data_array = [gyro_vector.get_x(),gyro_vector.get_y(),gyro_vector.get_z()]
@@ -86,18 +91,17 @@ class SensorsDataPlotContoller(DataPlotController):
                 self._plot_datas_arrays[i].insert(0, float(gyro_data_array[i]))
                 self._plot_datas_arrays[i].pop()
                 gyro_child_node.setText(2, gyro_data_array[i])
-                self.curves[i].setData(self._plot_datas_arrays[i])
-                if self.curves[i] not in self.ui.plot_view.items():
-                    self.ui.plot_view.addItem(self.curves[i])
-            elif self.curves[i] in self.ui.plot_view.items():
-                self.ui.plot_view.removeItem(self.curves[i])
-        self.ui.plot_view.autoRange()
+                self._curves[i].setData(self._plot_datas_arrays[i])
+                if self._curves[i] not in self.ui.plot_view.items():
+                    self.ui.plot_view.addItem(self._curves[i])
+            elif self._curves[i] in self.ui.plot_view.items():
+                self.ui.plot_view.removeItem(self._curves[i])
         
     def _accel_raw_data_receved(self, event, accel_vector):
         if self.accel_parent.checkState(0) != 2:
             for i in range(0, 3):
-                if self.curves[i+3] in self.ui.plot_view.items():
-                    self.ui.plot_view.removeItem(self.curves[i+3])
+                if self._curves[i+3] in self.ui.plot_view.items():
+                    self.ui.plot_view.removeItem(self._curves[i+3])
             return
 
         accel_data_array = [accel_vector.get_x(),accel_vector.get_y(),accel_vector.get_z()]
@@ -107,22 +111,20 @@ class SensorsDataPlotContoller(DataPlotController):
                 self._plot_datas_arrays[i+3].insert(0, float(accel_data_array[i]))
                 self._plot_datas_arrays[i+3].pop()
                 accel_child_node.setText(2, accel_data_array[i])
-                self.curves[i+3].setData(self._plot_datas_arrays[i+3])
-                if self.curves[i+3] not in self.ui.plot_view.items():
-                    self.ui.plot_view.addItem(self.curves[i+3])
-            elif self.curves[i+3] in self.ui.plot_view.items():
-                self.ui.plot_view.removeItem(self.curves[i+3])
-        self.ui.plot_view.autoRange()
-
+                self._curves[i+3].setData(self._plot_datas_arrays[i+3])
+                if self._curves[i+3] not in self.ui.plot_view.items():
+                    self.ui.plot_view.addItem(self._curves[i+3])
+            elif self._curves[i+3] in self.ui.plot_view.items():
+                self.ui.plot_view.removeItem(self._curves[i+3])
         
     def _mag_raw_data_receved(self, event, mag_vector):
         return
 #        if self.mag_parent.checkState(0) != 2:
 #            for i in range(0, 3):
-#                if self.curves[i+3] in self.ui.plot_view.items():
+#                if self._curves[i+3] in self.ui.plot_view.items():
 #                self._plot_datas_arrays[i].insert(0, 0.0)
-#                self.curves[i].setData(self._plot_datas_arrays[i])
-#                    self.ui.plot_view.removeItem(self.curves[i+3])
+#                self._curves[i].setData(self._plot_datas_arrays[i])
+#                    self.ui.plot_view.removeItem(self._curves[i+3])
 #            return
 #
 #        mag_data_array = [mag_vector.get_x(),mag_vector.get_y(),mag_vector.get_z()]
@@ -132,13 +134,13 @@ class SensorsDataPlotContoller(DataPlotController):
 #                self._plot_datas_arrays[i+6].insert(0, float(mag_data_array[i]))
 #                self._plot_datas_arrays[i+6].pop()
 #                accel_child_node.setText(2, mag_data_array[i])
-#                self.curves[i+6].setData(self._plot_datas_arrays[i])
-#                if self.curves[i+6] not in self.ui.plot_view.items():
-#                    self.ui.plot_view.addItem(self.curves[i+6])
-#            elif self.curves[i] in self.ui.plot_view.items():
+#                self._curves[i+6].setData(self._plot_datas_arrays[i])
+#                if self._curves[i+6] not in self.ui.plot_view.items():
+#                    self.ui.plot_view.addItem(self._curves[i+6])
+#            elif self._curves[i] in self.ui.plot_view.items():
 ##                self._plot_datas_arrays[i].insert(0, 0.0)
-##                self.curves[i].setData(self._plot_datas_arrays[i])
-#                self.ui.plot_view.removeItem(self.curves[i+6])
+##                self._curves[i].setData(self._plot_datas_arrays[i])
+#                self.ui.plot_view.removeItem(self._curves[i+6])
 #        self.ui.plot_view.autoRange()
 
 
