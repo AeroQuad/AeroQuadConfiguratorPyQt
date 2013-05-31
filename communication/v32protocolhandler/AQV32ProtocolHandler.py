@@ -5,6 +5,7 @@ from model.Vector3D import Vector3D
 from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v32protocolhandler.V32VehicleStatusTranslator import V32VehicleStatusTranslator
 from communication.v32protocolhandler.V32VehicleSensorsDataTranslator import V32VehicleSensorsDataTranslator
+from communication.v32protocolhandler.V32ReceiverDataTranslator import V32ReceiverDataTranslator
 
 class AQV32ProtocolHandler(ProtocolHandler):
 
@@ -111,17 +112,14 @@ class AQV32ProtocolHandler(ProtocolHandler):
 #
     def subscribe_sensors_data(self):
         def unpack_data():
-#            try :
+            try :
                 serial_data = self._date_output_queue.get()
                 V32VehicleSensorsDataTranslator(serial_data, self._vehicle_event_dispatcher)
-#            except:
-#                logging.error("Protocol Handler: Failed to notify update vehicle raw sensors data")
-#                print "Protocol Handler: Failed to notify update vehicle raw sensors data"
+            except:
+                logging.error("Protocol Handler: Failed to notify update vehicle raw sensors data")
+                print "Protocol Handler: Failed to notify update vehicle raw sensors data"
             
         self.subscribe_command(self.COMMANDS['SubscribeSensor'], unpack_data)
-
-#    def unsubscribe_sensors(self):
-#        self.unsubscribe_command(self.COMMANDS['UnsubscribeSensor'])
 
     def subscribe_vehicle_status(self):
         def unpack_data():
@@ -145,6 +143,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
                     self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.MAGNETOMETER_RAW_DATA_EVENT,magnetometer_raw_vector)
                 except:
                     logging.error("Protocol Handler: Failed to notify update magnetometer raw data")
+                    print "Protocol Handler: Failed to notify update magnetometer raw data"
 
         self.subscribe_command(self.COMMANDS['SubscribeRawMagnetometer'], unpack_data)
 
@@ -167,3 +166,15 @@ class AQV32ProtocolHandler(ProtocolHandler):
             board_properties = self.receive_command_data().split(':')
             self._vehicle_event_dispatcher.dispatch_event(board_properties[0],board_properties[1].strip())
             
+    def subscribe_receiver_data(self):
+        def unpack_data():
+            if not self._date_output_queue.empty():
+                try :
+                    serial_data = self._date_output_queue.get()
+                    V32ReceiverDataTranslator(serial_data, self._vehicle_event_dispatcher)
+                except:
+                    logging.error("Protocol Handler: Failed to notify update receiver data")
+                    print "Protocol Handler: Failed to notify update receiver data"
+
+        self.subscribe_command(self.COMMANDS['SubscribeProcessedTransmitter'], unpack_data)
+

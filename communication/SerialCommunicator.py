@@ -54,9 +54,9 @@ class SerialCommunicator(object):
         self._communicator.write(bytes(data.encode('utf-8')))
         
     def read(self, size=1):
-        return self._communicator.read(size)
-#        response = self._communicator.readline().decode('utf-8')
-#        return response.rstrip('\r\n')
+#        return self._communicator.read(size)
+        response = self._communicator.readline().decode('utf-8')
+        return response.rstrip('\r\n')
     
 #    def waitForRead(self):
 #        ''' Wait for data to be available at the port and return the resulting string.  If the timeout value is reached, stop waiting.
