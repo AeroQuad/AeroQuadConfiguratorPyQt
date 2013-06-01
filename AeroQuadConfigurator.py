@@ -76,7 +76,7 @@ class AQMain(QtGui.QMainWindow):
         
         # Dynamically configure board type menu and subPanel menu from XML configuration file
         self._current_active_panel = None
-        self.activeSubPanelName = ""
+        self.activeSubPanelName = ''
 
         # Connect GUI slots and signals
         self.ui.comPort.return_handler = self._connection_manager.connect_to_aeroquad

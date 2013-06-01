@@ -17,6 +17,7 @@ class ReceiverDataPlotContoller(QtGui.QWidget, BasePanelController):
         
         self.ui.plot_view.setRange(xRange=(0, 128), padding=0.0)
         self.ui.plot_view.clear()
+        self.ui.plot_view.setBackground(QtGui.QColor('white'))
         self.ui.tree_widget.clear()
         self._plot_index = 0
         

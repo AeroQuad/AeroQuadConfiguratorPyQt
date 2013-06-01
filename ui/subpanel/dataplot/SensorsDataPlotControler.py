@@ -16,6 +16,7 @@ class SensorsDataPlotContoller(QtGui.QWidget, BasePanelController):
         
         self.ui.plot_view.setRange(xRange=(0, 128), padding=0.0)
         self.ui.plot_view.clear()
+        self.ui.plot_view.setBackground(QtGui.QColor('white'))
         self.ui.tree_widget.clear()
         self._plot_index = 0
         
@@ -50,9 +51,9 @@ class SensorsDataPlotContoller(QtGui.QWidget, BasePanelController):
         self.ui.tree_widget.expandItem(self.accel_parent)
         
         ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
-        vehicle_event_dispatcher.register(self._gyro_raw_data_receved, VehicleEventDispatcher.GYRO_RAW_DATA_EVENT)
-        vehicle_event_dispatcher.register(self._accel_raw_data_receved, VehicleEventDispatcher.ACCEL_RAW_DATA_EVENT)
-        vehicle_event_dispatcher.register(self._mag_raw_data_receved, VehicleEventDispatcher.MAGNETOMETER_RAW_DATA_EVENT)
+        vehicle_event_dispatcher.register(self._gyro_raw_data_receved, VehicleEventDispatcher.GYRO_DATA_EVENT)
+        vehicle_event_dispatcher.register(self._accel_raw_data_receved, VehicleEventDispatcher.ACCEL_DATA_EVENT)
+        vehicle_event_dispatcher.register(self._mag_raw_data_receved, VehicleEventDispatcher.MAGNETOMETER_DATA_EVENT)
 
     def createPlotLine(self, idx, color, plotName):
         self._plot_datas_arrays.append([0.0] * 128)
