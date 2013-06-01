@@ -27,13 +27,10 @@ class AQV32ProtocolHandler(ProtocolHandler):
                 'GetTransmitterOffset' : 'h',
                 'SetTransmitterOffset' : 'H',                 
                 'SubscribeSensor'  : 'i',
-                'UnsubscribeSensor'  : 'X',
                 'SubscribeRawMagnetometer' : 'j',
-                'UnsubscribeRawMagnetometer' : 'X',
                 'GetAccelCalibration' : 'k',
                 'SetAccelCalibration' : 'K',
                 'SubscribeRawAccel' : 'l',
-                'UnsubscribeRawAccel' : 'X',
                 'GetMagnetometerCalibration' : 'm',
                 'SetMagnetometerCalibration' : 'M',
                 'GetBatteryMonitor' : 'n',
@@ -44,22 +41,16 @@ class AQV32ProtocolHandler(ProtocolHandler):
                 'SetCameraStabilization' : 'P',
                 'GetVehicleStateVariables' : 'q',
                 'SubscribeVehicleAttitude' : 'r',
-                'UnsubscribeVehicleAttitude' : 'X',
                 'SubscribeAllFlight' : 's',
-                'UnsubscribeAllFlight' : 'X',
                 'SubscribeProcessedTransmitter' : 't',
-                'UnsubscribeProcessedTransmitter' : 'X',
                 'GetRangeFinder' : 'u',
                 'SetRangeFinder' : 'U',
                 'GetGPSPID' : 'v',
                 'SetGPSPID' : 'V',
                 'GetGPSStatus' : 'y',
                 'SubscribeAltitude' : 'z',
-                'UnsubscribeAltitude' : 'X',
                 'SubscribeVoltageCurrent' : '$',
-                'UnsubscribeVoltageCurrent' : 'X',
                 'SubscribeRSSI' : '%',
-                'UnsubscribeRSSI' : 'X',
                 'InitializeEEPROM' : 'I',
                 'WriteUserValuesEEPROM' : 'W',
                 'CalibrateGyro': 'J',
@@ -74,42 +65,6 @@ class AQV32ProtocolHandler(ProtocolHandler):
     def __init__(self, communicator, vehicle_event_dispatcher):
         ProtocolHandler.__init__(self, communicator, vehicle_event_dispatcher)
 
-        
-#    def get_rate_PID(self):
-#        self.send_command(self.COMMANDS['GetRatePID'])
-#        return [float(i) for i in self.receiveCommandData().rstrip(',').split(',')]
-#
-#    def set_rate_PID(self, rollP, rollI, rollD, pitchP, pitchI, pitchD, rotSpeedFactor):
-#        command_data = ('{:.4f};'*7).format(rollP, rollI, rollD,pitchP, pitchI, pitchD,rotSpeedFactor)
-#        self.send_command(self.COMMANDS['SetRatePID'] + command_data)
-#        self.flush_command_data()
-#
-#    def get_attitude_PID(self):
-#        self.send_command(self.COMMANDS['GetAttitudePID'])
-#        return [float(i) for i in self.receive_command_data().rstrip(',').split(',')]
-#
-#    def set_attitude_PID(self, rollAccelP, rollAccelI, rollAccelD, pitchAccelP, pitchAccelI, pitchAccelD, rollP, rollI, rollD, pitchP, pitchI, pitchD, windupGuard):
-#        command_data = ('{:.4f};'*13).format(rollAccelP, rollAccelI, rollAccelD, pitchAccelP, pitchAccelI, pitchAccelD, rollP, rollI, rollD, pitchP, pitchI, pitchD, windupGuard)
-#        self.send_command(self.COMMANDS['SetAttitudePID']+command_data)
-#        self.flush_command_data()
-#
-#    def get_accel_calibration(self):
-#        self.send_command(self.COMMANDS['GetAccelCalibration'])
-#        return [float(i) for i in self.receiveCommandData().rstrip(',').split(',')]
-#
-#    def set_accel_calibration(self, scaleX, biasX, scaleY, biasY, scaleZ, biasZ):
-#        command_data = ('{:.4f};'*6).format(scaleX, biasX, scaleY, biasY, scaleZ, biasZ)
-#        self.send_command(self.COMMANDS['SetAccelCalibration']+command_data)
-#        self.flush_command_data()
-#
-#    def initialize_EEPROM(self):
-#        self.send_command(self.COMMANDS['InitializeEEPROM'])
-#        self.flush_command_data()
-#
-#    def generate_accel_bias(self):
-#        self.send_command(self.COMMANDS['GenerateAccelBias'])
-#        self.flush_command_data()
-#
     def subscribe_sensors_data(self):
         def unpack_data():
             try :
@@ -147,17 +102,27 @@ class AQV32ProtocolHandler(ProtocolHandler):
 
         self.subscribe_command(self.COMMANDS['SubscribeRawMagnetometer'], unpack_data)
 
-#    def unsubscribe_raw_magnetometer(self):
-#        self.unsubscribe_command(self.COMMANDS['UnsubscribeRawMagnetometer'])
-#
-#    def subscribe_raw_accelerometer(self, callback):
-#        def unpack_data(data):
-#            args = [t(s) for t,s in zip((int,)*3,data.split(','))]
-#            return callback(*args)
-#        self.subscribe_command(self.COMMANDS['SubscribeRawAccel'], unpack_data)
-#
-#    def unsubscribe_raw_accelerometer(self):
-#        self.unsubscribe_command(self.COMMANDS['UnsubscribeRawAccel'])
+    def subscribe_raw_accelerometer(self):
+        def unpack_data():
+            try :
+                serial_data = self._date_output_queue.get()
+                splitted_data = serial_data.split(',')
+                accel_raw_data_vector = Vector3D(float(splitted_data[0]),float(splitted_data[1]),float(splitted_data[2]))
+                self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.ACCEL_RAW_DATA_EVENT, accel_raw_data_vector)
+            except:
+                logging.error("Protocol Handler: Failed to notify update accel raw data")
+                print "Protocol Handler: Failed to notify update accel raw data"
+
+        self.subscribe_command(self.COMMANDS['SubscribeRawAccel'], unpack_data)
+        
+    def set_accel_calibration_scale_factor(self, x_scale_factor, y_scale_factor, z_scale_factor) :
+        command = self.COMMANDS['SetAccelCalibration'] + ' '
+        command = command + str(x_scale_factor)[0:8] + ';' + '0' + ';'
+        command = command + str(y_scale_factor)[0:8] + ';' + '0' + ';'
+        command = command + str(z_scale_factor)[0:8] + ';' + '0'
+        print "command sent = " + command
+        self.send_command(command)
+        
 
     def request_board_configuration(self):
         self.send_command(self.COMMANDS['GetBoardConfiguration'])
