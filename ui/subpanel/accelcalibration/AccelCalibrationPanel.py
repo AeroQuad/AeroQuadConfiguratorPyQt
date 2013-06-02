@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AccelCalibrationPanel.ui'
 #
-# Created: Sat Jun 01 10:18:49 2013
+# Created: Sun Jun 02 13:32:11 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,9 +48,6 @@ class Ui_AccelCalibrationPanel(object):
         self.start_button = QtGui.QPushButton(AccelCalibrationPanel)
         self.start_button.setGeometry(QtCore.QRect(420, 410, 100, 31))
         self.start_button.setObjectName(_fromUtf8("start_button"))
-        self.next_button = QtGui.QPushButton(AccelCalibrationPanel)
-        self.next_button.setGeometry(QtCore.QRect(640, 410, 101, 31))
-        self.next_button.setObjectName(_fromUtf8("next_button"))
         self.picture_container = QtGui.QGraphicsView(AccelCalibrationPanel)
         self.picture_container.setGeometry(QtCore.QRect(10, 10, 391, 391))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
@@ -86,5 +83,4 @@ class Ui_AccelCalibrationPanel(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> </p></body></html>", None))
         self.start_button.setText(_translate("AccelCalibrationPanel", "Start", None))
-        self.next_button.setText(_translate("AccelCalibrationPanel", "Next", None))
 
