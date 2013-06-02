@@ -47,7 +47,7 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
             self._protocol_handler.subscribe_raw_accelerometer()
         elif  self.ui.start_button.text() == AccelCalibrationController.NEXT_TEXT :
             self._protocol_handler.subscribe_raw_accelerometer()
-            self.ui.next_button.setEnabled(False)
+            self.ui.start_button.setEnabled(False)
         else :
             self._send_calibration_score()
             self._set_initial_panel_state()
