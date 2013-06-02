@@ -65,16 +65,13 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
            self._current_calibration_step == AccelCalibrationController.UPSIDE_DOWN_CALIBRATION_STEP_ID :
                 self._calibration_raw_sum_values[self._current_calibration_step] = \
                     self._calibration_raw_sum_values[self._current_calibration_step] + accel_raw_data_vector.get_z()
-                print " step 1"
         elif self._current_calibration_step == AccelCalibrationController.LEFT_SIDE_CALIBRATION_STEP_ID or \
              self._current_calibration_step == AccelCalibrationController.RIGHT_SIDE_CALIBRATION_STEP_ID :
                 self._calibration_raw_sum_values[self._current_calibration_step] = \
                     self._calibration_raw_sum_values[self._current_calibration_step] + accel_raw_data_vector.get_y()
-                print " step 2"
         else :
             self._calibration_raw_sum_values[self._current_calibration_step] = \
                 self._calibration_raw_sum_values[self._current_calibration_step] + accel_raw_data_vector.get_x()
-            print " step 3"
         
         self._current_nb_sampled_read = self._current_nb_sampled_read + 1
         self.ui.progress_bar.setValue(self._current_nb_sampled_read)
@@ -141,15 +138,21 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.progress_bar.setValue(0)
     
     def _send_calibration_score(self):
-#        z_scale_factor = ((2.0 * AccelCalibrationController.ONE_G) / (math.fabs(self._calibration_raw_sum_values[0]) + math.fabs(self._calibration_raw_sum_values[1])))
-#        y_scale_factor = ((2.0 * AccelCalibrationController.ONE_G) / (math.fabs(self._calibration_raw_sum_values[2]) + math.fabs(self._calibration_raw_sum_values[3])))
-#        x_scale_factor = ((2.0 * AccelCalibrationController.ONE_G) / (math.fabs(self._calibration_raw_sum_values[4]) + math.fabs(self._calibration_raw_sum_values[5])))
-        
-        z_scale_factor = (2.0 * AccelCalibrationController.ONE_G) / (self._calibration_raw_sum_values[0] + self._calibration_raw_sum_values[1])
-        y_scale_factor = (2.0 * AccelCalibrationController.ONE_G) / (self._calibration_raw_sum_values[2] + self._calibration_raw_sum_values[3])
-        x_scale_factor = (2.0 * AccelCalibrationController.ONE_G) / (self._calibration_raw_sum_values[4] + self._calibration_raw_sum_values[5])
 
-        print "value = " + str(x_scale_factor) + "," + str(y_scale_factor) + "," + str(z_scale_factor)
+        temp_z = (math.fabs(self._calibration_raw_sum_values[0]) + math.fabs(self._calibration_raw_sum_values[1])) / 2
+        temp_y = (math.fabs(self._calibration_raw_sum_values[2]) + math.fabs(self._calibration_raw_sum_values[3])) / 2
+        temp_x = (math.fabs(self._calibration_raw_sum_values[4]) + math.fabs(self._calibration_raw_sum_values[5])) / 2
         
+        z_scale_factor = AccelCalibrationController.ONE_G / (temp_z / AccelCalibrationController.NB_SAMPLE_TO_READ) #* -1
+        y_scale_factor = AccelCalibrationController.ONE_G / (temp_y / AccelCalibrationController.NB_SAMPLE_TO_READ) #* -1
+        x_scale_factor = AccelCalibrationController.ONE_G / (temp_x / AccelCalibrationController.NB_SAMPLE_TO_READ)
+        
+        if self._calibration_raw_sum_values[1] < 0 :
+            z_scale_factor = z_scale_factor * -1
+        if self._calibration_raw_sum_values[2] < 0 :
+            y_scale_factor = y_scale_factor * -1
+        if self._calibration_raw_sum_values[4] < 0 :
+            x_scale_factor = x_scale_factor * -1
+
         self._protocol_handler.set_accel_calibration_scale_factor(x_scale_factor, y_scale_factor, z_scale_factor)
         
