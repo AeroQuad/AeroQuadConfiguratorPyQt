@@ -120,7 +120,6 @@ class AQV32ProtocolHandler(ProtocolHandler):
         command = command + str(x_scale_factor)[0:8] + ';' + '0' + ';'
         command = command + str(y_scale_factor)[0:8] + ';' + '0' + ';'
         command = command + str(z_scale_factor)[0:8] + ';' + '0'
-        print "command sent = " + command
         self.send_command(command)
         
 
