@@ -17,6 +17,10 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
     NOSE_DOWN_CALIBRATION_STEP_ID = 5
     COMPLETE_ACCEL_CALIBRATION_STEP_ID = 6
     
+    START_TEXT = 'Start'
+    NEXT_TEXT ='Next >>'
+    COMPLETE_TEXT = 'Complete'
+    
     NB_SAMPLE_TO_READ = 50
     ONE_G = 9.80665
 
@@ -28,7 +32,6 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
         self.ui.setupUi(self)
         self.ui.start_button.clicked.connect(self._start_button_pressed)
         self.ui.cancel_button.clicked.connect(self._cancel_button_pressed)
-        self.ui.next_button.clicked.connect(self._next_button_pressed)
         self.ui.progress_bar.setMaximum(AccelCalibrationController.NB_SAMPLE_TO_READ)
         
         ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
@@ -37,26 +40,22 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
         self._set_initial_panel_state()
         
     def _start_button_pressed(self):
-        self._protocol_handler.subscribe_raw_accelerometer() 
-        self.ui.start_button.setEnabled(False)
-        self.ui.next_button.setEnabled(False)
-        self.ui.cancel_button.setEnabled(True)
-        self._calibration_raw_sum_values = [0,0,0,0,0,0]
-        self._current_calibration_step = 0
-        self._current_nb_sampled_read = 0
-    
-    def _cancel_button_pressed(self):
-        self._protocol_handler.unsubscribe_command()
-        self._set_initial_panel_state()
-                   
-    def _next_button_pressed(self): 
-        if self.ui.next_button.text() == 'Next' :
+        if self.ui.start_button.text() == AccelCalibrationController.START_TEXT :
+            self.ui.start_button.setText(AccelCalibrationController.NEXT_TEXT)
+            self.ui.start_button.setEnabled(False)
+            self.ui.cancel_button.setEnabled(True)
+            self._protocol_handler.subscribe_raw_accelerometer()
+        elif  self.ui.start_button.text() == AccelCalibrationController.NEXT_TEXT :
             self._protocol_handler.subscribe_raw_accelerometer()
             self.ui.next_button.setEnabled(False)
         else :
             self._send_calibration_score()
             self._set_initial_panel_state()
-        
+
+    def _cancel_button_pressed(self):
+        self._protocol_handler.unsubscribe_command()
+        self._set_initial_panel_state()
+                   
     def _protocol_handler_changed_event(self, event, protocol_handler):
         self._protocol_handler = protocol_handler;
         
@@ -84,22 +83,18 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
         self._current_nb_sampled_read = 0
         self._current_calibration_step = self._current_calibration_step + 1
         self._update_panel_to_current_calibration_stage()
-        self.ui.next_button.setEnabled(True)
+        self.ui.start_button.setEnabled(True)
 
     def start(self):
         self._protocol_handler.unsubscribe_command()
-        self.ui.start_button.setEnabled(True)
-        self.ui.next_button.setEnabled(False)
-        self.ui.cancel_button.setEnabled(False)
-        
-        self._calibration_raw_sum_values = [0,0,0,0,0,0]
-        self._current_calibration_step = 0
-        self._current_nb_sampled_read = 0
-        self._update_panel_to_current_calibration_stage()
+        self._set_initial_panel_state()
+    
+    def stop(self):
+        self._protocol_handler.unsubscribe_command()
     
     def _update_panel_to_current_calibration_stage (self):
         pictureScene = QtGui.QGraphicsScene()
-        self.ui.next_button.setText("Next")
+        self.ui.start_button.setText(AccelCalibrationController.NEXT_TEXT)
         
         if self._current_calibration_step == self.LEVELLED_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/callevel.png")
@@ -122,19 +117,21 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
         elif self._current_calibration_step == self.COMPLETE_ACCEL_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/callevel.png")
             self.ui.information_display_text_box.setText("Place the AeroQuad on a flat surface and motionless surface and press the complete button to complete the calibration")
-            self.ui.next_button.setText("Complete")
+            self.ui.start_button.setText(AccelCalibrationController.COMPLETE_TEXT)
             
         pictureItem = QtGui.QGraphicsPixmapItem(pictureBackground)
         pictureScene.addItem(pictureItem)
         self.ui.picture_container.setScene(pictureScene)
     
     def _set_initial_panel_state(self):
-        self.ui.start_button.setEnabled(True)
-        self.ui.next_button.setEnabled(False)
-        self.ui.cancel_button.setEnabled(False)
-        self._current_calibration_step = 0
         self._calibration_raw_sum_values = [0,0,0,0,0,0]
+        self._current_calibration_step = 0
+        self._current_nb_sampled_read = 0
         self._update_panel_to_current_calibration_stage()
+        
+        self.ui.start_button.setEnabled(True)
+        self.ui.start_button.setText(AccelCalibrationController.START_TEXT)
+        self.ui.cancel_button.setEnabled(False)
         self.ui.progress_bar.setValue(0)
     
     def _send_calibration_score(self):
