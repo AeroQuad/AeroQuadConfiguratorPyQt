@@ -142,3 +142,31 @@ class AQV32ProtocolHandler(ProtocolHandler):
 
         self.subscribe_command(self.COMMANDS['SubscribeProcessedTransmitter'], unpack_data)
 
+    def send_motos_command(self,
+                        nb_motors,
+                        motor1_command,
+                        motor2_command,
+                        motor3_command,
+                        motor4_command,
+                        motor5_command,
+                        motor6_command,
+                        motor7_command,
+                        motor8_command):
+        
+        command = self.COMMANDS['SetMotorCommands'] + ' '
+        command = command + str(motor1_command) + ';'
+        command = command + str(motor2_command) + ';'
+        command = command + str(motor3_command) + ';'
+        command = command + str(motor4_command) 
+        if int(nb_motors) <= 6 :
+            command = command + ';'
+            command = command + str(motor5_command) + ';'
+            command = command + str(motor6_command)
+        if int(nb_motors) <= 8 :
+            command = command + ';'
+            command = command + str(motor7_command) + ';'
+            command = command + str(motor8_command)
+            
+        self.send_command(command)
+        
+        

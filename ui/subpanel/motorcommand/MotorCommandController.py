@@ -4,7 +4,9 @@ from time import sleep
 
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
-from ui.subpanel.motorcommand.MotorCommandPanel import MotorCommandPanel
+from ui.UIEventDispatcher import UIEventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
+from ui.subpanel.motorcommand.MotorCommandPanel import Ui_MotorCommandPanel
 
 
 class MotorSlider(QtGui.QWidget):
@@ -22,85 +24,120 @@ class MotorSlider(QtGui.QWidget):
         self.slider.setSingleStep(10)
         self.slider.valueChanged[int].connect(self.changeValue)
         
-        self.speed = QtGui.QLabel(self)
-        self.speed.setText('1000')
+        self.slider_label = QtGui.QLabel(self)
+        self.slider_label.setText('1000')
 
         self.motor_number = QtGui.QLabel(self)
         self.motor_number.setText('Motor %d' % motor_number)
         
         layout = QtGui.QVBoxLayout()
         layout.addWidget(self.slider,       0, QtCore.Qt.AlignHCenter)
-        layout.addWidget(self.speed,        0, QtCore.Qt.AlignHCenter)
+        layout.addWidget(self.slider_label, 0, QtCore.Qt.AlignHCenter)
         layout.addWidget(self.motor_number, 0, QtCore.Qt.AlignHCenter)
         
         self.setLayout(layout)
     
     def changeValue(self, value):
-        self.speed.setText(str(value))
+        self.slider_label.setText(str(value))
 
 class MotorCommandController(QtGui.QWidget, BasePanelController):
     
-    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher, parent=None):
-        super(MotorCommandController, self).__init__(parent)
+    def __init__(self, vehicle_event_dispatcher, ui_event_dispatcher):
+        QtGui.QWidget.__init__(self)
         BasePanelController.__init__(self)
-        self.ui = MotorCommandPanel()
+        self.ui = Ui_MotorCommandPanel()
         self.ui.setupUi(self)
-        self.ui.sendButton.setEnabled(False)
-        self.ui.clearButton.setEnabled(False)
-       
-        self.started = False
 
+        self._motor_slider1 = MotorSlider(1)
+        self.ui.gridLayout.addWidget(self._motor_slider1, 0, 0, 1, 1)
+        self._motor_slider1.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        self._motor_slider2 = MotorSlider(2)
+        self.ui.gridLayout.addWidget(self._motor_slider2, 0, 1, 1, 1)
+        self._motor_slider2.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        self._motor_slider3 = MotorSlider(3)
+        self.ui.gridLayout.addWidget(self._motor_slider3, 0, 2, 1, 1)
+        self._motor_slider3.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        self._motor_slider4 = MotorSlider(4)
+        self.ui.gridLayout.addWidget(self._motor_slider4, 0, 3, 1, 1)
+        self._motor_slider4.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        self._motor_slider5 = MotorSlider(5)
+        self.ui.gridLayout.addWidget(self._motor_slider5, 0, 4, 1, 1)
+        self._motor_slider5.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        self._motor_slider6 = MotorSlider(6)
+        self.ui.gridLayout.addWidget(self._motor_slider6, 0, 5, 1, 1)
+        self._motor_slider6.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        self._motor_slider7 = MotorSlider(7)
+        self.ui.gridLayout.addWidget(self._motor_slider7, 0, 4, 1, 1)
+        self._motor_slider7.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        self._motor_slider8 = MotorSlider(8) 
+        self.ui.gridLayout.addWidget(self._motor_slider8, 0, 5, 1, 1)
+        self._motor_slider8.slider.valueChanged[int].connect(self._motor_slider_value_changed)
+        
+        self.ui.unlock_check_box.stateChanged.connect(self._check_box_state_changed)
+        self.ui.send_command_button.clicked.connect(self._send_motors_commands)
+        self.ui.stop_all_motors_button.clicked.connect(self._send_stop_commands)
+        self.ui.help_button.clicked.connect(self._display_help_image)
+        
+        ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
+        vehicle_event_dispatcher.register(self._nb_motors_received, VehicleEventDispatcher.NUMBER_MOTORS_EVENT)
+        
+    def _protocol_handler_changed_event(self, event, protocol_handler):
+        self._protocol_handler = protocol_handler;
 
-        # Connect GUI slots and signals
-        self.ui.sendButton.clicked.connect(self.sendCommand)
-        self.ui.clearButton.clicked.connect(self.clearCommand)
+    def _nb_motors_received(self, event, nb_motors):
+        self._nb_motors = nb_motors
+        self._motor_slider5.hide()
+        self._motor_slider6.hide()
+        self._motor_slider7.hide()
+        self._motor_slider8.hide()
+        if nb_motors > '4' :
+            self._motor_slider5.show()
+            self._motor_slider6.show()
+        if nb_motors > '6' :
+            self._motor_slider7.show()
+            self._motor_slider8.show()
+            
+    def _check_box_state_changed(self, value):
+        if self.ui.unlock_check_box.isChecked() :
+            reply = QtGui.QMessageBox.question(self, 'ARE YOU SURE?', 
+                         'Motor commands will be sent directly to the Aeroquad on slider moves', 
+                         QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+            if QtGui.QMessageBox.No == reply:
+                self.ui.unlock_check_box.setCheckState(0)
+            else :
+                self.ui.send_command_button.setEnabled(False)
+                self.ui.stop_all_motors_button.setEnabled(False)
+        else :
+            self.ui.send_command_button.setEnabled(True)
+            self.ui.stop_all_motors_button.setEnabled(True)
+        
+    def _motor_slider_value_changed(self, value):
+        if self.ui.unlock_check_box.isChecked() :
+            self._send_motors_commands()
+        
+    def _send_stop_commands(self):
+        self._motor_slider1.slider.setValue(1000)
+        self._motor_slider2.slider.setValue(1000)
+        self._motor_slider3.slider.setValue(1000)
+        self._motor_slider4.slider.setValue(1000)
+        self._motor_slider5.slider.setValue(1000)
+        self._motor_slider6.slider.setValue(1000)
+        self._motor_slider7.slider.setValue(1000)
+        self._motor_slider8.slider.setValue(1000)
+        self._send_motors_commands()
+        
+    def _send_motors_commands(self):
+        self._protocol_handler.send_motos_command(
+                        self._nb_motors,
+                        self._motor_slider1.slider.value(),
+                        self._motor_slider2.slider.value(),
+                        self._motor_slider3.slider.value(),
+                        self._motor_slider4.slider.value(),
+                        self._motor_slider5.slider.value(),
+                        self._motor_slider6.slider.value(),
+                        self._motor_slider7.slider.value(),
+                        self._motor_slider8.slider.value())
+        
 
-    def start(self):
-        '''This method starts a timer used for any long running loops in a subpanel'''
-#        self.xmlSubPanel     = xmlSubPanel
-#        self.validateCommand = self.xml.find(self.xmlSubPanel + 'ValidateCommand').text
-#        self.command_motor   = self.xml.find(self.xmlSubPanel + 'CommandMotor').text
-#        self.boardConfiguration = boardConfiguration
-#
-#        if self._communicator.isConnected() == True:
-#            self.ui.sendButton.setEnabled(True)
-#            self.ui.clearButton.setEnabled(True)
-#
-#            if not self.started:
-#                motor_count  = int(self.boardConfiguration['Motors'])
-#                motor_layout = self.ui.motor_slider_widget.layout()
-#
-#                self.ui.motor_sliders = [MotorSlider(motor_number=(i + 1)) for i in xrange(motor_count)]
-#                for motor in self.ui.motor_sliders:
-#                    motor_layout.addWidget(motor)
-#
-#                self.started = True
-#
-#            self.timer = QtCore.QTimer()
-#            self.timer.timeout.connect(self.readContinuousData)
-#            self.timer.start(50)
-
-    def sendCommand(self):
-        serial_string   = self.validateCommand + ';' + ';'.join([
-            str(float(motor_slider.slider.value()))
-            for motor_slider in self.ui.motor_sliders
-        ])
-        self._communicator.write(self.command_motor)
-        self._communicator.write(serial_string)
-        sleep(0.150)
-
-    def readContinuousData(self):
-        isConnected = self._communicator.isConnected()
-        self.ui.sendButton.setEnabled(isConnected)
-        self.ui.clearButton.setEnabled(isConnected)
-
-    def clearCommand(self):
-        serial_string   = self.validateCommand + ';' + ';'.join([
-            '1000.0' for motor_slider in self.ui.motor_sliders
-        ])
-        self._communicator.write(self.command_motor)
-        self._communicator.write(serial_string)
-        for motor_slider in self.ui.motor_sliders:
-            motor_slider.slider.setValue(1000)
-        sleep(0.150)
-
+    def _display_help_image(self):
+        pass
