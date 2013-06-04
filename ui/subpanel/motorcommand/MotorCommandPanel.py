@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MotorCommandPanel.ui'
 #
-# Created: Mon Jun 03 17:27:38 2013
+# Created: Tue Jun 04 16:59:12 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -67,6 +67,6 @@ class Ui_MotorCommandPanel(object):
         self.stop_all_motors_button.setText(_translate("MotorCommandPanel", "Stop all motors", None))
         self.send_command_button.setText(_translate("MotorCommandPanel", "Send Command", None))
         self.unlock_check_box.setText(_translate("MotorCommandPanel", "Unlock sliders", None))
-        self.information_label.setText(_translate("MotorCommandPanel", "<html><head/><body><p><span style=\" font-size:11pt;\">Sending motor command to the AeroQuad will make motor spin</span></p><p><span style=\" font-size:11pt; color:#ff0000;\">PLEASE REMOVE PROPELLER TO PREVENT ANY INJURIES</span></p></body></html>", None))
+        self.information_label.setText(_translate("MotorCommandPanel", "<html><head/><body><p><span style=\" font-size:11pt; color:#ff0000;\">Sending motor commands to the AeroQuad will make motors spin!</span></p><p><span style=\" font-size:11pt; color:#ff0000;\">PLEASE REMOVE PROPELLERS TO PREVENT POSSIBLE INJURY</span></p></body></html>", None))
         self.help_button.setText(_translate("MotorCommandPanel", "HELP", None))
 
