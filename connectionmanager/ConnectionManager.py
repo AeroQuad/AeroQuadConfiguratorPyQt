@@ -33,8 +33,6 @@ class ConnectionManager(object):
         if commIndex == -1:
             commIndex = 0
         self._ui.comPort.setCurrentIndex(commIndex)
-
-    
     
     def connect_to_aeroquad(self):
         self._ui.status.setText("Connecting...")
@@ -164,5 +162,4 @@ class ConnectionManager(object):
         for i in baudRate:
             self._ui.baudRate.addItem(i)
         self._ui.baudRate.setCurrentIndex(baudRate.index(defaultBaudRate))
-        
         

@@ -43,7 +43,7 @@ class SideMenuContextualBuilder(object):
             self._create_menu_info_page()
             self._create_settings_page()
             self._create_trouble_shooting_page()
-        else :
+        elif self._vehicle_status_button is not None:
             self._vehicle_status_button.setParent(None)
             self._vehicle_info_button.setParent(None)
             
