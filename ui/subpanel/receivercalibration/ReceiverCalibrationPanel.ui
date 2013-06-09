@@ -13,41 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QGraphicsView" name="transmitterOutput">
-   <property name="geometry">
-    <rect>
-     <x>77</x>
-     <y>166</y>
-     <width>300</width>
-     <height>120</height>
-    </rect>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>300</height>
-    </size>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:reflect, x1:0.548, y1:0.0170455, x2:0.548, y2:1, stop:0 rgba(30, 30, 30, 255), stop:1 rgba(66, 66, 66, 255))</string>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Box</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
-   <property name="lineWidth">
-    <number>2</number>
-   </property>
-   <property name="verticalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
-   <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
-  </widget>
-  <widget class="QGraphicsView" name="leftTransmitter">
+  <widget class="QGraphicsView" name="left_transmitter">
    <property name="geometry">
     <rect>
      <x>77</x>
@@ -90,7 +56,7 @@
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="rightTransmitter">
+  <widget class="QGraphicsView" name="right_transmitter">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -133,11 +99,11 @@
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="start">
+  <widget class="QPushButton" name="start_button">
    <property name="geometry">
     <rect>
      <x>450</x>
-     <y>450</y>
+     <y>380</y>
      <width>100</width>
      <height>31</height>
     </rect>
@@ -146,11 +112,11 @@
     <string>Start</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="cancel">
+  <widget class="QPushButton" name="cancel_button">
    <property name="geometry">
     <rect>
      <x>570</x>
-     <y>450</y>
+     <y>380</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -159,24 +125,11 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="next">
-   <property name="geometry">
-    <rect>
-     <x>690</x>
-     <y>450</y>
-     <width>101</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Next</string>
-   </property>
-  </widget>
-  <widget class="QProgressBar" name="progressBar_RCmode">
+  <widget class="QProgressBar" name="mode_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>306</y>
+     <y>176</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -218,11 +171,11 @@
     <string>%v</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_RCAux1">
+  <widget class="QProgressBar" name="aux1_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>336</y>
+     <y>206</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -264,11 +217,11 @@
     <string>%v</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_RCAux2">
+  <widget class="QProgressBar" name="aux2_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>366</y>
+     <y>236</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -310,11 +263,11 @@
     <string>%v</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_RCAux3">
+  <widget class="QProgressBar" name="aux3_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>396</y>
+     <y>266</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -356,13 +309,13 @@
     <string>%v</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="commLog">
+  <widget class="QTextBrowser" name="comm_log">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>10</y>
      <width>341</width>
-     <height>431</height>
+     <height>361</height>
     </rect>
    </property>
    <property name="frameShadow">
@@ -380,11 +333,11 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;3) When done press finish to save the calibration.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_RCAux4">
+  <widget class="QProgressBar" name="aux4_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>426</y>
+     <y>296</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -426,11 +379,11 @@ p, li { white-space: pre-wrap; }
     <string>%v</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_RCAux5">
+  <widget class="QProgressBar" name="aux5_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>456</y>
+     <y>326</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -472,11 +425,11 @@ p, li { white-space: pre-wrap; }
     <string>%v</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_RCAux7">
+  <widget class="QProgressBar" name="aux7_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>516</y>
+     <y>386</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -518,11 +471,11 @@ p, li { white-space: pre-wrap; }
     <string>%v</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar_RCAux6">
+  <widget class="QProgressBar" name="aux6_progress_bar">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>486</y>
+     <y>356</y>
      <width>231</width>
      <height>25</height>
     </rect>
@@ -568,7 +521,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>311</y>
+     <y>181</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -581,7 +534,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>341</y>
+     <y>211</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -594,7 +547,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>370</y>
+     <y>240</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -607,7 +560,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>400</y>
+     <y>270</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -620,7 +573,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>430</y>
+     <y>300</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -633,7 +586,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>460</y>
+     <y>330</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -646,7 +599,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>490</y>
+     <y>360</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -659,7 +612,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>520</y>
+     <y>390</y>
      <width>46</width>
      <height>13</height>
     </rect>

@@ -181,4 +181,6 @@ class AQV32ProtocolHandler(ProtocolHandler):
             command = command + str(channel) + ';'
             command = command + '0.0'
             
+    def send_calibation_values(self, nb_channels, min_values, max_values):
+        pass
         

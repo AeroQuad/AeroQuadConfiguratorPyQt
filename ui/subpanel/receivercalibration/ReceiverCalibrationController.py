@@ -12,8 +12,8 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         BasePanelController.__init__(self)
         self.ui = Ui_ReceiverCalibrationPanel()
         self.ui.setupUi(self)
-        self.ui.start.setEnabled(True)
-        self.ui.cancel.setEnabled(False)
+        self.ui.start_button.setEnabled(True)
+        self.ui.cancel_button.setEnabled(False)
         
         leftStickScene = QtGui.QGraphicsScene()
         leftStickBackground = QtGui.QPixmap("./resources/TxDial.png")
@@ -23,7 +23,7 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         self.leftStick.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern), 2))
         self.leftStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
         leftStickScene.addItem(self.leftStick)
-        self.ui.leftTransmitter.setScene(leftStickScene)
+        self.ui.left_transmitter.setScene(leftStickScene)
         
         rightStickScene = QtGui.QGraphicsScene()
         rightStickBackground = QtGui.QPixmap("./resources/TxDial.png")
@@ -33,7 +33,7 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         self.rightStick.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.black, QtCore.Qt.SolidPattern), 2))
         self.rightStick.setBrush(QtGui.QBrush(QtCore.Qt.blue, QtCore.Qt.SolidPattern))
         rightStickScene.addItem(self.rightStick)
-        self.ui.rightTransmitter.setScene(rightStickScene)   
+        self.ui.right_transmitter.setScene(rightStickScene)   
         
         self._nb_channels = 12
         self._raw_receiver_min_values = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
@@ -45,8 +45,8 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         self._raw_yaw = 1500
         self._raw_throttle = 1500
         
-        self.ui.start.clicked.connect(self.start_RCcalibration)
-        self.ui.cancel.clicked.connect(self._cancel_calibration)
+        self.ui.start_button.clicked.connect(self.start_RCcalibration)
+        self.ui.cancel_button.clicked.connect(self._cancel_calibration)
         
         ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
         vehicle_event_dispatcher.register(self._receiver_channel_count_received, VehicleEventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
@@ -71,17 +71,16 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         self._nb_channels = int(nb_channels)
         self._update_panel_display()
          
-    def start(self):
+    def start_button(self):
         self._protocol_handler.unsubscribe_command()
     
     def stop(self):
         self._cancel_calibration()
 
     def start_RCcalibration(self):
-        if self.ui.start.text() == 'Start' :
-            self.ui.cancel.setEnabled(True)
-            self.ui.next.setEnabled(False)
-            self.ui.start.setText("Finish")
+        if self.ui.start_button.text() == 'Start' :
+            self.ui.cancel_button.setEnabled(True)
+            self.ui.start_button.setText("Finish")
             self._raw_receiver_min_values = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
             self._raw_receiver_max_values = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
             
@@ -113,35 +112,35 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
 
     def _receiver_raw_mode_received(self, event, raw_mode):
         self._compute_min_max_value(int(raw_mode),4)
-        self.ui.progressBar_RCmode.setValue(int(raw_mode))
+        self.ui.mode_progress_bar.setValue(int(raw_mode))
 
     def _receiver_raw_aux1_received(self, event, raw_aux1):
         self._compute_min_max_value(int(raw_aux1),5)
-        self.ui.progressBar_RCAux1.setValue(int(raw_aux1))
+        self.ui.aux1_progress_bar.setValue(int(raw_aux1))
 
     def _receiver_raw_aux2_received(self, event, raw_aux2):
         self._compute_min_max_value(int(raw_aux2),6)
-        self.ui.progressBar_RCAux2.setValue(int(raw_aux2))
+        self.ui.aux2_progress_bar.setValue(int(raw_aux2))
 
     def _receiver_raw_aux3_received(self, event, raw_aux3):
         self._compute_min_max_value(int(raw_aux3),7)
-        self.ui.progressBar_RCAux3.setValue(int(raw_aux3))
+        self.ui.aux3_progress_bar.setValue(int(raw_aux3))
 
     def _receiver_raw_aux4_received(self, event, raw_aux4):
         self._compute_min_max_value(int(raw_aux4),8)
-        self.ui.progressBar_RCAux4.setValue(int(raw_aux4))
+        self.ui.aux4_progress_bar.setValue(int(raw_aux4))
 
     def _receiver_raw_aux5_received(self, event, raw_aux5):
         self._compute_min_max_value(int(raw_aux5),9)
-        self.ui.progressBar_RCAux5.setValue(int(raw_aux5))
+        self.ui.aux5_progress_bar.setValue(int(raw_aux5))
 
     def _receiver_raw_aux6_received(self, event, raw_aux6):
         self._compute_min_max_value(int(raw_aux6),10)
-        self.ui.progressBar_RCAux6.setValue(int(raw_aux6))
+        self.ui.aux6_progress_bar.setValue(int(raw_aux6))
 
     def _receiver_raw_aux7_received(self, event, raw_aux7):
         self._compute_min_max_value(int(raw_aux7),11)
-        self.ui.progressBar_RCAux7.setValue(int(raw_aux7))
+        self.ui.aux7_progress_bar.setValue(int(raw_aux7))
 
     def _compute_min_max_value(self, value, channel):
         self._raw_receiver_min_values[channel] = min(self._raw_receiver_min_values[channel],value)
@@ -149,9 +148,8 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
 
     def _cancel_calibration(self):
         self._protocol_handler.unsubscribe_command()
-        self.ui.cancel.setEnabled(False)
-        self.ui.next.setEnabled(True)
-        self.ui.start.setText("Start")
+        self.ui.cancel_button.setEnabled(False)
+        self.ui.start_button.setText("Start")
     
     def _update_left_stick(self, throttle, yaw):
         throttlePosition = self._scale_stick_display_value(throttle, (1000.0, 2000.0), (58.0, -57.0))
@@ -167,38 +165,30 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
     
     def _update_panel_display(self):
-        for i in range(0, self.max_amount_channels):
-            if i > (self._nb_channels - 1) and i == 5:
-                self.ui.label_aux1.hide()
-                self.ui.progressBar_RCAux1.hide()
-            elif i > (self._nb_channels - 1) and i == 6:
-                self.ui.label_aux2.hide()
-                self.ui.progressBar_RCAux2.hide()
-            elif i > (self._nb_channels - 1) and i == 7:
-                self.ui.label_aux3.hide()
-                self.ui.progressBar_RCAux3.hide()
-            elif i > (self._nb_channels - 1) and i == 8:
-                self.ui.label_aux4.hide()
-                self.ui.progressBar_RCAux4.hide()
-            elif i > (self._nb_channels - 1) and i == 9:
-                self.ui.label_aux5.hide()
-                self.ui.progressBar_RCAux5.hide()
-            elif i > (self._nb_channels - 1) and i == 10:
-                self.ui.label_aux6.hide()
-                self.ui.progressBar_RCAux6.hide()
-            elif i > (self._nb_channels - 1) and i == 11:
-                self.ui.label_aux7.hide()
-                self.ui.progressBar_RCAux7.hide()
+        if self._nb_channels < 6: 
+            self.ui.label_aux1.hide()
+            self.ui.aux1_progress_bar.hide()
+        if self._nb_channels < 7:
+            self.ui.label_aux2.hide()
+            self.ui.aux2_progress_bar.hide()
+        if self._nb_channels < 8:
+            self.ui.label_aux3.hide()
+            self.ui.aux3_progress_bar.hide()
+        if self._nb_channels < 9:
+            self.ui.label_aux4.hide()
+            self.ui.aux4_progress_bar.hide()
+        if self._nb_channels < 10:
+            self.ui.label_aux5.hide()
+            self.ui.aux5_progress_bar.hide()
+        if self._nb_channels < 11:
+            self.ui.label_aux6.hide()
+            self.ui.aux6_progress_bar.hide()
+        if self._nb_channels < 12:
+            self.ui.label_aux7.hide()
+            self.ui.aux7_progress_bar.hide()
     
     def _send_calibration_value(self):
-        print "done"
-#        self._communicator.write("X");
-#        command = "G "
-#        for i in range(0, self._nb_channels):
-#            command += str(self._raw_receiver_min_values[i])
-#            command += ";"
-#            command += str(self._raw_receiver_max_values[i])
-#            command += ";"
-#            
-#        self._communicator.write(command)    
+        self._protocol_handler.send_calibation_values(self._nb_channels,
+                                                      self._raw_receiver_min_values,
+                                                      self._raw_receiver_max_values)
         
