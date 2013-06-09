@@ -2,6 +2,8 @@
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
 from ui.subpanel.receivercalibration.ReceiverCalibrationPanel import Ui_ReceiverCalibrationPanel
+from ui.UIEventDispatcher import UIEventDispatcher
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 
 class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
 
@@ -33,138 +35,170 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
         rightStickScene.addItem(self.rightStick)
         self.ui.rightTransmitter.setScene(rightStickScene)   
         
-        self.running = False
-        self.amount_channels = 12
-        self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
-        self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
+        self._nb_channels = 12
+        self._raw_receiver_min_values = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
+        self._raw_receiver_max_values = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
         self.max_amount_channels = 12
         
+        self._raw_roll = 1500
+        self._raw_pitch = 1500
+        self._raw_yaw = 1500
+        self._raw_throttle = 1500
+        
         self.ui.start.clicked.connect(self.start_RCcalibration)
-        self.ui.cancel.clicked.connect(self.cancel_RCcalibration)
+        self.ui.cancel.clicked.connect(self._cancel_calibration)
+        
+        ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_channel_count_received, VehicleEventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
+        
+        vehicle_event_dispatcher.register(self._receiver_raw_roll_received, VehicleEventDispatcher.RECEIVER_ROLL_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_pitch_received, VehicleEventDispatcher.RECEIVER_PITCH_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_yaw_received, VehicleEventDispatcher.RECEIVER_YAW_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_throttle_received, VehicleEventDispatcher.RECEIVER_THROTTLE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_mode_received, VehicleEventDispatcher.RECEIVER_MODE_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_aux1_received, VehicleEventDispatcher.RECEIVER_AUX1_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_aux2_received, VehicleEventDispatcher.RECEIVER_AUX2_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_aux3_received, VehicleEventDispatcher.RECEIVER_AUX3_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_aux4_received, VehicleEventDispatcher.RECEIVER_AUX4_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_aux5_received, VehicleEventDispatcher.RECEIVER_AUX5_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_aux6_received, VehicleEventDispatcher.RECEIVER_AUX6_PROPERTY_EVENT)
+        vehicle_event_dispatcher.register(self._receiver_raw_aux7_received, VehicleEventDispatcher.RECEIVER_AUX7_PROPERTY_EVENT)
 
+    def _protocol_handler_changed_event(self, event, protocol_handler):
+        self._protocol_handler = protocol_handler;
+        
+    def _receiver_channel_count_received(self, event, nb_channels):
+        self._nb_channels = int(nb_channels)
+        self._update_panel_display()
+         
     def start(self):
-        pass
-#        self.xmlSubPanel = xmlSubPanel
-#        self.boardConfiguration = boardConfiguration
-#        try:
-#            self.amount_channels = int(self.boardConfiguration["Receiver Nb Channels"])
-#        except:
-#            logging.warning("Can't read amount of channels from boardconfiguration!")
-#        self.enable_gui_attribute()
+        self._protocol_handler.unsubscribe_command()
+    
+    def stop(self):
+        self._cancel_calibration()
 
     def start_RCcalibration(self):
-        if self.running:    
-            self.ui.start.setText("Start")
-            self.cancel_RCcalibration() #we can stop the calibration it's done
-            self.timer.stop()
-            self.send_calibration_value()
+        if self.ui.start.text() == 'Start' :
+            self.ui.cancel.setEnabled(True)
+            self.ui.next.setEnabled(False)
+            self.ui.start.setText("Finish")
+            self._raw_receiver_min_values = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
+            self._raw_receiver_max_values = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
+            
+            self._protocol_handler.reset_receiver_calibration_values(self._nb_channels)
+            self._protocol_handler.subscribe_receiver_data()
+        else :
+            self._send_calibration_value()
+            self._cancel_calibration()
         
-        elif not self.running:
-            if self._communicator.isConnected() == True:
-                self._communicator.write("H")
-                self._communicator.write("t")
-                self.timer = QtCore.QTimer()
-                self.timer.timeout.connect(self.read_continuousData)
-                self.timer.start(50)
-                self.startCommThread()
-                self.running = True
-                
-                self.ui.cancel.setEnabled(True)
-                self.ui.next.setEnabled(False)
-                
-                self.ui.start.setText("Finish")
-                
-                self.RCmin = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
-                self.RCmax = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
-                
-    def cancel_RCcalibration(self):
-        self._communicator.write("x")
-        self.timer.stop()
-        self._communicator.flushResponse()
-        self.running = False
+    def _receiver_raw_roll_received(self, event, raw_roll):
+        self._raw_roll = int(raw_roll)
+        self._compute_min_max_value(self._raw_roll,0)
+        self._update_right_stick(self._raw_roll, self._raw_pitch)
+
+    def _receiver_raw_pitch_received(self, event, raw_pitch):
+        self._raw_pitch = int(raw_pitch)
+        self._compute_min_max_value(self._raw_pitch,1)
+        self._update_right_stick(self._raw_roll, self._raw_pitch)
+
+    def _receiver_raw_yaw_received(self, event, raw_yaw):
+        self._raw_yaw = int(raw_yaw)
+        self._compute_min_max_value(self._raw_yaw,2)
+        self._update_left_stick(self._raw_throttle, self._raw_yaw)
+
+    def _receiver_raw_throttle_received(self, event, raw_throttle):
+        self._raw_throttle = int(raw_throttle)
+        self._compute_min_max_value(self._raw_throttle,3)
+        self._update_left_stick(self._raw_throttle, self._raw_yaw)
+
+    def _receiver_raw_mode_received(self, event, raw_mode):
+        self._compute_min_max_value(int(raw_mode),4)
+        self.ui.progressBar_RCmode.setValue(int(raw_mode))
+
+    def _receiver_raw_aux1_received(self, event, raw_aux1):
+        self._compute_min_max_value(int(raw_aux1),5)
+        self.ui.progressBar_RCAux1.setValue(int(raw_aux1))
+
+    def _receiver_raw_aux2_received(self, event, raw_aux2):
+        self._compute_min_max_value(int(raw_aux2),6)
+        self.ui.progressBar_RCAux2.setValue(int(raw_aux2))
+
+    def _receiver_raw_aux3_received(self, event, raw_aux3):
+        self._compute_min_max_value(int(raw_aux3),7)
+        self.ui.progressBar_RCAux3.setValue(int(raw_aux3))
+
+    def _receiver_raw_aux4_received(self, event, raw_aux4):
+        self._compute_min_max_value(int(raw_aux4),8)
+        self.ui.progressBar_RCAux4.setValue(int(raw_aux4))
+
+    def _receiver_raw_aux5_received(self, event, raw_aux5):
+        self._compute_min_max_value(int(raw_aux5),9)
+        self.ui.progressBar_RCAux5.setValue(int(raw_aux5))
+
+    def _receiver_raw_aux6_received(self, event, raw_aux6):
+        self._compute_min_max_value(int(raw_aux6),10)
+        self.ui.progressBar_RCAux6.setValue(int(raw_aux6))
+
+    def _receiver_raw_aux7_received(self, event, raw_aux7):
+        self._compute_min_max_value(int(raw_aux7),11)
+        self.ui.progressBar_RCAux7.setValue(int(raw_aux7))
+
+    def _compute_min_max_value(self, value, channel):
+        self._raw_receiver_min_values[channel] = min(self._raw_receiver_min_values[channel],value)
+        self._raw_receiver_max_values[channel] = max(self._raw_receiver_max_values[channel],value)
+
+    def _cancel_calibration(self):
+        self._protocol_handler.unsubscribe_command()
         self.ui.cancel.setEnabled(False)
         self.ui.next.setEnabled(True)
         self.ui.start.setText("Start")
-        
-    def read_continuousData(self):
-        isConnected = self._communicator.isConnected()
-        if isConnected and not self.commData.empty():
-            string = self.commData.get()
-            string_out = string.split(',')
-            if self.running:
-                for i in range(0, self.amount_channels):
-                    if int(string_out[i]) < self.RCmin[i]:  
-                        self.RCmin[i] = int(string_out[i])
-                    if int(string_out[i]) > self.RCmax[i]:  
-                        self.RCmax[i] = int(string_out[i])
-                    self.update_gui(i, string_out[i])                      
-                    
-            self.update_left_stick(int(string_out[3]), int(string_out[2]))
-            self.update_right_stick(int(string_out[0]), int(string_out[1]))
-            
-    def update_gui(self, channel_number, value):
-        if channel_number == 4:
-            self.ui.progressBar_RCmode.setValue(int(value))
-        if channel_number == 5:
-            self.ui.progressBar_RCAux1.setValue(int(value))
-        if channel_number == 6:
-            self.ui.progressBar_RCAux2.setValue(int(value))
-        if channel_number == 7:
-            self.ui.progressBar_RCAux3.setValue(int(value))
-        if channel_number == 8:
-            self.ui.progressBar_RCAux4.setValue(int(value))
-        if channel_number == 9:
-            self.ui.progressBar_RCAux5.setValue(int(value))
-        if channel_number == 10:
-            self.ui.progressBar_RCAux6.setValue(int(value))
-        if channel_number == 11:
-            self.ui.progressBar_RCAux7.setValue(int(value))
     
-    def update_left_stick(self, throttle, yaw):
-        throttlePosition = self.scale(throttle, (1000.0, 2000.0), (58.0, -57.0))
-        yawPosition = self.scale(yaw, (1000.0, 2000.0), (-57.0, 55.0))
+    def _update_left_stick(self, throttle, yaw):
+        throttlePosition = self._scale_stick_display_value(throttle, (1000.0, 2000.0), (58.0, -57.0))
+        yawPosition = self._scale_stick_display_value(yaw, (1000.0, 2000.0), (-57.0, 55.0))
         self.leftStick.setPos(yawPosition, throttlePosition)
         
-    def update_right_stick(self, roll, pitch):
-        rollPosition = self.scale(roll, (1000.0, 2000.0), (-57.0, 55.0))
-        pitchPosition = self.scale(pitch, (1000.0, 2000.0), (58.0, -57.0))
+    def _update_right_stick(self, roll, pitch):
+        rollPosition = self._scale_stick_display_value(roll, (1000.0, 2000.0), (-57.0, 55.0))
+        pitchPosition = self._scale_stick_display_value(pitch, (1000.0, 2000.0), (58.0, -57.0))
         self.rightStick.setPos(rollPosition, pitchPosition)
     
-    def scale(self, val, src, dst):
+    def _scale_stick_display_value(self, val, src, dst):
         return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
     
-    def enable_gui_attribute(self):
+    def _update_panel_display(self):
         for i in range(0, self.max_amount_channels):
-            if i > (self.amount_channels - 1) and i == 5:
-                self.ui.label_aux1.setHidden(True)
-                self.ui.progressBar_RCAux1.setHidden(True)
-            elif i > (self.amount_channels - 1) and i == 6:
-                self.ui.label_aux2.setHidden(True)
-                self.ui.progressBar_RCAux2.setHidden(True)
-            elif i > (self.amount_channels - 1) and i == 7:
-                self.ui.label_aux3.setHidden(True)
-                self.ui.progressBar_RCAux3.setHidden(True)
-            elif i > (self.amount_channels - 1) and i == 8:
-                self.ui.label_aux4.setHidden(True)
-                self.ui.progressBar_RCAux4.setHidden(True)
-            elif i > (self.amount_channels - 1) and i == 9:
-                self.ui.label_aux5.setHidden(True)
-                self.ui.progressBar_RCAux5.setHidden(True)
-            elif i > (self.amount_channels - 1) and i == 10:
-                self.ui.label_aux6.setHidden(True)
-                self.ui.progressBar_RCAux6.setHidden(True)
-            elif i > (self.amount_channels - 1) and i == 11:
-                self.ui.label_aux7.setHidden(True)
-                self.ui.progressBar_RCAux7.setHidden(True)
+            if i > (self._nb_channels - 1) and i == 5:
+                self.ui.label_aux1.hide()
+                self.ui.progressBar_RCAux1.hide()
+            elif i > (self._nb_channels - 1) and i == 6:
+                self.ui.label_aux2.hide()
+                self.ui.progressBar_RCAux2.hide()
+            elif i > (self._nb_channels - 1) and i == 7:
+                self.ui.label_aux3.hide()
+                self.ui.progressBar_RCAux3.hide()
+            elif i > (self._nb_channels - 1) and i == 8:
+                self.ui.label_aux4.hide()
+                self.ui.progressBar_RCAux4.hide()
+            elif i > (self._nb_channels - 1) and i == 9:
+                self.ui.label_aux5.hide()
+                self.ui.progressBar_RCAux5.hide()
+            elif i > (self._nb_channels - 1) and i == 10:
+                self.ui.label_aux6.hide()
+                self.ui.progressBar_RCAux6.hide()
+            elif i > (self._nb_channels - 1) and i == 11:
+                self.ui.label_aux7.hide()
+                self.ui.progressBar_RCAux7.hide()
     
-    def send_calibration_value(self):
-        self._communicator.write("X");
-        command = "G "
-        for i in range(0, self.amount_channels):
-            command += str(self.RCmin[i])
-            command += ";"
-            command += str(self.RCmax[i])
-            command += ";"
-            
-        self._communicator.write(command)    
+    def _send_calibration_value(self):
+        print "done"
+#        self._communicator.write("X");
+#        command = "G "
+#        for i in range(0, self._nb_channels):
+#            command += str(self._raw_receiver_min_values[i])
+#            command += ";"
+#            command += str(self._raw_receiver_max_values[i])
+#            command += ";"
+#            
+#        self._communicator.write(command)    
         

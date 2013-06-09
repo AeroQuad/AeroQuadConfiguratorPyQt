@@ -39,7 +39,7 @@ class AQMain(QtGui.QMainWindow):
         self._ui_event_dispatcher = UIEventDispatcher() 
         self._communicator = SerialCommunicator()
         self._vehicle_event_dispatcher = VehicleEventDispatcher()
-        self._connection_manager = ConnectionManager(app, 
+        self.connection_manager = ConnectionManager(app, 
                                                      self.ui, 
                                                      xml, 
                                                      self._communicator, 
@@ -79,16 +79,18 @@ class AQMain(QtGui.QMainWindow):
         self.activeSubPanelName = ''
 
         # Connect GUI slots and signals
-        self.ui.comPort.return_handler = self._connection_manager.connect_to_aeroquad
-        self.ui.buttonConnect.clicked.connect(self._connection_manager.connect_to_aeroquad)
-        self.ui.buttonDisconnect.clicked.connect(self._connection_manager.disconnect_from_aeroquad)
+        self.ui.comPort.return_handler = self.connection_manager.connect_to_aeroquad
+        self.ui.buttonConnect.clicked.connect(self.connection_manager.connect_to_aeroquad)
+        self.ui.buttonDisconnect.clicked.connect(self.connection_manager.disconnect_from_aeroquad)
         self.ui.action_exit.triggered.connect(QtGui.qApp.quit)
-        self.ui.comPort.currentIndexChanged.connect(self._connection_manager.search_for_available_COM_port)
-        self.ui.action_bootup_delay.triggered.connect(self._connection_manager.save_boot_delay)
-        self.ui.action_comm_timeout.triggered.connect(self._connection_manager.save_connection_timeout_delay)
+        self.ui.comPort.currentIndexChanged.connect(self.connection_manager.search_for_available_COM_port)
+        self.ui.action_bootup_delay.triggered.connect(self.connection_manager.save_boot_delay)
+        self.ui.action_comm_timeout.triggered.connect(self.connection_manager.save_connection_timeout_delay)
         
         self._ui_event_dispatcher.register(self._display_panel_event, UIEventDispatcher.DISPLAY_PANEL_EVENT)
         self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+        
+        
        
     def _display_panel_event(self, event, panel_id):
         if self._current_active_panel != None:
@@ -136,10 +138,13 @@ if __name__ == "__main__":
     splash_screen.show()
     app.processEvents()
     
-    MainWindow = AQMain()
-    MainWindow.show()
-    MainWindow.center()
+    main_window = AQMain()
+    main_window.show()
+    main_window.center()
     if sys.platform == 'darwin':
-        MainWindow.raise_()
-    splash_screen.finish(MainWindow)
+        main_window.raise_()
+    splash_screen.finish(main_window)
+    main_window.connection_manager.try_to_autoconnect()
     sys.exit(app.exec_())
+    
+    

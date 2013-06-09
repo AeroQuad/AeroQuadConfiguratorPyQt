@@ -154,19 +154,31 @@ class AQV32ProtocolHandler(ProtocolHandler):
                         motor8_command):
         
         command = self.COMMANDS['SetMotorCommands'] + ' '
+        command = command + '123.45' + ';'
         command = command + str(motor1_command) + ';'
         command = command + str(motor2_command) + ';'
         command = command + str(motor3_command) + ';'
         command = command + str(motor4_command) 
-        if int(nb_motors) <= 6 :
+        if int(nb_motors) > 4 :
             command = command + ';'
             command = command + str(motor5_command) + ';'
             command = command + str(motor6_command)
-        if int(nb_motors) <= 8 :
+        if int(nb_motors) > 6 :
             command = command + ';'
             command = command + str(motor7_command) + ';'
             command = command + str(motor8_command)
             
+#        print command
         self.send_command(command)
         
+    def reset_receiver_calibration_values(self, nb_channels):
+        for channel in range(nb_channels):
+            command = self.COMMANDS['SetTransmitterCalibration'] + ' '
+            command = command + str(channel) + ';'
+            command = command + '1.0'
+        for channel in range(nb_channels):
+            command = self.COMMANDS['SetTransmitterOffset'] + ' '
+            command = command + str(channel) + ';'
+            command = command + '0.0'
+            
         
