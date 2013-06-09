@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ReceiverCalibrationPanel.ui'
 #
-# Created: Wed Apr 24 17:24:11 2013
+# Created: Sat Jun 08 12:11:23 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -68,13 +68,13 @@ class Ui_ReceiverCalibrationPanel(object):
         self.rightTransmitter.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.rightTransmitter.setObjectName(_fromUtf8("rightTransmitter"))
         self.start = QtGui.QPushButton(ReceiverCalibrationPanel)
-        self.start.setGeometry(QtCore.QRect(450, 510, 100, 31))
+        self.start.setGeometry(QtCore.QRect(450, 450, 100, 31))
         self.start.setObjectName(_fromUtf8("start"))
         self.cancel = QtGui.QPushButton(ReceiverCalibrationPanel)
-        self.cancel.setGeometry(QtCore.QRect(570, 510, 101, 31))
+        self.cancel.setGeometry(QtCore.QRect(570, 450, 101, 31))
         self.cancel.setObjectName(_fromUtf8("cancel"))
         self.next = QtGui.QPushButton(ReceiverCalibrationPanel)
-        self.next.setGeometry(QtCore.QRect(690, 510, 101, 31))
+        self.next.setGeometry(QtCore.QRect(690, 450, 101, 31))
         self.next.setObjectName(_fromUtf8("next"))
         self.progressBar_RCmode = QtGui.QProgressBar(ReceiverCalibrationPanel)
         self.progressBar_RCmode.setGeometry(QtCore.QRect(140, 306, 231, 25))
@@ -149,7 +149,7 @@ class Ui_ReceiverCalibrationPanel(object):
         self.progressBar_RCAux3.setInvertedAppearance(False)
         self.progressBar_RCAux3.setObjectName(_fromUtf8("progressBar_RCAux3"))
         self.commLog = QtGui.QTextBrowser(ReceiverCalibrationPanel)
-        self.commLog.setGeometry(QtCore.QRect(450, 10, 341, 461))
+        self.commLog.setGeometry(QtCore.QRect(450, 10, 341, 431))
         self.commLog.setFrameShadow(QtGui.QFrame.Sunken)
         self.commLog.setObjectName(_fromUtf8("commLog"))
         self.progressBar_RCAux4 = QtGui.QProgressBar(ReceiverCalibrationPanel)
