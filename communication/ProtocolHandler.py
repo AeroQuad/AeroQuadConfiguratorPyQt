@@ -22,6 +22,7 @@ class ProtocolHandler(object):
                       'UnsubscribeAll'        : 'X', }
     
     def __init__(self, communicator, vehicle_event_dispatcher):
+        
         self._communicator = communicator
         self._is_subscribed = False
         self._vehicle_event_dispatcher = vehicle_event_dispatcher

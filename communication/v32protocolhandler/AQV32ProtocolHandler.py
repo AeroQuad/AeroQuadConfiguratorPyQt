@@ -167,8 +167,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
             command = command + ';'
             command = command + str(motor7_command) + ';'
             command = command + str(motor8_command)
-            
-#        print command
+
         self.send_command(command)
         
     def reset_receiver_calibration_values(self, nb_channels):
@@ -181,6 +180,11 @@ class AQV32ProtocolHandler(ProtocolHandler):
             command = command + str(channel) + ';'
             command = command + '0.0'
             
-    def send_calibation_values(self, nb_channels, min_values, max_values):
+    def send_receiver_calibation_values(self, nb_channels, min_values, max_values):
+        # @todo do the math and send the command here
+        pass
+        
+    def send_mag_calibration_values(self, min_values, max_values):
+        # @todo do the math and send the command here
         pass
         
