@@ -70,8 +70,11 @@ class MotorCommandController(QtGui.QWidget, BasePanelController):
         self.ui.stop_all_motors_button.clicked.connect(self._send_stop_commands)
         self.ui.help_button.clicked.connect(self._display_help_image)
         
+        self._timer = None
+        
         ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
         vehicle_event_dispatcher.register(self._nb_motors_received, VehicleEventDispatcher.NUMBER_MOTORS_EVENT)
+        
         
     def stop(self):
         self._stop_timer()

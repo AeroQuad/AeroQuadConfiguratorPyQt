@@ -2,6 +2,7 @@
 from PyQt4 import QtCore, QtGui
 from ui.UIEventDispatcher import UIEventDispatcher
 from ui.PanelsContextBuilder import PanelsContextBuilder
+from model.VehicleEventDispatcher import VehicleEventDispatcher
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -29,14 +30,16 @@ class SideMenuContextualBuilder(object):
         
         
         self._ui_event_dispatcher = ui_event_dispatcher
-        self._vehicle_event_dispatcher = vehicle_event_dispatcher
+
         
         self._side_menu_info_page = side_menu_info_page
         self._side_menu_setting_page = side_menu_setting_page
         self._side_menu_troubleshooting_page = side_menu_troubleshooting_page
         self._side_menu_mission_planer_page = side_menu_mission_planer_page
         
+        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.MAGNETOMETER_DETECTED_EVENT)
         self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
+        
         
     def _connection_state_changed(self, event, is_connected):
         if is_connected :
@@ -58,6 +61,15 @@ class SideMenuContextualBuilder(object):
         self._side_menu_info_page.setEnabled(is_connected)
         self._side_menu_setting_page.setEnabled(is_connected)
         self._side_menu_troubleshooting_page.setEnabled(is_connected)
+        
+    def _is_magnetometer_detected_event(self, header, is_detected):
+        if is_detected == 'Detected':
+            self._pixel_button_height_counter = 80
+            self._magnteomter_calibration_button = self._create_side_menu_button(self._side_menu_setting_page,
+                                                                      "Magnetometer Calibation",
+                                                                      self._pixel_button_height_counter)
+            self._magnteomter_calibration_button.clicked.connect(self._magnetometer_calibration_button_clicked);
+            self._magnteomter_calibration_button.show()
             
     def _create_menu_info_page(self):
         self._pixel_button_height_counter = 0;
@@ -142,6 +154,9 @@ class SideMenuContextualBuilder(object):
     def _receiver_plot_button_clicked(self):
         self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.RECEIVER_PLOT_PANEL_ID)
                 
+    def _magnetometer_calibration_button_clicked(self):
+        self._ui_event_dispatcher.dispatch(UIEventDispatcher.DISPLAY_PANEL_EVENT,PanelsContextBuilder.MAGNETOMETER_CALIBRATION_PANEL_ID)
+        
     def _create_side_menu_button(self, page_owner, name, starting_pixel):
         button = QtGui.QPushButton(page_owner)
         button.setGeometry(QtCore.QRect(3, starting_pixel, 176, 23))

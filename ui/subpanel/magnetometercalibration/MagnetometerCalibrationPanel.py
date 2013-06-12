@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MagnetometerCalibrationPanel.ui'
 #
-# Created: Tue Apr 30 18:33:26 2013
+# Created: Tue Jun 11 19:53:37 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,21 +27,18 @@ class Ui_MagnetometerCalibrationPanel(object):
     def setupUi(self, MagnetometerCalibrationPanel):
         MagnetometerCalibrationPanel.setObjectName(_fromUtf8("MagnetometerCalibrationPanel"))
         MagnetometerCalibrationPanel.resize(800, 600)
-        self.start = QtGui.QPushButton(MagnetometerCalibrationPanel)
-        self.start.setGeometry(QtCore.QRect(450, 510, 100, 31))
-        self.start.setObjectName(_fromUtf8("start"))
-        self.cancel = QtGui.QPushButton(MagnetometerCalibrationPanel)
-        self.cancel.setGeometry(QtCore.QRect(570, 510, 101, 31))
-        self.cancel.setObjectName(_fromUtf8("cancel"))
-        self.next = QtGui.QPushButton(MagnetometerCalibrationPanel)
-        self.next.setGeometry(QtCore.QRect(690, 510, 101, 31))
-        self.next.setObjectName(_fromUtf8("next"))
-        self.commLog = QtGui.QTextBrowser(MagnetometerCalibrationPanel)
-        self.commLog.setGeometry(QtCore.QRect(450, 10, 341, 461))
-        self.commLog.setFrameShadow(QtGui.QFrame.Sunken)
-        self.commLog.setObjectName(_fromUtf8("commLog"))
+        self.start_button = QtGui.QPushButton(MagnetometerCalibrationPanel)
+        self.start_button.setGeometry(QtCore.QRect(450, 420, 100, 31))
+        self.start_button.setObjectName(_fromUtf8("start_button"))
+        self.cancel_button = QtGui.QPushButton(MagnetometerCalibrationPanel)
+        self.cancel_button.setGeometry(QtCore.QRect(560, 420, 101, 31))
+        self.cancel_button.setObjectName(_fromUtf8("cancel_button"))
+        self.information_box = QtGui.QTextBrowser(MagnetometerCalibrationPanel)
+        self.information_box.setGeometry(QtCore.QRect(450, 10, 341, 391))
+        self.information_box.setFrameShadow(QtGui.QFrame.Sunken)
+        self.information_box.setObjectName(_fromUtf8("information_box"))
         self.x_axis_progress_bar = QtGui.QProgressBar(MagnetometerCalibrationPanel)
-        self.x_axis_progress_bar.setGeometry(QtCore.QRect(70, 10, 31, 461))
+        self.x_axis_progress_bar.setGeometry(QtCore.QRect(70, 10, 31, 421))
         self.x_axis_progress_bar.setMinimum(-800)
         self.x_axis_progress_bar.setMaximum(800)
         self.x_axis_progress_bar.setProperty("value", 0)
@@ -52,7 +49,7 @@ class Ui_MagnetometerCalibrationPanel(object):
         self.x_axis_progress_bar.setTextDirection(QtGui.QProgressBar.BottomToTop)
         self.x_axis_progress_bar.setObjectName(_fromUtf8("x_axis_progress_bar"))
         self.y_axis_progress_bar = QtGui.QProgressBar(MagnetometerCalibrationPanel)
-        self.y_axis_progress_bar.setGeometry(QtCore.QRect(200, 10, 31, 461))
+        self.y_axis_progress_bar.setGeometry(QtCore.QRect(200, 10, 31, 421))
         self.y_axis_progress_bar.setMinimum(-800)
         self.y_axis_progress_bar.setMaximum(800)
         self.y_axis_progress_bar.setProperty("value", 0)
@@ -63,7 +60,7 @@ class Ui_MagnetometerCalibrationPanel(object):
         self.y_axis_progress_bar.setTextDirection(QtGui.QProgressBar.BottomToTop)
         self.y_axis_progress_bar.setObjectName(_fromUtf8("y_axis_progress_bar"))
         self.z_axis_progress_bar = QtGui.QProgressBar(MagnetometerCalibrationPanel)
-        self.z_axis_progress_bar.setGeometry(QtCore.QRect(330, 10, 31, 461))
+        self.z_axis_progress_bar.setGeometry(QtCore.QRect(330, 10, 31, 421))
         self.z_axis_progress_bar.setMinimum(-800)
         self.z_axis_progress_bar.setMaximum(800)
         self.z_axis_progress_bar.setProperty("value", 0)
@@ -74,15 +71,15 @@ class Ui_MagnetometerCalibrationPanel(object):
         self.z_axis_progress_bar.setTextDirection(QtGui.QProgressBar.BottomToTop)
         self.z_axis_progress_bar.setObjectName(_fromUtf8("z_axis_progress_bar"))
         self.label_x = QtGui.QLabel(MagnetometerCalibrationPanel)
-        self.label_x.setGeometry(QtCore.QRect(70, 480, 46, 13))
+        self.label_x.setGeometry(QtCore.QRect(70, 440, 46, 13))
         self.label_x.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_x.setObjectName(_fromUtf8("label_x"))
         self.label_y = QtGui.QLabel(MagnetometerCalibrationPanel)
-        self.label_y.setGeometry(QtCore.QRect(200, 480, 46, 13))
+        self.label_y.setGeometry(QtCore.QRect(200, 440, 46, 13))
         self.label_y.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_y.setObjectName(_fromUtf8("label_y"))
         self.label_z = QtGui.QLabel(MagnetometerCalibrationPanel)
-        self.label_z.setGeometry(QtCore.QRect(330, 480, 46, 13))
+        self.label_z.setGeometry(QtCore.QRect(330, 440, 46, 13))
         self.label_z.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_z.setObjectName(_fromUtf8("label_z"))
 
@@ -91,10 +88,9 @@ class Ui_MagnetometerCalibrationPanel(object):
 
     def retranslateUi(self, MagnetometerCalibrationPanel):
         MagnetometerCalibrationPanel.setWindowTitle(_translate("MagnetometerCalibrationPanel", "Form", None))
-        self.start.setText(_translate("MagnetometerCalibrationPanel", "Start", None))
-        self.cancel.setText(_translate("MagnetometerCalibrationPanel", "Cancel", None))
-        self.next.setText(_translate("MagnetometerCalibrationPanel", "Next", None))
-        self.commLog.setHtml(_translate("MagnetometerCalibrationPanel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.start_button.setText(_translate("MagnetometerCalibrationPanel", "Start", None))
+        self.cancel_button.setText(_translate("MagnetometerCalibrationPanel", "Cancel", None))
+        self.information_box.setHtml(_translate("MagnetometerCalibrationPanel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"

@@ -188,7 +188,7 @@ class ReceiverCalibrationController(QtGui.QWidget, BasePanelController):
             self.ui.aux7_progress_bar.hide()
     
     def _send_calibration_value(self):
-        self._protocol_handler.send_calibation_values(self._nb_channels,
-                                                      self._raw_receiver_min_values,
-                                                      self._raw_receiver_max_values)
+        self._protocol_handler.send_receiver_calibation_values(self._nb_channels,
+                                                               self._raw_receiver_min_values,
+                                                               self._raw_receiver_max_values)
         

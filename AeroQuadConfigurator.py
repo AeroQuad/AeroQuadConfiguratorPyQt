@@ -48,9 +48,9 @@ class AQMain(QtGui.QMainWindow):
         self._panels_context_builder = PanelsContextBuilder(self._ui_event_dispatcher, self._vehicle_event_dispatcher)
         self._view_menu_context_builder = ViewMenuContextBuilder(self.ui.menu_view,
                                                                  self._ui_event_dispatcher,
-                                                                 self._ui_event_dispatcher) 
+                                                                 self._vehicle_event_dispatcher) 
         self._side_menu_contextual_builder = SideMenuContextualBuilder(self._ui_event_dispatcher,
-                                                                       self._ui_event_dispatcher,
+                                                                       self._vehicle_event_dispatcher,
                                                                        self.ui.side_menu_info_page,
                                                                        self.ui.side_menu_setting_page,
                                                                        self.ui.side_menu_troubleshooting_page,
