@@ -89,8 +89,6 @@ class AQMain(QtGui.QMainWindow):
         
         self._ui_event_dispatcher.register(self._display_panel_event, UIEventDispatcher.DISPLAY_PANEL_EVENT)
         self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
-        
-        
        
     def _display_panel_event(self, event, panel_id):
         if self._current_active_panel != None:
