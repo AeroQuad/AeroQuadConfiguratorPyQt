@@ -20,17 +20,17 @@ class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
         
         ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
         vehicle_event_dispatcher.register(self._flight_config_received, VehicleEventDispatcher.FLIGHT_CONFIG_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.BOAR_TYPE_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.RECEIVER_TYPE_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.NUMBER_MOTORS_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.GYROSCOPE_DETECTED_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.ACCELEROMETER_DETECTED_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.BAROMETER_DETECTED_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.MAGNETOMETER_DETECTED_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.HEADING_HOLD_ENABLED_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.ALTITUDE_HOLD_ENABLED_EVENT)
-        vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.BATTERY_MONITOR_ENABLED_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.BOAR_TYPE_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.RECEIVER_TYPE_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.RECEIVER_NB_CHANNEL_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.NUMBER_MOTORS_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.GYROSCOPE_DETECTED_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.ACCELEROMETER_DETECTED_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.BAROMETER_DETECTED_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.MAGNETOMETER_DETECTED_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.HEADING_HOLD_ENABLED_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.ALTITUDE_HOLD_ENABLED_EVENT)
+        vehicle_event_dispatcher.register(self._vehicle_description_event_received, VehicleEventDispatcher.BATTERY_MONITOR_ENABLED_EVENT)
 
     def _reset_panel(self):
         self.ui.configSpecs.clear()
@@ -43,11 +43,11 @@ class VehicleConfigurationController(QtGui.QWidget, BasePanelController):
             self._reset_panel()
         
     def _flight_config_received(self, header, information):
-        self._is_magnetometer_detected_event(header,information)
+        self._vehicle_description_event_received(header,information)
         self._vehicle_config_image = QtGui.QPixmap(VEHICLE_CONFIG_FILE_MAP[information])
         self._display_vehicle_config()            
     
-    def _is_magnetometer_detected_event(self, header, information):
+    def _vehicle_description_event_received(self, header, information):
         information_cellule = QtGui.QTableWidgetItem()                           
         information_cellule.setTextColor(QtCore.Qt.white)
         information_cellule.setTextAlignment(QtCore.Qt.AlignCenter)
