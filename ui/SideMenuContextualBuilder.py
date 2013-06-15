@@ -37,6 +37,8 @@ class SideMenuContextualBuilder(object):
         self._side_menu_troubleshooting_page = side_menu_troubleshooting_page
         self._side_menu_mission_planer_page = side_menu_mission_planer_page
         
+        self._vehicle_status_button = None
+        
         vehicle_event_dispatcher.register(self._is_magnetometer_detected_event, VehicleEventDispatcher.MAGNETOMETER_DETECTED_EVENT)
         self._ui_event_dispatcher.register(self._connection_state_changed, UIEventDispatcher.CONNECTION_STATE_CHANGED_EVENT)
         

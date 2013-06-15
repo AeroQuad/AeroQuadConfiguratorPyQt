@@ -64,6 +64,8 @@ class AQV32ProtocolHandler(ProtocolHandler):
     
     def __init__(self, communicator, vehicle_event_dispatcher):
         ProtocolHandler.__init__(self, communicator, vehicle_event_dispatcher)
+        
+        self._motor_command = ''
 
     def subscribe_sensors_data(self):
         def unpack_data():
@@ -168,7 +170,9 @@ class AQV32ProtocolHandler(ProtocolHandler):
             command = command + str(motor7_command) + ';'
             command = command + str(motor8_command)
 
-        self.send_command(command)
+        if self._motor_command != command:
+            self.send_command(command)
+            self._motor_command = command
         
     def reset_receiver_calibration_values(self, nb_channels):
         for channel in range(nb_channels):
