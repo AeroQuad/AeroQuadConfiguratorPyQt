@@ -98,31 +98,31 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
         
         if self._current_calibration_step == self.LEVELLED_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/calTop Up + Background v2.png")
-            self.ui.information_display_text_box.setText("Place the AeroQuad on a flat and motionless surface and press the start to begin the calibration procedure")
+            self.ui.information_display_text_box.setText("Place the AeroQuad on a flat, level and motionless surface and press Start to begin the calibration procedure")
         elif self._current_calibration_step == self.UPSIDE_DOWN_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/calTop Down + Background v2.png")
-            self.ui.information_display_text_box.setText("Place the AeroQuad upside down and press start")
+            self.ui.information_display_text_box.setText("Place the AeroQuad upside down and press Next")
         elif self._current_calibration_step == self.LEFT_SIDE_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/calLeft + Background v2.png")
-            self.ui.information_display_text_box.setText("Place the AeroQuad left edge down and press start")
+            self.ui.information_display_text_box.setText("Place the AeroQuad left edge down and press Next")
         elif self._current_calibration_step == self.RIGHT_SIDE_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/calRight + Background v2.png")
-            self.ui.information_display_text_box.setText("Place the AeroQuad right edge down and press start")
+            self.ui.information_display_text_box.setText("Place the AeroQuad right edge down and press Next")
         elif self._current_calibration_step == self.NOSE_UP_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/calFront + Background v2.png")
-            self.ui.information_display_text_box.setText("Place the AeroQuad front edge down and press start. The arrow indicates the front of the AeroQuad")
+            self.ui.information_display_text_box.setText("Place the AeroQuad front edge down and press Next. The arrow indicates the front of the AeroQuad")
         elif self._current_calibration_step == self.NOSE_DOWN_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/calRear + Background v2.png")
-            self.ui.information_display_text_box.setText("Place the AeroQuad rear edge down and press start. The arrow indicates the front of the AeroQuad")
+            self.ui.information_display_text_box.setText("Place the AeroQuad rear edge down and press Next. The arrow indicates the front of the AeroQuad")
         elif self._current_calibration_step == self.COMPLETE_ACCEL_CALIBRATION_STEP_ID:
             pictureBackground = QtGui.QPixmap("./resources/calTop Up + Background v2.png")
-            self.ui.information_display_text_box.setText("Place the AeroQuad on a flat surface and motionless surface and press the complete button to complete the calibration")
+            self.ui.information_display_text_box.setText("Place the AeroQuad on a flat, level and motionless surface and press Complete to finish the calibration procedure")
             self.ui.start_button.setText(AccelCalibrationController.COMPLETE_TEXT)
             
         pictureItem = QtGui.QGraphicsPixmapItem(pictureBackground)
         pictureScene.addItem(pictureItem)
         self.ui.picture_container.setScene(pictureScene)
-    
+
     def _set_initial_panel_state(self):
         self._calibration_raw_sum_values = [0,0,0,0,0,0]
         self._current_calibration_step = 0
@@ -152,4 +152,3 @@ class AccelCalibrationController(QtGui.QWidget, BasePanelController):
             x_scale_factor = x_scale_factor * -1
 
         self._protocol_handler.set_accel_calibration_scale_factor(x_scale_factor, y_scale_factor, z_scale_factor)
-        
