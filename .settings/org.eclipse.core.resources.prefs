@@ -15,6 +15,7 @@ encoding//ui/subpanel/mainmenuepanel/MainMenuePanel.py=utf-8
 encoding//ui/subpanel/motorcommand/MotorCommandController.py=utf-8
 encoding//ui/subpanel/motorcommand/MotorCommandPanel.py=utf-8
 encoding//ui/subpanel/pidparametersupdater/PIDParametersUpdaterPanel.py=utf-8
+encoding//ui/subpanel/pidparametersupdater/configsinglelinewidget/ConfigSingleLineWidgetUI.py=utf-8
 encoding//ui/subpanel/pidparametersupdater/pidtuningpanel/PIDTuningPanel.py=utf-8
 encoding//ui/subpanel/pidparametersupdater/pidwidget/PIDWidgetUI.py=utf-8
 encoding//ui/subpanel/receivercalibration/ReceiverCalibrationPanel.py=utf-8

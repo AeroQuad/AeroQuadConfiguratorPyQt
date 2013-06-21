@@ -20,30 +20,30 @@ class StablePIDTuningController(QtGui.QWidget, BasePanelController):
         self.ui.main_layout.addWidget(self._accel_roll_pid_controller)
         self._accel_roll_pid_controller.hide_i_line()
         self._accel_roll_pid_controller.hide_d_line()
-        self._accel_roll_pid_controller.ui.p_label.setText('Accel Roll Gain')
-        self._accel_roll_pid_controller.ui.i_label.setText('Accel Roll Error Correction')
-        self._accel_roll_pid_controller.ui.d_label.setText('Accel Roll Set Point Adjustment')
+        self._accel_roll_pid_controller.p_line.ui.label.setText('Accel Roll Gain')
+        self._accel_roll_pid_controller.i_line.ui.label.setText('Accel Roll Error Correction')
+        self._accel_roll_pid_controller.d_line.ui.label.setText('Accel Roll Set Point Adjustment')
         
         self._gyro_roll_pid_controller = PIDWidgetController()
         self.ui.main_layout.addWidget(self._gyro_roll_pid_controller)
         self._gyro_roll_pid_controller.hide_i_line()
-        self._gyro_roll_pid_controller.ui.p_label.setText('Gyro Roll Gain')
-        self._gyro_roll_pid_controller.ui.i_label.setText('Gyro Roll Error Correction')
-        self._gyro_roll_pid_controller.ui.d_label.setText('Gyro Roll Set Point Adjustment')
+        self._gyro_roll_pid_controller.p_line.ui.label.setText('Gyro Roll Gain')
+        self._gyro_roll_pid_controller.i_line.ui.label.setText('Gyro Roll Error Correction')
+        self._gyro_roll_pid_controller.d_line.ui.label.setText('Gyro Roll Set Point Adjustment')
         
         self._accel_pitch_pid_controller = PIDWidgetController()
         self.ui.main_layout.addWidget(self._accel_pitch_pid_controller)
         self._accel_pitch_pid_controller.hide_i_line()
         self._accel_pitch_pid_controller.hide_d_line()
-        self._accel_pitch_pid_controller.ui.p_label.setText('Accel Pitch Gain')
-        self._accel_pitch_pid_controller.ui.i_label.setText('Accel Pitch Error Correction')
-        self._accel_pitch_pid_controller.ui.d_label.setText('Accel Pitch Set Point Adjustment')
+        self._accel_pitch_pid_controller.p_line.ui.label.setText('Accel Pitch Gain')
+        self._accel_pitch_pid_controller.i_line.ui.label.setText('Accel Pitch Error Correction')
+        self._accel_pitch_pid_controller.d_line.ui.label.setText('Accel Pitch Set Point Adjustment')
         
         self._gyro_pitch_pid_controller = PIDWidgetController()
         self.ui.main_layout.addWidget(self._gyro_pitch_pid_controller)
-        self._gyro_pitch_pid_controller.ui.p_label.setText('Gyro Pitch Gain')
-        self._gyro_pitch_pid_controller.ui.i_label.setText('Gyro Pitch Error Correction')
-        self._gyro_pitch_pid_controller.ui.d_label.setText('Gyro Pitch Set Point Adjustment')
+        self._gyro_pitch_pid_controller.p_line.ui.label.setText('Gyro Pitch Gain')
+        self._gyro_pitch_pid_controller.i_line.ui.label.setText('Gyro Pitch Error Correction')
+        self._gyro_pitch_pid_controller.d_line.ui.label.setText('Gyro Pitch Set Point Adjustment')
         
         self.setBeginnerMode()
         self.ui.linked_check_box.clicked.connect(self._linked_checkbox_pressed)
@@ -53,15 +53,15 @@ class StablePIDTuningController(QtGui.QWidget, BasePanelController):
         if self.ui.linked_check_box.isChecked():
             self._accel_pitch_pid_controller.hide();
             self._gyro_pitch_pid_controller.hide();
-            self._gyro_roll_pid_controller.ui.p_label.setText('Gyro Gain Factor')
-            self._gyro_roll_pid_controller.ui.i_label.setText('Gyro Error Correction Factor')
-            self._gyro_roll_pid_controller.ui.d_label.setText('Gyro Set Point Adjustment Factor')
+            self._gyro_roll_pid_controller.p_line.ui.label.setText('Gyro Gain Factor')
+            self._gyro_roll_pid_controller.i_line.ui.label.setText('Gyro Error Correction Factor')
+            self._gyro_roll_pid_controller.d_line.ui.label.setText('Gyro Set Point Adjustment Factor')
         else :
             self._accel_pitch_pid_controller.show();
             self._gyro_pitch_pid_controller.show();
-            self._gyro_roll_pid_controller.ui.p_label.setText('Gyro Roll Gain Factor')
-            self._gyro_roll_pid_controller.ui.i_label.setText('Gyro Roll Error Correction Factor')
-            self._gyro_roll_pid_controller.ui.d_label.setText('Gyro Roll Set Point Adjustment Factor')
+            self._gyro_roll_pid_controller.p_line.ui.label.setText('Gyro Roll Gain Factor')
+            self._gyro_roll_pid_controller.i_line.ui.label.setText('Gyro Roll Error Correction Factor')
+            self._gyro_roll_pid_controller.d_line.ui.label.setText('Gyro Roll Set Point Adjustment Factor')
         
     
     def setBeginnerMode(self):

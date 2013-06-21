@@ -21,9 +21,9 @@ class AccroPIDTuningController(QtGui.QWidget, BasePanelController):
         
         self._gyro_pitch_pid_controller = PIDWidgetController()
         self.ui.main_layout.addWidget(self._gyro_pitch_pid_controller)
-        self._gyro_pitch_pid_controller.ui.p_label.setText('Pitch Gain')
-        self._gyro_pitch_pid_controller.ui.i_label.setText('Pitch Error Correction')
-        self._gyro_pitch_pid_controller.ui.d_label.setText('Pitch Set Point Adjustment')
+        self._gyro_pitch_pid_controller.p_line.ui.label.setText('Pitch Gain')
+        self._gyro_pitch_pid_controller.i_line.ui.label.setText('Pitch Error Correction')
+        self._gyro_pitch_pid_controller.d_line.ui.label.setText('Pitch Set Point Adjustment')
         
         self.setBeginnerMode()
         self.ui.linked_check_box.clicked.connect(self._linked_checkbox_pressed)
@@ -32,14 +32,14 @@ class AccroPIDTuningController(QtGui.QWidget, BasePanelController):
     def _linked_checkbox_pressed(self):
         if self.ui.linked_check_box.isChecked():
             self._gyro_pitch_pid_controller.hide();
-            self._gyro_roll_pid_controller.ui.p_label.setText('Gain')
-            self._gyro_roll_pid_controller.ui.i_label.setText('Error Correction')
-            self._gyro_roll_pid_controller.ui.d_label.setText('Set Point Adjustment')
+            self._gyro_roll_pid_controller.p_line.ui.label.setText('Gain')
+            self._gyro_roll_pid_controller.i_line.ui.label.setText('Error Correction')
+            self._gyro_roll_pid_controller.d_line.ui.label.setText('Set Point Adjustment')
         else :
             self._gyro_pitch_pid_controller.show();
-            self._gyro_roll_pid_controller.ui.p_label.setText('Roll Gain')
-            self._gyro_roll_pid_controller.ui.i_label.setText('Roll Error Correction')
-            self._gyro_roll_pid_controller.ui.d_label.setText('Roll Set Point Adjustment')
+            self._gyro_roll_pid_controller.p_line.ui.label.setText('Roll Gain')
+            self._gyro_roll_pid_controller.i_line.ui.label.setText('Roll Error Correction')
+            self._gyro_roll_pid_controller.d_line.ui.label.setText('Roll Set Point Adjustment')
         
     
     def setBeginnerMode(self):
