@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'PIDWidgetUI.ui'
 #
-# Created: Thu Jun 20 21:54:18 2013
+# Created: Fri Jun 21 05:29:07 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,55 +29,13 @@ class Ui_PIDWidget(object):
         PIDWidget.resize(250, 153)
         self.gridLayout = QtGui.QGridLayout(PIDWidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.gridWidget = QtGui.QWidget(PIDWidget)
-        self.gridWidget.setObjectName(_fromUtf8("gridWidget"))
-        self.pid_layout = QtGui.QGridLayout(self.gridWidget)
-        self.pid_layout.setMargin(0)
-        self.pid_layout.setObjectName(_fromUtf8("pid_layout"))
-        self.d_slider = QtGui.QSlider(self.gridWidget)
-        self.d_slider.setMaximumSize(QtCore.QSize(16777215, 35))
-        self.d_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.d_slider.setObjectName(_fromUtf8("d_slider"))
-        self.pid_layout.addWidget(self.d_slider, 2, 1, 1, 1)
-        self.i_label = QtGui.QLabel(self.gridWidget)
-        self.i_label.setObjectName(_fromUtf8("i_label"))
-        self.pid_layout.addWidget(self.i_label, 1, 0, 1, 1)
-        self.d_label = QtGui.QLabel(self.gridWidget)
-        self.d_label.setObjectName(_fromUtf8("d_label"))
-        self.pid_layout.addWidget(self.d_label, 2, 0, 1, 1)
-        self.i_slider = QtGui.QSlider(self.gridWidget)
-        self.i_slider.setMaximumSize(QtCore.QSize(16777215, 35))
-        self.i_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.i_slider.setObjectName(_fromUtf8("i_slider"))
-        self.pid_layout.addWidget(self.i_slider, 1, 1, 1, 1)
-        self.p_slider = QtGui.QSlider(self.gridWidget)
-        self.p_slider.setMaximumSize(QtCore.QSize(16777215, 35))
-        self.p_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.p_slider.setObjectName(_fromUtf8("p_slider"))
-        self.pid_layout.addWidget(self.p_slider, 0, 1, 1, 1)
-        self.p_label = QtGui.QLabel(self.gridWidget)
-        self.p_label.setObjectName(_fromUtf8("p_label"))
-        self.pid_layout.addWidget(self.p_label, 0, 0, 1, 1)
-        self.p_edit_box = QtGui.QTextEdit(self.gridWidget)
-        self.p_edit_box.setMaximumSize(QtCore.QSize(50, 35))
-        self.p_edit_box.setObjectName(_fromUtf8("p_edit_box"))
-        self.pid_layout.addWidget(self.p_edit_box, 0, 2, 1, 1)
-        self.i_edit_box = QtGui.QTextEdit(self.gridWidget)
-        self.i_edit_box.setMaximumSize(QtCore.QSize(50, 35))
-        self.i_edit_box.setObjectName(_fromUtf8("i_edit_box"))
-        self.pid_layout.addWidget(self.i_edit_box, 1, 2, 1, 1)
-        self.d_edit_box = QtGui.QTextEdit(self.gridWidget)
-        self.d_edit_box.setMaximumSize(QtCore.QSize(50, 35))
-        self.d_edit_box.setObjectName(_fromUtf8("d_edit_box"))
-        self.pid_layout.addWidget(self.d_edit_box, 2, 2, 1, 1)
-        self.gridLayout.addWidget(self.gridWidget, 0, 0, 1, 1)
+        self.main_layout = QtGui.QVBoxLayout()
+        self.main_layout.setObjectName(_fromUtf8("main_layout"))
+        self.gridLayout.addLayout(self.main_layout, 0, 0, 1, 1)
 
         self.retranslateUi(PIDWidget)
         QtCore.QMetaObject.connectSlotsByName(PIDWidget)
 
     def retranslateUi(self, PIDWidget):
         PIDWidget.setWindowTitle(_translate("PIDWidget", "Update Parameter", None))
-        self.i_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">I</span></p></body></html>", None))
-        self.d_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">D</span></p></body></html>", None))
-        self.p_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">P</span></p></body></html>", None))
 

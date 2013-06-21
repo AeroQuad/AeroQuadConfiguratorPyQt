@@ -1,6 +1,7 @@
 
 from PyQt4 import QtGui
 from ui.subpanel.pidparametersupdater.pidwidget.PIDWidgetUI import Ui_PIDWidget
+from ui.subpanel.pidparametersupdater.configsinglelinewidget.ConfigSingleLineWidgetController import ConfigSingleLineWidgetController
 
 class PIDWidgetController(QtGui.QWidget):
 
@@ -11,31 +12,32 @@ class PIDWidgetController(QtGui.QWidget):
         self.ui = Ui_PIDWidget()
         self.ui.setupUi(self)
         
+        self.p_line = ConfigSingleLineWidgetController()
+        self.ui.main_layout.addWidget(self.p_line)
+        self.i_line = ConfigSingleLineWidgetController()
+        self.ui.main_layout.addWidget(self.i_line)
+        self.d_line = ConfigSingleLineWidgetController()
+        self.ui.main_layout.addWidget(self.d_line)
+        
         self.set_edit_box_enabled(False)
         
+        
     def show_i_line(self):
-        self.ui.i_edit_box.show()
-        self.ui.i_label.show()
-        self.ui.i_slider.show()
+        self.i_line.show()
         
     def hide_i_line(self):
-        self.ui.i_edit_box.hide()
-        self.ui.i_label.hide()
-        self.ui.i_slider.hide()
+        self.i_line.hide()
         
     def show_d_line(self):
-        self.ui.d_edit_box.show()
-        self.ui.d_label.show()
-        self.ui.d_slider.show()
+        self.d_line.show()
         
     def hide_d_line(self):
-        self.ui.d_edit_box.hide()
-        self.ui.d_label.hide()
-        self.ui.d_slider.hide()
+        self.d_line.hide()
         
     def set_edit_box_enabled(self,enabled):
-        self.ui.p_edit_box.setEnabled(enabled)
-        self.ui.i_edit_box.setEnabled(enabled)
-        self.ui.d_edit_box.setEnabled(enabled)
+        self.p_line.ui.edit_box.setEnabled(enabled)
+        self.i_line.ui.edit_box.setEnabled(enabled)
+        self.d_line.ui.edit_box.setEnabled(enabled)
+        
         
         
