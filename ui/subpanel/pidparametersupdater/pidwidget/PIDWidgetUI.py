@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'PIDWidgetUI.ui'
 #
-# Created: Wed Jun 19 20:50:10 2013
+# Created: Thu Jun 20 21:54:18 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_PIDWidget(object):
     def setupUi(self, PIDWidget):
         PIDWidget.setObjectName(_fromUtf8("PIDWidget"))
-        PIDWidget.resize(250, 137)
+        PIDWidget.resize(250, 153)
         self.gridLayout = QtGui.QGridLayout(PIDWidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.gridWidget = QtGui.QWidget(PIDWidget)
@@ -77,7 +77,7 @@ class Ui_PIDWidget(object):
 
     def retranslateUi(self, PIDWidget):
         PIDWidget.setWindowTitle(_translate("PIDWidget", "Update Parameter", None))
-        self.i_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">I</span></p></body></html>", None))
-        self.d_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">D</span></p></body></html>", None))
-        self.p_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">P</span></p></body></html>", None))
+        self.i_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">I</span></p></body></html>", None))
+        self.d_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">D</span></p></body></html>", None))
+        self.p_label.setText(_translate("PIDWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">P</span></p></body></html>", None))
 
