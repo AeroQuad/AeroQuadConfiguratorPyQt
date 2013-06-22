@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'PIDWidgetUI.ui'
 #
-# Created: Fri Jun 21 05:29:07 2013
+# Created: Sat Jun 22 10:24:31 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,16 +26,22 @@ except AttributeError:
 class Ui_PIDWidget(object):
     def setupUi(self, PIDWidget):
         PIDWidget.setObjectName(_fromUtf8("PIDWidget"))
-        PIDWidget.resize(250, 153)
+        PIDWidget.resize(408, 156)
         self.gridLayout = QtGui.QGridLayout(PIDWidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.main_layout = QtGui.QVBoxLayout()
+        self.main_layout.setSpacing(0)
         self.main_layout.setObjectName(_fromUtf8("main_layout"))
-        self.gridLayout.addLayout(self.main_layout, 0, 0, 1, 1)
+        self.gridLayout.addLayout(self.main_layout, 1, 0, 1, 1)
+        self.title_label = QtGui.QLabel(PIDWidget)
+        self.title_label.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.title_label.setObjectName(_fromUtf8("title_label"))
+        self.gridLayout.addWidget(self.title_label, 0, 0, 1, 1)
 
         self.retranslateUi(PIDWidget)
         QtCore.QMetaObject.connectSlotsByName(PIDWidget)
 
     def retranslateUi(self, PIDWidget):
         PIDWidget.setWindowTitle(_translate("PIDWidget", "Update Parameter", None))
+        self.title_label.setText(_translate("PIDWidget", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">TITLE</span></p></body></html>", None))
 

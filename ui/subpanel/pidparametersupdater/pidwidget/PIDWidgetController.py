@@ -21,7 +21,6 @@ class PIDWidgetController(QtGui.QWidget):
         
         self.set_edit_box_enabled(False)
         
-        
     def show_i_line(self):
         self.i_line.show()
         
@@ -38,6 +37,4 @@ class PIDWidgetController(QtGui.QWidget):
         self.p_line.ui.edit_box.setEnabled(enabled)
         self.i_line.ui.edit_box.setEnabled(enabled)
         self.d_line.ui.edit_box.setEnabled(enabled)
-        
-        
         
