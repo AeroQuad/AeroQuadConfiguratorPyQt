@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ConfigSingleLineWidgetUI.ui'
 #
-# Created: Sat Jun 22 10:24:29 2013
+# Created: Sun Jun 23 14:04:37 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -36,8 +36,13 @@ class Ui_PIDSingleLineWidget(object):
         self.pid_layout.setMargin(0)
         self.pid_layout.setObjectName(_fromUtf8("pid_layout"))
         self.label = QtGui.QLabel(self.gridWidget)
-        self.label.setMinimumSize(QtCore.QSize(200, 25))
-        self.label.setMaximumSize(QtCore.QSize(200, 25))
+        self.label.setMinimumSize(QtCore.QSize(250, 25))
+        self.label.setMaximumSize(QtCore.QSize(250, 25))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label.setFont(font)
         self.label.setMidLineWidth(0)
         self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label.setObjectName(_fromUtf8("label"))
@@ -52,6 +57,7 @@ class Ui_PIDSingleLineWidget(object):
         self.edit_box = QtGui.QTextEdit(self.gridWidget)
         self.edit_box.setMinimumSize(QtCore.QSize(0, 25))
         self.edit_box.setMaximumSize(QtCore.QSize(50, 25))
+        self.edit_box.setStyleSheet(_fromUtf8(""))
         self.edit_box.setObjectName(_fromUtf8("edit_box"))
         self.pid_layout.addWidget(self.edit_box, 0, 2, 1, 1)
         self.default_label = QtGui.QLabel(self.gridWidget)
