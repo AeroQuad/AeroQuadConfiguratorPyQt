@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ConfigSingleLineWidgetUI.ui'
 #
-# Created: Sun Jun 23 14:04:37 2013
+# Created: Tue Sep 03 20:18:06 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,18 +35,13 @@ class Ui_PIDSingleLineWidget(object):
         self.pid_layout = QtGui.QGridLayout(self.gridWidget)
         self.pid_layout.setMargin(0)
         self.pid_layout.setObjectName(_fromUtf8("pid_layout"))
-        self.label = QtGui.QLabel(self.gridWidget)
-        self.label.setMinimumSize(QtCore.QSize(250, 25))
-        self.label.setMaximumSize(QtCore.QSize(250, 25))
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label.setFont(font)
-        self.label.setMidLineWidth(0)
-        self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.pid_layout.addWidget(self.label, 0, 0, 1, 1)
+        self.title_label = QtGui.QLabel(self.gridWidget)
+        self.title_label.setMinimumSize(QtCore.QSize(200, 25))
+        self.title_label.setMaximumSize(QtCore.QSize(200, 25))
+        self.title_label.setMidLineWidth(0)
+        self.title_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.title_label.setObjectName(_fromUtf8("title_label"))
+        self.pid_layout.addWidget(self.title_label, 0, 0, 1, 1)
         self.slider = QtGui.QSlider(self.gridWidget)
         self.slider.setMinimumSize(QtCore.QSize(0, 25))
         self.slider.setMaximumSize(QtCore.QSize(16777215, 25))
@@ -57,7 +52,6 @@ class Ui_PIDSingleLineWidget(object):
         self.edit_box = QtGui.QTextEdit(self.gridWidget)
         self.edit_box.setMinimumSize(QtCore.QSize(0, 25))
         self.edit_box.setMaximumSize(QtCore.QSize(50, 25))
-        self.edit_box.setStyleSheet(_fromUtf8(""))
         self.edit_box.setObjectName(_fromUtf8("edit_box"))
         self.pid_layout.addWidget(self.edit_box, 0, 2, 1, 1)
         self.default_label = QtGui.QLabel(self.gridWidget)
@@ -72,6 +66,6 @@ class Ui_PIDSingleLineWidget(object):
 
     def retranslateUi(self, PIDSingleLineWidget):
         PIDSingleLineWidget.setWindowTitle(_translate("PIDSingleLineWidget", "Update Parameter", None))
-        self.label.setText(_translate("PIDSingleLineWidget", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">P</span></p></body></html>", None))
+        self.title_label.setText(_translate("PIDSingleLineWidget", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">P</span></p></body></html>", None))
         self.default_label.setText(_translate("PIDSingleLineWidget", "Default", None))
 

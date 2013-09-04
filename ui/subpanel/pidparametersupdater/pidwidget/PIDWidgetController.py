@@ -38,3 +38,7 @@ class PIDWidgetController(QtGui.QWidget):
         self.i_line.ui.edit_box.setEnabled(enabled)
         self.d_line.ui.edit_box.setEnabled(enabled)
         
+    def set_title(self, title):
+        self.ui.title_label.setText(title)
+        
+        

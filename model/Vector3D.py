@@ -1,8 +1,3 @@
-'''
-Created on Apr 30, 2013
-
-@author: Kenny
-'''
 
 class Vector3D:
 
