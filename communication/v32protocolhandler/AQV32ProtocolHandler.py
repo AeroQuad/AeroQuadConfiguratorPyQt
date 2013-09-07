@@ -6,6 +6,7 @@ from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v32protocolhandler.V32VehicleStatusTranslator import V32VehicleStatusTranslator
 from communication.v32protocolhandler.V32VehicleSensorsDataTranslator import V32VehicleSensorsDataTranslator
 from communication.v32protocolhandler.V32ReceiverDataTranslator import V32ReceiverDataTranslator
+from model.PIDData import PIDData
 
 class AQV32ProtocolHandler(ProtocolHandler):
 
@@ -188,13 +189,18 @@ class AQV32ProtocolHandler(ProtocolHandler):
         def unpack_data():
             if not self._date_output_queue.empty():
                 try :
-                    serial_data = self._date_output_queue.get().split(':')
-                    print serial_data
-#                     V32ReceiverDataTranslator(serial_data, self._vehicle_event_dispatcher)
+                    serial_data = self._date_output_queue.get().split(',')
+                    accroRollPidData = PIDData(serial_data[0],serial_data[1],serial_data[2])
+                    self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_ROLL,accroRollPidData)
+                    accroPitchPidData = PIDData(serial_data[3],serial_data[4],serial_data[5])
+                    self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_PITCH,accroPitchPidData)
+                    self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_STICK_SCALING,serial_data[6])
                     self.unsubscribe_command()
                 except:
+                    self.unsubscribe_command()
                     logging.error("Protocol Handler: Failed to notify update rate PID data")
-                    print "Protocol Handler: Failed to notify update receiver data"
+                    print "Protocol Handler: Failed to notify update rate PID data"
+                
 
         self.subscribe_command(self.COMMANDS['GetRatePID'], unpack_data)
         

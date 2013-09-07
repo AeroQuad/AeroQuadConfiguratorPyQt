@@ -59,6 +59,10 @@ class VehicleEventDispatcher(Observable):
     MAGNETOMETER_DATA_EVENT = "MAGNETOMETER_DATA_EVENT"
     MAGNETOMETER_RAW_DATA_EVENT = "MAGNETOMETER_RAW_DATA_EVENT"
     
+    PID_ACCRO_ROLL = "PID_ACCRO_ROLL"
+    PID_ACCRO_PITCH = "PID_ACCRO_PITCH"
+    PID_ACCRO_STICK_SCALING = "PID_ACCRO_STICK_SCALING"
+    
     
     def __init__(self):
         Observable.__init__(self)
