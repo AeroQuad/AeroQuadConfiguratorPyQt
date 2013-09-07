@@ -2,6 +2,7 @@
 from PyQt4 import QtGui
 from ui.subpanel.pidparametersupdater.pidwidget.PIDWidgetUI import Ui_PIDWidget
 from ui.subpanel.pidparametersupdater.configsinglelinewidget.ConfigSingleLineWidgetController import ConfigSingleLineWidgetController
+from model.PIDData import PIDData
 
 class PIDWidgetController(QtGui.QWidget):
 
@@ -40,6 +41,28 @@ class PIDWidgetController(QtGui.QWidget):
     def set_title(self, title):
         self.ui.title_label.setText(title)
         
+    def set_p_title(self, title):
+        self.p_line.set_title(title)
+        
+    def set_i_title(self, title):
+        self.i_line.set_title(title)
+
+    def set_d_title(self, title):
+        self.d_line.set_title(title)
+
+    def set_default(self, pid_data):
+        self.p_line.set_default(pid_data.get_p())
+        self.i_line.set_default(pid_data.get_i())
+        self.d_line.set_default(pid_data.get_d())
+        
+    def set_current_pid(self, pid_data):
+        self.p_line.set_value(pid_data.get_p())
+        self.i_line.set_value(pid_data.get_i())
+        self.d_line.set_value(pid_data.get_d())
+    
+    def get_current_pid(self):
+        return PIDData(self.p_line.get_value(), self.i_line.get_value(), self.d_line.get_value())
+        
     def set_p_different(self):
         self.p_line.set_different()
         
@@ -58,14 +81,10 @@ class PIDWidgetController(QtGui.QWidget):
     def set_d_bounds(self, min_value, max_value):
         self.d_line.set_bounds(min_value,max_value)
         
-    def set_current_p_value(self,value):
-        self.p_line.set_value(value)
-        
-    def set_current_i_value(self,value):
-        self.i_line.set_value(value)
-        
-    def set_current_d_value(self,value):
-        self.d_line.set_value(value)
+    def set_change_listener(self, change_listener):
+        self.p_line.set_change_listener(change_listener)
+        self.i_line.set_change_listener(change_listener)
+        self.d_line.set_change_listener(change_listener)
         
         
 

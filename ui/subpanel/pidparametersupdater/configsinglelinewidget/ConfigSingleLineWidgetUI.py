@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ConfigSingleLineWidgetUI.ui'
 #
-# Created: Sat Sep 07 12:00:37 2013
+# Created: Sat Sep 07 15:14:42 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -55,7 +55,12 @@ class Ui_PIDSingleLineWidget(object):
         self.default_label.setObjectName(_fromUtf8("default_label"))
         self.pid_layout.addWidget(self.default_label, 0, 3, 1, 1)
         self.edit_box = QtGui.QDoubleSpinBox(self.gridWidget)
+        self.edit_box.setMinimumSize(QtCore.QSize(0, 0))
         self.edit_box.setStyleSheet(_fromUtf8(""))
+        self.edit_box.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.edit_box.setMinimum(-9999.0)
+        self.edit_box.setMaximum(9999.0)
+        self.edit_box.setProperty("value", 0.0)
         self.edit_box.setObjectName(_fromUtf8("edit_box"))
         self.pid_layout.addWidget(self.edit_box, 0, 2, 1, 1)
         self.sync_feedback_label = QtGui.QLabel(self.gridWidget)

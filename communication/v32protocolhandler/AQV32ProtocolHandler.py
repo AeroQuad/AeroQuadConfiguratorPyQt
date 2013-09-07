@@ -185,6 +185,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
             command = command + str(channel) + ';'
             command = command + '0.0'
             
+    
     def get_accro_pid(self):
         def unpack_data():
             if not self._date_output_queue.empty():
@@ -195,12 +196,11 @@ class AQV32ProtocolHandler(ProtocolHandler):
                     accroPitchPidData = PIDData(serial_data[3],serial_data[4],serial_data[5])
                     self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_PITCH,accroPitchPidData)
                     self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_STICK_SCALING,serial_data[6])
-                    self.unsubscribe_command()
                 except:
-                    self.unsubscribe_command()
                     logging.error("Protocol Handler: Failed to notify update rate PID data")
                     print "Protocol Handler: Failed to notify update rate PID data"
-                
+                    
+                self.unsubscribe_command()
 
         self.subscribe_command(self.COMMANDS['GetRatePID'], unpack_data)
         

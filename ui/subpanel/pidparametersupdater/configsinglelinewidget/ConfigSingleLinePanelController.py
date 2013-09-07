@@ -22,3 +22,18 @@ class ConfigSingleLinePanelController(QtGui.QWidget):
         
     def set_value(self, value):
         self._line.set_value(value)
+        
+    def set_title(self, title):
+        self.ui.title_label.setText(title)
+
+    def set_line_description(self, description):
+        self._line.set_title(description)
+                
+    def set_bounds(self,min_value, max_value):
+        self._line.set_bounds(min_value, max_value)
+        
+    def set_default(self, default):
+        self._line.set_default(default)
+        
+    def get_value(self):
+        return self._line.get_value()
