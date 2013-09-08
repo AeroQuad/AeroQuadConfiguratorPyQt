@@ -19,6 +19,10 @@ class PIDWidgetController(QtGui.QWidget):
         self.d_line = ConfigSingleLineWidgetController()
         self.ui.main_layout.addWidget(self.d_line)
         
+        self.p_line.ui.edit_box.setSingleStep(0.01)
+        self.i_line.ui.edit_box.setSingleStep(0.01)
+        self.d_line.ui.edit_box.setSingleStep(0.01)
+        
         self.set_edit_box_enabled(False)
         
     def show_i_line(self):
@@ -34,9 +38,9 @@ class PIDWidgetController(QtGui.QWidget):
         self.d_line.hide()
         
     def set_edit_box_enabled(self,enabled):
-        self.p_line.ui.edit_box.setEnabled(enabled)
-        self.i_line.ui.edit_box.setEnabled(enabled)
-        self.d_line.ui.edit_box.setEnabled(enabled)
+        self.p_line.set_edit_box_enabled(enabled)
+        self.i_line.set_edit_box_enabled(enabled)
+        self.d_line.set_edit_box_enabled(enabled)
         
     def set_title(self, title):
         self.ui.title_label.setText(title)
@@ -81,11 +85,8 @@ class PIDWidgetController(QtGui.QWidget):
     def set_d_bounds(self, min_value, max_value):
         self.d_line.set_bounds(min_value,max_value)
         
-    def set_change_listener(self, change_listener):
-        self.p_line.set_change_listener(change_listener)
-        self.i_line.set_change_listener(change_listener)
-        self.d_line.set_change_listener(change_listener)
-        
-        
-
+    def reset_default(self):
+        self.p_line.reset_default()
+        self.i_line.reset_default()
+        self.d_line.reset_default()
         

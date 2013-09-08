@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ConfigSingleLineWidgetUI.ui'
 #
-# Created: Sat Sep 07 15:14:42 2013
+# Created: Sun Sep 08 16:26:04 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,6 +52,7 @@ class Ui_PIDSingleLineWidget(object):
         self.default_label = QtGui.QLabel(self.gridWidget)
         self.default_label.setMinimumSize(QtCore.QSize(50, 25))
         self.default_label.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.default_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.default_label.setObjectName(_fromUtf8("default_label"))
         self.pid_layout.addWidget(self.default_label, 0, 3, 1, 1)
         self.edit_box = QtGui.QDoubleSpinBox(self.gridWidget)

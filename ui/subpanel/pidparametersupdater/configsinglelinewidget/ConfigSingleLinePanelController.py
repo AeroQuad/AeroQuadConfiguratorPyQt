@@ -37,3 +37,9 @@ class ConfigSingleLinePanelController(QtGui.QWidget):
         
     def get_value(self):
         return self._line.get_value()
+    
+    def set_edit_box_enabled(self,enabled):
+        self._line.set_edit_box_enabled(enabled)
+        
+    def reset_default(self):
+        self._line.reset_default()

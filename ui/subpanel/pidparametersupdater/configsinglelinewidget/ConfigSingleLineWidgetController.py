@@ -15,10 +15,11 @@ class ConfigSingleLineWidgetController(QtGui.QWidget):
         
         self.set_different()
         
+        self.ui.slider.setSingleStep(1)
         self.ui.slider.sliderReleased.connect(self._slider_released)
         self.ui.slider.sliderMoved.connect(self._slider_move)
+        self.ui.slider.valueChanged.connect(self._slider_move)
         self.ui.edit_box.valueChanged.connect(self._edit_box_value_changed)
-        self._change_listener = self.defaul_change_listener_notifier
         
     def set_different(self):
         self.ui.sync_feedback_label.setStyleSheet("background-color: rgb(255, 255, 0);")
@@ -49,8 +50,9 @@ class ConfigSingleLineWidgetController(QtGui.QWidget):
         return self.ui.edit_box.value()
         
     def _slider_released(self):
+        value = self.ui.slider.value()
+        self.ui.edit_box.setValue(value)
         self.set_different()
-        self._change_listener()
         
     def _slider_move(self):
         value = self.ui.slider.value()
@@ -60,13 +62,15 @@ class ConfigSingleLineWidgetController(QtGui.QWidget):
     def _edit_box_value_changed(self):
         value = self.ui.edit_box.value()
         self.ui.slider.setValue(value)
-        self._change_listener()
+        self.set_different()
+     
+    def set_edit_box_enabled(self,enabled):
+        self.ui.edit_box.setEnabled(enabled)
         
-    def set_change_listener(self, change_listener):
-        self._change_listener = change_listener
-        
-    def defaul_change_listener_notifier(self):
-        print 'No listener set on this config line widget'
+    def reset_default(self):
+        self.ui.slider.setValue(int(self.ui.default_label.text()))
+        self.ui.edit_box.setValue(float(self.ui.default_label.text()))
+        self.set_different()
         
         
         

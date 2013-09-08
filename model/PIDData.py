@@ -15,10 +15,21 @@ class PIDData:
         return self._d
     
     def is_equals(self, pid_data):
-        if float(self._p) != float(pid_data.get_p()) :
+
+        p1 = int(float(self._p) * 100)        
+        p2 = int(float(pid_data.get_p()) * 100)
+        if p1 != p2 :
             return False
-        elif float(self._i) != float(pid_data.get_i()) :
+        
+        i1 = int(float(self._i) * 100)        
+        i2 = int(float(pid_data.get_i()) * 100)
+        if i1 != i2:
             return False
-        elif float(self._d) != float(pid_data.get_d()) :
+        
+        d1 = int(float(self._d) * 100)        
+        d2 = int(float(pid_data.get_d()) * 100)
+        if d1 != d2:
             return False
+        
         return True
+    
