@@ -27,7 +27,6 @@ class AccroPIDTuningController(QtGui.QWidget, BasePanelController):
         self._current_stick_scaling = 1
         
         self._is_starting = False
-        
         self._user_update_mode = PIDUpdateMode.BEGINNER_MODE
                 
         self._roll_pid_controller = PIDWidgetController()
