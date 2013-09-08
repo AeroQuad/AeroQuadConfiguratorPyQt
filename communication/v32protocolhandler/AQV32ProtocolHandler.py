@@ -6,6 +6,7 @@ from model.VehicleEventDispatcher import VehicleEventDispatcher
 from communication.v32protocolhandler.V32VehicleStatusTranslator import V32VehicleStatusTranslator
 from communication.v32protocolhandler.V32VehicleSensorsDataTranslator import V32VehicleSensorsDataTranslator
 from communication.v32protocolhandler.V32ReceiverDataTranslator import V32ReceiverDataTranslator
+from model.PIDData import PIDData
 
 class AQV32ProtocolHandler(ProtocolHandler):
 
@@ -183,7 +184,37 @@ class AQV32ProtocolHandler(ProtocolHandler):
             command = self.COMMANDS['SetTransmitterOffset'] + ' '
             command = command + str(channel) + ';'
             command = command + '0.0'
+#       !?!?!?!? @todo Kenny WTF, that do nothing   
             
+    
+    def get_accro_pid(self):
+        def unpack_data():
+            if not self._date_output_queue.empty():
+                try:
+                    data = self._date_output_queue.get()
+                    serial_data = data.split(',')
+                    accroRollPidData = PIDData(serial_data[0],serial_data[1],serial_data[2])
+                    self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_ROLL,accroRollPidData)
+                    accroPitchPidData = PIDData(serial_data[3],serial_data[4],serial_data[5])
+                    self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_PITCH,accroPitchPidData)
+                    self._vehicle_event_dispatcher.dispatch_event(VehicleEventDispatcher.PID_ACCRO_STICK_SCALING,serial_data[6])
+                except:
+                    logging.error("Protocol Handler: Failed to notify update rate PID data")
+                    print "Protocol Handler: Failed to notify update rate PID data"
+
+        self.subscribe_command(self.COMMANDS['GetRatePID'], unpack_data)
+        
+    def set_accro_pid(self, roll_pid, pitch_pid, stick_scaling):
+        command = self.COMMANDS['SetRatePID'] + ' '
+        command = command + str(roll_pid.get_p()) + ';'
+        command = command + str(roll_pid.get_i()) + ';'
+        command = command + str(roll_pid.get_d()) + ';'
+        command = command + str(pitch_pid.get_p()) + ';'
+        command = command + str(pitch_pid.get_i()) + ';'
+        command = command + str(pitch_pid.get_d()) + ';'
+        command = command + str(stick_scaling)
+        self.send_command(command)
+        
     def send_receiver_calibation_values(self, nb_channels, min_values, max_values):
         # @todo do the math and send the command here
         pass
@@ -191,4 +222,7 @@ class AQV32ProtocolHandler(ProtocolHandler):
     def send_mag_calibration_values(self, min_values, max_values):
         # @todo do the math and send the command here
         pass
+    
+    
+        
         

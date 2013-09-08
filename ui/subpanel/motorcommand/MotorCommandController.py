@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from time import sleep
 
 from PyQt4 import QtCore, QtGui
 from ui.subpanel.BasePanelController import BasePanelController
@@ -74,7 +71,6 @@ class MotorCommandController(QtGui.QWidget, BasePanelController):
         
         ui_event_dispatcher.register(self._protocol_handler_changed_event, UIEventDispatcher.PROTOCOL_HANDLER_EVENT)
         vehicle_event_dispatcher.register(self._nb_motors_received, VehicleEventDispatcher.NUMBER_MOTORS_EVENT)
-        
         
     def stop(self):
         self._stop_timer()

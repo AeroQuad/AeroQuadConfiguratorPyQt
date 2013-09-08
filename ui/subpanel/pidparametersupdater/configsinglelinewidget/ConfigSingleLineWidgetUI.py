@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ConfigSingleLineWidgetUI.ui'
 #
-# Created: Thu Jun 20 20:32:37 2013
+# Created: Sun Sep 08 16:26:04 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,26 +26,49 @@ except AttributeError:
 class Ui_PIDSingleLineWidget(object):
     def setupUi(self, PIDSingleLineWidget):
         PIDSingleLineWidget.setObjectName(_fromUtf8("PIDSingleLineWidget"))
-        PIDSingleLineWidget.resize(250, 71)
+        PIDSingleLineWidget.resize(499, 71)
         self.gridLayout = QtGui.QGridLayout(PIDSingleLineWidget)
+        self.gridLayout.setMargin(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.gridWidget = QtGui.QWidget(PIDSingleLineWidget)
         self.gridWidget.setObjectName(_fromUtf8("gridWidget"))
         self.pid_layout = QtGui.QGridLayout(self.gridWidget)
         self.pid_layout.setMargin(0)
         self.pid_layout.setObjectName(_fromUtf8("pid_layout"))
+        self.title_label = QtGui.QLabel(self.gridWidget)
+        self.title_label.setMinimumSize(QtCore.QSize(200, 25))
+        self.title_label.setMaximumSize(QtCore.QSize(200, 25))
+        self.title_label.setMidLineWidth(0)
+        self.title_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.title_label.setObjectName(_fromUtf8("title_label"))
+        self.pid_layout.addWidget(self.title_label, 0, 0, 1, 1)
         self.slider = QtGui.QSlider(self.gridWidget)
-        self.slider.setMaximumSize(QtCore.QSize(16777215, 35))
+        self.slider.setMinimumSize(QtCore.QSize(0, 25))
+        self.slider.setMaximumSize(QtCore.QSize(16777215, 25))
         self.slider.setOrientation(QtCore.Qt.Horizontal)
+        self.slider.setTickInterval(5)
         self.slider.setObjectName(_fromUtf8("slider"))
         self.pid_layout.addWidget(self.slider, 0, 1, 1, 1)
-        self.edit_box = QtGui.QTextEdit(self.gridWidget)
-        self.edit_box.setMaximumSize(QtCore.QSize(50, 35))
+        self.default_label = QtGui.QLabel(self.gridWidget)
+        self.default_label.setMinimumSize(QtCore.QSize(50, 25))
+        self.default_label.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.default_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.default_label.setObjectName(_fromUtf8("default_label"))
+        self.pid_layout.addWidget(self.default_label, 0, 3, 1, 1)
+        self.edit_box = QtGui.QDoubleSpinBox(self.gridWidget)
+        self.edit_box.setMinimumSize(QtCore.QSize(0, 0))
+        self.edit_box.setStyleSheet(_fromUtf8(""))
+        self.edit_box.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.edit_box.setMinimum(-9999.0)
+        self.edit_box.setMaximum(9999.0)
+        self.edit_box.setProperty("value", 0.0)
         self.edit_box.setObjectName(_fromUtf8("edit_box"))
         self.pid_layout.addWidget(self.edit_box, 0, 2, 1, 1)
-        self.label = QtGui.QLabel(self.gridWidget)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.pid_layout.addWidget(self.label, 0, 0, 1, 1)
+        self.sync_feedback_label = QtGui.QLabel(self.gridWidget)
+        self.sync_feedback_label.setMinimumSize(QtCore.QSize(50, 0))
+        self.sync_feedback_label.setText(_fromUtf8(""))
+        self.sync_feedback_label.setObjectName(_fromUtf8("sync_feedback_label"))
+        self.pid_layout.addWidget(self.sync_feedback_label, 0, 4, 1, 1)
         self.gridLayout.addWidget(self.gridWidget, 0, 0, 1, 1)
 
         self.retranslateUi(PIDSingleLineWidget)
@@ -53,5 +76,6 @@ class Ui_PIDSingleLineWidget(object):
 
     def retranslateUi(self, PIDSingleLineWidget):
         PIDSingleLineWidget.setWindowTitle(_translate("PIDSingleLineWidget", "Update Parameter", None))
-        self.label.setText(_translate("PIDSingleLineWidget", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">P</span></p></body></html>", None))
+        self.title_label.setText(_translate("PIDSingleLineWidget", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">P</span></p></body></html>", None))
+        self.default_label.setText(_translate("PIDSingleLineWidget", "Default", None))
 

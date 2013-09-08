@@ -35,6 +35,10 @@ class ProtocolHandler(object):
             raise AlreadySubscribedException("already subscribed. stop subscriptions before sending another command")
         self._communicator.write(bytes(command.encode('utf-8')))
         self._communicator.flush() 
+    
+    def send_command_wihout_subscription(self, command):
+        self._communicator.write(bytes(command.encode('utf-8')))
+        self._communicator.flush()
 
     def receive_command_data(self):
         data = self._communicator.read_line().rstrip('\r\n')
@@ -53,6 +57,7 @@ class ProtocolHandler(object):
         self.stop_subscription_thread()
         self.send_command(command or self.BASE_COMMANDS['UnsubscribeAll'])
         self.flush_command_data()
+        self._communicator.flush()
 
     def start_subscription_thread(self):
         self._is_subscribed = True

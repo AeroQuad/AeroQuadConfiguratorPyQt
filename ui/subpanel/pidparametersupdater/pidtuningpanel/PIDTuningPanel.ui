@@ -6,23 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>437</height>
+    <width>792</width>
+    <height>459</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Update Parameter</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
-    <widget class="QCheckBox" name="linked_check_box">
-     <property name="text">
-      <string>Linked</string>
+    <layout class="QVBoxLayout" name="main_layout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <layout class="QVBoxLayout" name="main_layout"/>
+    </layout>
    </item>
   </layout>
  </widget>
